@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+ 
+	 <settings>
+	 	<setting name="logImpl" value="LOG4J"/>
+	 </settings>
+	 
+	 <typeAliases>
+	 	<typeAlias type="com.lightbrary.member.model.MemberDto" alias="memberDto"/>
+	 	<typeAlias type="com.lightbrary.book.model.BookDto" alias="bookDto"/>
+	 	<typeAlias type="com.lightbrary.notice.model.NoticeDto" alias="noticeDto"/>
+	 	<typeAlias type="com.lightbrary.rent.model.RentDto" alias="rentDto"/>
+	 </typeAliases>
+
+</configuration>
