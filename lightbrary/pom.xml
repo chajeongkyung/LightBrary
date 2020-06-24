@@ -32,7 +32,7 @@
     <dependency> 
   		<groupId>org.springframework</groupId>
   		<artifactId>spring-context-support</artifactId> 
-  		<version>${org.springframework-version}</version> 
+  		<version>4.3.9.RELEASE</version> 
     </dependency>
     
     <dependency> 
