@@ -5,6 +5,35 @@
   
 <mapper namespace="com.lightbrary.member">
 	
+	<resultMap type="com.lightbrary.member.model.MemberDto" id="memberResultMap">
+		<id column="NO" property="no"/>
+		<result column="GRADE_CODE" property="gradeCode"/>
+		<result column="EMAIL" property="email"/>
+		<result column="PASSWORD" property="password"/>
+		<result column="NAME" property="name"/>
+		<result column="PHONE" property="phone"/>
+		<result column="ADDRESS" property="address"/>
+		<result column="CREATED_DATE" property="createdDate"
+			javaType="java.util.Date"/>
+		<result column="MODIFIED_DATE" property="modifiedDate"
+			javaType="java.util.Date"/>
+	</resultMap>
+	
+	<insert id="insertOneMember" parameterType="memberDto">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			SELECT MEMBER_NO_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO MEMBER
+		VALUE(NO
+			, GRADE_CODE, NAME, PHONE
+			, EMAIL, PASSWORD, ADDRESS)
+		VALUES(MEMBER_NO_SEQ.NEXTVAL
+			, 1, #{name}, #{phone}
+			, #{email}, #{password}, #{address})
+
+	</insert>
+
 </mapper>
 
 
