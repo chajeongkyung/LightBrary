@@ -7,14 +7,6 @@
 <meta charset="UTF-8">
 <title>Lightbrary</title>
 
-<style type="text/css">
-	div{
-		border: 1px solid black; width: 200px;
-		background-color: orange;
-		margin: 20px;
-	}
-</style>
-
 <script type="text/javascript">
 
 	window.onload = function(){

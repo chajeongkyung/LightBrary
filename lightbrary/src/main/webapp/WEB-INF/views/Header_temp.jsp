@@ -64,7 +64,7 @@
 	</div>
 	<!-- 네비 start -->
 	<nav id='nav'>
-		<ul class='fs0 tCenter'>
+		<ul id='depth1Ul' class='fs0 tCenter'>
 			<li><a href="/lightbrary/common.do">기본 템플릿</a></li>
 			<li><a href="/lightbrary/pageLayout.do">기본 레이아웃</a></li>
 			<li><a href="/lightbrary/bookList.do">도서 목록</a></li>
