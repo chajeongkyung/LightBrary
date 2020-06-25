@@ -4,9 +4,52 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.lightbrary.book">
+	<resultMap type="com.lightbrary.book.model.BookDto" 
+		id="BookResultMap">
+		
+		<id column="NO" property="no"/>
+		<result column="STATUS_CODE" property="statusCode"/>
+		<result column="BOOK_CODE" property="bookCode"/>
+		<result column="CATEGORY_CODE" property="categoryCode"/>
+		<result column="IMAGE_NO" property="imageNo"/>
+		<result column="NAME" property="name"/>
+		<result column="PUBLISH" property="publish"/>
+		<result column="PUBLISH_DATE" property="publishDate" javaType="java.util.Date"/>
+		<result column="WRITER" property="writer"/>
+		<result column="DEL_FLAG" property="delFlag"/>
+		
+	</resultMap>
+	
+	<select id="selectOneBook" parameterType="int" resultMap="BookResultMap">
+		SELECT *
+		FROM BOOK
+		WHERE NO=#{no}
+	</select>
+	
+	<select id="selectBook" parameterType="map" resultMap="BookResultMap">
+		SELECT *
+		FROM(
+			SELECT ROWNUM RNUM, B.*
+			FROM
+			BOOK B)
+		WHERE RNUM BETWEEN #{start} AND #{end}
+	</select>
+	
+	<select id="totalCountBook" resultType="int">
+		SELECT COUNT(*)
+		FROM BOOK
+	</select>
+	
+	<insert id="insertOneBook" parameterType="bookDto"
+		useGeneratedKeys="true" keyProperty="no">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			SELECT BOOK_NO_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO BOOK
+		VALUE(NO, STATUS_CODE, BOOK_CODE, CATEGORY_CODE, IMAGE_NO,
+			  NAME, PUBLISH, PUBLISH_DATE, WRITER, DEL_FLAG)
+		VALUES(#{no}, #{statusCode}, #{bookCode}, #{categoryCode}, #{imageNo},
+			  #{name}, #{publish}, #{publishDate}, #{writer}, 'N')
+	</insert>
 	
 </mapper>
-
-
-
-

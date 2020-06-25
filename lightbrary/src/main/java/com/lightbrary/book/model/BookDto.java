@@ -6,6 +6,7 @@ public class BookDto {
 	
 	private int no;
 	private int statusCode;
+	private String bookCode;
 	private String categoryCode;
 	private String imageNo;
 	private String name;
@@ -18,12 +19,13 @@ public class BookDto {
 		super();
 	}
 
-	public BookDto(int no, int statusCode, String categoryCode, 
-			String imageNo, String name, String publish,
+	public BookDto(int no, int statusCode, String bookCode,
+			String categoryCode, String imageNo, String name, String publish,
 			Date publishDate, String writer, String delFlag) {
 		super();
 		this.no = no;
 		this.statusCode = statusCode;
+		this.bookCode = bookCode;
 		this.categoryCode = categoryCode;
 		this.imageNo = imageNo;
 		this.name = name;
@@ -49,6 +51,14 @@ public class BookDto {
 		this.statusCode = statusCode;
 	}
 
+	public String getBookCode() {
+		return bookCode;
+	}
+	
+	public void setBookCode(String bookCode) {
+		this.bookCode = bookCode;
+	}
+	
 	public String getCategoryCode() {
 		return categoryCode;
 	}
@@ -108,9 +118,9 @@ public class BookDto {
 	@Override
 	public String toString() {
 		return "BookDto [no=" + no + ", statusCode=" + statusCode 
-				+ ", categoryCode=" + categoryCode + ", imageNo="
-				+ imageNo + ", name=" + name + ", publish=" + publish 
-				+ ", publishDate=" + publishDate + ", writer="
+				+ ", bookCode=" + bookCode + ", categoryCode=" + categoryCode
+				+ ", imageNo=" + imageNo + ", name=" + name + ", publish=" 
+				+ publish + ", publishDate=" + publishDate + ", writer="
 				+ writer + ", delFlag=" + delFlag + "]";
 	}
 	

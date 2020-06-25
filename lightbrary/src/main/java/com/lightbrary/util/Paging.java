@@ -8,7 +8,7 @@ public class Paging implements Serializable{
 	public static final int PAGE_SCALE = 10;
 	
 	// 화면당 페이지 수
-	public static final int BLOCK_SCALE = 10;
+	public static final int BLOCK_SCALE = 5;
 	
 	private int curPage;	// 현재 게시물
 	private int prevPage;	// 이전 게시물
