@@ -5,7 +5,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Hello Spring</title>
+<title>Lightbrary</title>
 
 <style type="text/css">
 	div{
@@ -18,7 +18,7 @@
 <script type="text/javascript">
 
 	window.onload = function(){
-		location.href = '/lightbrary/login.do';
+		location.href = '/lightbrary/common.do';
 	}
 	
 </script>

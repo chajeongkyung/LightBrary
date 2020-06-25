@@ -1,0 +1,546 @@
+@charset "UTF-8";
+
+body, html, #wrap {
+	height: 100%;
+}
+
+body {
+	min-width: 1260px;
+	max-width: 2560px;
+	margin: 0px auto;
+}
+
+button, input {
+	outline: none;
+}
+
+button, input[type="submit"], input[type="button"] {
+	cursor: pointer;
+}
+
+a {
+	text-decoration: none;
+	color: #000;
+}
+
+select {
+	/* for Firefox */
+	-moz-appearance: none;
+	/* for Chrome */
+	-webkit-appearance: none;
+	outline: none;
+}
+
+/* For IE10 */
+select::-ms-expand {
+	display: none;
+}
+
+/*** 공통 ***/
+#container {
+	width: 1000px;
+	min-height: calc(100% - 240px);
+	margin: 0 auto;
+}
+
+.overH {
+	overflow: hidden;
+}
+
+.fLeft {
+	float: left;
+}
+
+.fRight {
+	float: right;
+}
+
+.fs0 {
+	font-size: 0;
+}
+
+.fs0>* {
+	display: inline-block;
+	vertical-align: top;
+	font-size: 16px;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.tCenter {
+	text-align: center;
+}
+
+.text {
+	font-size: 15px;
+	color: #a8a8a8;
+}
+
+.textRed {
+	color: #EC8686;
+}
+
+.textGreen {
+	color: #2B9447;
+}
+
+.textDark {
+	color: #000;
+}
+
+.textGrey {
+	color: #636363;
+}
+
+.ellipsis {
+	display: block;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.bgCover {
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover
+}
+
+/*** 헤더 ***/
+header {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	z-index: 1000
+}
+
+#headerTop {
+	position: relative;
+	height: 90px;
+	background: #eee;
+	box-sizing: border-box;
+	transition: all .4s
+}
+
+#headerTop.active {
+	margin-top: -90px
+}
+/* 헤더 검색 창 */
+#headerSearch {
+	position: fixed;
+	left: 26px;
+	top: 20px;
+	width: 315px;
+	transition: all .4s;
+	z-index: 1001
+}
+
+#hSearchInput {
+	width: 100%;
+	height: 50px;
+	border-radius: 36px;
+	border: 0;
+	background: #dfdfdf;
+	padding: 0 70px 0 30px;
+	box-sizing: border-box;
+	color: #a8a8a8;
+	transition: all .4s
+}
+
+#hSearchBtn {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 70px;
+	height: 50px;
+	background: url('../img/icon-search.png') no-repeat center;
+	border: 0
+}
+
+#headerSearch.scroll {
+	top: 10px
+}
+
+#headerSearch.scroll #hSearchInput {
+	background-color: #eee
+}
+/* 로고 */
+#logo {
+	width: 140px;
+	margin: 0 auto;
+	padding-top: 33px
+}
+
+#logo a {
+	display: block;
+	width: 140px;
+	height: 28px;
+	background: url('../img/logo.png') no-repeat center
+}
+/* 헤더 우측 */
+#headerOptions {
+	overflow: hidden;
+	position: absolute;
+	right: 26px;
+	top: 35px
+}
+
+#headerOptions li {
+	display: inline-block;
+	vertical-align: top;
+	margin-right: 25px
+}
+
+#headerOptions #hBasket {
+	margin-right: 8px
+}
+
+#headerOptions li:last-child {
+	margin-right: 0
+}
+
+#headerOptions a {
+	line-height: 21px
+}
+
+.hOptionsText {
+	font-size: 14px;
+	font-weight: bold;
+	color: #a8a8a8
+}
+
+#myPageClick.active img {
+	transform: rotate(180deg)
+}
+
+#headerOptions a#logout {
+	color: #bebebe
+}
+/* 마이페이지 드롭다운 메뉴 */
+#myPageDrop {
+	overflow: hidden;
+	position: fixed;
+	right: 0;
+	top: 90px;
+	width: 204px;
+	background: #f5f5f5;
+	padding: 30px 0px 30px 20px
+}
+
+#myPageDrop h3 {
+	padding-bottom: 24px;
+	font-size: 16px;
+	font-weight: bold;
+	color: #a8a8a8
+}
+
+#myPageDrop li {
+	margin-bottom: 12px
+}
+
+#myPageDrop li:nth-child(2) {
+	margin-left: -2px
+}
+
+#myPageDrop li:nth-child(2) img {
+	opacity: 0.7
+}
+
+#myPageDrop li:nth-child(2) span {
+	padding-left: 11px
+}
+
+#myPageDrop li:last-child {
+	margin-bottom: 0
+}
+
+#myPageDrop a>* {
+	vertical-align: middle
+}
+
+#myPageDrop span {
+	padding-left: 10px;
+	font-size: 15px;
+	color: #a8a8a8
+}
+
+#myPageDrop a:hover span {
+	font-weight: bold
+}
+/* 네비 */
+#nav {
+	height: 72px;
+	background: #fff;
+	box-shadow: 0 0 60px rgba(0, 0, 0, 0.14)
+}
+
+#nav li {
+	margin: 0px 13px
+}
+
+#nav a {
+	display: block;
+	line-height: 72px;
+	font-size: 16px;
+	color: #a8a8a8
+}
+
+#nav a:hover {
+	font-weight: bold;
+	color: #1C6931
+}
+
+/*** 정보 입력 폼 ***/
+.infoForm {
+	width: 315px;
+	margin: 0px auto
+}
+
+.infoInput {
+	width: 100%;
+	height: 60px;
+	border: 0;
+	padding: 0 30px 0 62px;
+	box-sizing: border-box;
+	border-radius: 8px;
+	background-color: rgba(238, 238, 238, 0.6);
+	background-repeat: no-repeat;
+	background-position: 20px 50%;
+	font-size: 15px;
+	color: #a8a8a8
+}
+/* 비밀번호 */
+.infoInput.infoPwd {
+	background-image: url('../img/icon-padlock.png')
+}
+
+.infoForm .btn {
+	width: 100%;
+	height: 60px
+}
+
+.infoForm .subBtn {
+	display: inline-block;
+	margin-top: 20px;
+	transition: all .2s
+}
+
+.infoForm .subBtn:hover {
+	color: #7d7d7d
+}
+
+/*** 체크박스 인풋 커스텀화 ***/
+.checkbox input[type="checkbox"] {
+	overflow: hidden;
+	position: absolute;
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+}
+
+.checkbox label {
+	display: inline-block;
+	cursor: pointer;
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
+/* 동그란 체크박스 */
+.checkbox.type1 label {
+	width: 24px;
+	height: 24px;
+	background-image: url('../img/checkbox-off.png');
+}
+
+.checkbox.type2 label {
+	width: 13px;
+	height: 13px;
+	background-image: url('../img/checkbox2-off.png');
+}
+
+.checkbox.type1.selectAll label {
+	width: auto;
+	line-height: 24px;
+	padding-left: 35px;
+	margin-left: 25px;
+	background-image: url('../img/checkbox-off.png');
+}
+
+.checkbox.type1 input[type="checkbox"]:checked ~ label {
+	background-image: url('../img/checkbox-on.png');
+}
+
+.checkbox.type2 input[type="checkbox"]:checked ~ label {
+	background-image: url('../img/checkbox2-on.png');
+}
+
+/*** 목록 ***/
+.listSettings {
+	margin-bottom: 10px;
+}
+
+.listSettings.bottomSettings {
+	margin-top: 10px;
+}
+
+.settings li {
+	margin-right: 22px;
+}
+
+.settings li:last-child {
+	margin-right: 0px;
+}
+
+.settings a {
+	display: block;
+	line-height: 24px;
+	letter-spacing: -0.04em;
+}
+
+.settings li.active a, .settings a:hover {
+	font-weight: bold;
+}
+
+/* 책 목록 */
+#bookList>li {
+	overflow: hidden;
+	position: relative;
+	height: 184px;
+	margin-bottom: 20px;
+	border: 1px solid rgba(28, 105, 49, 0.2);
+	box-sizing: border-box;
+}
+
+#bookList>li:hover {
+	border-color: rgba(28, 105, 49, 0.4);
+}
+
+#bookList .checkbox {
+	position: absolute;
+	left: 25px;
+	top: 50%;
+	margin-top: -12px;
+}
+
+#bookList .num {
+	position: absolute;
+	left: 66px;
+	top: 15px;
+	font-size: 20px;
+	color: #a8a8a8;
+}
+
+#bookList .bookImage {
+	display: block;
+	width: 100px;
+	height: 150px;
+	margin: 15px 0px 0px 105px;
+}
+
+#bookList .bookInfo {
+	max-width: 500px;
+	margin: 28px 0px 0px 30px;
+}
+
+#bookList .bookInfo .text {
+	margin-bottom: 7px;
+}
+
+#bookList .bookTitle {
+	margin: 10px 0px 17px;
+	font-size: 18px;
+	color: #686868;
+}
+
+#bookList .listOptions {
+	margin-right: 24px;
+	text-align: right;
+}
+
+#bookList .listOptionsUl {
+	margin-top: 27px;
+}
+
+#bookList .listOptionsUl li {
+	margin-right: 22px
+}
+
+#bookList .listOptionsUl li:last-child {
+	margin-right: 0px;
+}
+
+#bookList .listOptionsUl a {
+	letter-spacing: -0.04em;
+}
+
+#bookList .listOptionsUl a:hover {
+	opacity: 0.7;
+}
+
+#bookList .bookState {
+	margin-top: 90px;
+}
+
+/*** 테이블 리스트 ***/
+#table {
+	table-layout: fixed;
+	width: 100%
+}
+
+#table th, #table td {
+	vertical-align: middle;
+	padding-left: 10px;
+	font-size: 15px;
+	text-align: left;
+}
+
+#table thead th {
+	height: 44px;
+	background: rgba(238, 238, 238, 0.7);
+	color: #464646;
+	font-weight: bold;
+}
+
+#table tbody td {
+	height: 40px;
+	color: #636363;
+	border-bottom: 1px solid rgba(162, 162, 162, 0.3);
+}
+
+#table tbody a {
+	color: #636363;
+}
+
+#table tbody a:hover {
+	text-decoration: underline;
+}
+
+#table .checkboxTd {
+	padding-left: 20px;
+}
+
+/*** 탑 버튼 ***/
+#topBtn {
+	position: fixed;
+	right: 20px;
+	bottom: 25px;
+	width: 40px;
+	height: 40px;
+	box-sizing: border-box;
+	background: url('../img/top-btn.png') no-repeat center;
+	cursor: pointer
+}
+
+/*** 푸터 ***/
+footer {
+	height: 90px;
+	margin-top: 150px;
+	background: #eee;
+	padding: 36px 20px 0;
+	box-sizing: border-box;
+	margin-top: 150px;
+	background: #eee;
+	padding: 36px 20px 0;
+	box-sizing: border-box
+}
