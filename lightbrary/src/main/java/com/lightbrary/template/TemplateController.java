@@ -54,6 +54,7 @@ public class TemplateController {
 		
 		return "template/viewPage";
 	}
+<<<<<<< HEAD
 	
 	@RequestMapping(value = "/viewPageBoard.do", method = RequestMethod.GET)
 	public String viewPageBoard(HttpSession session, Model model) {
@@ -77,5 +78,13 @@ public class TemplateController {
 		
 		
 		return "template/insertPageBoard";
+=======
+	@RequestMapping(value = "/viewPageBoard.do", method = RequestMethod.GET)
+	public String viewPageBoard(HttpSession session, Model model) {
+		log.info("게시글 상세페이지");
+		
+		
+		return "template/viewPageBoard";
+>>>>>>> branch 'master' of https://github.com/chajeongkyung/LightBrary.git
 	}
 }

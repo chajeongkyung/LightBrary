@@ -19,6 +19,7 @@
 <body>
 
 	<div id='wrap'>
+<<<<<<< HEAD
 		<jsp:include page="/WEB-INF/views/Header_temp.jsp" />
 	
 		<!-- 컨테이너 start -->
@@ -33,6 +34,22 @@
 		<!-- //컨테이너 end -->
 		
 		<jsp:include page="/WEB-INF/views/Tail_temp.jsp" />
+=======
+		<jsp:include page="/WEB-INF/views/Header.jsp" />
+	
+		<!-- 컨테이너 start -->
+		<div id='container'>
+			<h2 id='pageTitle'>페이지 제목</h2>
+			
+			<!-- 
+			이안에 내용 작성 
+			-->
+			
+		</div>
+		<!-- //컨테이너 end -->
+		
+		<jsp:include page="/WEB-INF/views/Tail.jsp" />
+>>>>>>> branch 'master' of https://github.com/chajeongkyung/LightBrary.git
 	</div>
 
 </body>
