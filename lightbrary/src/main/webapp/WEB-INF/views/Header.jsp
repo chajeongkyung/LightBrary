@@ -16,7 +16,11 @@
 		<ul id='headerOptions' class='fs0'>
 			<!-- 회원으로 로그인 start -->
 			<li id='hBasket'>
+<<<<<<< HEAD
 				<a href="#none">
+=======
+				<a href="#none">
+>>>>>>> branch 'master' of https://github.com/chajeongkyung/LightBrary.git
 					<img alt="바구니" src="<%=request.getContextPath()%>/resources/img/icon-cart.png">
 				</a>
 			</li>
