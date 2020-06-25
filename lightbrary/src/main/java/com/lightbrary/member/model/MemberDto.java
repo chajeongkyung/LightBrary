@@ -3,6 +3,7 @@ package com.lightbrary.member.model;
 import java.util.Date;
 
 public class MemberDto {
+
 	private int no;
 	private int gradeCode;
 	private String email;
