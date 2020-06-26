@@ -50,8 +50,8 @@
 					<li>
 						<!-- 동그란 체크박스 start -->
 						<div class='checkbox type1'>
-							<input type="checkbox" id='chk1'>
-							<label for="chk1"></label>
+							<input type="checkbox" id='check1'>
+							<label for="check1"></label>
 						</div>
 						<!-- //동그란 체크박스 end -->
 						<span class='num'>1</span>
@@ -83,8 +83,8 @@
 					<!--  -->
 					<li>
 						<div class='checkbox type1'>
-							<input type="checkbox" id='chk2'>
-							<label for="chk2"></label>
+							<input type="checkbox" id='check2'>
+							<label for="check2"></label>
 						</div>
 						<span class='num'>2</span>
 						<a href="#none" class="fLeft">
@@ -115,8 +115,8 @@
 					<!--  -->
 					<li>
 						<div class='checkbox type1'>
-							<input type="checkbox" id='chk3'>
-							<label for="chk3"></label>
+							<input type="checkbox" id='check3'>
+							<label for="check3"></label>
 						</div>
 						<span class='num'>3</span>
 						<a href="#none" class="fLeft">
@@ -147,8 +147,8 @@
 					<!--  -->
 					<li>
 						<div class='checkbox type1'>
-							<input type="checkbox" id='chk4'>
-							<label for="chk4"></label>
+							<input type="checkbox" id='check4'>
+							<label for="check4"></label>
 						</div>
 						<span class='num'>4</span>
 						<a href="#none" class="fLeft">
@@ -177,36 +177,8 @@
 						</div>
 					</li>
 					<!--  -->
-					<li>
-						<div class='checkbox type1'>
-							<input type="checkbox" id='chk5'>
-							<label for="chk5"></label>
-						</div>
-						<span class='num'>5</span>
-						<a href="#none" class="fLeft">
-							<span class='bookImage bgCover' style="background-image: url('<%=request.getContextPath()%>/resources/img/book-img5-home.jpg');"></span>
-						</a>
-						<div class='bookInfo fLeft'>
-							<p class='text'>823.5조.53</p>
-							<a href="#none" class='bookTitle ellipsis'>임계장 이야기</a>
-							<p class='text ellipsis'>조정진 저</p>
-							<p class='text ellipsis'>휴머니터스</p>
-							<p class='text'>2020.03.30</p>
-						</div>
-						<div class='listOptions fRight'>
-							<ul class='listOptionsUl fs0'>
-								<li>
-									<a href="#none" class="text bold">바구니 담기</a> 
-								</li>
-<!-- 								<li> -->
-<!-- 									<a href="#none" class="text bold">대출 예약</a>  -->
-<!-- 								</li> -->
-							</ul>
-							<p class='bookState text'>
-								<span class="bold">상태 : </span>
-								<span class="textRed">분실</span>
-							</p>
-						</div>
+					<li style="text-align: center; padding-top: 81px;">
+						<span style="font-size: 18px; color: #686868;">검색하신 내용에 대한 결과가 없습니다.</span>
 					</li>
 					<!--  -->
 				</ul>

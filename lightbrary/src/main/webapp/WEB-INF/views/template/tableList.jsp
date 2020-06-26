@@ -80,8 +80,8 @@
 								<td class='checkboxTd'>
 									<!-- 기본 체크박스 start -->
 									<div class='checkbox type2 fLeft'>
-										<input type="checkbox" id='chk1'>
-										<label for="chk1"></label>
+										<input type="checkbox" id='check1'>
+										<label for="check1"></label>
 									</div>
 									<!-- //기본 체크박스 end -->
 								</td>
@@ -101,8 +101,8 @@
 							<tr>
 								<td class='checkboxTd'>
 									<div class='checkbox type2 fLeft'>
-										<input type="checkbox" id='chk2'>
-										<label for="chk2"></label>
+										<input type="checkbox" id='check2'>
+										<label for="check2"></label>
 									</div>
 								</td>
 								<td>9</td>
@@ -121,8 +121,8 @@
 							<tr>
 								<td class='checkboxTd'>
 									<div class='checkbox type2 fLeft'>
-										<input type="checkbox" id='chk3'>
-										<label for="chk3"></label>
+										<input type="checkbox" id='check3'>
+										<label for="check3"></label>
 									</div>
 								</td>
 								<td>8</td>
@@ -143,8 +143,8 @@
 							<tr>
 								<td class='checkboxTd'>
 									<div class='checkbox type2 fLeft'>
-										<input type="checkbox" id='chk4'>
-										<label for="chk4"></label>
+										<input type="checkbox" id='check4'>
+										<label for="check4"></label>
 									</div>
 								</td>
 								<td>7</td>
@@ -165,8 +165,8 @@
 							<tr>
 								<td class='checkboxTd'>
 									<div class='checkbox type2 fLeft'>
-										<input type="checkbox" id='chk5'>
-										<label for="chk5"></label>
+										<input type="checkbox" id='check5'>
+										<label for="check5"></label>
 									</div>
 								</td>
 								<td>6</td>
@@ -187,8 +187,8 @@
 							<tr>
 								<td class='checkboxTd'>
 									<div class='checkbox type2 fLeft'>
-										<input type="checkbox" id='chk6'>
-										<label for="chk6"></label>
+										<input type="checkbox" id='check6'>
+										<label for="check6"></label>
 									</div>
 								</td>
 								<td>5</td>
@@ -209,8 +209,8 @@
 							<tr>
 								<td class='checkboxTd'>
 									<div class='checkbox type2 fLeft'>
-										<input type="checkbox" id='chk7'>
-										<label for="chk7"></label>
+										<input type="checkbox" id='check7'>
+										<label for="check8"></label>
 									</div>
 								</td>
 								<td>4</td>
@@ -231,8 +231,8 @@
 							<tr>
 								<td class='checkboxTd'>
 									<div class='checkbox type2 fLeft'>
-										<input type="checkbox" id='chk8'>
-										<label for="chk8"></label>
+										<input type="checkbox" id='check8'>
+										<label for="check8"></label>
 									</div>
 								</td>
 								<td>3</td>
@@ -253,8 +253,8 @@
 							<tr>
 								<td class='checkboxTd'>
 									<div class='checkbox type2 fLeft'>
-										<input type="checkbox" id='chk9'>
-										<label for="chk9"></label>
+										<input type="checkbox" id='check9'>
+										<label for="check9"></label>
 									</div>
 								</td>
 								<td>2</td>
@@ -273,25 +273,9 @@
 							</tr>
 							<!--  -->
 							<tr>
-								<td class='checkboxTd'>
-									<div class='checkbox type2 fLeft'>
-										<input type="checkbox" id='chk10'>
-										<label for="chk10"></label>
-									</div>
+								<td colspan="8" style="text-align: center; padding: 56px 0px;">
+									<span style="font-size: 18px; color: #686868;">검색하신 내용에 대한 결과가 없습니다.</span>
 								</td>
-								<td>1</td>
-								<td>
-									<span class='bold textRed'>휴관</span>
-								</td>
-								<td>
-									<a href="#none" class='ellipsis'>코로나로 인한 휴관일을 안내드립니다.</a>
-								</td>
-								<td>2020.06.17~2020.06.24</td>
-								<td>
-									<span>진행 완료</span>
-								</td>
-								<td>관리자</td>
-								<td>2020.06.11 오전 10:38</td>
 							</tr>
 							<!--  -->
 						</tbody>

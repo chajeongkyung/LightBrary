@@ -13,7 +13,22 @@ $(document).ready(function() {
 	
 	//체크박스 전체선택
 	$('#all').click(function() {
-		$('.checkbox input').prop('checked', $(this).prop('checked'));
+		var allChecked = $(this).prop('checked');
+		
+		if (allChecked) {
+			$('.checkbox input').each(function(){
+				var disabled = $(this).prop('disabled');
+				
+				if (disabled) {
+					$(this).prop('checked', false);
+				} else{
+					$(this).prop('checked', true);
+				}
+			});
+		} else{
+			$('.checkbox input').prop('checked', false);
+		}
+		
 	});
 	//전체선택에서 개별 선택시 전체선택 비활성화
 	$('.checkbox input').click(function() {
