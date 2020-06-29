@@ -13,5 +13,7 @@ public interface MemberDao {
 	//일단 모두 조회
 	public List<MemberDto> selectListMember();
 	public MemberDto existMember(String email, String password);
+	
+	public int checkEmail(String email);
 }
 

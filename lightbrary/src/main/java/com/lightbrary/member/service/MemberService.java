@@ -12,8 +12,8 @@ public interface MemberService {
 	public MemberDto selectOneMember(int no);
 	//일단 모두 조회
 	public List<MemberDto> selectListMember();
-	public MemberDto memberExist(String email, String password);
+	public MemberDto existMember(String email, String password);
 	
-	
+	public int checkEmail(String email);
 	
 }

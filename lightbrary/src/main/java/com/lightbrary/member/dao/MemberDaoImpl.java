@@ -65,5 +65,10 @@ public class MemberDaoImpl implements MemberDao{
 		return memberDto;
 	}
 	
-	
+	@Override
+	public int checkEmail(String email) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + "checkEmail", email);
+	}
+
 }

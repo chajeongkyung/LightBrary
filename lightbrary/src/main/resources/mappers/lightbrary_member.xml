@@ -33,6 +33,20 @@
 			, #{email}, #{password}, #{address})
 
 	</insert>
+	
+	<select id="checkEmail" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE EMAIL = #{email}
+	</select>
+	
+	<select id="existMember" parameterType="map" 
+		resultMap="memberResultMap">
+		SELECT *
+		FROM MEMBER
+		WHERE EMAIL = #{email}
+		AND PASSWORD = #{password}
+	</select>
 
 </mapper>
 

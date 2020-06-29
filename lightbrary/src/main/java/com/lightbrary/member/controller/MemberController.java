@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lightbrary.member.model.MemberDto;
 import com.lightbrary.member.service.MemberService;
@@ -29,7 +31,7 @@ public class MemberController {
 		
 		return "member/MemberForm";
 	}
-	//파일을 사용하지 않아서 http를 뺐다
+
 	@RequestMapping(value = "/member/addCtr.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String memberAdd(MemberDto memberDto, Model model) {
 		
@@ -54,13 +56,14 @@ public class MemberController {
 		log.info("로그인 컨트롤러입니다" + "이메일:" + email + "비번" + password);
 		
 		String viewUrl = "";
-				
-		MemberDto memberDto = memberService.memberExist(email, password);		
+		
+		MemberDto memberDto = memberService.existMember(email, password);		
 		
 		if(memberDto != null) {
 			session.setAttribute("member", memberDto);
 			
-			viewUrl = "redirect:/member/list.do";
+			//list로 추후 수정하기
+			viewUrl = "redirect:/member/add.do";
 		}else {
 			viewUrl = "/auth/LoginFail";
 		}
@@ -68,4 +71,14 @@ public class MemberController {
 		return viewUrl;
 		
 	}
+	
+	@RequestMapping(value = "/member/checkEmail.do", method = RequestMethod.POST)
+	@ResponseBody
+	public int emailCheck(@RequestParam("email") String email) {
+
+		log.info("이메일 중복체크 {}", email);
+		
+		return memberService.checkEmail(email);
+	}
+
 }
