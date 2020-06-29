@@ -16,6 +16,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/bookCategorySelect.js"></script>
 
 <script type="text/javascript">
 	jQuery.browser = {};
@@ -28,11 +29,12 @@
 	    }
 	})();
 	
+	
 	$(function(){
 		$(".datePicker").datepicker({
-			yearRange: "10"
 		});
 	});
+	
 </script>
 
 </head>
@@ -52,7 +54,7 @@
 						<div class='searchInputWrap fs0'>
 							<span class='label text bold'>제목</span>
 							<div class='searchInputBox'>
-								<input type="text" id="bookName" class='searchInput'>
+								<input type="text" id="name" class='searchInput'>
 							</div>
 						</div>
 						<!-- //기본 인풋 end -->
@@ -60,7 +62,7 @@
 						<div class='searchInputWrap fs0'>
 							<span class='label text bold'>저자</span>
 							<div class='searchInputBox'>
-								<input type="text" id="bookAuthor" class='searchInput'>
+								<input type="text" id="author" class='searchInput'>
 							</div>
 						</div>
 						<!-- //기본 인풋 end -->
@@ -68,7 +70,7 @@
 						<div class='searchInputWrap fs0'>
 							<span class='label text bold'>출판사</span>
 							<div class='searchInputBox'>
-								<input type="text" id="bookPublish" class='searchInput'>
+								<input type="text" id="publish" class='searchInput'>
 							</div>
 						</div>
 						<!-- //기본 인풋 end -->
@@ -89,9 +91,6 @@
 							<span class='label text bold'>분류</span>
 							<div class='searchInputBox overH'>
 								<select id='bookCategory1' class='searchSelect fLeft dark text'>
-									<option value="">대분류</option>
-									<option value="">대분류</option>
-									<option value="">대분류</option>
 								</select>
 								<select id='bookCategory2' class='searchSelect fLeft med text'>
 									<option value="">중분류</option>
@@ -185,6 +184,7 @@
 		<!-- //컨테이너 end -->
 		
 		<jsp:include page="/WEB-INF/views/Tail.jsp" />
+		<div id="test"></div>
 	</div>
 
 </body>

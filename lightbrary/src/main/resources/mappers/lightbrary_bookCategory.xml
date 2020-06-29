@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.lightbrary.bookCategory">
+	<resultMap type="com.lightbrary.bookCategory.model.BookCategoryDto" 
+		id="BookCategoryResultMap">
+		
+		<id column="CODE" property="code"/>
+		<result column="DEPTH" property="depth"/>
+		<result column="NAME" property="name"/>
+	</resultMap>
+	
+	<select id="selectBookCategory" resultMap="BookCategoryResultMap">
+		SELECT *
+		FROM BOOK_CATEGORY
+		ORDER BY CODE
+	</select>
+	
+</mapper>
