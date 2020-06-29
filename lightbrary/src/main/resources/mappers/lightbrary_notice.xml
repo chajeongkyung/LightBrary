@@ -5,6 +5,63 @@
   
 <mapper namespace="com.lightbrary.notice">
 	
+	<resultMap type="com.lightbrary.notice.model.NoticeDto" 
+		id="noticeResultMap">
+		<id column="NO" property="no"/>
+		<!--			DB명과 똑같이 			DtO랑 똑같이  -->
+		<result column="MEMBER_NO" property="memberNo"/>
+		<result column="CATEGORY_CODE" property="categoryCode"/>
+		<result column="TITLE" property="title"/>
+		<result column="CONTENT" property="content"/>
+		
+		<result column="STARTDATE" property="startDate"
+			javaType="java.util.Date"/>
+		<result column="ENDDATE" property="endDate"
+			javaType="java.util.Date"/>
+		<result column="CREATEDDATE" property="createdDate"
+			javaType="java.util.Date"/>
+		<result column="MODIFIEDDATE" property="modifiedDate"
+			javaType="java.util.Date"/>
+	</resultMap>
+	
+	<resultMap type="com.lightbrary.notice.model.NoticeCategoryDto" 
+		id="noticeCategoryResultMap">
+		<id column="NO" property="no"/>
+		<result column="MEMBER_NO" property="memberNo"/>
+		<result column="CATEGORY_CODE" property="categoryCode"/>
+		<result column="TITLE" property="title"/>
+		<result column="CONTENT" property="content"/>
+		
+		<result column="START_DATE" property="startDate"
+			javaType="java.util.Date"/>
+		<result column="END_DATE" property="endDate"
+			javaType="java.util.Date"/>
+		<result column="CREATED_DATE" property="createdDate"
+			javaType="java.util.Date"/>
+		<result column="MODIFIED_DATE" property="modifiedDate"
+			javaType="java.util.Date"/>
+		
+		<result column="CODE"             	property="code"	/>
+		<result column="NAME"       	property="name"	/>
+		<result column="SCHEDULE_FLAG"	property="scheduleFlag"	/>
+	
+	</resultMap>
+	
+	<select id="noticeSelectList" parameterType="map"
+		resultMap="noticeCategoryResultMap">
+<!-- 		SELECT N.NO, NC.NAME, N.TITLE, N.STARTDATE -->
+<!-- FROM NOTICE N -->
+<!-- JOIN NOTICE_CATEGORY NC -->
+<!-- ON N.CATEGORY_CODE = NC.CODE -->
+
+	SELECT N.NO , NC.NAME , N.TITLE , N.START_DATE, N.END_DATE, 
+NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE 
+FROM NOTICE N
+JOIN NOTICE_CATEGORY NC
+ON N.CATEGORY_CODE = NC.CODE
+	</select>
+	
+	
 </mapper>
 
 
