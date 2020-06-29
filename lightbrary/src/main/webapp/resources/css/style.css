@@ -338,11 +338,6 @@ header {
 	font-size: 15px;
 	color: #a8a8a8;
 }
-<<<<<<< HEAD
-/* 비밀번호 */
-.infoInput.infoPwd {
-	background-image: url('../img/icon-padlock.png');
-=======
 
 .infoInput.infoName {
 	background-image: url('../img/icon-name.png')
@@ -358,7 +353,6 @@ header {
 
 .infoInput.infoPassword {
 	background-image: url('../img/icon-padlock.png')
->>>>>>> branch 'master' of https://github.com/chajeongkyung/LightBrary.git
 }
 
 .infoInput.infoLocation {

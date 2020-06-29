@@ -4,6 +4,91 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.lightbrary.rent">
+
+<!-- 	<sql id="search"> -->
+<!-- 		<choose> -->
+<!--         	검색옵션이 전체 검색일 경우  -->
+<!--         	<when test="searchOption == 'all'"> -->
+<!--         		WHERE NAME LIKE '%' || #{keyword} || '%' -->
+<!--         		OR    EMAIL LIKE '%' || #{keyword} || '%' -->
+<!--         	</when> -->
+        	
+<!--         	전체 검색이 아닐 경우 -->
+<!--         	<otherwise> -->
+<!--         		WHERE ${searchOption} LIKE '%' || #{keyword} || '%' -->
+<!--         	</otherwise> -->
+<!--         </choose> -->
+<!-- 	</sql> -->
+	
+	<resultMap type="com.lightbrary.rent.model.RentDto" 
+		id="rentResultMap">
+		
+		<id column="NO" property="no"/>
+		<result column="MEMBER_NO" property="memberNo"/>
+		<result column="BOOK_NO" property="bookNo"/>
+		<result column="RESERVE_DATE" property="reserveDate"
+			javaType="java.util.Date"/>
+		<result column="RENT_DATE" property="rentDate"
+			javaType="java.util.Date"/>
+		<result column="EXPIRE_DATE" property="expireDate"
+			javaType="java.util.Date"/>
+		<result column="RETURN_DATE" property="returnDate"
+			javaType="java.util.Date"/>
+		<result column="SEND_FLAG" property="sendFlag"/>
+		<result column="DEL_FLAG" property="delFlag"/>
+		
+		<result column="BOOK_NAME" property="bookName"/>
+		<result column="PUBLISH" property="publish"/>
+		<result column="WRITER" property="writer"/>
+		
+		<result column="M_NAME" property="mname"/>
+		<result column="M_EMAIL" property="email"/>
+
+		<result column="B_STATUS" property="bookStatus"/>
+		
+	</resultMap>
+	
+<!-- 	<resultMap type="com.lightbrary.book.model.BookDto"  -->
+<!-- 		id="BookResultMap"> -->
+		
+<!-- 		<id column="NO" property="no"/> -->
+<!-- 		<result column="STATUS_CODE" property="statusCode"/> -->
+<!-- 		<result column="BOOK_CODE" property="bookCode"/> -->
+<!-- 		<result column="CATEGORY_CODE" property="categoryCode"/> -->
+<!-- 		<result column="IMAGE_NO" property="imageNo"/> -->
+<!-- 		<result column="NAME" property="name"/> -->
+<!-- 		<result column="PUBLISH" property="publish"/> -->
+<!-- 		<result column="PUBLISH_DATE" property="publishDate"  -->
+<!-- 			javaType="java.util.Date"/> -->
+<!-- 		<result column="WRITER" property="writer"/> -->
+<!-- 		<result column="DEL_FLAG" property="delFlag"/> -->
+		
+<!-- 	</resultMap> -->
+	
+	<select id="rentSelectList" parameterType="map"
+		resultMap="rentResultMap">
+<!-- 		SELECT NO, MEMBER_NO, BOOK_NO, RESERVE_DATE, RENT_DATE,  -->
+<!-- 		EXPIRE_DATE, RETURN_DATE, SEND_FLAG, DEL_FLAG  -->
+<!-- 		FROM RENT -->
+		SELECT R.NO AS NO, B.NAME AS BOOK_NAME, B.WRITER AS WRITER, 
+		B.PUBLISH AS PUBLISH, M.NAME AS M_NAME, M.EMAIL AS M_EMAIL, 
+		    (SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS, 
+		    R.RETURN_DATE
+		FROM RENT R
+		JOIN MEMBER M
+		ON R.MEMBER_NO = M.NO
+		JOIN BOOK B
+		ON R.BOOK_NO = B.NO
+		WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='보관')
+		OR B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='대출')
+	</select>
+	
+	<select id="rentSelectTotalCount" resultType="int" 
+		parameterType="map">
+		SELECT COUNT(*)
+		FROM RENT
+<!-- 		<include refid="search"></include> -->
+	</select>
 	
 </mapper>
 
