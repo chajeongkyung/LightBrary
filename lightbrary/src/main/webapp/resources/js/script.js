@@ -53,7 +53,12 @@ $(document).ready(function() {
 		});
 	}
 	
-}); //document ready end
+	//a태그 기본값
+	$('a[href="#none"]').click(function(e) {
+		e.preventDefault();
+	});
+	
+}); 
 
 function headerScroll(){
 	$(window).scroll(function() {
