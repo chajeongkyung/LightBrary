@@ -7,7 +7,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Lightbrary : 도서대출현황</title>
+<title>Lightbrary : 도서예약현황</title>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
@@ -24,7 +24,7 @@
 	$(document).ready(function() {
 		$('#nav').addClass('active');
 		$('#depth1Ul > li:nth-child(2)').addClass('active');
-		$('.depth2Ul > li:nth-child(1)').addClass('active');
+		$('.depth2Ul > li:nth-child(2)').addClass('active');
 	});
 </script>
 
@@ -37,21 +37,58 @@
 		
 		<!-- 컨테이너 start -->
 		<div id='container'>
-			<h2 id='pageTitle'>도서대출현황</h2>
+			<h2 id='pageTitle'>도서예약현황</h2>
 			
 			<!-- 검색폼 버전2 start -->
 			<div class='searchForm type2'>
 				
 				<!-- 셀렉트 검색 start -->
-				<form action="" id='selectSearch'>
+				<form action="./list.do" id='selectSearch'>
 					<fieldset class="overH" style="height: 50px;">
-						<select class='searchSelect fLeft text'>
-							<option value="도서 제목">도서 제목</option>
-							<option value="저자">저자</option>
-							<option value="회원명">회원명</option>
-							<option value="이메일">이메일</option>
+						<select id='searchOption' name='searchOption' class='searchSelect fLeft text'>
+							<c:choose>
+								<c:when test="${searchMap.searchOption eq 'all'}">
+									<option value="all" selected="selected">전체 검색</option>
+									<option value="bookName">도서 제목</option>
+									<option value="writer">저자</option>
+									<option value="mname">회원명</option>
+									<option value="email">이메일</option>
+								</c:when>
+								
+								<c:when test="${searchMap.searchOption eq 'bookName'}">
+									<option value="all">전체 검색</option>
+									<option value="bookName" selected="selected">도서 제목</option>
+									<option value="writer">저자</option>
+									<option value="mname">회원명</option>
+									<option value="email">이메일</option>
+								</c:when>
+					
+								<c:when test="${searchMap.searchOption eq 'writer'}">
+									<option value="all">전체 검색</option>
+									<option value="bookName">도서 제목</option>
+									<option value="writer" selected="selected">저자</option>
+									<option value="mname">회원명</option>
+									<option value="email">이메일</option>
+								</c:when>
+								
+								<c:when test="${searchMap.searchOption eq 'mname'}">
+									<option value="all">전체 검색</option>
+									<option value="bookName">도서 제목</option>
+									<option value="writer">저자</option>
+									<option value="mname" selected="selected">회원명</option>
+									<option value="email">이메일</option>
+								</c:when>
+								
+								<c:when test="${searchMap.searchOption eq 'email'}">
+									<option value="all">전체 검색</option>
+									<option value="bookName">도서 제목</option>
+									<option value="writer">저자</option>
+									<option value="mname">회원명</option>
+									<option value="email" selected="selected">이메일</option>
+								</c:when>
+							</c:choose>
 						</select>
-						<input type="text" class='searchInput fLeft'>
+						<input type="text" id='keyword' class='searchInput fLeft' name="keyword" value="${searchMap.keyword}">
 						<div class='btnWrap fs0 tCenter fRight'>
 							<input type="submit" class='btn green' value="검색">
 						</div>
@@ -65,23 +102,12 @@
 			<!-- 테이블 목록 start -->
 			<div id='tableListWrap'>
 				<div class='listSettings overH'>
-					<ul class='settings fLeft fs0'>
-						<li class='active'>
-							<a href="#none" class='text'>전체 현황 보기</a>
-						</li>
-						<li>
-							<a href="#none" class='text'>대출 중</a>
-						</li>
-						<li>
-							<a href="#none" class='text'>반납완료</a>
-						</li>
-					</ul>
 					<ul class='settings fRight fs0'>
 						<li>
-							<a href="#none" class='text'>반납처리</a>
+							<a href="#none" class='text'>선택 도서 예약 취소</a>
 						</li>
 						<li>
-							<a href="#none" class='text'>반납일 안내 이메일 발송</a>
+							<a href="#none" class='text'>대출 중으로 상태 변경</a>
 						</li>
 					</ul>
 				</div>
@@ -112,13 +138,13 @@
 								<th>출판사</th>
 								<th>회원명</th>
 								<th>이메일</th>
-								<th>반납여부</th>
+								<th>예약현황</th>
 								<th>반납일</th>
 							</tr>
 						</thead>
 						<tbody>
 							<!--  -->
-							<c:forEach var="rentDto" items="${rentList}">
+							<c:forEach var="rentDto" items="${reserveList}">
 								<c:choose>
 									<c:when test="${rentDto.bookStatus eq '보관'}">
 										<tr class='returned'>
@@ -157,26 +183,16 @@
 									</td>
 									<td>
 										<span class='ellipsis'>
-											<c:choose>
-												<c:when test="${rentDto.bookStatus eq '대출'}">
-													<a href="#none">
-														<img alt="이메일" src="<%=request.getContextPath()%>/resources/img/icon-mail.png" style="width: 24px; vertical-align: middle;">
-													</a>
-												</c:when>
-												<c:otherwise>
-												 	<img alt="이메일" src="<%=request.getContextPath()%>/resources/img/icon-mail.png" style="width: 24px; vertical-align: middle;">
-												</c:otherwise>
-											</c:choose>
 											${rentDto.email}
 										</span>
 									</td>
 									<td>
 										<c:choose>
-											<c:when test="${rentDto.bookStatus eq '대출'}">
+											<c:when test="${rentDto.bookStatus eq '예약'}">
 												<span class='textGreen'>${rentDto.bookStatus}</span>
 											</c:when>
 											<c:otherwise>
-											 	<span>${rentDto.bookStatus}</span>
+											 	<span>예약 취소</span>
 											</c:otherwise>
 										</c:choose>
 									</td>

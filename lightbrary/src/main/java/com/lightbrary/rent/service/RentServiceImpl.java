@@ -19,6 +19,7 @@ public class RentServiceImpl implements RentService{
 	private static final Logger log = 
 			LoggerFactory.getLogger(RentServiceImpl.class);
 
+	// 대출
 	@Override
 	public List<RentDto> rentSelectList(String searchOption, String keyword, int start, int end) {
 		// TODO Auto-generated method stub
@@ -40,6 +41,30 @@ public class RentServiceImpl implements RentService{
 	public int rentSelectCurPage(String searchOption, String keyword, int no) {
 		// TODO Auto-generated method stub
 		return rentDao.rentSelectCurPage(searchOption, keyword, no);
+	}
+	
+	// 예약
+	@Override
+	public List<RentDto> reserveSelectList(String searchOption, String keyword, int start, int end) {
+		// TODO Auto-generated method stub
+		List<RentDto> reserveList = 
+				rentDao.reserveSelectList(searchOption, keyword
+					, start, end);
+		
+		return reserveList;
+	}
+
+	@Override
+	public int reserveSelectTotalCount(String searchOption, String keyword) {
+		// TODO Auto-generated method stub
+		return rentDao.reserveSelectTotalCount(searchOption
+				, keyword);
+	}
+
+	@Override
+	public int reserveSelectCurPage(String searchOption, String keyword, int no) {
+		// TODO Auto-generated method stub
+		return rentDao.reserveSelectCurPage(searchOption, keyword, no);
 	}
 	
 }

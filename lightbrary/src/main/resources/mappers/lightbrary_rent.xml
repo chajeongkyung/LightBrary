@@ -48,28 +48,9 @@
 		
 	</resultMap>
 	
-<!-- 	<resultMap type="com.lightbrary.book.model.BookDto"  -->
-<!-- 		id="BookResultMap"> -->
-		
-<!-- 		<id column="NO" property="no"/> -->
-<!-- 		<result column="STATUS_CODE" property="statusCode"/> -->
-<!-- 		<result column="BOOK_CODE" property="bookCode"/> -->
-<!-- 		<result column="CATEGORY_CODE" property="categoryCode"/> -->
-<!-- 		<result column="IMAGE_NO" property="imageNo"/> -->
-<!-- 		<result column="NAME" property="name"/> -->
-<!-- 		<result column="PUBLISH" property="publish"/> -->
-<!-- 		<result column="PUBLISH_DATE" property="publishDate"  -->
-<!-- 			javaType="java.util.Date"/> -->
-<!-- 		<result column="WRITER" property="writer"/> -->
-<!-- 		<result column="DEL_FLAG" property="delFlag"/> -->
-		
-<!-- 	</resultMap> -->
-	
+	<!-- 대출 목록 -->
 	<select id="rentSelectList" parameterType="map"
 		resultMap="rentResultMap">
-<!-- 		SELECT NO, MEMBER_NO, BOOK_NO, RESERVE_DATE, RENT_DATE,  -->
-<!-- 		EXPIRE_DATE, RETURN_DATE, SEND_FLAG, DEL_FLAG  -->
-<!-- 		FROM RENT -->
 		SELECT R.NO AS NO, B.NAME AS BOOK_NAME, B.WRITER AS WRITER, 
 		B.PUBLISH AS PUBLISH, M.NAME AS M_NAME, M.EMAIL AS M_EMAIL, 
 		    (SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS, 
@@ -84,6 +65,30 @@
 	</select>
 	
 	<select id="rentSelectTotalCount" resultType="int" 
+		parameterType="map">
+		SELECT COUNT(*)
+		FROM RENT
+<!-- 		<include refid="search"></include> -->
+	</select>
+	
+	<!-- 예약현황 목록 -->
+	<select id="reserveSelectList" parameterType="map"
+		resultMap="rentResultMap">
+		SELECT R.NO AS NO, B.NAME AS BOOK_NAME, B.WRITER AS WRITER, 
+		B.PUBLISH AS PUBLISH, M.NAME AS M_NAME, M.EMAIL AS M_EMAIL, 
+		    (SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS, 
+		    R.RETURN_DATE
+		FROM RENT R
+		JOIN MEMBER M
+		ON R.MEMBER_NO = M.NO
+		JOIN BOOK B
+		ON R.BOOK_NO = B.NO
+		WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='보관')
+		OR B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='예약')
+		ORDER BY B.STATUS_CODE DESC
+	</select>
+	
+	<select id="reserveSelectTotalCount" resultType="int" 
 		parameterType="map">
 		SELECT COUNT(*)
 		FROM RENT

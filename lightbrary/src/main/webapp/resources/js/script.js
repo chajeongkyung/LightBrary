@@ -38,19 +38,22 @@ $(document).ready(function() {
 	});
 	
 	//네비 서브네비 마우스오버
-	$('.depthNav').mouseover(function() {
-		var depth2 = $(this).find('ul');
-		
-		depth2.show();
-		$('#nav').addClass('active');
-	});
-	$('.depthNav').mouseout(function() {
-		var depth2 = $(this).find('ul');
-		
-		depth2.hide();
-		$('#nav').removeClass('active');
-	});
-})
+	if(($('#nav').hasClass('active'))){
+		$('.depthNav').mouseover(function() {
+			var depth2 = $(this).find('ul');
+			
+			depth2.show();
+			$('#nav').addClass('active');
+		});
+		$('.depthNav').mouseout(function() {
+			var depth2 = $(this).find('ul');
+			
+			depth2.hide();
+			$('#nav').removeClass('active');
+		});
+	}
+	
+}); //document ready end
 
 function headerScroll(){
 	$(window).scroll(function() {
