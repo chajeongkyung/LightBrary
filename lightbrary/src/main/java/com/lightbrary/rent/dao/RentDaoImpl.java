@@ -60,9 +60,14 @@ public class RentDaoImpl implements RentDao{
 		return sqlSession.selectOne(namespace + "rentSelectCurPage", paramMap);
 	}
 	
-	// 예약 목록
+	
+	/********************
+			예약
+	********************/
+	
+	// 예약 목록 출력
 	@Override
-	public List<RentDto> reserveSelectList(String searchOption, String keyword, int start, int end) {
+	public List<RentDto> selectReserve(String searchOption, String keyword, int start, int end) {
 		// TODO Auto-generated method stub
 
 		Map<String, Object> map = new HashMap<>();
@@ -78,8 +83,9 @@ public class RentDaoImpl implements RentDao{
 		return reserveList;
 	}
 
+	// 예약 목록 총 갯수
 	@Override
-	public int reserveSelectTotalCount(String searchOption, String keyword) {
+	public int totalCountReserve(String searchOption, String keyword) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> paramMap = new HashMap<String, Object>();
 		
@@ -90,6 +96,7 @@ public class RentDaoImpl implements RentDao{
 				, paramMap);
 	}
 
+	// 예약 목록 현재 페이지
 	@Override
 	public int reserveSelectCurPage(String searchOption, String keyword, int no) {
 		// TODO Auto-generated method stub
@@ -100,6 +107,14 @@ public class RentDaoImpl implements RentDao{
 		paramMap.put("no", no);
 		
 		return sqlSession.selectOne(namespace + "reserveSelectCurPage", paramMap);
+	}
+
+	// 예약 상세
+	@Override
+	public RentDto selectOneReserve(int no) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + "selectOneReserve"
+				, no);
 	}
 	
 }

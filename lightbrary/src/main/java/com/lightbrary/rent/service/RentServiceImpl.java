@@ -1,6 +1,8 @@
 package com.lightbrary.rent.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,28 +45,42 @@ public class RentServiceImpl implements RentService{
 		return rentDao.rentSelectCurPage(searchOption, keyword, no);
 	}
 	
-	// 예약
+	// 예약 목록 출력
 	@Override
-	public List<RentDto> reserveSelectList(String searchOption, String keyword, int start, int end) {
+	public List<RentDto> selectReserve(String searchOption, String keyword, int start, int end) {
 		// TODO Auto-generated method stub
 		List<RentDto> reserveList = 
-				rentDao.reserveSelectList(searchOption, keyword
+				rentDao.selectReserve(searchOption, keyword
 					, start, end);
 		
 		return reserveList;
 	}
 
+	// 예약 목록 총 갯수
 	@Override
-	public int reserveSelectTotalCount(String searchOption, String keyword) {
+	public int totalCountReserve(String searchOption, String keyword) {
 		// TODO Auto-generated method stub
-		return rentDao.reserveSelectTotalCount(searchOption
+		return rentDao.totalCountReserve(searchOption
 				, keyword);
 	}
 
+	// 예약 목록 현재 페이지
 	@Override
 	public int reserveSelectCurPage(String searchOption, String keyword, int no) {
 		// TODO Auto-generated method stub
 		return rentDao.reserveSelectCurPage(searchOption, keyword, no);
+	}
+
+	@Override
+	public Map<String, Object> selectOneReserve(int no) {
+		// TODO Auto-generated method stub
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		RentDto rentDto = rentDao.selectOneReserve(no);
+		
+		resultMap.put("rentDto", rentDto);
+		
+		return resultMap;
 	}
 	
 }

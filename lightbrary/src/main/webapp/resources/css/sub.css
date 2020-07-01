@@ -78,6 +78,7 @@
 .searchSelect.light {
 	background-color: rgba(238, 238, 238, 0.45);
 }
+
 /* 셀렉트 검색 폼 */
 .searchForm.type2 {
 	width: 700px;
@@ -305,51 +306,50 @@ a.btn {
 #pagingWrap {
 	position: relative;
 	margin-top: 45px;
+	text-align: center;
+}
+
+#pagingWrap>a, #paging {
+	display: inline-block;
+	vertical-align: middle;
 }
 
 #pagingWrap>a {
-	position: absolute;
-	top: 50%;
-	margin-top: -8px;
-}
-
-#pagingWrap>a.pagingStart {
-	right: 50%;
-	margin-right: 120px;
-}
-
-#pagingWrap>a.pagingPrev {
-	right: 50%;
-	margin-right: 106px;
-}
-
-#pagingWrap>a.pagingNext {
-	left: 50%;
-	margin-left: 106px;
-}
-
-#pagingWrap>a.pagingEnd {
-	left: 50%;
-	margin-left: 120px;
-}
-
-#paging li {
 	margin: 0px 3px;
+}
+
+#paging {
+	margin: 0px 15px;
 }
 
 #paging a {
 	display: block;
-	width: 30px;
+	position: relative;
+	margin: 0px 10px;
 	line-height: 28px;
-	border: 1px solid #707070;
 	box-sizing: border-box;
 	font-size: 15px;
-	color: #636363;
+	color: #a8a8a8;
+	transition: all .2s;
+}
+
+#paging a:after {
+	content: '';
+	display: block;
+	position: absolute;
+	left: 0px;
+	bottom: -1px;
+	width: 100%;
+	height: 1px;
+	background: #1C6931;
+	opacity: 0;
 	transition: all .2s;
 }
 
 #paging .active a, #paging a:hover {
-	background: #1C6931;
-	border-color: #1C6931;
-	color: #fff;
+	color: #1C6931;
+}
+
+#paging .active a:after, #paging a:hover:after {
+	opacity: 1;
 }

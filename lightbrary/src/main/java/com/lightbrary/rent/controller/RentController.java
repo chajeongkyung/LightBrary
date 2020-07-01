@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.lightbrary.rent.model.RentDto;
 import com.lightbrary.rent.service.RentService;
@@ -108,20 +105,16 @@ public class RentController {
 		
 		log.info("예약현황목록 : 현재페이지 : " + curPage + " : " 
 			+ searchOption + " : " + keyword);
-		// 화면의 form의 이름을 마바티스에 편하게 맞추기 위한 로직
-		if("name".equals(searchOption)) {
-			searchOption = "mname";
-		}
 	
 		System.out.println();
-		// 페이징을 위한 전체 회원목록 갯수
+		// 전체 예약 도서 갯수
 		int totalCount = 
-			rentService.reserveSelectTotalCount(
+			rentService.totalCountReserve(
 				searchOption, keyword
 			);
 		
 		
-//			이전 체이지로 회원으이 번호가 명확하게 나온경우
+//			이전 페이지로 회원으이 번호가 명확하게 나온경우
 //			자신의 curPage 찾는 로직
 		if(no != 0) {
 			curPage
@@ -129,33 +122,47 @@ public class RentController {
 		}
 		
 		
-		Paging reservePaging = new Paging(totalCount, curPage);
-		int start = reservePaging.getPageBegin();
-		int end = reservePaging.getPageEnd();
+		Paging pagingInfo = new Paging(totalCount, curPage);
+		int start = pagingInfo.getPageBegin();
+		int end = pagingInfo.getPageEnd();
 		
 		List<RentDto> reserveList = 
-			rentService.reserveSelectList(searchOption, keyword
+			rentService.selectReserve(searchOption, keyword
 				, start, end);
 		
 		// 검색
-		HashMap<String, Object> searchMap 
-			= new HashMap<String, Object>();
+		HashMap<String, Object> searchMap = new HashMap<String, Object>();
 		searchMap.put("searchOption", searchOption);
 		searchMap.put("keyword", keyword);
 		
 		// 페이징
 		Map<String, Object> pagingMap = new HashMap<>();
 		pagingMap.put("totalCount", totalCount);
-		pagingMap.put("reservePaging", reservePaging);
+		pagingMap.put("pagingInfo", pagingInfo);
 
 		model.addAttribute("reserveList", reserveList);
 		model.addAttribute("pagingMap", pagingMap);
+		model.addAttribute("pagingInfo", pagingInfo);
 		model.addAttribute("searchMap", searchMap);
 		
 		System.out.println("검색 문자 : " + keyword);
 		System.out.println("검색 옵션 : " + searchOption);
 		
 		return "rent/reserve/ReserveListView";
+	}
+	
+	// 예약 상세
+	@RequestMapping(value = "/rent/reserve/view.do", method = RequestMethod.GET)
+	public String memberUpdate(int no, Model model) {
+		log.info("call memberUpdate! {}", no);
+		
+		Map<String, Object> map = rentService.selectOneReserve(no);
+		
+		RentDto rentDto = (RentDto)map.get("rentDto");
+		
+		model.addAttribute("rentDto", rentDto);
+		
+		return "rent/reserve/ReserveView";
 	}
 	
 }

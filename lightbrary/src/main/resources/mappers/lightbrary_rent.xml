@@ -8,26 +8,26 @@
 	<sql id="search">
 		<choose>
         	<when test="searchOption == 'all'">
-        		WHERE RENT_ALL.NAME LIKE '%' || #{keyword} || '%'
-        		OR RENT_ALL.WRITER LIKE '%' || #{keyword} || '%'
-        		OR RENT_ALL.PUBLISH LIKE '%' || #{keyword} || '%'
-        		OR RENT_ALL.M_NAME LIKE '%' || #{keyword} || '%'
-        		OR RENT_ALL.EMAIL LIKE '%' || #{keyword} || '%'
+        		WHERE RENT_ROW.NAME LIKE '%' || #{keyword} || '%'
+        		OR RENT_ROW.WRITER LIKE '%' || #{keyword} || '%'
+        		OR RENT_ROW.PUBLISH LIKE '%' || #{keyword} || '%'
+        		OR RENT_ROW.M_NAME LIKE '%' || #{keyword} || '%'
+        		OR RENT_ROW.EMAIL LIKE '%' || #{keyword} || '%'
         	</when>
         	<when test="searchOption == 'bookName'">
-        		WHERE RENT_ALL.NAME LIKE '%' || #{keyword} || '%'
+        		WHERE RENT_ROW.NAME LIKE '%' || #{keyword} || '%'
         	</when>
         	<when test="searchOption == 'writer'">
-        		WHERE RENT_ALL.WRITER LIKE '%' || #{keyword} || '%'
+        		WHERE RENT_ROW.WRITER LIKE '%' || #{keyword} || '%'
         	</when>
         	<when test="searchOption == 'publish'">
-        		WHERE RENT_ALL.PUBLISH LIKE '%' || #{keyword} || '%'
+        		WHERE RENT_ROW.PUBLISH LIKE '%' || #{keyword} || '%'
         	</when>
         	<when test="searchOption == 'mname'">
-        		WHERE RENT_ALL.M_NAME LIKE '%' || #{keyword} || '%'
+        		WHERE RENT_ROW.M_NAME LIKE '%' || #{keyword} || '%'
         	</when>
         	<when test="searchOption == 'email'">
-        		WHERE RENT_ALL.EMAIL LIKE '%' || #{keyword} || '%'
+        		WHERE RENT_ROW.EMAIL LIKE '%' || #{keyword} || '%'
         	</when>
         </choose>
 	</sql>
@@ -55,26 +55,28 @@
 		
 		<result column="M_NAME" property="mname"/>
 		<result column="EMAIL" property="email"/>
+		<result column="PHONE" property="phone"/>
+		<result column="ADDRESS" property="address"/>
 
 		<result column="B_STATUS" property="bookStatus"/>
 		
 	</resultMap>
 	
 	<!-- 대출 목록 -->
-	<select id="rentSelectList" parameterType="map"
-		resultMap="rentResultMap">
-		SELECT R.NO AS NO, B.NAME AS BOOK_NAME, B.WRITER AS WRITER, 
-		B.PUBLISH AS PUBLISH, M.NAME AS M_NAME, M.EMAIL AS M_EMAIL, 
-		    (SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS, 
-		    R.RETURN_DATE
-		FROM RENT R
-		JOIN MEMBER M
-		ON R.MEMBER_NO = M.NO
-		JOIN BOOK B
-		ON R.BOOK_NO = B.NO
-		WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='보관')
-		OR B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='대출')
-	</select>
+<!-- 	<select id="rentSelectList" parameterType="map" -->
+<!-- 		resultMap="rentResultMap"> -->
+<!-- 		SELECT R.NO AS NO, B.NAME AS BOOK_NAME, B.WRITER AS WRITER,  -->
+<!-- 		B.PUBLISH AS PUBLISH, M.NAME AS M_NAME, M.EMAIL AS EMAIL,  -->
+<!-- 		    (SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS,  -->
+<!-- 		    R.RETURN_DATE -->
+<!-- 		FROM RENT R -->
+<!-- 		JOIN MEMBER M -->
+<!-- 		ON R.MEMBER_NO = M.NO -->
+<!-- 		JOIN BOOK B -->
+<!-- 		ON R.BOOK_NO = B.NO -->
+<!-- 		WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='보관') -->
+<!-- 		OR B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='대출') -->
+<!-- 	</select> -->
 	
 	<select id="rentSelectTotalCount" resultType="int" 
 		parameterType="map">
@@ -83,33 +85,38 @@
 <!-- 		<include refid="search"></include> -->
 	</select>
 	
-	<!-- 예약현황 목록 -->
+	<!-- 예약 목록 -->
 	<select id="reserveSelectList" parameterType="map"
 		resultMap="rentResultMap">
-		SELECT RENT_ALL.NO AS NO, RENT_ALL.NAME AS BOOK_NAME, RENT_ALL.WRITER AS WRITER, 
-			RENT_ALL.PUBLISH AS PUBLISH, RENT_ALL.M_NAME AS M_NAME, RENT_ALL.EMAIL AS EMAIL, 
-				RENT_ALL.B_STATUS AS B_STATUS, RENT_ALL.RETURN_DATE AS RETURN_DATE
+		SELECT RESERVE.RNUM AS RNUM
+		, RESERVE.NO AS NO, RESERVE.NAME AS BOOK_NAME, RESERVE.WRITER AS WRITER, RESERVE.PUBLISH AS PUBLISH
+		, RESERVE.M_NAME AS M_NAME, RESERVE.EMAIL AS EMAIL, RESERVE.PHONE AS PHONE, RESERVE.ADDRESS AS ADDRESS
+		, RESERVE.B_STATUS AS B_STATUS, RESERVE.RESERVE_DATE, RESERVE.RETURN_DATE AS RETURN_DATE
 		FROM (
-		    SELECT ROWNUM AS RNUM, RENT_ROW.NO AS NO, RENT_ROW.NAME AS NAME, RENT_ROW.WRITER AS WRITER, 
-				RENT_ROW.PUBLISH AS PUBLISH, RENT_ROW.M_NAME AS M_NAME, RENT_ROW.EMAIL AS EMAIL, 
-				    RENT_ROW.B_STATUS AS B_STATUS, RENT_ROW.RETURN_DATE AS RETURN_DATE
+		    SELECT ROWNUM AS RNUM
+		    , RENT_ALL.NO AS NO, RENT_ALL.NAME AS NAME, RENT_ALL.WRITER AS WRITER, RENT_ALL.PUBLISH AS PUBLISH
+		    , RENT_ALL.M_NAME AS M_NAME, RENT_ALL.EMAIL AS EMAIL, RENT_ALL.PHONE AS PHONE, RENT_ALL.ADDRESS AS ADDRESS
+		    , RENT_ALL.B_STATUS AS B_STATUS, RENT_ALL.RESERVE_DATE, RENT_ALL.RETURN_DATE AS RETURN_DATE
 		    FROM (
-		        SELECT R.NO AS NO, B.NAME AS NAME, B.WRITER AS WRITER, 
-		        B.PUBLISH AS PUBLISH, M.NAME AS M_NAME, M.EMAIL AS EMAIL, 
-		        (SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS, 
-		        R.RETURN_DATE
-		        FROM RENT R
-		        JOIN MEMBER M
-		        ON R.MEMBER_NO = M.NO
-		        JOIN BOOK B
-		        ON R.BOOK_NO = B.NO
-		        WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='보관')
-		        OR B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='예약')
-		        ORDER BY B.STATUS_CODE DESC
-		     ) RENT_ROW
-		     ORDER BY RNUM ASC
-		) RENT_ALL
-		<include refid="search"></include>
+		        SELECT RENT_ROW.NO AS NO, RENT_ROW.NAME AS NAME, RENT_ROW.WRITER AS WRITER, RENT_ROW.PUBLISH AS PUBLISH
+		        , RENT_ROW.M_NAME AS M_NAME, RENT_ROW.EMAIL AS EMAIL, RENT_ROW.PHONE AS PHONE, RENT_ROW.ADDRESS AS ADDRESS
+		        , RENT_ROW.B_STATUS AS B_STATUS, RENT_ROW.RESERVE_DATE AS RESERVE_DATE, RENT_ROW.RETURN_DATE AS RETURN_DATE
+		        FROM (
+		            SELECT R.NO AS NO, B.NAME AS NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH
+		            , M.NAME AS M_NAME, M.EMAIL AS EMAIL, M.PHONE AS PHONE, M.ADDRESS AS ADDRESS,
+		            (SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS, R.RESERVE_DATE, R.RETURN_DATE
+		            FROM RENT R
+		            JOIN MEMBER M
+		            ON R.MEMBER_NO = M.NO
+		            JOIN BOOK B
+		            ON R.BOOK_NO = B.NO
+		            WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='예약')
+		         ) RENT_ROW
+		         <include refid="search"></include>
+		         ORDER BY RENT_ROW.RESERVE_DATE DESC
+		    ) RENT_ALL
+		) RESERVE
+		WHERE RESERVE.RNUM BETWEEN #{start} AND #{end}
 	</select>
 	
 	<select id="reserveSelectTotalCount" resultType="int" 
@@ -118,5 +125,13 @@
 		FROM RENT
 <!-- 		<include refid="search"></include> -->
 	</select>
+	
+	<!-- 예약 상세 -->
+<!-- 	<select id="memberSelectOne" parameterType="int" -->
+<!-- 		resultMap="memberResultMap"> -->
+<!-- 		SELECT MNO, MNAME, EMAIL, PWD, CRE_DATE -->
+<!-- 		FROM MEMBER -->
+<!-- 		WHERE MNO = #{no}	 -->
+<!-- 	</select> -->
 	
 </mapper>

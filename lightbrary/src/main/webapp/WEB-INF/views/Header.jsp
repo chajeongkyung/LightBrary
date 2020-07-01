@@ -1,6 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<!-- 기본 헤더 start -->
+<!-- <header> -->
+<!-- 	<div id='headerTop'> -->
+<!-- 		<h1 id='logo'> -->
+<!-- 			<a href="#none"></a> -->
+<!-- 		</h1> -->
+<!-- 	</div> -->
+<!-- </header> -->
+<!-- //기본 헤더 end -->
+
 <!-- 관리자 헤더 start -->
 <header>
 	<div  id='headerSearch'>

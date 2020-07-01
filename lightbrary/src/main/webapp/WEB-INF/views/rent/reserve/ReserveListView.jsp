@@ -96,8 +96,8 @@
 									<option value="bookName">도서 제목</option>
 									<option value="writer">저자</option>
 									<option value="publish">출판사</option>
-									<option value="mname" selected="selected">회원명</option>
-									<option value="email">이메일</option>
+									<option value="mname">회원명</option>
+									<option value="email" selected="selected">이메일</option>
 								</c:when>
 							</c:choose>
 						</select>
@@ -116,9 +116,6 @@
 			<div id='tableListWrap'>
 				<div class='listSettings overH'>
 					<ul class='settings fRight fs0'>
-						<li>
-							<a href="#none" class='text'>선택 도서 예약 취소</a>
-						</li>
 						<li>
 							<a href="#none" class='text'>대출 중으로 상태 변경</a>
 						</li>
@@ -234,7 +231,14 @@
 			</div>
 			<!-- //테이블 목록 end -->
 			
-			<jsp:include page="/WEB-INF/views/common/paging.jsp" />
+			<jsp:include page="/WEB-INF/views/common/paging.jsp">
+				<jsp:param value="${pagingInfo}" name="pagingMap"/>
+			</jsp:include>
+			
+			<form action="./list.do" id='pagingForm' method="get">
+				<input type="hidden" id='curPage' name='curPage' 
+					value="${pagingInfo.curPage}">
+			</form>
 			
 		</div>
 		<!-- //컨테이너 end -->

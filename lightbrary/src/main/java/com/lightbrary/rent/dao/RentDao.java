@@ -12,9 +12,10 @@ public interface RentDao {
 	int rentSelectCurPage(String searchOption, String keyword, int no);
 	
 	// 예약 목록
-	List<RentDto> reserveSelectList(String searchOption, String keyword, int start, int end);
-	int reserveSelectTotalCount(String searchOption, String keyword);
+	List<RentDto> selectReserve(String searchOption, String keyword, int start, int end);
+	int totalCountReserve(String searchOption, String keyword);
 	int reserveSelectCurPage(String searchOption, String keyword, int no);
+	RentDto selectOneReserve(int no);
 
 }
 

@@ -19,6 +19,8 @@ public class RentDto {
 	
 	private String mname;
 	private String email;
+	private String phone;
+	private String address;
 	
 	private String bookStatus;	
 	
@@ -29,7 +31,7 @@ public class RentDto {
 
 	public RentDto(int no, int memberNo, int bookNo, Date reserveDate, Date rentDate, Date expireDate, Date returnDate,
 			String sendFlag, String delFlag, String bookName, String publish, String writer, String mname, String email,
-			String bookStatus) {
+			String phone, String address, String bookStatus) {
 		super();
 		this.no = no;
 		this.memberNo = memberNo;
@@ -45,10 +47,10 @@ public class RentDto {
 		this.writer = writer;
 		this.mname = mname;
 		this.email = email;
+		this.phone = phone;
+		this.address = address;
 		this.bookStatus = bookStatus;
 	}
-
-
 
 	public int getNo() {
 		return no;
@@ -162,6 +164,22 @@ public class RentDto {
 		this.email = email;
 	}
 	
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	public String getBookStatus() {
 		return bookStatus;
 	}
