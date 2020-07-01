@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.lightbrary.book.dao.BookDao;
 import com.lightbrary.book.model.BookDto;
+import com.lightbrary.book.model.BookImageDto;
+import com.lightbrary.book.model.BookListParamDto;
 
 @Service
 public class BookServiceImpl implements BookService{
@@ -21,15 +23,27 @@ public class BookServiceImpl implements BookService{
 	public BookDao bookDao;
 	
 	@Override
-	public List<BookDto> selectBook(Map<String, Integer> paramMap) {
+	public List<BookDto> selectBook(BookListParamDto bookListParamDto) {
 		// TODO Auto-generated method stub
-		return bookDao.selectBook(paramMap);
+		return bookDao.selectBook(bookListParamDto);
 	}
 
 	@Override
-	public int totalCountBook() {
+	public int totalCountBook(BookListParamDto bookListParamDto) {
 		// TODO Auto-generated method stub
-		return bookDao.totalCountBook();
+		return bookDao.totalCountBook(bookListParamDto);
+	}
+
+	@Override
+	public BookDto selectOneBook(int no) {
+		// TODO Auto-generated method stub
+		return bookDao.selectOneBook(no);
+	}
+
+	@Override
+	public BookImageDto selectOneImage(int no) {
+		// TODO Auto-generated method stub
+		return bookDao.selectOneImage(no);
 	}
 	
 

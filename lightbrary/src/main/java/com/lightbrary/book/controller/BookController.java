@@ -9,11 +9,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lightbrary.book.model.BookDto;
+import com.lightbrary.book.model.BookListParamDto;
 import com.lightbrary.book.service.BookService;
 import com.lightbrary.util.Paging;
 
@@ -28,27 +30,45 @@ public class BookController {
 	
 	@RequestMapping(value = "/book/list.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String BookList(@RequestParam(defaultValue = "1") int curPage
-			, @RequestParam(defaultValue = "all") String searchOption
-			, @RequestParam(defaultValue = "") String keyword
+			, BookListParamDto bookListParamDto
 			, Model model) {
 		
-		log.info("Called BookList [" + curPage + " : " 
-				+ searchOption + " : " + keyword + "]");
+		log.info(bookListParamDto.getName() + "-------------------------------------");
 		
-		int totalCount = bookService.totalCountBook();
+		log.info("Called BookList [curPage: " + curPage
+//				+ ", name: " + name
+				+ "]");
+		
+		bookListParamDto.initBookListParamDto();
+		
+		int totalCount = bookService.totalCountBook(bookListParamDto);
 		Paging pagingInfo = new Paging(totalCount, curPage);
-		int start = pagingInfo.getPageBegin();
-		int end = pagingInfo.getPageEnd();
 		
-		Map<String, Integer> paramMap = new HashMap<String, Integer>();
-		paramMap.put("start", start);
-		paramMap.put("end", end);
+		bookListParamDto.setCurPage(curPage);
+		bookListParamDto.setStartPage(pagingInfo.getPageBegin());
+		bookListParamDto.setEndPage(pagingInfo.getPageEnd());
 		
-		List<BookDto> bookDtoList = bookService.selectBook(paramMap);
+//		Map<String, Integer> pagingParamMap = new HashMap<String, Integer>();
+//		pagingParamMap.put("start", start);
+//		pagingParamMap.put("end", end);
+		
+		List<BookDto> bookDtoList = bookService.selectBook(bookListParamDto);
 		
 		model.addAttribute("bookDtoList", bookDtoList);
+		model.addAttribute("bookListParamDto", bookListParamDto);
 		model.addAttribute("pagingInfo", pagingInfo);
-		
 		return "book/BookListView";
+	}
+	
+	@RequestMapping(value = "/book/detail.do", method = {RequestMethod.GET, RequestMethod.POST})
+	public String BookDetail(int no, BookListParamDto bookListParamDto
+			, Model model) {
+		
+		BookDto bookDto = bookService.selectOneBook(no);
+		
+		model.addAttribute("bookDto", bookDto);
+		model.addAttribute("bookListParamDto", bookListParamDto);
+		
+		return "book/BookDetailView";
 	}
 }

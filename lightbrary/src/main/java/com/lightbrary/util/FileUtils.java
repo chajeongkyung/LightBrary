@@ -3,6 +3,7 @@ package com.lightbrary.util;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -56,10 +57,10 @@ public class FileUtils {
 				multipartFile.transferTo(file);
 				
 				fileInfoMap = new HashMap<String, Object>();
-				fileInfoMap.put("parent_seq", parentSeq);
-				fileInfoMap.put("original_file_name", originalFileName);
-				fileInfoMap.put("stored_file_name", storedFileName);
-				fileInfoMap.put("file_size", multipartFile.getSize());
+				fileInfoMap.put("ORIGINAL_FILE_NAME", originalFileName);
+				fileInfoMap.put("STORED_FILE_NAME", storedFileName);
+				fileInfoMap.put("FILE_SIZE", multipartFile.getSize());
+				fileInfoMap.put("CREATED_DATE", new Date());
 				
 				fileList.add(fileInfoMap);
 			}

@@ -5,20 +5,32 @@
   
 <mapper namespace="com.lightbrary.rent">
 
-<!-- 	<sql id="search"> -->
-<!-- 		<choose> -->
-<!--         	검색옵션이 전체 검색일 경우  -->
-<!--         	<when test="searchOption == 'all'"> -->
-<!--         		WHERE NAME LIKE '%' || #{keyword} || '%' -->
-<!--         		OR    EMAIL LIKE '%' || #{keyword} || '%' -->
-<!--         	</when> -->
-        	
-<!--         	전체 검색이 아닐 경우 -->
-<!--         	<otherwise> -->
-<!--         		WHERE ${searchOption} LIKE '%' || #{keyword} || '%' -->
-<!--         	</otherwise> -->
-<!--         </choose> -->
-<!-- 	</sql> -->
+	<sql id="search">
+		<choose>
+        	<when test="searchOption == 'all'">
+        		WHERE RENT_ALL.NAME LIKE '%' || #{keyword} || '%'
+        		OR RENT_ALL.WRITER LIKE '%' || #{keyword} || '%'
+        		OR RENT_ALL.PUBLISH LIKE '%' || #{keyword} || '%'
+        		OR RENT_ALL.M_NAME LIKE '%' || #{keyword} || '%'
+        		OR RENT_ALL.EMAIL LIKE '%' || #{keyword} || '%'
+        	</when>
+        	<when test="searchOption == 'bookName'">
+        		WHERE RENT_ALL.NAME LIKE '%' || #{keyword} || '%'
+        	</when>
+        	<when test="searchOption == 'writer'">
+        		WHERE RENT_ALL.WRITER LIKE '%' || #{keyword} || '%'
+        	</when>
+        	<when test="searchOption == 'publish'">
+        		WHERE RENT_ALL.PUBLISH LIKE '%' || #{keyword} || '%'
+        	</when>
+        	<when test="searchOption == 'mname'">
+        		WHERE RENT_ALL.M_NAME LIKE '%' || #{keyword} || '%'
+        	</when>
+        	<when test="searchOption == 'email'">
+        		WHERE RENT_ALL.EMAIL LIKE '%' || #{keyword} || '%'
+        	</when>
+        </choose>
+	</sql>
 	
 	<resultMap type="com.lightbrary.rent.model.RentDto" 
 		id="rentResultMap">
@@ -42,7 +54,7 @@
 		<result column="WRITER" property="writer"/>
 		
 		<result column="M_NAME" property="mname"/>
-		<result column="M_EMAIL" property="email"/>
+		<result column="EMAIL" property="email"/>
 
 		<result column="B_STATUS" property="bookStatus"/>
 		
@@ -74,18 +86,30 @@
 	<!-- 예약현황 목록 -->
 	<select id="reserveSelectList" parameterType="map"
 		resultMap="rentResultMap">
-		SELECT R.NO AS NO, B.NAME AS BOOK_NAME, B.WRITER AS WRITER, 
-		B.PUBLISH AS PUBLISH, M.NAME AS M_NAME, M.EMAIL AS M_EMAIL, 
-		    (SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS, 
-		    R.RETURN_DATE
-		FROM RENT R
-		JOIN MEMBER M
-		ON R.MEMBER_NO = M.NO
-		JOIN BOOK B
-		ON R.BOOK_NO = B.NO
-		WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='보관')
-		OR B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='예약')
-		ORDER BY B.STATUS_CODE DESC
+		SELECT RENT_ALL.NO AS NO, RENT_ALL.NAME AS BOOK_NAME, RENT_ALL.WRITER AS WRITER, 
+			RENT_ALL.PUBLISH AS PUBLISH, RENT_ALL.M_NAME AS M_NAME, RENT_ALL.EMAIL AS EMAIL, 
+				RENT_ALL.B_STATUS AS B_STATUS, RENT_ALL.RETURN_DATE AS RETURN_DATE
+		FROM (
+		    SELECT ROWNUM AS RNUM, RENT_ROW.NO AS NO, RENT_ROW.NAME AS NAME, RENT_ROW.WRITER AS WRITER, 
+				RENT_ROW.PUBLISH AS PUBLISH, RENT_ROW.M_NAME AS M_NAME, RENT_ROW.EMAIL AS EMAIL, 
+				    RENT_ROW.B_STATUS AS B_STATUS, RENT_ROW.RETURN_DATE AS RETURN_DATE
+		    FROM (
+		        SELECT R.NO AS NO, B.NAME AS NAME, B.WRITER AS WRITER, 
+		        B.PUBLISH AS PUBLISH, M.NAME AS M_NAME, M.EMAIL AS EMAIL, 
+		        (SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS, 
+		        R.RETURN_DATE
+		        FROM RENT R
+		        JOIN MEMBER M
+		        ON R.MEMBER_NO = M.NO
+		        JOIN BOOK B
+		        ON R.BOOK_NO = B.NO
+		        WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='보관')
+		        OR B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='예약')
+		        ORDER BY B.STATUS_CODE DESC
+		     ) RENT_ROW
+		     ORDER BY RNUM ASC
+		) RENT_ALL
+		<include refid="search"></include>
 	</select>
 	
 	<select id="reserveSelectTotalCount" resultType="int" 
@@ -96,7 +120,3 @@
 	</select>
 	
 </mapper>
-
-
-
-

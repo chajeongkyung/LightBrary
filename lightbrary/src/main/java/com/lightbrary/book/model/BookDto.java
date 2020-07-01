@@ -8,20 +8,21 @@ public class BookDto {
 	private int statusCode;
 	private String bookCode;
 	private String categoryCode;
-	private String imageNo;
+	private int imageNo;
 	private String name;
 	private String publish;
 	private Date publishDate;
 	private String writer;
 	private String delFlag;
+	private String imageName;
 	
 	public BookDto() {
 		super();
 	}
 
 	public BookDto(int no, int statusCode, String bookCode,
-			String categoryCode, String imageNo, String name, String publish,
-			Date publishDate, String writer, String delFlag) {
+			String categoryCode, int imageNo, String name, String publish,
+			Date publishDate, String writer, String delFlag, String imageName) {
 		super();
 		this.no = no;
 		this.statusCode = statusCode;
@@ -33,6 +34,7 @@ public class BookDto {
 		this.publishDate = publishDate;
 		this.writer = writer;
 		this.delFlag = delFlag;
+		this.imageName = imageName;
 	}
 
 	public int getNo() {
@@ -67,11 +69,11 @@ public class BookDto {
 		this.categoryCode = categoryCode;
 	}
 
-	public String getImageNo() {
+	public int getImageNo() {
 		return imageNo;
 	}
 
-	public void setImageNo(String imageNo) {
+	public void setImageNo(int imageNo) {
 		this.imageNo = imageNo;
 	}
 
@@ -113,6 +115,14 @@ public class BookDto {
 
 	public void setDelFlag(String delFlag) {
 		this.delFlag = delFlag;
+	}
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
 	}
 
 	@Override

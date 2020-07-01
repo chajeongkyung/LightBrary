@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.lightbrary.bookStatus">
+	<resultMap type="com.lightbrary.bookStatus.model.BookStatusDto" 
+		id="BookStatusResultMap">
+		
+		<id column="CODE" property="code"/>
+		<result column="NAME" property="name"/>
+	</resultMap>
+	
+	<select id="selectBookStatus" resultMap="BookStatusResultMap">
+		SELECT *
+		FROM BOOK_STATUS
+		ORDER BY CODE
+	</select>
+	
+</mapper>

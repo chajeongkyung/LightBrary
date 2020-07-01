@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,30 +13,57 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/sub.css">
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/jquery-ui.css">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
 
-<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-3.5.1.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-ui.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
+<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/bookCategorySelect.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/bookStatusSelect.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/bookImageSelect.js"></script>
 
 <script type="text/javascript">
-	jQuery.browser = {};
-	(function () {
-	    jQuery.browser.msie = false;
-	    jQuery.browser.version = 0;
-	    if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
-	        jQuery.browser.msie = true;
-	        jQuery.browser.version = RegExp.$1;
-	    }
-	})();
-	
 	
 	$(function(){
+		bookCategorySelect();
+		bookStatusSelect();
+		
 		$(".datePicker").datepicker({
+			dateFormat: "yy/mm/dd",
+			changeYear: true,
+			showButtonPanel: true
 		});
 	});
 	
+	function bookStatusOnload(){
+		$.each($('span[id^=bookStatus]'), function(idx, item){
+			item.innerHTML = bookStatusObj[parseInt(item.innerHTML)].name;
+		});
+	}
+	
+	function selectCategorybySearchParam(){
+		var category1 = $('#hiddenBookCategory1').val();
+		var category2 = $('#hiddenBookCategory2').val();
+		var category3 = $('#hiddenBookCategory3').val();
+		
+		$('#bookCategory1').val(category1);
+		$('#bookCategory1').trigger("change");
+		$('#bookCategory2').val(category2);
+		$('#bookCategory2').trigger("change");
+		$('#bookCategory3').val(category3);
+		
+	}
+	
+	function bookCategoryOnload(){
+		initBookCategory();
+		selectCategorybySearchParam();
+	}
+	
+	function bookDetailMove(obj){
+		$('#no').val(obj);
+		$('#pagingForm').attr("action", "./detail.do");
+		$('#pagingForm').submit();
+	}
 </script>
 
 </head>
@@ -48,13 +77,13 @@
 			<h2 id='pageTitle'>도서 조회</h2>
 			
 			<div class='searchForm type1'>
-				<form action="">
+				<form id="bookListParamDto" name="bookListParamDto" action="./list.do" method="post">
 					<fieldset>
 						<!-- 기본 인풋 start -->
 						<div class='searchInputWrap fs0'>
 							<span class='label text bold'>제목</span>
 							<div class='searchInputBox'>
-								<input type="text" id="name" class='searchInput'>
+								<input type="text" id="name" name="name" class='searchInput' value='${bookListParamDto.name}'>
 							</div>
 						</div>
 						<!-- //기본 인풋 end -->
@@ -62,7 +91,7 @@
 						<div class='searchInputWrap fs0'>
 							<span class='label text bold'>저자</span>
 							<div class='searchInputBox'>
-								<input type="text" id="author" class='searchInput'>
+								<input type="text" id="writer" name="writer" class='searchInput' value='${bookListParamDto.writer}'>
 							</div>
 						</div>
 						<!-- //기본 인풋 end -->
@@ -70,7 +99,7 @@
 						<div class='searchInputWrap fs0'>
 							<span class='label text bold'>출판사</span>
 							<div class='searchInputBox'>
-								<input type="text" id="publish" class='searchInput'>
+								<input type="text" id="publish" name="publish" class='searchInput' value='${bookListParamDto.publish}'>
 							</div>
 						</div>
 						<!-- //기본 인풋 end -->
@@ -79,9 +108,9 @@
 						<div class='searchInputWrap fs0'>
 							<span class='label text bold'>출판일</span>
 							<div class='searchInputBox overH'>
-								<input type="text" id="bookPublishDateStart" class='searchInput searchDate fLeft datePicker' readonly="readonly">
+								<input type="text" id="publishDateStart" name="publishDateStart" class='searchInput searchDate fLeft datePicker' readonly="readonly" value='${bookListParamDto.publishDateStart}'>
 								<span class='range fLeft text bold'>~</span>
-								<input type="text" id="bookPublishDateEnd" class='searchInput searchDate fRight datePicker' readonly="readonly">
+								<input type="text" id="publishDateEnd" name="publishDateEnd" class='searchInput searchDate fRight datePicker' readonly="readonly" value='${bookListParamDto.publishDateEnd}'>
 							</div>
 						</div>
 						<!-- //기간 범위 인풋 (달력) end -->
@@ -90,12 +119,15 @@
 						<div class='searchInputWrap fs0'>
 							<span class='label text bold'>분류</span>
 							<div class='searchInputBox overH'>
-								<select id='bookCategory1' class='searchSelect fLeft dark text'>
+								<input type="hidden" id="hiddenBookCategory1" value="${bookListParamDto.bookCategory1}">
+								<select id='bookCategory1' name="bookCategory1" class='searchSelect fLeft dark text'>
 								</select>
-								<select id='bookCategory2' class='searchSelect fLeft med text'>
+								<input type="hidden" id="hiddenBookCategory2" value="${bookListParamDto.bookCategory2}">
+								<select id='bookCategory2' name="bookCategory2" class='searchSelect fLeft med text'>
 									<option value="">중분류</option>
 								</select>
-								<select id='bookCategory3' class='searchSelect fLeft light text'>
+								<input type="hidden" id="hiddenBookCategory3" value="${bookListParamDto.bookCategory3}">
+								<select id='bookCategory3' name="bookCategory3" class='searchSelect fLeft light text'>
 									<option value="">소분류</option>
 								</select>
 							</div>
@@ -139,15 +171,19 @@
 						<!-- //동그란 체크박스 end -->
 						
 						<span class='num'>${bookDto.no}</span>
-						<a href="#none" class="fLeft">
-							<span class='bookImage bgCover' style="background-image: url('<%=request.getContextPath()%>/resources/img/book-img1-limgaejang.jpg');"></span>
+						<a href="#none" onclick="bookDetailMove(${bookDto.no})" class="fLeft">
+							<c:url var="imgUrl" value='/img/${bookDto.imageName}'/>
+							<span class='bookImage bgCover' style="background-image: url('${imgUrl}');"></span>
 						</a>
 						<div class='bookInfo fLeft'>
 							<p class='text'>${bookDto.bookCode}</p>
-							<a href="#none" class='bookTitle ellipsis'>${bookDto.name}</a>
+							<a href="#none" onclick="bookDetailMove(${bookDto.no})" class='bookTitle ellipsis'>${bookDto.name}</a>
 							<p class='text ellipsis'>${bookDto.writer}</p>
 							<p class='text ellipsis'>${bookDto.publish}</p>
-							<p class='text'>${bookDto.publishDate}</p>
+							<p class='text'>
+								<fmt:formatDate var="fommatedPublishDate" value="${bookDto.publishDate}" pattern="yyyy-MM-dd"/>
+								${fommatedPublishDate}
+							</p>
 						</div>
 						<div class='listOptions fRight'>
 							<ul class='listOptionsUl fs0'>
@@ -160,23 +196,42 @@
 							</ul>
 							<p class='bookState text'>
 								<span class="bold">상태 : </span>
-								<span>${bookDto.statusCode}</span>
+								<span id='bookStatus${bookDto.no}'>${bookDto.statusCode}</span>
 							</p>
 						</div>
 						</li>
 					</c:forEach>
 				</ul>
 				
+				<ul class='settings fRight fs0'>
+						<li>
+							<a href="#none" class='text'>단편도서 등록</a>
+						</li>
+						<li>
+							<a href="#none" class='text'>시리즈 등록</a>
+						</li>
+				</ul>
+				
 				<jsp:include page="/WEB-INF/views/common/paging.jsp">
 					<jsp:param value="${pagingInfo}" name="pagingMap"/>
 				</jsp:include>
 				
-				<form action="./list.do" id='pagingForm' method="get">
+				<form name="bookListParamDto" action="./list.do" id='pagingForm' method="post">
 					<input type="hidden" id='curPage' name='curPage' 
-						value="${pagingInfo.curPage}">
+						value="${bookListParamDto.curPage}">
+					<input type="hidden" id="name" name="name" value="${bookListParamDto.name}">
+					<input type="hidden" id="writer" name="writer" value="${bookListParamDto.writer}">
+					<input type="hidden" id="publish" name="publish" value="${bookListParamDto.publish}">
+					<input type="hidden" id="publishDateStart" name="publishDateStart" value="${bookListParamDto.publishDateStart}">
+					<input type="hidden" id="publishDateEnd" name="publishDateEnd" value="${bookListParamDto.publishDateEnd}">
+					<input type="hidden" id="bookCategory1" name="bookCategory1" value="${bookListParamDto.bookCategory1}">
+					<input type="hidden" id="bookCategory2" name="bookCategory2" value="${bookListParamDto.bookCategory2}">
+					<input type="hidden" id="bookCategory3" name="bookCategory3" value="${bookListParamDto.bookCategory3}">
+					<input type="hidden" id="no" name="no" value="">
 				</form>
 				
 			</div>
+			
 			<!-- 
 			이안에 내용 작성 
 			-->

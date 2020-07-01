@@ -4,6 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.lightbrary.book">
+	
 	<resultMap type="com.lightbrary.book.model.BookDto" 
 		id="BookResultMap">
 		
@@ -17,7 +18,7 @@
 		<result column="PUBLISH_DATE" property="publishDate" javaType="java.util.Date"/>
 		<result column="WRITER" property="writer"/>
 		<result column="DEL_FLAG" property="delFlag"/>
-		
+		<result column="IMAGE_NAME" property="imageName"/>
 	</resultMap>
 	
 	<select id="selectOneBook" parameterType="int" resultMap="BookResultMap">
@@ -26,18 +27,83 @@
 		WHERE NO=#{no}
 	</select>
 	
-	<select id="selectBook" parameterType="map" resultMap="BookResultMap">
-		SELECT *
-		FROM(
-			SELECT ROWNUM RNUM, B.*
-			FROM
-			BOOK B)
-		WHERE RNUM BETWEEN #{start} AND #{end}
+	<select id="selectBook" parameterType="com.lightbrary.book.model.BookListParamDto" resultMap="BookResultMap">
+		SELECT * FROM
+		    (
+		        SELECT ROWNUM RNUM, B.*, BI.STORED_FILE_NAME IMAGE_NAME
+		        FROM
+		            (
+		            SELECT *
+		            FROM BOOK
+		            <where>
+			            DEL_FLAG = 'N'
+			            <if test="name != ''">AND NAME LIKE '%' || #{name} || '%'</if>
+			            <if test="writer != ''">AND WRITER LIKE '%' || #{writer} || '%'</if>
+			            <if test="publish != ''">AND PUBLISH LIKE '%' || #{publish} || '%'</if>
+			            <choose>
+			            	<when test="publishDateStart != ''">
+			            		<choose>
+			            			<when test="publishDateEnd != ''">
+			            				AND PUBLISH_DATE BETWEEN #{publishDateStart} AND #{publishDateEnd}
+			            			</when>
+			            			<otherwise>
+			            				AND PUBLISH_DATE &gt;= #{publishDateStart}
+			            			</otherwise>
+			            		</choose>
+							</when>
+							<otherwise>
+								<if test="publishDateEnd != ''">
+									AND PUBLISH_DATE &lt;= #{publishDateEnd}
+								</if>
+							</otherwise>
+			            </choose>
+			            <if test="categoryStart != ''">
+			            	AND CATEGORY_CODE BETWEEN #{categoryStart} AND #{categoryEnd}
+			            </if>
+		            </where>
+		            ) B
+		        JOIN BOOK_IMAGE BI
+		        ON B.IMAGE_NO = BI.NO
+		        ORDER BY B.NO
+		    )
+		WHERE RNUM BETWEEN #{startPage} AND #{endPage}
 	</select>
 	
-	<select id="totalCountBook" resultType="int">
-		SELECT COUNT(*)
-		FROM BOOK
+	<select id="totalCountBook" parameterType="com.lightbrary.book.model.BookListParamDto" resultType="int">
+        SELECT COUNT(*)
+        FROM
+            (
+            SELECT *
+            FROM BOOK
+            <where>
+	            DEL_FLAG = 'N'
+	            <if test="name != ''">AND NAME LIKE '%' || #{name} || '%'</if>
+	            <if test="writer != ''">AND WRITER LIKE '%' || #{writer} || '%'</if>
+	            <if test="publish != ''">AND PUBLISH LIKE '%' || #{publish} || '%'</if>
+	            <choose>
+	            	<when test="publishDateStart != ''">
+	            		<choose>
+	            			<when test="publishDateEnd != ''">
+	            				AND PUBLISH_DATE BETWEEN #{publishDateStart} AND #{publishDateEnd}
+	            			</when>
+	            			<otherwise>
+	            				AND PUBLISH_DATE &gt;= #{publishDateStart}
+	            			</otherwise>
+	            		</choose>
+					</when>
+					<otherwise>
+						<if test="publishDateEnd != ''">
+							AND PUBLISH_DATE &lt;= #{publishDateEnd}
+						</if>
+					</otherwise>
+	            </choose>
+	            <if test="categoryStart != ''">
+	            	AND CATEGORY_CODE BETWEEN #{categoryStart} AND #{categoryEnd}
+	            </if>
+            </where>
+            ) B
+        JOIN BOOK_IMAGE BI
+        ON B.IMAGE_NO = BI.NO
 	</select>
 	
 	<insert id="insertOneBook" parameterType="bookDto"

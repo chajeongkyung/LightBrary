@@ -1,6 +1,5 @@
 package com.lightbrary.book.dao;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.lightbrary.book.model.BookDto;
+import com.lightbrary.book.model.BookImageDto;
+import com.lightbrary.book.model.BookListParamDto;
 
 
 @Repository
@@ -22,13 +23,13 @@ public class BookDaoImpl implements BookDao{
 	@Override
 	public BookDto selectOneBook(int no) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne(namespace + "selectBook", no); 
+		return sqlSession.selectOne(namespace + "selectOneBook", no); 
 	}
 
 	@Override
-	public List<BookDto> selectBook(Map<String, Integer> paramMap) {
+	public List<BookDto> selectBook(BookListParamDto bookListParamDto) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList(namespace + "selectBook", paramMap);
+		return sqlSession.selectList(namespace + "selectBook", bookListParamDto);
 	}
 
 	@Override
@@ -68,9 +69,15 @@ public class BookDaoImpl implements BookDao{
 	}
 
 	@Override
-	public int totalCountBook() {
+	public int totalCountBook(BookListParamDto bookListParamDto) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne(namespace + "totalCountBook");
+		return sqlSession.selectOne(namespace + "totalCountBook", bookListParamDto);
+	}
+
+	@Override
+	public BookImageDto selectOneImage(int no) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + "selectOneImage", no);
 	}
 
 }

@@ -24,7 +24,7 @@
 
 <div id='pagingWrap'>
 	<a href="#none" class='pagingStart'
-		onclick="goPageFnc(${pagingInfo.prevPage});"><img alt="맨처음" src="<%=request.getContextPath()%>/resources/img/paging-start.png"></a>
+		onclick="goPageFnc(1);"><img alt="맨처음" src="<%=request.getContextPath()%>/resources/img/paging-start.png"></a>
 	<a href="#none" class='pagingPrev'
 		onclick="goPageFnc(${pagingInfo.prevPage});"><img alt="이전" src="<%=request.getContextPath()%>/resources/img/paging-prev.png"></a>
 	<ul id='paging' class='fs0 tCenter'>
@@ -43,6 +43,6 @@
 	<a href="#none" class='pagingNext'
 		onclick="goPageFnc(${pagingInfo.nextPage});"><img alt="다음" src="<%=request.getContextPath()%>/resources/img/paging-next.png"></a>
 	<a href="#none" class='pagingEnd'
-		onclick="goPageFnc(${pagingInfo.nextPage});"><img alt="맨마지막" src="<%=request.getContextPath()%>/resources/img/paging-end.png"></a>
+		onclick="goPageFnc(${pagingInfo.totPage});"><img alt="맨마지막" src="<%=request.getContextPath()%>/resources/img/paging-end.png"></a>
 </div>
 <!-- //페이징 end -->

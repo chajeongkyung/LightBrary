@@ -17,7 +17,7 @@ import com.lightbrary.bookCategory.model.BookCategoryDto;
 public class BookCategoryServiceImpl implements BookCategoryService{
 	
 	private static final Logger log = 
-			LoggerFactory.getLogger(BookServiceImpl.class);
+			LoggerFactory.getLogger(BookCategoryServiceImpl.class);
 	
 	@Autowired
 	public BookCategoryDao bookCategoryDao;
