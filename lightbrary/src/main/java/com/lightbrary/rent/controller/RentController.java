@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.lightbrary.rent.model.RentDto;
 import com.lightbrary.rent.service.RentService;
@@ -102,6 +105,7 @@ public class RentController {
 			, @RequestParam(defaultValue = "all") String searchOption
 			, @RequestParam(defaultValue = "") String keyword
 			, Model model) {
+		
 		log.info("예약현황목록 : 현재페이지 : " + curPage + " : " 
 			+ searchOption + " : " + keyword);
 		// 화면의 form의 이름을 마바티스에 편하게 맞추기 위한 로직
@@ -132,11 +136,6 @@ public class RentController {
 		List<RentDto> reserveList = 
 			rentService.reserveSelectList(searchOption, keyword
 				, start, end);
-
-		// 화면의 form의 이름을 맞추기 위한 작업
-		if("mname".equals(searchOption)) {
-			searchOption = "name";
-		}
 		
 		// 검색
 		HashMap<String, Object> searchMap 
@@ -153,8 +152,8 @@ public class RentController {
 		model.addAttribute("pagingMap", pagingMap);
 		model.addAttribute("searchMap", searchMap);
 		
-//		System.out.println("검색 문자 : " + keyword);
-//		System.out.println("검색 옵션 : " + searchOption);
+		System.out.println("검색 문자 : " + keyword);
+		System.out.println("검색 옵션 : " + searchOption);
 		
 		return "rent/reserve/ReserveListView";
 	}

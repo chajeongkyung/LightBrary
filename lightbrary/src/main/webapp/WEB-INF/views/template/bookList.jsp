@@ -178,7 +178,7 @@
 					</li>
 					<!--  -->
 					<li style="text-align: center; padding-top: 81px;">
-						<span style="font-size: 18px; color: #686868;">검색하신 내용에 대한 결과가 없습니다.</span>
+						<span style="font-size: 16px; color: #686868;">검색하신 내용에 대한 결과가 없습니다.</span>
 					</li>
 					<!--  -->
 				</ul>

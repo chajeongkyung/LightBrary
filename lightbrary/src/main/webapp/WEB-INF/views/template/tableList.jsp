@@ -274,7 +274,7 @@
 							<!--  -->
 							<tr>
 								<td colspan="8" style="text-align: center; padding: 56px 0px;">
-									<span style="font-size: 18px; color: #686868;">검색하신 내용에 대한 결과가 없습니다.</span>
+									<span style="font-size: 16px; color: #686868;">검색하신 내용에 대한 결과가 없습니다.</span>
 								</td>
 							</tr>
 							<!--  -->

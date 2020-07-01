@@ -51,6 +51,7 @@
 									<option value="all" selected="selected">전체 검색</option>
 									<option value="bookName">도서 제목</option>
 									<option value="writer">저자</option>
+									<option value="publish">출판사</option>
 									<option value="mname">회원명</option>
 									<option value="email">이메일</option>
 								</c:when>
@@ -59,6 +60,7 @@
 									<option value="all">전체 검색</option>
 									<option value="bookName" selected="selected">도서 제목</option>
 									<option value="writer">저자</option>
+									<option value="publish">출판사</option>
 									<option value="mname">회원명</option>
 									<option value="email">이메일</option>
 								</c:when>
@@ -67,6 +69,16 @@
 									<option value="all">전체 검색</option>
 									<option value="bookName">도서 제목</option>
 									<option value="writer" selected="selected">저자</option>
+									<option value="publish">출판사</option>
+									<option value="mname">회원명</option>
+									<option value="email">이메일</option>
+								</c:when>
+								
+								<c:when test="${searchMap.searchOption eq 'publish'}">
+									<option value="all">전체 검색</option>
+									<option value="bookName">도서 제목</option>
+									<option value="writer">저자</option>
+									<option value="publish" selected="selected">출판사</option>
 									<option value="mname">회원명</option>
 									<option value="email">이메일</option>
 								</c:when>
@@ -83,8 +95,9 @@
 									<option value="all">전체 검색</option>
 									<option value="bookName">도서 제목</option>
 									<option value="writer">저자</option>
-									<option value="mname">회원명</option>
-									<option value="email" selected="selected">이메일</option>
+									<option value="publish">출판사</option>
+									<option value="mname" selected="selected">회원명</option>
+									<option value="email">이메일</option>
 								</c:when>
 							</c:choose>
 						</select>
@@ -143,6 +156,16 @@
 							</tr>
 						</thead>
 						<tbody>
+							<c:if test="${empty reserveList}">
+								<!--  -->
+								<tr>
+									<td colspan="8" style="text-align: center; padding: 56px 0px;">
+										<span style="font-size: 16px; color: #686868;">예약 도서가 없습니다.</span>
+									</td>
+								</tr>
+								<!--  -->	
+							</c:if>
+							
 							<!--  -->
 							<c:forEach var="rentDto" items="${reserveList}">
 								<c:choose>
@@ -170,10 +193,10 @@
 										<!-- //기본 체크박스 end -->
 									</td>
 									<td>
-										<a href="#none" class='ellipsis'> ${rentDto.bookName}</a>
+										<a href="#none" class='ellipsis'>${rentDto.bookName}</a>
 									</td>
 									<td>
-										<span class='ellipsis'> ${rentDto.writer}</span>
+										<span class='ellipsis'>${rentDto.writer}</span>
 									</td>
 									<td>
 										<span class='ellipsis'>${rentDto.publish}</span>
@@ -198,13 +221,13 @@
 									</td>
 									<td>
 										<span>
-											<fmt:formatDate value="${rentDto.returnDate}" 
-						pattern="yyyy.MM.dd "/>
+											<fmt:formatDate value="${rentDto.returnDate}" pattern="yyyy.MM.dd "/>
 										</span>
 									</td>
 								</tr>
 							</c:forEach>
 							<!--  -->
+							
 						</tbody>
 					</table>
 				</div>
