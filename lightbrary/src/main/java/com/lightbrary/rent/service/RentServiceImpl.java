@@ -82,15 +82,10 @@ public class RentServiceImpl implements RentService{
 
 	// 예약 상세
 	@Override
-	public Map<String, Object> selectOneReserve(int no) {
+	public RentDto selectOneReserve(int no) {
 		// TODO Auto-generated method stub
-		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
-		RentDto rentDto = rentDao.selectOneReserve(no);
-		
-		resultMap.put("rentDto", rentDto);
-		
-		return resultMap;
+		return rentDao.selectOneReserve(no);
 	}
 	
 }

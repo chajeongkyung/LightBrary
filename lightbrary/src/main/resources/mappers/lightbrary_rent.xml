@@ -38,20 +38,17 @@
 		<id column="NO" property="no"/>
 		<result column="MEMBER_NO" property="memberNo"/>
 		<result column="BOOK_NO" property="bookNo"/>
-		<result column="RESERVE_DATE" property="reserveDate"
-			javaType="java.util.Date"/>
-		<result column="RENT_DATE" property="rentDate"
-			javaType="java.util.Date"/>
-		<result column="EXPIRE_DATE" property="expireDate"
-			javaType="java.util.Date"/>
-		<result column="RETURN_DATE" property="returnDate"
-			javaType="java.util.Date"/>
+		<result column="RESERVE_DATE" property="reserveDate" javaType="java.util.Date"/>
+		<result column="RENT_DATE" property="rentDate" javaType="java.util.Date"/>
+		<result column="EXPIRE_DATE" property="expireDate" javaType="java.util.Date"/>
+		<result column="RETURN_DATE" property="returnDate" javaType="java.util.Date"/>
 		<result column="SEND_FLAG" property="sendFlag"/>
 		<result column="DEL_FLAG" property="delFlag"/>
 		
 		<result column="BOOK_NAME" property="bookName"/>
-		<result column="PUBLISH" property="publish"/>
 		<result column="WRITER" property="writer"/>
+		<result column="PUBLISH" property="publish"/>
+		<result column="PUBLISH_DATE" property="publishDate" javaType="java.util.Date"/>
 		
 		<result column="M_NAME" property="mname"/>
 		<result column="EMAIL" property="email"/>
@@ -130,7 +127,7 @@
 	<!-- 예약 상세 start -->
 	<select id="selectOneReserve" parameterType="int"
 		resultMap="rentResultMap">
-		SELECT R.NO AS NO, B.NAME AS NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH
+		SELECT R.NO AS NO, B.NAME AS NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH, B.PUBLISH_DATE AS PUBLISH_DATE
 		, M.NAME AS M_NAME, M.EMAIL AS EMAIL, M.PHONE AS PHONE, M.ADDRESS AS ADDRESS,
 		(SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS
 		, R.RESERVE_DATE, R.RENT_DATE, R.RETURN_DATE

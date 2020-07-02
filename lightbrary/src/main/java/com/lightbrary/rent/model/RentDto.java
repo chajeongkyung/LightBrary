@@ -14,8 +14,9 @@ public class RentDto {
 	private String delFlag;
 	
 	private String bookName;
-	private String publish;
 	private String writer;
+	private String publish;
+	private String publishDate;
 	
 	private String mname;
 	private String email;
@@ -29,9 +30,11 @@ public class RentDto {
 		// TODO Auto-generated constructor stub
 	}
 
+	
+
 	public RentDto(int no, int memberNo, int bookNo, Date reserveDate, Date rentDate, Date expireDate, Date returnDate,
-			String sendFlag, String delFlag, String bookName, String publish, String writer, String mname, String email,
-			String phone, String address, String bookStatus) {
+			String sendFlag, String delFlag, String bookName, String writer, String publish, String publishDate,
+			String mname, String email, String phone, String address, String bookStatus) {
 		super();
 		this.no = no;
 		this.memberNo = memberNo;
@@ -43,8 +46,9 @@ public class RentDto {
 		this.sendFlag = sendFlag;
 		this.delFlag = delFlag;
 		this.bookName = bookName;
-		this.publish = publish;
 		this.writer = writer;
+		this.publish = publish;
+		this.publishDate = publishDate;
 		this.mname = mname;
 		this.email = email;
 		this.phone = phone;
@@ -138,6 +142,14 @@ public class RentDto {
 
 	public void setPublish(String publish) {
 		this.publish = publish;
+	}
+	
+	public String getPublishDate() {
+		return publishDate;
+	}
+
+	public void setPublishDate(String publishDate) {
+		this.publishDate = publishDate;
 	}
 
 	public String getWriter() {

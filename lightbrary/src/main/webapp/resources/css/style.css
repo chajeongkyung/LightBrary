@@ -324,10 +324,6 @@ header {
 	color: #1C6931;
 }
 
-#depth1Ul>li.active .depth2Ul{
-	display: block;
-}
-
 
 /*** 정보 입력 폼 ***/
 .infoForm {

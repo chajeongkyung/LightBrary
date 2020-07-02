@@ -14,12 +14,21 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
 
+<script type="text/javascript">
+	$(document).ready(function() {
+		// depth1 네비
+		$('#depth1Ul > li:nth-child(2)').addClass('active');
+		// depth2 네비
+		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(3)').addClass('active');
+	});
+</script>
+
 </head>
 
 <body>
 
 	<div id='wrap'>
-		<jsp:include page="/WEB-INF/views/Header_temp.jsp" />
+		<jsp:include page="/WEB-INF/views/Header.jsp" />
 		
 		<!-- 컨테이너 start -->
 		<div id='container'>
@@ -39,19 +48,19 @@
 						<tbody>
 							<tr>
 								<th class='text bold textDark'>분류</th>
-								<td class='text textGrey'>문학 한국문학 소설</td>
+								<td class='text textGrey'></td>
 							</tr>
 							<tr>
 								<th class='text bold textDark'>제목</th>
-								<td class='text textGrey'>임계장 이야기 길어질 때길어질 때길어질 때길어질 때길어질 때길어질 때길어질 때길어질 때길어질 때길어질 때길어질 때길어질 때</td>
+								<td class='text textGrey'>${rentDto.bookName}</td>
 							</tr>
 							<tr>
 								<th class='text bold textDark'>저자</th>
-								<td class='text textGrey'>조정진</td>
+								<td class='text textGrey'>${rentDto.writer}</td>
 							</tr>
 							<tr>
 								<th class='text bold textDark'>출판사</th>
-								<td class='text textGrey'>휴마니터스</td>
+								<td class='text textGrey'>${rentDto.publish}</td>
 							</tr>
 							<tr>
 								<th class='text bold textDark'>출판일</th>
@@ -122,7 +131,7 @@
 		</div>
 		<!-- //컨테이너 end -->
 		
-		<jsp:include page="/WEB-INF/views/Tail_temp.jsp" />
+		<jsp:include page="/WEB-INF/views/Tail.jsp" />
 	</div>
 
 </body>

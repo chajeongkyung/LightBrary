@@ -22,33 +22,27 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('#nav').addClass('active');
+		// depth1 네비
 		$('#depth1Ul > li:nth-child(2)').addClass('active');
-		$('.depth2Ul > li:nth-child(2)').addClass('active');
+		// depth2 네비
+		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(3)').addClass('active');
 	});
 	
-	function listOnePageFnc(obj, event){
-		
-		var aTagObj = $(obj);
-		
-		event.preventDefault();
+	function listOnePageFnc(clickObj){
 		
 		var reserveNoObj = '';
 		var keywordObj = $('#keyword');
 		var searchOptionObj = $('#searchOption');
 		
-		// 회원이름 클릭시 자신의 회원번호 td태그
-		reserveNoObj = aTagObj.parent().parent().children('td').eq(0);
+		reserveNoObj = $(clickObj).parent().parent().find('input[type="hidden"]');
 		
 		var url = '';
 		
 		url += './view.do?';
-		url += 'no=' + reserveNoObj.html();
+		url += 'no=' + reserveNoObj.val();
 		url += '&keyword=' + keywordObj.val();
 		url += '&searchOption=' + searchOptionObj.val();
-			
-	// 	alert(url);
-				
+		
 		location.href = url;
 	
 		return false;
@@ -194,16 +188,16 @@
 							<c:forEach var="rentDto" items="${reserveList}">
 								<tr>
 									<td class='checkboxTd'>
+										<input type="hidden" value='${rentDto.no}' class='noObj'>
 										<!-- 기본 체크박스 start -->
 										<div class='checkbox type2 fLeft'>
 											<input type="checkbox" id='check${rentDto.no}'>
 											<label for="check${rentDto.no}"></label>
-											<input type="hidden" value='${rentDto.no}' class='noObj'>
 										</div>
 										<!-- //기본 체크박스 end -->
 									</td>
 									<td>
-										<a href="#none" onclick="listOnePageFnc(this, event);" class='ellipsis'>
+										<a href="#none" onclick="listOnePageFnc(this);" class='ellipsis'>
 											${rentDto.bookName}
 										</a>
 									</td>
