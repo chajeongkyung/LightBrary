@@ -20,6 +20,10 @@ public class RentServiceImpl implements RentService{
 
 	private static final Logger log = 
 			LoggerFactory.getLogger(RentServiceImpl.class);
+	
+	/*******************
+			대출
+	*******************/
 
 	// 대출
 	@Override
@@ -45,6 +49,11 @@ public class RentServiceImpl implements RentService{
 		return rentDao.rentSelectCurPage(searchOption, keyword, no);
 	}
 	
+	
+	/*******************
+			예약
+	*******************/
+	
 	// 예약 목록 출력
 	@Override
 	public List<RentDto> selectReserve(String searchOption, String keyword, int start, int end) {
@@ -66,11 +75,12 @@ public class RentServiceImpl implements RentService{
 
 	// 예약 목록 현재 페이지
 	@Override
-	public int reserveSelectCurPage(String searchOption, String keyword, int no) {
+	public int selectReserveCurPage(String searchOption, String keyword, int no) {
 		// TODO Auto-generated method stub
-		return rentDao.reserveSelectCurPage(searchOption, keyword, no);
+		return rentDao.selectReserveCurPage(searchOption, keyword, no);
 	}
 
+	// 예약 상세
 	@Override
 	public Map<String, Object> selectOneReserve(int no) {
 		// TODO Auto-generated method stub

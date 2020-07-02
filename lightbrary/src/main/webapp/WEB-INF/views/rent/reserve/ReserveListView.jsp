@@ -26,6 +26,33 @@
 		$('#depth1Ul > li:nth-child(2)').addClass('active');
 		$('.depth2Ul > li:nth-child(2)').addClass('active');
 	});
+	
+	function listOnePageFnc(obj, event){
+		
+		var aTagObj = $(obj);
+		
+		event.preventDefault();
+		
+		var reserveNoObj = '';
+		var keywordObj = $('#keyword');
+		var searchOptionObj = $('#searchOption');
+		
+		// 회원이름 클릭시 자신의 회원번호 td태그
+		reserveNoObj = aTagObj.parent().parent().children('td').eq(0);
+		
+		var url = '';
+		
+		url += './view.do?';
+		url += 'no=' + reserveNoObj.html();
+		url += '&keyword=' + keywordObj.val();
+		url += '&searchOption=' + searchOptionObj.val();
+			
+	// 	alert(url);
+				
+		location.href = url;
+	
+		return false;
+	}
 </script>
 
 </head>
@@ -165,32 +192,20 @@
 							
 							<!--  -->
 							<c:forEach var="rentDto" items="${reserveList}">
-								<c:choose>
-									<c:when test="${rentDto.bookStatus eq '보관'}">
-										<tr class='returned'>
-									</c:when>
-									<c:otherwise>
-										<tr>
-									</c:otherwise>
-								</c:choose>
+								<tr>
 									<td class='checkboxTd'>
 										<!-- 기본 체크박스 start -->
 										<div class='checkbox type2 fLeft'>
-											<c:choose>
-												<c:when test="${rentDto.bookStatus eq '보관'}">
-													<input type="checkbox" id='check${rentDto.no}' disabled="disabled">
-													<label for="check${rentDto.no}" style="cursor: default;"></label>
-												</c:when>
-												<c:otherwise>
-													<input type="checkbox" id='check${rentDto.no}'>
-													<label for="check${rentDto.no}"></label>
-												</c:otherwise>
-											</c:choose>
+											<input type="checkbox" id='check${rentDto.no}'>
+											<label for="check${rentDto.no}"></label>
+											<input type="hidden" value='${rentDto.no}' class='noObj'>
 										</div>
 										<!-- //기본 체크박스 end -->
 									</td>
 									<td>
-										<a href="#none" class='ellipsis'>${rentDto.bookName}</a>
+										<a href="#none" onclick="listOnePageFnc(this, event);" class='ellipsis'>
+											${rentDto.bookName}
+										</a>
 									</td>
 									<td>
 										<span class='ellipsis'>${rentDto.writer}</span>

@@ -85,8 +85,8 @@
 <!-- 		<include refid="search"></include> -->
 	</select>
 	
-	<!-- 예약 목록 -->
-	<select id="reserveSelectList" parameterType="map"
+	<!-- 예약 목록 start -->
+	<select id="selectReserve" parameterType="map"
 		resultMap="rentResultMap">
 		SELECT RESERVE.RNUM AS RNUM
 		, RESERVE.NO AS NO, RESERVE.NAME AS BOOK_NAME, RESERVE.WRITER AS WRITER, RESERVE.PUBLISH AS PUBLISH
@@ -118,20 +118,30 @@
 		) RESERVE
 		WHERE RESERVE.RNUM BETWEEN #{start} AND #{end}
 	</select>
+	<!-- //예약 목록 end -->
 	
-	<select id="reserveSelectTotalCount" resultType="int" 
+	<select id="totalCountReserve" resultType="int" 
 		parameterType="map">
 		SELECT COUNT(*)
 		FROM RENT
 <!-- 		<include refid="search"></include> -->
 	</select>
 	
-	<!-- 예약 상세 -->
-<!-- 	<select id="memberSelectOne" parameterType="int" -->
-<!-- 		resultMap="memberResultMap"> -->
-<!-- 		SELECT MNO, MNAME, EMAIL, PWD, CRE_DATE -->
-<!-- 		FROM MEMBER -->
-<!-- 		WHERE MNO = #{no}	 -->
-<!-- 	</select> -->
+	<!-- 예약 상세 start -->
+	<select id="selectOneReserve" parameterType="int"
+		resultMap="rentResultMap">
+		SELECT R.NO AS NO, B.NAME AS NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH
+		, M.NAME AS M_NAME, M.EMAIL AS EMAIL, M.PHONE AS PHONE, M.ADDRESS AS ADDRESS,
+		(SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS
+		, R.RESERVE_DATE, R.RENT_DATE, R.RETURN_DATE
+		FROM RENT R
+		JOIN MEMBER M
+		ON R.MEMBER_NO = M.NO
+		JOIN BOOK B
+		ON R.BOOK_NO = B.NO
+		WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='예약')
+		AND R.NO = #{no}
+	</select>
+	<!-- //예약 상세 end -->
 	
 </mapper>

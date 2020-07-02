@@ -93,6 +93,11 @@ public class RentController {
 		return "rent/RentListView";
 	}
 	
+	
+	/*******************
+			예약
+	*******************/
+	
 	// 예약 목록
 	@RequestMapping(value = "/rent/reserve/list.do"
 			, method = {RequestMethod.GET, RequestMethod.POST})
@@ -118,7 +123,7 @@ public class RentController {
 //			자신의 curPage 찾는 로직
 		if(no != 0) {
 			curPage
-				= rentService.reserveSelectCurPage(searchOption, keyword, no);
+				= rentService.selectReserveCurPage(searchOption, keyword, no);
 		}
 		
 		
@@ -152,17 +157,22 @@ public class RentController {
 	}
 	
 	// 예약 상세
-	@RequestMapping(value = "/rent/reserve/view.do", method = RequestMethod.GET)
-	public String memberUpdate(int no, Model model) {
-		log.info("call memberUpdate! {}", no);
+	@RequestMapping(value = "/rent/reserve/view.do"
+		, method = RequestMethod.GET)
+	public String reserveView(int no, String searchOption,
+			String keyword, Model model) {
+		log.info("예약 도서 상세 - " + no + "\n" + searchOption
+				+ "\n" + keyword);
 		
 		Map<String, Object> map = rentService.selectOneReserve(no);
 		
 		RentDto rentDto = (RentDto)map.get("rentDto");
 		
 		model.addAttribute("rentDto", rentDto);
+		model.addAttribute("searchOption", searchOption);
+		model.addAttribute("keyword", keyword);
 		
-		return "rent/reserve/ReserveView";
+		return "rent/reserve/ReserveDetailView";
 	}
 	
 }
