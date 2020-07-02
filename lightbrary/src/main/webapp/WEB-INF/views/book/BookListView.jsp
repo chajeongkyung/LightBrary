@@ -20,7 +20,6 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/bookCategorySelect.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/bookStatusSelect.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/bookImageSelect.js"></script>
 
 <script type="text/javascript">
 	
@@ -176,7 +175,6 @@
 							<span class='bookImage bgCover' style="background-image: url('${imgUrl}');"></span>
 						</a>
 						<div class='bookInfo fLeft'>
-							<p class='text'>${bookDto.bookCode}</p>
 							<a href="#none" onclick="bookDetailMove(${bookDto.no})" class='bookTitle ellipsis'>${bookDto.name}</a>
 							<p class='text ellipsis'>${bookDto.writer}</p>
 							<p class='text ellipsis'>${bookDto.publish}</p>
@@ -205,7 +203,7 @@
 				
 				<ul class='settings fRight fs0'>
 						<li>
-							<a href="#none" class='text'>단편도서 등록</a>
+							<a href="./insert.do" class='text'>단편도서 등록</a>
 						</li>
 						<li>
 							<a href="#none" class='text'>시리즈 등록</a>

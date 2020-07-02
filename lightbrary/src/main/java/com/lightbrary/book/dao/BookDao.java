@@ -23,6 +23,7 @@ public interface BookDao {
 	
 	public int totalCountBook(BookListParamDto bookListParamDto);
 	public BookImageDto selectOneImage(int no);
+	public int insertOneImage(BookImageDto bookImageDto);
 	
 }
 

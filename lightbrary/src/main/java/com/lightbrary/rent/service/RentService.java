@@ -30,5 +30,6 @@ public interface RentService {
 			, String keyword);
 	public int selectReserveCurPage(String searchOption, String keyword, int no);
 	// 예약 상세
-	public Map<String, Object> selectOneReserve(int no);
+	public RentDto selectOneReserve(int no);
+	
 }

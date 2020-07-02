@@ -6,7 +6,6 @@ public class BookDto {
 	
 	private int no;
 	private int statusCode;
-	private String bookCode;
 	private String categoryCode;
 	private int imageNo;
 	private String name;
@@ -18,15 +17,14 @@ public class BookDto {
 	
 	public BookDto() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public BookDto(int no, int statusCode, String bookCode,
-			String categoryCode, int imageNo, String name, String publish,
+	public BookDto(int no, int statusCode, String categoryCode, int imageNo, String name, String publish,
 			Date publishDate, String writer, String delFlag, String imageName) {
 		super();
 		this.no = no;
 		this.statusCode = statusCode;
-		this.bookCode = bookCode;
 		this.categoryCode = categoryCode;
 		this.imageNo = imageNo;
 		this.name = name;
@@ -53,14 +51,6 @@ public class BookDto {
 		this.statusCode = statusCode;
 	}
 
-	public String getBookCode() {
-		return bookCode;
-	}
-	
-	public void setBookCode(String bookCode) {
-		this.bookCode = bookCode;
-	}
-	
 	public String getCategoryCode() {
 		return categoryCode;
 	}
@@ -127,13 +117,9 @@ public class BookDto {
 
 	@Override
 	public String toString() {
-		return "BookDto [no=" + no + ", statusCode=" + statusCode 
-				+ ", bookCode=" + bookCode + ", categoryCode=" + categoryCode
-				+ ", imageNo=" + imageNo + ", name=" + name + ", publish=" 
-				+ publish + ", publishDate=" + publishDate + ", writer="
-				+ writer + ", delFlag=" + delFlag + "]";
+		return "BookDto [no=" + no + ", statusCode=" + statusCode + ", categoryCode=" + categoryCode + ", imageNo="
+				+ imageNo + ", name=" + name + ", publish=" + publish + ", publishDate=" + publishDate + ", writer="
+				+ writer + ", delFlag=" + delFlag + ", imageName=" + imageName + "]";
 	}
-	
-	
 	
 }

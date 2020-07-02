@@ -6,7 +6,7 @@ public class BookImageDto {
 	private int no;
 	private String originalFileName;
 	private String storedFileName;
-	private int fileSize;
+	private long fileSize;
 	private Date createdDate;
 	
 	public BookImageDto() {
@@ -39,10 +39,10 @@ public class BookImageDto {
 	public void setStoredFileName(String storedFileName) {
 		this.storedFileName = storedFileName;
 	}
-	public int getFileSize() {
+	public long getFileSize() {
 		return fileSize;
 	}
-	public void setFileSize(int fileSize) {
+	public void setFileSize(long fileSize) {
 		this.fileSize = fileSize;
 	}
 	public Date getCreatedDate() {

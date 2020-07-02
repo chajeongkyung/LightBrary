@@ -164,9 +164,8 @@ public class RentController {
 		log.info("예약 도서 상세 - " + no + "\n" + searchOption
 				+ "\n" + keyword);
 		
-		Map<String, Object> map = rentService.selectOneReserve(no);
 		
-		RentDto rentDto = (RentDto)map.get("rentDto");
+		RentDto rentDto = rentService.selectOneReserve(no);
 		
 		model.addAttribute("rentDto", rentDto);
 		model.addAttribute("searchOption", searchOption);

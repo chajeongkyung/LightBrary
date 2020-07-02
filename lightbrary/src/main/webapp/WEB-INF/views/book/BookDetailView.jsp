@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
@@ -58,7 +59,8 @@
 			
 			<!-- 도서 등록 start -->
 			<div id='detailWrap'>
-				<div id='bookImage' class='bgCover' style="margin: auto; background-image: url('<%=request.getContextPath()%>/resources/img/noimage.jpg')"></div>
+				<c:url var="imgUrl" value='/img/${bookDto.imageName}'/>
+				<div id='bookImage' class='bgCover' style="margin: auto; background-image: url('${imgUrl}')"></div>
 				<div class='detailTable detailInputTable'>
 					<p class='text bold textDark'>도서정보</p>
 					<table>
@@ -67,10 +69,6 @@
 							<col width="786px">
 						</colgroup>
 						<tbody>
-							<tr>
-								<th class='text bold textDark'>도서 코드</th>
-								<td class='text textGrey'>${bookDto.bookCode}</td>
-							</tr>
 							<tr>
 								<th class='text bold textDark inputTh'>분류</th>
 								<td id='bookCategoryCode' class='text textGrey'>${bookDto.categoryCode}</td>

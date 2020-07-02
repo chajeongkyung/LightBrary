@@ -10,7 +10,6 @@
 		
 		<id column="NO" property="no"/>
 		<result column="STATUS_CODE" property="statusCode"/>
-		<result column="BOOK_CODE" property="bookCode"/>
 		<result column="CATEGORY_CODE" property="categoryCode"/>
 		<result column="IMAGE_NO" property="imageNo"/>
 		<result column="NAME" property="name"/>
@@ -22,9 +21,11 @@
 	</resultMap>
 	
 	<select id="selectOneBook" parameterType="int" resultMap="BookResultMap">
-		SELECT *
-		FROM BOOK
-		WHERE NO=#{no}
+		SELECT B.*, BI.STORED_FILE_NAME IMAGE_NAME
+		FROM BOOK B
+		JOIN BOOK_IMAGE BI
+		ON B.IMAGE_NO = BI.NO
+		WHERE B.NO=#{no}
 	</select>
 	
 	<select id="selectBook" parameterType="com.lightbrary.book.model.BookListParamDto" resultMap="BookResultMap">
@@ -112,10 +113,19 @@
 			SELECT BOOK_NO_SEQ.NEXTVAL FROM DUAL
 		</selectKey>
 		INSERT INTO BOOK
-		VALUE(NO, STATUS_CODE, BOOK_CODE, CATEGORY_CODE, IMAGE_NO,
+		VALUE(NO, STATUS_CODE, CATEGORY_CODE, IMAGE_NO,
 			  NAME, PUBLISH, PUBLISH_DATE, WRITER, DEL_FLAG)
-		VALUES(#{no}, #{statusCode}, #{bookCode}, #{categoryCode}, #{imageNo},
+		VALUES(#{no}, #{statusCode}, #{categoryCode}, #{imageNo},
 			  #{name}, #{publish}, #{publishDate}, #{writer}, 'N')
 	</insert>
 	
+	<insert id="insertOneImage" parameterType="com.lightbrary.book.model.BookImageDto"
+		useGeneratedKeys="true" keyProperty="no">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			SELECT BOOK_IMAGE_NO_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO BOOK_IMAGE
+		VALUE(NO, ORIGINAL_FILE_NAME, STORED_FILE_NAME, FILE_SIZE, CREATED_DATE)
+		VALUES(#{no}, #{originalFileName}, #{storedFileName}, #{fileSize}, SYSDATE)
+	</insert>
 </mapper>

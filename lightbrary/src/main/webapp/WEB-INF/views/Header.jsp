@@ -40,21 +40,21 @@
 				<a href="/lightbrary/">대출관리</a>
 				<ul id='rentDepth2' class="depth2Ul fs0">
 					<li>
-						<a href="#none">대출현황</a>
+						<a href="<%=request.getContextPath()%>/rent/list.do">대출현황</a>
 					</li>
 					<li>
 						<a href="#none">연체현황</a>
 					</li>
 					<li>
-						<a href="#none">예약현황</a>
+						<a href="<%=request.getContextPath()%>/rent/reserve/list.do">예약현황</a>
 					</li>
 				</ul>
 			</li>
 			<li id='bookNav' class='depthNav'>
-				<a href="/lightbrary/">도서관리</a>
+				<a href="<%=request.getContextPath()%>/book/list.do">도서관리</a>
 				<ul id='bookDepth2' class="depth2Ul fs0">
 					<li>
-						<a href="#none">도서조회</a>
+						<a href="<%=request.getContextPath()%>/book/list.do">도서조회</a>
 					</li>
 					<li>
 						<a href="#none">단편 도서 등록</a>

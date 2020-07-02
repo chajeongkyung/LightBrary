@@ -18,8 +18,7 @@ public class FileUtils {
 
 	private static final String FILE_PATH = "D:\\upload";	
 	
-	public List<Map<String, Object>> parseInsertFileInfo(int parentSeq,
-			MultipartHttpServletRequest multipartHttpServletRequest) 
+	public List<Map<String, Object>> parseInsertFileInfo(MultipartHttpServletRequest multipartHttpServletRequest) 
 				throws IllegalStateException, IOException{
 		
 		Iterator<String> iterator = 
@@ -60,7 +59,6 @@ public class FileUtils {
 				fileInfoMap.put("ORIGINAL_FILE_NAME", originalFileName);
 				fileInfoMap.put("STORED_FILE_NAME", storedFileName);
 				fileInfoMap.put("FILE_SIZE", multipartFile.getSize());
-				fileInfoMap.put("CREATED_DATE", new Date());
 				
 				fileList.add(fileInfoMap);
 			}

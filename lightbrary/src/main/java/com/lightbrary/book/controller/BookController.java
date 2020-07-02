@@ -1,18 +1,18 @@
 package com.lightbrary.book.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.lightbrary.book.model.BookDto;
 import com.lightbrary.book.model.BookListParamDto;
@@ -70,5 +70,32 @@ public class BookController {
 		model.addAttribute("bookListParamDto", bookListParamDto);
 		
 		return "book/BookDetailView";
+	}
+	
+	@RequestMapping(value = "/book/insert.do", method = {RequestMethod.GET, RequestMethod.POST})
+	public String BookInsertOne() {
+		
+		return "book/BookInsertView";
+	}
+	
+	@RequestMapping(value = "/book/insertCtr.do", method = {RequestMethod.GET, RequestMethod.POST})
+	public String BookInsertOne(BookDto bookDto, MultipartHttpServletRequest request
+			, String bookCategory1, String bookCategory2, String bookCategory3) {
+		
+		String categoryCode = "";
+		
+		if(bookCategory3 != null) {
+			categoryCode = bookCategory3;
+		}else if(bookCategory2 != null) {
+			categoryCode = bookCategory2;
+		}else {
+			categoryCode = bookCategory1;
+		}
+		
+		bookDto.setCategoryCode(categoryCode);
+		System.out.println(bookDto);
+		bookService.insertOneBook(bookDto, request);
+		
+		return "book/BookInsertView";
 	}
 }

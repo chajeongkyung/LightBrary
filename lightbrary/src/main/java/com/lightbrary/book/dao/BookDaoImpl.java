@@ -35,7 +35,7 @@ public class BookDaoImpl implements BookDao{
 	@Override
 	public int insertOneBook(BookDto bookDto) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.insert(namespace + "insertOneBook", bookDto);
 	}
 
 	@Override
@@ -78,6 +78,12 @@ public class BookDaoImpl implements BookDao{
 	public BookImageDto selectOneImage(int no) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace + "selectOneImage", no);
+	}
+
+	@Override
+	public int insertOneImage(BookImageDto bookImageDto) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert(namespace + "insertOneImage", bookImageDto);
 	}
 
 }
