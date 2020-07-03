@@ -16,7 +16,7 @@ public class RentDto {
 	private String bookName;
 	private String writer;
 	private String publish;
-	private String publishDate;
+	private Date publishDate;
 	
 	private String mname;
 	private String email;
@@ -33,7 +33,7 @@ public class RentDto {
 	
 
 	public RentDto(int no, int memberNo, int bookNo, Date reserveDate, Date rentDate, Date expireDate, Date returnDate,
-			String sendFlag, String delFlag, String bookName, String writer, String publish, String publishDate,
+			String sendFlag, String delFlag, String bookName, String writer, String publish, Date publishDate,
 			String mname, String email, String phone, String address, String bookStatus) {
 		super();
 		this.no = no;
@@ -55,6 +55,8 @@ public class RentDto {
 		this.address = address;
 		this.bookStatus = bookStatus;
 	}
+
+
 
 	public int getNo() {
 		return no;
@@ -143,12 +145,12 @@ public class RentDto {
 	public void setPublish(String publish) {
 		this.publish = publish;
 	}
-	
-	public String getPublishDate() {
+
+	public Date getPublishDate() {
 		return publishDate;
 	}
 
-	public void setPublishDate(String publishDate) {
+	public void setPublishDate(Date publishDate) {
 		this.publishDate = publishDate;
 	}
 
@@ -204,8 +206,9 @@ public class RentDto {
 	public String toString() {
 		return "RentDto [no=" + no + ", memberNo=" + memberNo + ", bookNo=" + bookNo + ", reserveDate=" + reserveDate
 				+ ", rentDate=" + rentDate + ", expireDate=" + expireDate + ", returnDate=" + returnDate + ", sendFlag="
-				+ sendFlag + ", delFlag=" + delFlag + ", bookName=" + bookName + ", publish=" + publish + ", writer="
-				+ writer + ", mname=" + mname + ", email=" + email + ", bookStatus=" + bookStatus + "]";
+				+ sendFlag + ", delFlag=" + delFlag + ", bookName=" + bookName + ", writer=" + writer + ", publish="
+				+ publish + ", publishDate=" + publishDate + ", mname=" + mname + ", email=" + email + ", phone="
+				+ phone + ", address=" + address + ", bookStatus=" + bookStatus + "]";
 	}
 	
 }

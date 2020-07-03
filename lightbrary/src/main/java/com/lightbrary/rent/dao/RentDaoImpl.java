@@ -120,5 +120,11 @@ public class RentDaoImpl implements RentDao{
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace + "selectOneReserve", no);
 	}
+
+	@Override
+	public int updateOneReserveStatus(RentDto rentDto) {
+		// TODO Auto-generated method stub
+		return sqlSession.update(namespace + "updateOneReserveStatus", rentDto);
+	}
 	
 }

@@ -87,5 +87,11 @@ public class RentServiceImpl implements RentService{
 		
 		return rentDao.selectOneReserve(no);
 	}
+
+	@Override
+	public int updateOneReserveStatus(RentDto rentDto) {
+		// TODO Auto-generated method stub
+		return rentDao.updateOneReserveStatus(rentDto);
+	}
 	
 }

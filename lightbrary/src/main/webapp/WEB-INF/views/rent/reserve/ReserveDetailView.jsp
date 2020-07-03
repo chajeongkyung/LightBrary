@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,7 +21,25 @@
 		$('#depth1Ul > li:nth-child(2)').addClass('active');
 		// depth2 네비
 		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(3)').addClass('active');
+		
+		// 대출중으로 변경
+// 		changeStatusFnc();
 	});
+	
+// 	function changeStatusFnc() {
+// 		var clickObj = $('#changeStatus');
+		
+// 		if(!$(clickObj).hasClass('disabled')){
+// 			$(clickObj).click(function() {
+// 				if(confirm('도서의 상태를 대출 중으로 변경하시겠습니까?')){
+// 					$(this).addClass('disabled');
+// 					return;
+// 				} else{
+// 					return false;
+// 				}
+// 			});
+// 		}
+// 	}
 </script>
 
 </head>
@@ -64,7 +83,9 @@
 							</tr>
 							<tr>
 								<th class='text bold textDark'>출판일</th>
-								<td class='text textGrey'>2020.03.30</td>
+								<td class='text textGrey'>
+									<fmt:formatDate value="${rentDto.publishDate}" pattern="yyyy.MM.dd "/>
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -80,11 +101,13 @@
 						<tbody>
 							<tr>
 								<th class='text bold textDark'>방문일</th>
-								<td class='text textGrey'>2020.06.11</td>
+								<td class='text textGrey'>
+									<fmt:formatDate value="${rentDto.rentDate}" pattern="yyyy.MM.dd "/>
+								</td>
 							</tr>
 							<tr>
 								<th class='text bold textDark'>예약상태</th>
-								<td class='text textGrey'>예약</td>
+								<td class='text textGrey'>${rentDto.bookStatus}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -101,19 +124,19 @@
 						<tbody>
 							<tr>
 								<th class='text bold textDark'>이름</th>
-								<td class='text textGrey'>박상아</td>
+								<td class='text textGrey'>${rentDto.mname}</td>
 							</tr>
 							<tr>
 								<th class='text bold textDark'>이메일</th>
-								<td class='text textGrey'>sa@mail.com</td>
+								<td class='text textGrey'>${rentDto.email}</td>
 							</tr>
 							<tr>
 								<th class='text bold textDark'>연락처</th>
-								<td class='text textGrey'>010-1234-5678</td>
+								<td class='text textGrey'>${rentDto.phone}</td>
 							</tr>
 							<tr>
 								<th class='text bold textDark'>주소</th>
-								<td class='text textGrey'>서울시 강남구 강남대로 43</td>
+								<td class='text textGrey'>${rentDto.address}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -121,7 +144,9 @@
 				
 				<!-- 상세페이지 버튼 start -->
 				<div class='btnWrap viewBtns fs0 tCenter'>
-					<a href="#none" class='btn grey'>대출 중으로 변경</a>
+					<form action="./statusUpdateCtr.do" method="post">
+						<button type="submit" id='changeStatus' class='btn grey'>대출 중으로 변경</button>
+					</form>
 					<a href="./list.do" class='btn green'>뒤로</a>
 				</div>
 				<!-- //상세페이지 버튼 end -->

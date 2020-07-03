@@ -1,7 +1,6 @@
 package com.lightbrary.rent.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.lightbrary.rent.model.RentDto;
 
@@ -31,5 +30,6 @@ public interface RentService {
 	public int selectReserveCurPage(String searchOption, String keyword, int no);
 	// 예약 상세
 	public RentDto selectOneReserve(int no);
+	public int updateOneReserveStatus(RentDto rentDto); //상태변경
 	
 }

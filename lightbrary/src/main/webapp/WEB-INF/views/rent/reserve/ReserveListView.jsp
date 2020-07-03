@@ -38,7 +38,7 @@
 		
 		var url = '';
 		
-		url += './view.do?';
+		url += './detail.do?';
 		url += 'no=' + reserveNoObj.val();
 		url += '&keyword=' + keywordObj.val();
 		url += '&searchOption=' + searchOptionObj.val();
@@ -64,7 +64,7 @@
 			<div class='searchForm type2'>
 				
 				<!-- 셀렉트 검색 start -->
-				<form action="./list.do" id='selectSearch'>
+				<form action="./list.do" id='selectSearch' method="post">
 					<fieldset class="overH" style="height: 50px;">
 						<select id='searchOption' name='searchOption' class='searchSelect fLeft text'>
 							<c:choose>
@@ -244,7 +244,7 @@
 				<jsp:param value="${pagingInfo}" name="pagingMap"/>
 			</jsp:include>
 			
-			<form action="./list.do" id='pagingForm' method="get">
+			<form action="./list.do" id='pagingForm' method="post">
 				<input type="hidden" id='curPage' name='curPage' 
 					value="${pagingInfo.curPage}">
 			</form>

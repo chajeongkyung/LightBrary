@@ -127,7 +127,7 @@
 	<!-- 예약 상세 start -->
 	<select id="selectOneReserve" parameterType="int"
 		resultMap="rentResultMap">
-		SELECT R.NO AS NO, B.NAME AS NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH, B.PUBLISH_DATE AS PUBLISH_DATE
+		SELECT R.NO AS NO, B.NAME AS BOOK_NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH, B.PUBLISH_DATE AS PUBLISH_DATE
 		, M.NAME AS M_NAME, M.EMAIL AS EMAIL, M.PHONE AS PHONE, M.ADDRESS AS ADDRESS,
 		(SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS
 		, R.RESERVE_DATE, R.RENT_DATE, R.RETURN_DATE
@@ -140,5 +140,14 @@
 		AND R.NO = #{no}
 	</select>
 	<!-- //예약 상세 end -->
+	
+	<!-- 예약 상세에서 상태 변경 start -->
+	<update id="updateOneReserveStatus" parameterType="rentDto">
+		UPDATE BOOK
+		SET
+		STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='보관')
+		WHERE NO = #{bookNo}
+	</update>
+	<!-- //예약 상세에서 상태 변경 end -->
 	
 </mapper>

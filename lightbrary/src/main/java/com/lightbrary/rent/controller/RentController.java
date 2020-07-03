@@ -157,21 +157,38 @@ public class RentController {
 	}
 	
 	// 예약 상세
-	@RequestMapping(value = "/rent/reserve/view.do"
+	@RequestMapping(value = "/rent/reserve/detail.do"
 		, method = RequestMethod.GET)
 	public String reserveView(int no, String searchOption,
 			String keyword, Model model) {
-		log.info("예약 도서 상세 - " + no + "\n" + searchOption
-				+ "\n" + keyword);
-		
+		log.info("예약 도서 상세 - " + no + "\n" + "검색옵션 : " + searchOption
+				+ "\n" + "검색문장" + keyword);
 		
 		RentDto rentDto = rentService.selectOneReserve(no);
+		
+		System.out.println(rentDto.toString());
 		
 		model.addAttribute("rentDto", rentDto);
 		model.addAttribute("searchOption", searchOption);
 		model.addAttribute("keyword", keyword);
 		
 		return "rent/reserve/ReserveDetailView";
+	}
+	
+	// 예약 상태 변경
+	@RequestMapping(value = "/rent/reserve/statusUpdateCtr.do"
+			, method = RequestMethod.POST)
+	public String reserveStatusUpdateCtr(RentDto rentDto, Model model) {
+		log.info("예약 상태 변경 : ", rentDto.toString());
+		
+		try {
+			rentService.updateOneReserveStatus(rentDto);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "redirect:/rent/reserve/list.do";
 	}
 	
 }
