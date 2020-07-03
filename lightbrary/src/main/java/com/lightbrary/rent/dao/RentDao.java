@@ -10,11 +10,12 @@ public interface RentDao {
 			대출
 	*******************/
 	
-	// 대출 목록
-	public List<RentDto> rentSelectList(String searchOption, String keyword, int start, int end);
-	public int rentSelectTotalCount(String searchOption, String keyword);
-	public int rentSelectCurPage(String searchOption, String keyword, int no);
-	
+	// 예약 목록
+	public List<RentDto> selectRent(String searchOption, String keyword, int start, int end);
+	public int totalCountRent(String searchOption, String keyword);
+	public int selectRentCurPage(String searchOption, String keyword, int no);
+	// 대출 상세
+	public RentDto selectOneRent(int no);
 	
 	/*******************
 			예약

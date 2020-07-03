@@ -22,10 +22,31 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('#nav').addClass('active');
+		// depth1 네비
 		$('#depth1Ul > li:nth-child(2)').addClass('active');
-		$('.depth2Ul > li:nth-child(1)').addClass('active');
+		// depth2 네비
+		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(1)').addClass('active');
 	});
+	
+	// 상세페이지로 이동
+	function listOnePageFnc(clickObj){	
+		var reserveNoObj = '';
+		var keywordObj = $('#keyword');
+		var searchOptionObj = $('#searchOption');
+		
+		reserveNoObj = $(clickObj).parent().parent().find('input[type="hidden"]');
+		
+		var url = '';
+		
+		url += './detail.do?';
+		url += 'no=' + reserveNoObj.val();
+		url += '&keyword=' + keywordObj.val();
+		url += '&searchOption=' + searchOptionObj.val();
+		
+		location.href = url;
+	
+		return false;
+	}
 </script>
 
 </head>
@@ -42,22 +63,78 @@
 			<!-- 검색폼 버전2 start -->
 			<div class='searchForm type2'>
 				
+				<!-- 검색폼 버전2 start -->
+			<div class='searchForm type2'>
+				
 				<!-- 셀렉트 검색 start -->
-				<form action="" id='selectSearch'>
+				<form action="./list.do" id='selectSearch' method="post">
 					<fieldset class="overH" style="height: 50px;">
-						<select class='searchSelect fLeft text'>
-							<option value="도서 제목">도서 제목</option>
-							<option value="저자">저자</option>
-							<option value="회원명">회원명</option>
-							<option value="이메일">이메일</option>
+						<select id='searchOption' name='searchOption' class='searchSelect fLeft text'>
+							<c:choose>
+								<c:when test="${searchMap.searchOption eq 'all'}">
+									<option value="all" selected="selected">전체 검색</option>
+									<option value="bookName">도서 제목</option>
+									<option value="writer">저자</option>
+									<option value="publish">출판사</option>
+									<option value="mname">회원명</option>
+									<option value="email">이메일</option>
+								</c:when>
+								
+								<c:when test="${searchMap.searchOption eq 'bookName'}">
+									<option value="all">전체 검색</option>
+									<option value="bookName" selected="selected">도서 제목</option>
+									<option value="writer">저자</option>
+									<option value="publish">출판사</option>
+									<option value="mname">회원명</option>
+									<option value="email">이메일</option>
+								</c:when>
+					
+								<c:when test="${searchMap.searchOption eq 'writer'}">
+									<option value="all">전체 검색</option>
+									<option value="bookName">도서 제목</option>
+									<option value="writer" selected="selected">저자</option>
+									<option value="publish">출판사</option>
+									<option value="mname">회원명</option>
+									<option value="email">이메일</option>
+								</c:when>
+								
+								<c:when test="${searchMap.searchOption eq 'publish'}">
+									<option value="all">전체 검색</option>
+									<option value="bookName">도서 제목</option>
+									<option value="writer">저자</option>
+									<option value="publish" selected="selected">출판사</option>
+									<option value="mname">회원명</option>
+									<option value="email">이메일</option>
+								</c:when>
+								
+								<c:when test="${searchMap.searchOption eq 'mname'}">
+									<option value="all">전체 검색</option>
+									<option value="bookName">도서 제목</option>
+									<option value="writer">저자</option>
+									<option value="mname" selected="selected">회원명</option>
+									<option value="email">이메일</option>
+								</c:when>
+								
+								<c:when test="${searchMap.searchOption eq 'email'}">
+									<option value="all">전체 검색</option>
+									<option value="bookName">도서 제목</option>
+									<option value="writer">저자</option>
+									<option value="publish">출판사</option>
+									<option value="mname">회원명</option>
+									<option value="email" selected="selected">이메일</option>
+								</c:when>
+							</c:choose>
 						</select>
-						<input type="text" class='searchInput fLeft'>
+						<input type="text" id='keyword' class='searchInput fLeft' name="keyword" value="${searchMap.keyword}">
 						<div class='btnWrap fs0 tCenter fRight'>
 							<input type="submit" class='btn green' value="검색">
 						</div>
 					</fieldset>
 				</form>
 				<!-- //셀렉트 검색 end -->
+				
+			</div>
+			<!-- //검색폼 버전2 end -->
 				
 			</div>
 			<!-- //검색폼 버전2 end -->
@@ -93,8 +170,8 @@
 							<col width="85px">
 							<col width="120px">
 							<col width="80px">
-							<col width="192px">
-							<col width="100px">
+							<col width="202px">
+							<col width="90px">
 							<col width="111px">
 						</colgroup>
 						<thead>
@@ -117,6 +194,15 @@
 							</tr>
 						</thead>
 						<tbody>
+							<c:if test="${empty rentList}">
+								<!--  -->
+								<tr>
+									<td colspan="8" style="text-align: center; padding: 56px 0px;">
+										<span style="font-size: 16px; color: #686868;">대출 도서가 없습니다.</span>
+									</td>
+								</tr>
+								<!--  -->	
+							</c:if>
 							<!--  -->
 							<c:forEach var="rentDto" items="${rentList}">
 								<c:choose>
@@ -128,6 +214,7 @@
 									</c:otherwise>
 								</c:choose>
 									<td class='checkboxTd'>
+										<input type="hidden" value='${rentDto.no}' class='noObj'>
 										<!-- 기본 체크박스 start -->
 										<div class='checkbox type2 fLeft'>
 											<c:choose>
@@ -144,10 +231,12 @@
 										<!-- //기본 체크박스 end -->
 									</td>
 									<td>
-										<a href="#none" class='ellipsis'> ${rentDto.bookName}</a>
+										<a href="#none" onclick="listOnePageFnc(this);" class='ellipsis'>
+											${rentDto.bookName}
+										</a>
 									</td>
 									<td>
-										<span class='ellipsis'> ${rentDto.writer}</span>
+										<span class='ellipsis'>${rentDto.writer}</span>
 									</td>
 									<td>
 										<span class='ellipsis'>${rentDto.publish}</span>
@@ -176,7 +265,7 @@
 												<span class='textGreen'>${rentDto.bookStatus}</span>
 											</c:when>
 											<c:otherwise>
-											 	<span>${rentDto.bookStatus}</span>
+											 	<span>반납완료</span>
 											</c:otherwise>
 										</c:choose>
 									</td>
@@ -195,7 +284,14 @@
 			</div>
 			<!-- //테이블 목록 end -->
 			
-			<jsp:include page="/WEB-INF/views/common/paging.jsp" />
+			<jsp:include page="/WEB-INF/views/common/paging.jsp">
+				<jsp:param value="${pagingInfo}" name="pagingMap"/>
+			</jsp:include>
+			
+			<form action="./list.do" id='pagingForm' method="post">
+				<input type="hidden" id='curPage' name='curPage' 
+					value="${pagingInfo.curPage}">
+			</form>
 			
 		</div>
 		<!-- //컨테이너 end -->

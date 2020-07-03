@@ -11,12 +11,13 @@ public interface RentService {
 	*******************/
 	
 	// 대출 목록
-	public List<RentDto> rentSelectList(String searchOption, 
+	public List<RentDto> selectRent(String searchOption, 
 			String keyword, int start, int end);
-	public int rentSelectTotalCount(String searchOption
+	public int totalCountRent(String searchOption
 			, String keyword);
-	public int rentSelectCurPage(String searchOption, String keyword, int no);
-	
+	public int selectRentCurPage(String searchOption, String keyword, int no);
+	// 예약 상세
+	public RentDto selectOneRent(int no);
 	
 	/*******************
 			예약

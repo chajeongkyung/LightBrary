@@ -28,8 +28,8 @@
 		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(3)').addClass('active');
 	});
 	
-	function listOnePageFnc(clickObj){
-		
+	// 상세페이지로 이동
+	function listOnePageFnc(clickObj){	
 		var reserveNoObj = '';
 		var keywordObj = $('#keyword');
 		var searchOptionObj = $('#searchOption');
@@ -150,8 +150,8 @@
 							<col width="85px">
 							<col width="120px">
 							<col width="80px">
-							<col width="192px">
-							<col width="100px">
+							<col width="202px">
+							<col width="90px">
 							<col width="111px">
 						</colgroup>
 						<thead>

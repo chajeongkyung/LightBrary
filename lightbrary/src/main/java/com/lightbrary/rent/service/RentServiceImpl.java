@@ -25,28 +25,38 @@ public class RentServiceImpl implements RentService{
 			대출
 	*******************/
 
-	// 대출
+	// 대출 목록 출력
 	@Override
-	public List<RentDto> rentSelectList(String searchOption, String keyword, int start, int end) {
+	public List<RentDto> selectRent(String searchOption, String keyword, int start, int end) {
 		// TODO Auto-generated method stub
-		List<RentDto> rentList = 
-				rentDao.rentSelectList(searchOption, keyword
+		List<RentDto> reserveList = 
+				rentDao.selectRent(searchOption, keyword
 					, start, end);
 		
-		return rentList;
+		return reserveList;
 	}
 
+	// 대출 목록 총 갯수
 	@Override
-	public int rentSelectTotalCount(String searchOption, String keyword) {
+	public int totalCountRent(String searchOption, String keyword) {
 		// TODO Auto-generated method stub
-		return rentDao.rentSelectTotalCount(searchOption
+		return rentDao.totalCountRent(searchOption
 				, keyword);
 	}
 
+	// 대출 목록 현재 페이지
 	@Override
-	public int rentSelectCurPage(String searchOption, String keyword, int no) {
+	public int selectRentCurPage(String searchOption, String keyword, int no) {
 		// TODO Auto-generated method stub
-		return rentDao.rentSelectCurPage(searchOption, keyword, no);
+		return rentDao.selectRentCurPage(searchOption, keyword, no);
+	}
+	
+	// 대출 상세
+	@Override
+	public RentDto selectOneRent(int no) {
+		// TODO Auto-generated method stub
+		
+		return rentDao.selectOneRent(no);
 	}
 	
 	
@@ -88,6 +98,7 @@ public class RentServiceImpl implements RentService{
 		return rentDao.selectOneReserve(no);
 	}
 
+	// 예약 상세에서 상태 변경
 	@Override
 	public int updateOneReserveStatus(RentDto rentDto) {
 		// TODO Auto-generated method stub

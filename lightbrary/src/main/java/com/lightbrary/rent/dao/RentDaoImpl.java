@@ -24,8 +24,9 @@ public class RentDaoImpl implements RentDao{
 			대출
 	*******************/
 
+	// 대출 목록 출력
 	@Override
-	public List<RentDto> rentSelectList(String searchOption, String keyword, int start, int end) {
+	public List<RentDto> selectRent(String searchOption, String keyword, int start, int end) {
 		// TODO Auto-generated method stub
 
 		Map<String, Object> map = new HashMap<>();
@@ -34,27 +35,29 @@ public class RentDaoImpl implements RentDao{
 		map.put("start", start);
 		map.put("end", end);
 		
-		List<RentDto> rentList = 
-				sqlSession.selectList(namespace + "rentSelectList"
+		List<RentDto> reserveList = 
+				sqlSession.selectList(namespace + "selectRent"
 				, map);
 		
-		return rentList;
+		return reserveList;
 	}
 
+	// 대출 목록 총 갯수
 	@Override
-	public int rentSelectTotalCount(String searchOption, String keyword) {
+	public int totalCountRent(String searchOption, String keyword) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> paramMap = new HashMap<String, Object>();
 		
 		paramMap.put("searchOption", searchOption);
 		paramMap.put("keyword", keyword);
 		
-		return sqlSession.selectOne(namespace + "rentSelectTotalCount"
+		return sqlSession.selectOne(namespace + "totalCountRent"
 				, paramMap);
 	}
 
+	// 대출 목록 현재 페이지
 	@Override
-	public int rentSelectCurPage(String searchOption, String keyword, int no) {
+	public int selectRentCurPage(String searchOption, String keyword, int no) {
 		// TODO Auto-generated method stub
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		
@@ -62,7 +65,14 @@ public class RentDaoImpl implements RentDao{
 		paramMap.put("keyword", keyword);
 		paramMap.put("no", no);
 		
-		return sqlSession.selectOne(namespace + "rentSelectCurPage", paramMap);
+		return sqlSession.selectOne(namespace + "selectRentCurPage", paramMap);
+	}
+	
+	// 대출 상세
+	@Override
+	public RentDto selectOneRent(int no) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + "selectOneRent", no);
 	}
 	
 	
@@ -121,6 +131,7 @@ public class RentDaoImpl implements RentDao{
 		return sqlSession.selectOne(namespace + "selectOneReserve", no);
 	}
 
+	// 예약 상세에서 상태 변경
 	@Override
 	public int updateOneReserveStatus(RentDto rentDto) {
 		// TODO Auto-generated method stub

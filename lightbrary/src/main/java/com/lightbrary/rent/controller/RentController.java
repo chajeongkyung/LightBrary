@@ -38,59 +38,69 @@ public class RentController {
 			, Model model) {
 		log.info("대출현황목록 : 현재페이지 : " + curPage + " : " 
 			+ searchOption + " : " + keyword);
-		// 화면의 form의 이름을 마바티스에 편하게 맞추기 위한 로직
-		if("name".equals(searchOption)) {
-			searchOption = "mname";
-		}
 	
-		
-		// 페이징을 위한 전체 회원목록 갯수
+		System.out.println();
+		// 전체 예약 도서 갯수
 		int totalCount = 
-			rentService.rentSelectTotalCount(
+			rentService.totalCountRent(
 				searchOption, keyword
 			);
 		
 		
-//		이전 체이지로 회원으이 번호가 명확하게 나온경우
-//		자신의 curPage 찾는 로직
+//				이전 페이지로 회원으이 번호가 명확하게 나온경우
+//				자신의 curPage 찾는 로직
 		if(no != 0) {
 			curPage
-				= rentService.rentSelectCurPage(searchOption, keyword, no);
+				= rentService.selectRentCurPage(searchOption, keyword, no);
 		}
 		
 		
-		Paging rentPaging = new Paging(totalCount, curPage);
-		int start = rentPaging.getPageBegin();
-		int end = rentPaging.getPageEnd();
+		Paging pagingInfo = new Paging(totalCount, curPage);
+		int start = pagingInfo.getPageBegin();
+		int end = pagingInfo.getPageEnd();
 		
 		List<RentDto> rentList = 
-			rentService.rentSelectList(searchOption, keyword
+			rentService.selectRent(searchOption, keyword
 				, start, end);
-
-		// 화면의 form의 이름을 맞추기 위한 작업
-		if("mname".equals(searchOption)) {
-			searchOption = "name";
-		}
 		
 		// 검색
-		HashMap<String, Object> searchMap 
-			= new HashMap<String, Object>();
+		HashMap<String, Object> searchMap = new HashMap<String, Object>();
 		searchMap.put("searchOption", searchOption);
 		searchMap.put("keyword", keyword);
 		
 		// 페이징
 		Map<String, Object> pagingMap = new HashMap<>();
 		pagingMap.put("totalCount", totalCount);
-		pagingMap.put("rentPaging", rentPaging);
+		pagingMap.put("pagingInfo", pagingInfo);
 
 		model.addAttribute("rentList", rentList);
 		model.addAttribute("pagingMap", pagingMap);
+		model.addAttribute("pagingInfo", pagingInfo);
 		model.addAttribute("searchMap", searchMap);
 		
 		System.out.println("검색 문자 : " + keyword);
 		System.out.println("검색 옵션 : " + searchOption);
 		
 		return "rent/RentListView";
+	}
+	
+	// 대출 상세
+	@RequestMapping(value = "/rent/detail.do"
+		, method = RequestMethod.GET)
+	public String rentDetail(int no, String searchOption,
+			String keyword, Model model) {
+		log.info("대출 도서 상세 - " + no + "\n" + "검색옵션 : " + searchOption
+				+ "\n" + "검색문장" + keyword);
+		
+		RentDto rentDto = rentService.selectOneRent(no);
+		
+		System.out.println(rentDto.toString());
+		
+		model.addAttribute("rentDto", rentDto);
+		model.addAttribute("searchOption", searchOption);
+		model.addAttribute("keyword", keyword);
+		
+		return "rent/RentDetailView";
 	}
 	
 	
@@ -166,8 +176,6 @@ public class RentController {
 		
 		RentDto rentDto = rentService.selectOneReserve(no);
 		
-		System.out.println(rentDto.toString());
-		
 		model.addAttribute("rentDto", rentDto);
 		model.addAttribute("searchOption", searchOption);
 		model.addAttribute("keyword", keyword);
@@ -179,7 +187,7 @@ public class RentController {
 	@RequestMapping(value = "/rent/reserve/statusUpdateCtr.do"
 			, method = RequestMethod.POST)
 	public String reserveStatusUpdateCtr(RentDto rentDto, Model model) {
-		log.info("예약 상태 변경 : ", rentDto.toString());
+		log.info("대출 중으로 변경된 도서 번호 : {}", rentDto.getBookNo());
 		
 		try {
 			rentService.updateOneReserveStatus(rentDto);
