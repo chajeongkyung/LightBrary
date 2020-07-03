@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!-- 헤더 start -->
 <header>
@@ -15,6 +16,7 @@
 		</h1>
 		<ul id='headerOptions' class='fs0'>
 			<!-- 회원으로 로그인 start -->
+			<c:if test="${memberDto.gradeCode}==0">
 			<li id='hBasket'>
 				<a href="#none">
 					<img alt="바구니" src="<%=request.getContextPath()%>/resources/img/icon-cart.png">
@@ -22,7 +24,7 @@
 			</li>
 			<li>
 				<a href="#none" id='myPageClick' class='hOptionsText'>
-					<span>박상아</span> 님
+					<span>${memberDto.name}</span> 님
 					<img alt="화살표" src="<%=request.getContextPath()%>/resources/img/arrow.png" style="vertical-align: 2px">
 				</a>
 				<div id='myPageDrop' style="display:none">
@@ -50,15 +52,17 @@
 				</div>
 			</li>
 			<!-- //회원으로 로그인 end -->
-			
+			</c:if>
 			<!-- 관리자로 로그인 start -->
-<!-- 					<li> -->
-<!-- 						<a href="#none" class='hOptionsText'>관리자</a> -->
-<!-- 					</li> -->
+			<c:if test="${memberDto.gradeCode}==1">
+					<li>
+						<a href="#none" class='hOptionsText'>관리자</a>
+					</li>
+			</c:if>
 			<!-- //관리자로 로그인 end -->
 			
 			<li>
-				<a href="#" id='logout' class='hOptionsText'>로그아웃</a>
+				<a href="#<%=request.getContextPath()%>/logout.do" id='logout' class='hOptionsText'>로그아웃</a>
 			</li>
 		</ul>
 	</div>

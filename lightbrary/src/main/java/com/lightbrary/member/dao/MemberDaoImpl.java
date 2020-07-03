@@ -53,14 +53,14 @@ public class MemberDaoImpl implements MemberDao{
 	}
 
 	@Override
-	public MemberDto existMember(String email, String password) {
+	public MemberDto memberExist(String email, String password) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> paramMap = new HashMap<>();
 		
 		paramMap.put("email", email);
 		paramMap.put("password", password);
 		
-		MemberDto memberDto = sqlSession.selectOne(namespace + "existMember", paramMap);
+		MemberDto memberDto = sqlSession.selectOne(namespace + "memberExist", paramMap);
 		
 		return memberDto;
 	}
@@ -69,6 +69,25 @@ public class MemberDaoImpl implements MemberDao{
 	public int checkEmail(String email) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace + "checkEmail", email);
+	}
+
+	@Override
+	public MemberDto findEmail(String userName, String phone) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> paramMap = new HashMap<>();
+		
+		paramMap.put("userName", userName);
+		paramMap.put("phone", phone);
+		
+		MemberDto memberDto = sqlSession.selectOne(namespace + "findEmail", paramMap);
+		
+		return memberDto;
+	}
+
+	@Override
+	public String findPassword(String email) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + "findPassword", email);
 	}
 
 }

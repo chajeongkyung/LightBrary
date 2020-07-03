@@ -58,9 +58,9 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public MemberDto existMember(String email, String password) {
+	public MemberDto memberExist(String email, String password) {
 		// TODO Auto-generated method stub
-		MemberDto memberDto = memberDao.existMember(email, password);
+		MemberDto memberDto = memberDao.memberExist(email, password);
 		
 		return memberDto;
 	}
@@ -72,6 +72,20 @@ public class MemberServiceImpl implements MemberService{
 		
 		resultNum = memberDao.checkEmail(email);
 		return resultNum;
+	}
+
+	@Override
+	public MemberDto findEmail(String userName, String phone) {
+		// TODO Auto-generated method stub
+		MemberDto memberDto = memberDao.findEmail(userName, phone);
+		
+		return memberDto;
+	}
+
+	@Override
+	public String findPassword(String email) {
+		// TODO Auto-generated method stub
+		return memberDao.findPassword(email);
 	}
 
 	

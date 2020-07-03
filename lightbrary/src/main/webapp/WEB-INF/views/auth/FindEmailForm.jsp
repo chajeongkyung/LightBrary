@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>로그인</title>
+<title>이메일 찾기</title>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
@@ -18,30 +18,31 @@
 <body>
 
 	<div id='wrap'>
-		<jsp:include page="/WEB-INF/views/Header.jsp" />
+		<jsp:include page="/WEB-INF/views/Header_temp.jsp" />
 	
 		<!-- 컨테이너 start -->
 			<div id='container'>
-				<h2 id='pageTitle'>로그인</h2>
-					<form action='./loginCtr.do' id="loginCtrForm" method='post' class='infoForm'>
+				<h2 id='pageTitle'>이메일 찾기</h2>
+					<form action='./findEmailCtr.do' id="findEmailCtrForm" method='post' class='infoForm'>
 						<div class='infoInputWrap'>
-							<input type="text" class='infoInput infoEmail' id="email" name="email" placeholder="이메일" value="wgwg0753@naver.com">
-							<input type="password" style="margin-top: 20px;" class='infoInput infoPassword'
-								 id="password" name="password" placeholder="비밀번호" value="Qwer123*">
-								<p style="margin-top: 20px;" id="alertNoAccountMsg"></p>
-								<div style="margin-top: 20px;">	
-									<a href="./findEmail.do" class="text bold">이메일 찾기 | </a>
-									<a href="./findPassword.do" class="text bold">비밀번호 찾기</a>
+							<input type="text" class='infoInput infoName' id="userName" name="userName" placeholder="성함">
+							<input type="text" style="margin-top: 20px;" class='infoInput infoPhone'
+								 id="phone" name="phone" placeholder="연락처">
+								<p style="margin-bottom: 10px;" id="alertNoAccountMsg"></p>
+								<div class="text" style="margin-top: 10px;">	
+									고객님께서 회원가입 시 입력한 성함과 연락처를 입력해주시면, 이에 해당하는
+									이메일 주소를 찾아드립니다.
 								</div>
 						</div>
 						<div class='btnWrap tCenter' style="margin-top: 30px;">
-							<input type="button" onclick="checkAccountFnc();" class='btn green' value="로그인">
-							<a href="./member/add.do" class="subBtn text bold">회원가입</a>
+							<input type="button" onclick="checkAccountFnc();" class='btn green' value="입력">
+							<a href="./login.do" class="subBtn text bold">로그인으로 돌아가기</a>
 						</div>
 					</form>
 			</div>
 		<!-- //컨테이너 end -->
-		<jsp:include page="/WEB-INF/views/Tail.jsp" />
+		<jsp:include page="/WEB-INF/views/Tail_temp.jsp" />
+		
 	</div>
 	
 
@@ -51,27 +52,27 @@
 	
 	function checkAccountFnc() {
 
-		var emailObj = $('#email').val();
-		var passwordObj = $('#password').val();
+		var nameObj = $('#userName').val();
+		var phoneObj = $('#phone').val();
 
 		$.ajax({
-			url : "/lightbrary/member/checkAccount.do",
+			url : "/lightbrary/findEmailCtr.do",
 			type : "post",
 			data : {
-				"email": emailObj,
-				"password": passwordObj
+				"userName": nameObj,
+				"phone": phoneObj
 			},
 			success : function(data) {
 				console.log("null=계정없음, !null=계정있음 "+ data);							
 				
  				if (data == "") {
- 						$('#alertNoAccountMsg').html("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다. 다시 확인해 주세요.");
+ 						$('#alertNoAccountMsg').html("가입되지 않은 정보입니다. 다시 확인해 주세요.");
  						$("#alertNoAccountMsg").css("color", "red");
- 						$("#alertNoAccountMsg").attr('class', 'text bold');
+ 						$("#alertNoAccountMsg").attr('class', 'text');
  					} else{
- 						$('#alertNoAccountMsg').html("");
  						console.log(data);
- 						$('#loginCtrForm').submit();
+ 						$('#alertNoAccountMsg').html("");
+ 						alert("회원님의 이메일 주소는 \"" + data.email + "\" 입니다.");
  					}
 				}, error : function() {
 						console.log("실패");

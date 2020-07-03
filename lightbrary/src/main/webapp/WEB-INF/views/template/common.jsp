@@ -19,7 +19,7 @@
 <body>
 
 	<div id='wrap'>
-		<jsp:include page="/WEB-INF/views/Header.jsp" />
+		<jsp:include page="/WEB-INF/views/Header_temp.jsp" />
 		
 		<!-- 컨테이너 start -->
 		<div id='container'>

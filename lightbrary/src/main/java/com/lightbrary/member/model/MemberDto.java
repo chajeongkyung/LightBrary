@@ -34,6 +34,26 @@ public class MemberDto {
 		this.delFlag = delFlag;
 	}
 
+
+	public MemberDto(int no, int gradeCode, String email, String password, String name, String phone, String address,
+			Date createdDate) {
+		super();
+		this.no = no;
+		this.gradeCode = gradeCode;
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.phone = phone;
+		this.address = address;
+		this.createdDate = createdDate;
+	}
+
+	public MemberDto(int no, String email) {
+		super();
+		this.no = no;
+		this.email = email;
+	}
+
 	public int getNo() {
 		return no;
 	}

@@ -40,12 +40,26 @@
 		WHERE EMAIL = #{email}
 	</select>
 	
-	<select id="existMember" parameterType="map" 
+	<select id="memberExist" parameterType="map" 
 		resultMap="memberResultMap">
-		SELECT *
+		SELECT NO, GRADE_CODE, NAME, EMAIL, PHONE, ADDRESS, CREATED_DATE, PASSWORD
 		FROM MEMBER
 		WHERE EMAIL = #{email}
 		AND PASSWORD = #{password}
+	</select>
+	
+	<select id="findEmail" parameterType="map" 
+		resultMap="memberResultMap">
+		SELECT NO, EMAIL
+		FROM MEMBER
+		WHERE NAME = #{userName}
+		AND PHONE = #{phone}
+	</select>
+	
+	<select id="findPassword" parameterType="String" resultType="String">
+		SELECT PASSWORD
+		FROM MEMBER
+		WHERE EMAIL = #{email}
 	</select>
 
 </mapper>
