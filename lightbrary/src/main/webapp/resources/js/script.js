@@ -56,6 +56,23 @@ $(document).ready(function() {
 		e.preventDefault();
 	});
 	
+	//jquery버전 조정
+	$.browser = {};
+	(function () {
+	    $.browser.msie = false;
+	    $.browser.version = 0;
+	    if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+	        $.browser.msie = true;
+	        $.browser.version = RegExp.$1;
+	    }
+	})();
+	
+	//달력표시
+	$(".datePicker").datepicker({
+		dateFormat: "yy/mm/dd",
+		changeYear: true,
+		showButtonPanel: true
+	});
 }); 
 
 function headerScroll(){

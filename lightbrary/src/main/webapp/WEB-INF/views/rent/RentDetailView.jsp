@@ -109,7 +109,7 @@
 					</div>
 					<!--  -->
 					<div class='detailTable'>
-						<p class='text bold textDark'>예약정보</p>
+						<p class='text bold textDark'>대출정보</p>
 						<table>
 							<colgroup>
 								<col width="214px">
@@ -117,13 +117,13 @@
 							</colgroup>
 							<tbody>
 								<tr>
-									<th class='text bold textDark'>방문일</th>
+									<th class='text bold textDark'>반납예정일</th>
 									<td class='text textGrey'>
-										<fmt:formatDate value="${rentDto.rentDate}" pattern="yyyy.MM.dd "/>
+										<fmt:formatDate value="${rentDto.expireDate}" pattern="yyyy.MM.dd "/>
 									</td>
 								</tr>
 								<tr>
-									<th class='text bold textDark'>예약상태</th>
+									<th class='text bold textDark'>반납여부</th>
 									<td class='text textGrey'>
 										${rentDto.bookStatus}
 									</td>
@@ -164,8 +164,8 @@
 					<!-- 상세페이지 버튼 start -->
 					<div class='btnWrap viewBtns fs0 tCenter'>
 						<input type="hidden" value="${rentDto.bookNo}" name="bookNo">
-						<button type="submit" id='changeStatus' class='btn grey'>대출 중으로 변경</button>
-						
+						<button type="submit" id='changeStatus' class='btn grey'>반납 처리</button>
+						<button type="button" class='btn grey'>반납 안내 이메일 발송</button>
 						<a href="./list.do" class='btn green'>뒤로</a>
 					</div>
 					<!-- //상세페이지 버튼 end -->

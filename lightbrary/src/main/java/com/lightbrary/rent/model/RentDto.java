@@ -13,6 +13,7 @@ public class RentDto {
 	private String sendFlag;
 	private String delFlag;
 	
+	private String bookCategoryCode;
 	private String bookName;
 	private String writer;
 	private String publish;
@@ -30,11 +31,9 @@ public class RentDto {
 		// TODO Auto-generated constructor stub
 	}
 
-	
-
 	public RentDto(int no, int memberNo, int bookNo, Date reserveDate, Date rentDate, Date expireDate, Date returnDate,
-			String sendFlag, String delFlag, String bookName, String writer, String publish, Date publishDate,
-			String mname, String email, String phone, String address, String bookStatus) {
+			String sendFlag, String delFlag, String bookCategoryCode, String bookName, String writer, String publish,
+			Date publishDate, String mname, String email, String phone, String address, String bookStatus) {
 		super();
 		this.no = no;
 		this.memberNo = memberNo;
@@ -45,6 +44,7 @@ public class RentDto {
 		this.returnDate = returnDate;
 		this.sendFlag = sendFlag;
 		this.delFlag = delFlag;
+		this.bookCategoryCode = bookCategoryCode;
 		this.bookName = bookName;
 		this.writer = writer;
 		this.publish = publish;
@@ -55,8 +55,6 @@ public class RentDto {
 		this.address = address;
 		this.bookStatus = bookStatus;
 	}
-
-
 
 	public int getNo() {
 		return no;
@@ -128,6 +126,14 @@ public class RentDto {
 
 	public void setDelFlag(String delFlag) {
 		this.delFlag = delFlag;
+	}
+
+	public String getBookCategoryCode() {
+		return bookCategoryCode;
+	}
+
+	public void setBookCategoryCode(String bookCategoryCode) {
+		this.bookCategoryCode = bookCategoryCode;
 	}
 
 	public String getBookName() {
@@ -206,9 +212,10 @@ public class RentDto {
 	public String toString() {
 		return "RentDto [no=" + no + ", memberNo=" + memberNo + ", bookNo=" + bookNo + ", reserveDate=" + reserveDate
 				+ ", rentDate=" + rentDate + ", expireDate=" + expireDate + ", returnDate=" + returnDate + ", sendFlag="
-				+ sendFlag + ", delFlag=" + delFlag + ", bookName=" + bookName + ", writer=" + writer + ", publish="
-				+ publish + ", publishDate=" + publishDate + ", mname=" + mname + ", email=" + email + ", phone="
-				+ phone + ", address=" + address + ", bookStatus=" + bookStatus + "]";
+				+ sendFlag + ", delFlag=" + delFlag + ", bookCategoryCode=" + bookCategoryCode + ", bookName="
+				+ bookName + ", writer=" + writer + ", publish=" + publish + ", publishDate=" + publishDate + ", mname="
+				+ mname + ", email=" + email + ", phone=" + phone + ", address=" + address + ", bookStatus="
+				+ bookStatus + "]";
 	}
 	
 }
