@@ -47,7 +47,7 @@ public class BookDaoImpl implements BookDao{
 	@Override
 	public int updateOneBook(BookDto bookDto) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.update(namespace + "updateOneBook", bookDto);
 	}
 
 	@Override
@@ -57,9 +57,9 @@ public class BookDaoImpl implements BookDao{
 	}
 
 	@Override
-	public int deleteOneBook(BookDto bookDto) {
+	public int deleteOneBook(int no) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.update(namespace + "deleteOneBook", no);
 	}
 
 	@Override

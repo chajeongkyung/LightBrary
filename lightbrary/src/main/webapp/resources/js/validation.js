@@ -45,4 +45,13 @@
 		return isValidFormat(input, format);
 	}
 
+	function isValidDateRange(startDate, endDate){
+		if(isEmpty(startDate) || isEmpty(endDate)){
+			return true;
+		} else if (startDate <= endDate){
+			return true;
+		} else{
+			return false;
+		}
+	}
 	

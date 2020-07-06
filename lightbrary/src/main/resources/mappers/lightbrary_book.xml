@@ -128,4 +128,22 @@
 		VALUE(NO, ORIGINAL_FILE_NAME, STORED_FILE_NAME, FILE_SIZE, CREATED_DATE)
 		VALUES(#{no}, #{originalFileName}, #{storedFileName}, #{fileSize}, SYSDATE)
 	</insert>
+	
+	<update id="updateOneBook" parameterType="bookDto">
+		UPDATE BOOK
+		SET CATEGORY_CODE = #{categoryCode},
+			STATUS_CODE = #{statusCode},
+			IMAGE_NO = #{imageNo},
+			NAME = #{name},
+			PUBLISH = #{publish},
+			PUBLISH_DATE = #{publishDate},
+			WRITER = #{writer}
+		WHERE NO=#{no}
+	</update>
+	
+	<update id="deleteOneBook" parameterType="int">
+		UPDATE BOOK
+		SET DEL_FLAG = 'Y'
+		WHERE NO=#{no}
+	</update>
 </mapper>

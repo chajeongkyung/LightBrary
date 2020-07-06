@@ -17,4 +17,6 @@ public interface BookService {
 	public BookDto selectOneBook(int no);
 	public BookImageDto selectOneImage(int no);
 	public void insertOneBook(BookDto bookDto, MultipartHttpServletRequest request);
+	public int deleteOneBook(int no);
+	public int updateOneBook(BookDto bookDto, MultipartHttpServletRequest request);
 }

@@ -44,6 +44,11 @@
 	function moveListFnc(){
 		$('#bookListParamDto').submit();
 	}
+	
+	function moveUpdateFnc(){
+		$('#bookListParamDto').attr("action", "./update.do");
+		$('#bookListParamDto').submit();
+	}
 </script>
 
 </head>
@@ -88,7 +93,7 @@
 							<tr>
 								<th class='text bold textDark inputTh'>출판일</th>
 								<td class='text textGrey'>
-								<fmt:formatDate var="fommatedPublishDate" value="${bookDto.publishDate}" pattern="yyyy-MM-dd"/>
+								<fmt:formatDate var="fommatedPublishDate" value="${bookDto.publishDate}" pattern="yyyy/MM/dd"/>
 								${fommatedPublishDate}
 								</td>
 							</tr>
@@ -102,11 +107,12 @@
 				
 				<!-- 상세페이지 버튼 start -->
 				<div class='btnWrap viewBtns fs0 tCenter'>
-					<a href="#none" class='btn grey'>수정</a>
+					<a href="#none" id='updateBtn' onclick='moveUpdateFnc()' class='btn grey'>수정</a>
 					<a href="#none" id='listBtn' onclick='moveListFnc()' class='btn green'>목록</a>
 				</div>
 				
 				<form name="bookListParamDto" action="./list.do" id='bookListParamDto' method="post">
+					<input type="hidden" id="no" name="no" value="${bookDto.no}">
 					<input type="hidden" id='curPage' name='curPage' value="${bookListParamDto.curPage}">
 					<input type="hidden" id="name" name="name" value="${bookListParamDto.name}">
 					<input type="hidden" id="writer" name="writer" value="${bookListParamDto.writer}">

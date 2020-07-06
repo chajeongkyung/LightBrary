@@ -20,18 +20,13 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/bookCategorySelect.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/bookStatusSelect.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/validation.js"></script>
 
 <script type="text/javascript">
 	
 	$(function(){
 		bookCategorySelect();
 		bookStatusSelect();
-		
-		$(".datePicker").datepicker({
-			dateFormat: "yy/mm/dd",
-			changeYear: true,
-			showButtonPanel: true
-		});
 	});
 	
 	function bookStatusOnload(){
@@ -62,6 +57,14 @@
 		$('#no').val(obj);
 		$('#pagingForm').attr("action", "./detail.do");
 		$('#pagingForm').submit();
+	}
+	
+	function bookListParamDtoSubmit(){
+		if(isValidDateRange($('#publishDateStart').val(), $('#publishDateEnd').val())){
+			$('#bookListParamDto').submit();
+		} else{
+			alert('시작 날짜가 끝 날짜보다 클 수 없습니다.');
+		}
 	}
 </script>
 
@@ -134,7 +137,7 @@
 						<!-- //분류 셀렉트 박스 end -->
 					</fieldset>
 					<div class='btnWrap searchBtnWrap fs0 tCenter'>
-						<input type="submit" class='btn green' value="검색">
+						<input type="button" onclick="bookListParamDtoSubmit();" class='btn green' value="검색">
 					</div>
 				</form>
 			</div>
@@ -217,14 +220,14 @@
 				<form name="bookListParamDto" action="./list.do" id='pagingForm' method="post">
 					<input type="hidden" id='curPage' name='curPage' 
 						value="${bookListParamDto.curPage}">
-					<input type="hidden" id="name" name="name" value="${bookListParamDto.name}">
-					<input type="hidden" id="writer" name="writer" value="${bookListParamDto.writer}">
-					<input type="hidden" id="publish" name="publish" value="${bookListParamDto.publish}">
-					<input type="hidden" id="publishDateStart" name="publishDateStart" value="${bookListParamDto.publishDateStart}">
-					<input type="hidden" id="publishDateEnd" name="publishDateEnd" value="${bookListParamDto.publishDateEnd}">
-					<input type="hidden" id="bookCategory1" name="bookCategory1" value="${bookListParamDto.bookCategory1}">
-					<input type="hidden" id="bookCategory2" name="bookCategory2" value="${bookListParamDto.bookCategory2}">
-					<input type="hidden" id="bookCategory3" name="bookCategory3" value="${bookListParamDto.bookCategory3}">
+					<input type="hidden" name="name" value="${bookListParamDto.name}">
+					<input type="hidden" name="writer" value="${bookListParamDto.writer}">
+					<input type="hidden" name="publish" value="${bookListParamDto.publish}">
+					<input type="hidden" name="publishDateStart" value="${bookListParamDto.publishDateStart}">
+					<input type="hidden" name="publishDateEnd" value="${bookListParamDto.publishDateEnd}">
+					<input type="hidden" name="bookCategory1" value="${bookListParamDto.bookCategory1}">
+					<input type="hidden" name="bookCategory2" value="${bookListParamDto.bookCategory2}">
+					<input type="hidden" name="bookCategory3" value="${bookListParamDto.bookCategory3}">
 					<input type="hidden" id="no" name="no" value="">
 				</form>
 				

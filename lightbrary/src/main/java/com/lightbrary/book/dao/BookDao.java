@@ -18,7 +18,7 @@ public interface BookDao {
 	public int updateOneBook(BookDto bookDto);
 	public int[] updateBookBatch(List<BookDto> bookDtoList);
 	
-	public int deleteOneBook(BookDto bookDto);
+	public int deleteOneBook(int no);
 	public int[] deleteBookBatch(List<BookDto> bookDtoList);
 	
 	public int totalCountBook(BookListParamDto bookListParamDto);
