@@ -39,12 +39,6 @@ public class BookDaoImpl implements BookDao{
 	}
 
 	@Override
-	public int[] insertBookBatch(List<BookDto> bookDtoList) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public int updateOneBook(BookDto bookDto) {
 		// TODO Auto-generated method stub
 		return sqlSession.update(namespace + "updateOneBook", bookDto);
@@ -85,5 +79,4 @@ public class BookDaoImpl implements BookDao{
 		// TODO Auto-generated method stub
 		return sqlSession.insert(namespace + "insertOneImage", bookImageDto);
 	}
-
 }

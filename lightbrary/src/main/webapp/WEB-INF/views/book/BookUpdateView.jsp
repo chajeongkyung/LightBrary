@@ -71,6 +71,19 @@
 	}
 	
 	function updateBookFnc(){
+		$appendStr = $('<form action="./updateCtr.do" id="bookUpdateForm" name="bookUpdateDto" method="post" enctype="multipart/form-data"></form>');
+		$('#container').append($appendStr);
+		
+		$.each($('#bookDtoForm select[id^=bookCategory]'), function(idx, item){
+			$appendStr = $('<input type="hidden" id="' + item.getAttribute("id")
+					+'" name="' + item.getAttribute("name")
+					+'" value="' + item.value + '">');
+			$('#bookUpdateForm').append($appendStr);
+		});
+		$('#bookDtoForm input').clone().appendTo('#bookUpdateForm');
+		$('#bookListParamDto input').clone().appendTo('#bookUpdateForm');
+		$('#bookUpdateForm').attr('style', 'visibility: hidden');
+		
 		$('#bookUpdateForm').submit();
 	}
 	
@@ -106,8 +119,9 @@
 			<!-- 도서 수정 start -->
 			<div id='detailWrap'>
 				<!--  -->
-				<form id='bookUpdateForm' name='bookDto' action='./updateCtr.do' method="post" enctype="multipart/form-data">
+				<form id='bookDtoForm' name='bookDto' action='./updateCtr.do' method="post" enctype="multipart/form-data">
 					<input type="hidden" name="no" value="${bookDto.no}">
+					<input type="hidden" name="imageNo" value="${bookDto.imageNo}">
 					<div class='detailTable'>
 						<table>
 							<colgroup>
@@ -195,14 +209,14 @@
 				<form name="bookListParamDto" action="./list.do" id='bookListParamDto' method="post">
 					<input type="hidden" id='hiddenNo' name='no' value="${bookDto.no}">
 					<input type="hidden" name='curPage' value="${bookListParamDto.curPage}">
-					<input type="hidden" name="name" value="${bookListParamDto.name}">
-					<input type="hidden" name="writer" value="${bookListParamDto.writer}">
-					<input type="hidden" name="publish" value="${bookListParamDto.publish}">
+					<input type="hidden" name="searchName" value="${bookListParamDto.searchName}">
+					<input type="hidden" name="searchWriter" value="${bookListParamDto.searchWriter}">
+					<input type="hidden" name="searchPublish" value="${bookListParamDto.searchPublish}">
 					<input type="hidden" name="publishDateStart" value="${bookListParamDto.publishDateStart}">
 					<input type="hidden" name="publishDateEnd" value="${bookListParamDto.publishDateEnd}">
-					<input type="hidden" name="bookCategory1" value="${bookListParamDto.bookCategory1}">
-					<input type="hidden" name="bookCategory2" value="${bookListParamDto.bookCategory2}">
-					<input type="hidden" name="bookCategory3" value="${bookListParamDto.bookCategory3}">
+					<input type="hidden" name="searchCategory1" value="${bookListParamDto.searchCategory1}">
+					<input type="hidden" name="searchCategory2" value="${bookListParamDto.searchCategory2}">
+					<input type="hidden" name="searchCategory3" value="${bookListParamDto.searchCategory3}">
 				</form>
 				<!-- //상세페이지 버튼 end -->
 			</div>

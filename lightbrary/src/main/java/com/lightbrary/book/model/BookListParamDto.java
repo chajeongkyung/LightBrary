@@ -1,14 +1,14 @@
 package com.lightbrary.book.model;
 
 public class BookListParamDto {
-	private String name;
-	private String writer;
-	private String publish;
+	private String searchName;
+	private String searchWriter;
+	private String searchPublish;
 	private String publishDateStart;
 	private String publishDateEnd;
-	private String bookCategory1;
-	private String bookCategory2;
-	private String bookCategory3;
+	private String searchCategory1;
+	private String searchCategory2;
+	private String searchCategory3;
 	private String categoryStart = "";
 	private String categoryEnd = "";
 	private int curPage;
@@ -16,44 +16,47 @@ public class BookListParamDto {
 	private int endPage;
 	
 	public void initBookListParamDto() {
-		if(bookCategory3 != "") {
-			categoryStart = bookCategory3;
-			categoryEnd = bookCategory3;
-		} else if(bookCategory2 != "") {
-			categoryStart = bookCategory2.substring(1, 1) + "0";
-			categoryEnd = bookCategory2.substring(1, 1) + "9";
-		} else if(bookCategory1 != "") {
-			categoryStart = bookCategory1.substring(0, 1) + "00";
-			categoryEnd = bookCategory1.substring(0, 1) + "99";
+		if(searchCategory3 != "") {
+			categoryStart = searchCategory3;
+			categoryEnd = searchCategory3;
+		} else if(searchCategory2 != "") {
+			categoryStart = searchCategory2.substring(1, 1) + "0";
+			categoryEnd = searchCategory2.substring(1, 1) + "9";
+		} else if(searchCategory1 != "") {
+			categoryStart = searchCategory1.substring(0, 1) + "00";
+			categoryEnd = searchCategory1.substring(0, 1) + "99";
 		}
 	}
 
 	public BookListParamDto() {
 		super();
-		name = "";
-		writer = "";
-		publish = "";
+		searchName = "";
+		searchWriter = "";
+		searchPublish = "";
 		publishDateStart = "";
 		publishDateEnd = "";
-		bookCategory1 = "";
-		bookCategory2 = "";
-		bookCategory3 = "";
+		searchCategory1 = "";
+		searchCategory2 = "";
+		searchCategory3 = "";
 		categoryStart = "";
 		categoryEnd = "";
+		curPage = 0;
+		startPage = 0;
+		endPage = 0;
 	}
 
-	public BookListParamDto(String name, String writer, String publish, String publishDateStart, String publishDateEnd,
-			String bookCategory1, String bookCategory2, String bookCategory3, String categoryStart, String categoryEnd,
-			int curPage, int startPage, int endPage) {
+	public BookListParamDto(String searchName, String searchWriter, String searchPublish, String publishDateStart,
+			String publishDateEnd, String searchCategory1, String searchCategory2, String searchCategory3,
+			String categoryStart, String categoryEnd, int curPage, int startPage, int endPage) {
 		super();
-		this.name = name;
-		this.writer = writer;
-		this.publish = publish;
+		this.searchName = searchName;
+		this.searchWriter = searchWriter;
+		this.searchPublish = searchPublish;
 		this.publishDateStart = publishDateStart;
 		this.publishDateEnd = publishDateEnd;
-		this.bookCategory1 = bookCategory1;
-		this.bookCategory2 = bookCategory2;
-		this.bookCategory3 = bookCategory3;
+		this.searchCategory1 = searchCategory1;
+		this.searchCategory2 = searchCategory2;
+		this.searchCategory3 = searchCategory3;
 		this.categoryStart = categoryStart;
 		this.categoryEnd = categoryEnd;
 		this.curPage = curPage;
@@ -62,28 +65,28 @@ public class BookListParamDto {
 		initBookListParamDto();
 	}
 
-	public String getName() {
-		return name;
+	public String getSearchName() {
+		return searchName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setSearchName(String searchName) {
+		this.searchName = searchName;
 	}
 
-	public String getWriter() {
-		return writer;
+	public String getSearchWriter() {
+		return searchWriter;
 	}
 
-	public void setWriter(String writer) {
-		this.writer = writer;
+	public void setSearchWriter(String searchWriter) {
+		this.searchWriter = searchWriter;
 	}
 
-	public String getPublish() {
-		return publish;
+	public String getSearchPublish() {
+		return searchPublish;
 	}
 
-	public void setPublish(String publish) {
-		this.publish = publish;
+	public void setSearchPublish(String searchPublish) {
+		this.searchPublish = searchPublish;
 	}
 
 	public String getPublishDateStart() {
@@ -102,28 +105,28 @@ public class BookListParamDto {
 		this.publishDateEnd = publishDateEnd;
 	}
 
-	public String getBookCategory1() {
-		return bookCategory1;
+	public String getSearchCategory1() {
+		return searchCategory1;
 	}
 
-	public void setBookCategory1(String bookCategory1) {
-		this.bookCategory1 = bookCategory1;
+	public void setSearchCategory1(String searchCategory1) {
+		this.searchCategory1 = searchCategory1;
 	}
 
-	public String getBookCategory2() {
-		return bookCategory2;
+	public String getSearchCategory2() {
+		return searchCategory2;
 	}
 
-	public void setBookCategory2(String bookCategory2) {
-		this.bookCategory2 = bookCategory2;
+	public void setSearchCategory2(String searchCategory2) {
+		this.searchCategory2 = searchCategory2;
 	}
 
-	public String getBookCategory3() {
-		return bookCategory3;
+	public String getSearchCategory3() {
+		return searchCategory3;
 	}
 
-	public void setBookCategory3(String bookCategory3) {
-		this.bookCategory3 = bookCategory3;
+	public void setSearchCategory3(String searchCategory3) {
+		this.searchCategory3 = searchCategory3;
 	}
 
 	public String getCategoryStart() {
@@ -168,12 +171,12 @@ public class BookListParamDto {
 
 	@Override
 	public String toString() {
-		return "BookListParamDto [name=" + name + ", writer=" + writer + ", publish=" + publish + ", publishDateStart="
-				+ publishDateStart + ", publishDateEnd=" + publishDateEnd + ", bookCategory1=" + bookCategory1
-				+ ", bookCategory2=" + bookCategory2 + ", bookCategory3=" + bookCategory3 + ", categoryStart="
-				+ categoryStart + ", categoryEnd=" + categoryEnd + ", curPage=" + curPage + ", startPage=" + startPage
-				+ ", endPage=" + endPage + "]";
+		return "BookListParamDto [searchName=" + searchName + ", searchWriter=" + searchWriter + ", searchPublish="
+				+ searchPublish + ", publishDateStart=" + publishDateStart + ", publishDateEnd=" + publishDateEnd
+				+ ", searchCategory1=" + searchCategory1 + ", searchCategory2=" + searchCategory2 + ", searchCategory3="
+				+ searchCategory3 + ", categoryStart=" + categoryStart + ", categoryEnd=" + categoryEnd + ", curPage="
+				+ curPage + ", startPage=" + startPage + ", endPage=" + endPage + "]";
 	}
-	
+
 	
 }

@@ -13,7 +13,6 @@ public interface BookDao {
 	public List<BookDto> selectBook(BookListParamDto bookListParamDto);
 	
 	public int insertOneBook(BookDto bookDto);
-	public int[] insertBookBatch(List<BookDto> bookDtoList);
 	
 	public int updateOneBook(BookDto bookDto);
 	public int[] updateBookBatch(List<BookDto> bookDtoList);

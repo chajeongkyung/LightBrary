@@ -114,14 +114,14 @@
 				<form name="bookListParamDto" action="./list.do" id='bookListParamDto' method="post">
 					<input type="hidden" id="no" name="no" value="${bookDto.no}">
 					<input type="hidden" id='curPage' name='curPage' value="${bookListParamDto.curPage}">
-					<input type="hidden" id="name" name="name" value="${bookListParamDto.name}">
-					<input type="hidden" id="writer" name="writer" value="${bookListParamDto.writer}">
-					<input type="hidden" id="publish" name="publish" value="${bookListParamDto.publish}">
+					<input type="hidden" id="searchName" name="searchName" value="${bookListParamDto.searchName}">
+					<input type="hidden" id="searchWriter" name="searchWriter" value="${bookListParamDto.searchWriter}">
+					<input type="hidden" id="searchPublish" name="searchPublish" value="${bookListParamDto.searchPublish}">
 					<input type="hidden" id="publishDateStart" name="publishDateStart" value="${bookListParamDto.publishDateStart}">
 					<input type="hidden" id="publishDateEnd" name="publishDateEnd" value="${bookListParamDto.publishDateEnd}">
-					<input type="hidden" id="bookCategory1" name="bookCategory1" value="${bookListParamDto.bookCategory1}">
-					<input type="hidden" id="bookCategory2" name="bookCategory2" value="${bookListParamDto.bookCategory2}">
-					<input type="hidden" id="bookCategory3" name="bookCategory3" value="${bookListParamDto.bookCategory3}">
+					<input type="hidden" id="searchCategory1" name="searchCategory1" value="${bookListParamDto.searchCategory1}">
+					<input type="hidden" id="searchCategory2" name="searchCategory2" value="${bookListParamDto.searchCategory2}">
+					<input type="hidden" id="searchCategory3" name="searchCategory3" value="${bookListParamDto.searchCategory3}">
 				</form>
 				<!-- //상세페이지 버튼 end -->
 			</div>

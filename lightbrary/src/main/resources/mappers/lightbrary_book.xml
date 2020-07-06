@@ -38,9 +38,9 @@
 		            FROM BOOK
 		            <where>
 			            DEL_FLAG = 'N'
-			            <if test="name != ''">AND NAME LIKE '%' || #{name} || '%'</if>
-			            <if test="writer != ''">AND WRITER LIKE '%' || #{writer} || '%'</if>
-			            <if test="publish != ''">AND PUBLISH LIKE '%' || #{publish} || '%'</if>
+			            <if test="searchName != ''">AND NAME LIKE '%' || #{searchName} || '%'</if>
+			            <if test="searchWriter != ''">AND WRITER LIKE '%' || #{searchWriter} || '%'</if>
+			            <if test="searchPublish != ''">AND PUBLISH LIKE '%' || #{searchPublish} || '%'</if>
 			            <choose>
 			            	<when test="publishDateStart != ''">
 			            		<choose>
@@ -78,9 +78,9 @@
             FROM BOOK
             <where>
 	            DEL_FLAG = 'N'
-	            <if test="name != ''">AND NAME LIKE '%' || #{name} || '%'</if>
-	            <if test="writer != ''">AND WRITER LIKE '%' || #{writer} || '%'</if>
-	            <if test="publish != ''">AND PUBLISH LIKE '%' || #{publish} || '%'</if>
+	            <if test="searchName != ''">AND NAME LIKE '%' || #{searchName} || '%'</if>
+	            <if test="searchWriter != ''">AND WRITER LIKE '%' || #{searchWriter} || '%'</if>
+	            <if test="searchPublish != ''">AND PUBLISH LIKE '%' || #{searchPublish} || '%'</if>
 	            <choose>
 	            	<when test="publishDateStart != ''">
 	            		<choose>
@@ -108,6 +108,18 @@
 	</select>
 	
 	<insert id="insertOneBook" parameterType="bookDto"
+		useGeneratedKeys="true" keyProperty="no">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			SELECT BOOK_NO_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO BOOK
+		VALUE(NO, STATUS_CODE, CATEGORY_CODE, IMAGE_NO,
+			  NAME, PUBLISH, PUBLISH_DATE, WRITER, DEL_FLAG)
+		VALUES(#{no}, #{statusCode}, #{categoryCode}, #{imageNo},
+			  #{name}, #{publish}, #{publishDate}, #{writer}, 'N')
+	</insert>
+	
+	<insert id="insertBookBatch" parameterType="java.util.List"
 		useGeneratedKeys="true" keyProperty="no">
 		<selectKey keyProperty="no" resultType="int" order="BEFORE">
 			SELECT BOOK_NO_SEQ.NEXTVAL FROM DUAL

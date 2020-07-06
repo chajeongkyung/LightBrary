@@ -102,3 +102,7 @@ function myPageDrop(){
 		$(this).toggleClass('active');
 	});
 }
+
+function checkedObjArr(){
+	return $('input[id^=chk]:checked');
+}

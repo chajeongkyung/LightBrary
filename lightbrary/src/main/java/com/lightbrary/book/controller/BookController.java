@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.lightbrary.book.model.BookDto;
 import com.lightbrary.book.model.BookListParamDto;
+import com.lightbrary.book.model.BookUpdateParamDto;
 import com.lightbrary.book.service.BookService;
 import com.lightbrary.util.Paging;
 
@@ -83,6 +84,14 @@ public class BookController {
 		return "book/BookInsertView";
 	}
 	
+	@RequestMapping(value = "/book/insertBatch.do", method = {RequestMethod.GET, RequestMethod.POST})
+	public String BookInsertBatch() {
+		
+		log.info("------Called BookInsertBatch------");
+		
+		return "book/BookInsertBatchView";
+	}
+	
 	@RequestMapping(value = "/book/insertCtr.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String BookInsertOne(BookDto bookDto, MultipartHttpServletRequest request
 			, String bookCategory1, String bookCategory2, String bookCategory3) {
@@ -111,6 +120,35 @@ public class BookController {
 		return "book/BookInsertView";
 	}
 	
+	@RequestMapping(value = "/book/insertBatchCtr.do", method = {RequestMethod.GET, RequestMethod.POST})
+	public String BookInsertBatch(BookDto bookDto, MultipartHttpServletRequest request
+			, String bookCategory1, String bookCategory2, String bookCategory3
+			, int seriesStart, int seriesEnd) {
+		
+		log.info("------Called BookInsertOne------");
+		log.info(bookDto.toString());
+		log.info("bookCategory1: " + bookCategory1);
+		log.info("bookCategory2: " + bookCategory2);
+		log.info("bookCategory3: " + bookCategory3);
+		log.info("-----------------------------");
+		
+		String categoryCode = "";
+		
+		if(bookCategory3 != null) {
+			categoryCode = bookCategory3;
+		}else if(bookCategory2 != null) {
+			categoryCode = bookCategory2;
+		}else {
+			categoryCode = bookCategory1;
+		}
+		
+		bookDto.setCategoryCode(categoryCode);
+		System.out.println(bookDto);
+		bookService.insertBookBatch(bookDto, request, seriesStart, seriesEnd);
+		
+		return "book/BookInsertBatchView";
+	}
+	
 	@RequestMapping(value = "/book/update.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String BookUpdate(int no, BookListParamDto bookListParamDto, Model model) {
 		
@@ -128,15 +166,18 @@ public class BookController {
 	}
 	
 	@RequestMapping(value = "/book/updateCtr.do", method = {RequestMethod.GET, RequestMethod.POST})
-	public String BookUpdateCtr(BookDto bookDto, MultipartHttpServletRequest request
-			, String bookCategory1, String bookCategory2, String bookCategory3) {
+	public String BookUpdateCtr(BookUpdateParamDto bookUpdateParamDto, MultipartHttpServletRequest request
+			, String bookCategory1, String bookCategory2, String bookCategory3, Model model) {
 		
 		log.info("------Called BookUpdateCtr------");
-		log.info(bookDto.toString());
+		log.info(bookUpdateParamDto.toString());
 		log.info("bookCategory1: " + bookCategory1);
 		log.info("bookCategory2: " + bookCategory2);
 		log.info("bookCategory3: " + bookCategory3);
 		log.info("--------------------------------");
+		
+		BookDto bookDto = bookUpdateParamDto.getBookDto();
+		BookListParamDto bookListParamDto = bookUpdateParamDto.getBookListParamDto();
 		
 		String categoryCode = "";
 		
@@ -151,7 +192,13 @@ public class BookController {
 		bookDto.setCategoryCode(categoryCode);
 		System.out.println(bookDto);
 		bookService.updateOneBook(bookDto, request);
-		return "redirect:list.do";
+		
+		bookDto = bookService.selectOneBook(bookDto.getNo());
+		
+		model.addAttribute("bookDto", bookDto);
+		model.addAttribute("bookListParamDto", bookListParamDto);
+		
+		return "book/BookDetailView";
 	}
 	
 	@RequestMapping(value = "/book/delete.do", method = {RequestMethod.GET, RequestMethod.POST})

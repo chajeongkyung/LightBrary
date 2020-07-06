@@ -66,6 +66,7 @@
 			alert('시작 날짜가 끝 날짜보다 클 수 없습니다.');
 		}
 	}
+
 </script>
 
 </head>
@@ -85,7 +86,7 @@
 						<div class='searchInputWrap fs0'>
 							<span class='label text bold'>제목</span>
 							<div class='searchInputBox'>
-								<input type="text" id="name" name="name" class='searchInput' value='${bookListParamDto.name}'>
+								<input type="text" id="name" name="searchName" class='searchInput' value='${bookListParamDto.searchName}'>
 							</div>
 						</div>
 						<!-- //기본 인풋 end -->
@@ -93,7 +94,7 @@
 						<div class='searchInputWrap fs0'>
 							<span class='label text bold'>저자</span>
 							<div class='searchInputBox'>
-								<input type="text" id="writer" name="writer" class='searchInput' value='${bookListParamDto.writer}'>
+								<input type="text" id="writer" name="searchWriter" class='searchInput' value='${bookListParamDto.searchWriter}'>
 							</div>
 						</div>
 						<!-- //기본 인풋 end -->
@@ -101,7 +102,7 @@
 						<div class='searchInputWrap fs0'>
 							<span class='label text bold'>출판사</span>
 							<div class='searchInputBox'>
-								<input type="text" id="publish" name="publish" class='searchInput' value='${bookListParamDto.publish}'>
+								<input type="text" id="publish" name="searchPublish" class='searchInput' value='${bookListParamDto.searchPublish}'>
 							</div>
 						</div>
 						<!-- //기본 인풋 end -->
@@ -121,15 +122,15 @@
 						<div class='searchInputWrap fs0'>
 							<span class='label text bold'>분류</span>
 							<div class='searchInputBox overH'>
-								<input type="hidden" id="hiddenBookCategory1" value="${bookListParamDto.bookCategory1}">
-								<select id='bookCategory1' name="bookCategory1" class='searchSelect fLeft dark text'>
+								<input type="hidden" id="hiddenBookCategory1" value="${bookListParamDto.searchCategory1}">
+								<select id='bookCategory1' name="searchCategory1" class='searchSelect fLeft dark text'>
 								</select>
-								<input type="hidden" id="hiddenBookCategory2" value="${bookListParamDto.bookCategory2}">
-								<select id='bookCategory2' name="bookCategory2" class='searchSelect fLeft med text'>
+								<input type="hidden" id="hiddenBookCategory2" value="${bookListParamDto.searchCategory2}">
+								<select id='bookCategory2' name="searchCategory2" class='searchSelect fLeft med text'>
 									<option value="">중분류</option>
 								</select>
-								<input type="hidden" id="hiddenBookCategory3" value="${bookListParamDto.bookCategory3}">
-								<select id='bookCategory3' name="bookCategory3" class='searchSelect fLeft light text'>
+								<input type="hidden" id="hiddenBookCategory3" value="${bookListParamDto.searchCategory3}">
+								<select id='bookCategory3' name="searchCategory3" class='searchSelect fLeft light text'>
 									<option value="">소분류</option>
 								</select>
 							</div>
@@ -154,6 +155,9 @@
 					<!-- 동그란 체크박스 전체선택 end -->
 					<ul class='settings fRight fs0'>
 						<li>
+							<a href="#none" onclick='testFnc();' class='text'>테스트</a>
+						</li>
+						<li>
 							<a href="#none" class='text'>바구니 담기</a>
 						</li>
 						<li>
@@ -167,8 +171,8 @@
 						<li>
 						<!-- 동그란 체크박스 start -->
 						<div class='checkbox type1'>
-							<input type="checkbox" id='chk1'>
-							<label for="chk1"></label>
+							<input type="checkbox" id='chk${bookDto.no}' value='${bookDto.no}'>
+							<label for="chk${bookDto.no}"></label>
 						</div>
 						<!-- //동그란 체크박스 end -->
 						
@@ -209,7 +213,7 @@
 							<a href="./insert.do" class='text'>단편도서 등록</a>
 						</li>
 						<li>
-							<a href="#none" class='text'>시리즈 등록</a>
+							<a href="./insertBatch.do" class='text'>시리즈 등록</a>
 						</li>
 				</ul>
 				
@@ -220,14 +224,14 @@
 				<form name="bookListParamDto" action="./list.do" id='pagingForm' method="post">
 					<input type="hidden" id='curPage' name='curPage' 
 						value="${bookListParamDto.curPage}">
-					<input type="hidden" name="name" value="${bookListParamDto.name}">
-					<input type="hidden" name="writer" value="${bookListParamDto.writer}">
-					<input type="hidden" name="publish" value="${bookListParamDto.publish}">
+					<input type="hidden" name="searchName" value="${bookListParamDto.searchName}">
+					<input type="hidden" name="searchWriter" value="${bookListParamDto.searchWriter}">
+					<input type="hidden" name="searchPublish" value="${bookListParamDto.searchPublish}">
 					<input type="hidden" name="publishDateStart" value="${bookListParamDto.publishDateStart}">
 					<input type="hidden" name="publishDateEnd" value="${bookListParamDto.publishDateEnd}">
-					<input type="hidden" name="bookCategory1" value="${bookListParamDto.bookCategory1}">
-					<input type="hidden" name="bookCategory2" value="${bookListParamDto.bookCategory2}">
-					<input type="hidden" name="bookCategory3" value="${bookListParamDto.bookCategory3}">
+					<input type="hidden" name="searchCategory1" value="${bookListParamDto.searchCategory1}">
+					<input type="hidden" name="searchCategory2" value="${bookListParamDto.searchCategory2}">
+					<input type="hidden" name="searchCategory3" value="${bookListParamDto.searchCategory3}">
 					<input type="hidden" id="no" name="no" value="">
 				</form>
 				

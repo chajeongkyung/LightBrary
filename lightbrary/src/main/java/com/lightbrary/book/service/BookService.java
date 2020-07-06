@@ -19,4 +19,5 @@ public interface BookService {
 	public void insertOneBook(BookDto bookDto, MultipartHttpServletRequest request);
 	public int deleteOneBook(int no);
 	public int updateOneBook(BookDto bookDto, MultipartHttpServletRequest request);
+	public void insertBookBatch(BookDto bookDto, MultipartHttpServletRequest request, int seriesStart, int seriesEnd);
 }
