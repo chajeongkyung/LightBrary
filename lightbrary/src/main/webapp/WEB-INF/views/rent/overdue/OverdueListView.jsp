@@ -7,7 +7,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Lightbrary : 도서대출현황</title>
+<title>Lightbrary : 연체현황</title>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
@@ -25,7 +25,7 @@
 		// depth1 네비
 		$('#depth1Ul > li:nth-child(2)').addClass('active');
 		// depth2 네비
-		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(1)').addClass('active');
+		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(2)').addClass('active');
 	});
 	
 	// 상세페이지로 이동
@@ -58,7 +58,7 @@
 		
 		<!-- 컨테이너 start -->
 		<div id='container'>
-			<h2 id='pageTitle'>도서대출현황</h2>
+			<h2 id='pageTitle'>연체현황</h2>
 				
 				<!-- 검색폼 버전2 start -->
 			<div class='searchForm type2'>
@@ -136,23 +136,12 @@
 			<!-- 테이블 목록 start -->
 			<div id='tableListWrap'>
 				<div class='listSettings overH'>
-					<ul class='settings fLeft fs0'>
-						<li class='active'>
-							<a href="#none" class='text'>전체 현황 보기</a>
-						</li>
-						<li>
-							<a href="#none" class='text'>대출 중</a>
-						</li>
-						<li>
-							<a href="#none" class='text'>반납완료</a>
-						</li>
-					</ul>
 					<ul class='settings fRight fs0'>
 						<li>
 							<a href="#none" class='text'>반납처리</a>
 						</li>
 						<li>
-							<a href="#none" class='text'>반납일 안내 이메일 발송</a>
+							<a href="#none" class='text'>연체 안내 이메일 발송</a>
 						</li>
 					</ul>
 				</div>
@@ -164,8 +153,8 @@
 							<col width="85px">
 							<col width="120px">
 							<col width="80px">
-							<col width="202px">
-							<col width="90px">
+							<col width="212px">
+							<col width="80px">
 							<col width="111px">
 						</colgroup>
 						<thead>
@@ -183,44 +172,29 @@
 								<th>출판사</th>
 								<th>회원명</th>
 								<th>이메일</th>
-								<th>반납여부</th>
-								<th>반납일</th>
+								<th>연체일</th>
+								<th>반납예정일</th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:if test="${empty rentList}">
+							<c:if test="${empty overdueList}">
 								<!--  -->
 								<tr>
 									<td colspan="8" style="text-align: center; padding: 56px 0px;">
-										<span style="font-size: 16px; color: #686868;">대출 도서가 없습니다.</span>
+										<span style="font-size: 16px; color: #686868;">연체 도서가 없습니다.</span>
 									</td>
 								</tr>
 								<!--  -->	
 							</c:if>
 							<!--  -->
-							<c:forEach var="rentDto" items="${rentList}">
-								<c:choose>
-									<c:when test="${rentDto.bookStatus eq '보관'}">
-										<tr class='returned'>
-									</c:when>
-									<c:otherwise>
-										<tr>
-									</c:otherwise>
-								</c:choose>
+							<c:forEach var="rentDto" items="${overdueList}">
+								<tr>
 									<td class='checkboxTd'>
 										<input type="hidden" value='${rentDto.no}' class='noObj'>
 										<!-- 기본 체크박스 start -->
 										<div class='checkbox type2 fLeft'>
-											<c:choose>
-												<c:when test="${rentDto.bookStatus eq '보관'}">
-													<input type="checkbox" id='check${rentDto.no}' disabled="disabled">
-													<label for="check${rentDto.no}" style="cursor: default;"></label>
-												</c:when>
-												<c:otherwise>
-													<input type="checkbox" id='check${rentDto.no}'>
-													<label for="check${rentDto.no}"></label>
-												</c:otherwise>
-											</c:choose>
+											<input type="checkbox" id='check${rentDto.no}'>
+											<label for="check${rentDto.no}"></label>
 										</div>
 										<!-- //기본 체크박스 end -->
 									</td>
@@ -254,18 +228,11 @@
 										</span>
 									</td>
 									<td>
-										<c:choose>
-											<c:when test="${rentDto.bookStatus eq '대출'}">
-												<span class='textGreen'>${rentDto.bookStatus}</span>
-											</c:when>
-											<c:otherwise>
-											 	<span>반납완료</span>
-											</c:otherwise>
-										</c:choose>
+										<span>${rentDto.overdueDays}일</span>
 									</td>
 									<td>
 										<span>
-											<fmt:formatDate value="${rentDto.returnDate}" pattern="yyyy/MM/dd "/>
+											<fmt:formatDate value="${rentDto.expireDate}" pattern="yyyy/MM/dd "/>
 										</span>
 									</td>
 								</tr>
@@ -277,7 +244,7 @@
 			</div>
 			<!-- //테이블 목록 end -->
 			
-			<c:if test="${!empty rentList}">
+			<c:if test="${!empty overdueList}">
 				<jsp:include page="/WEB-INF/views/common/paging.jsp">
 					<jsp:param value="${pagingInfo}" name="pagingMap"/>
 				</jsp:include>
