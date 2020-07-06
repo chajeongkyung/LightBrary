@@ -10,10 +10,12 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.lightbrary.member.model.MemberDto;
 import com.lightbrary.member.service.MemberService;
@@ -36,16 +38,17 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "/member/addCtr.do", method = {RequestMethod.GET, RequestMethod.POST})
-	public String memberAdd(MemberDto memberDto, Model model) {
+	public String memberAdd(MemberDto memberDto) {
 		
 		log.info("회원가입 컨트롤러입니다", memberDto);
 		
 		memberService.insertOneMember(memberDto);
 		
 		return "redirect:/login.do";
-		} 
+		}
+	
 	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
-	public String login(HttpSession session, Model model) {
+	public String login() {
 		
 		log.info("로그인 폼으로");
 		
@@ -54,20 +57,20 @@ public class MemberController {
 	
 	@RequestMapping(value = "/loginCtr.do", method = RequestMethod.POST)
 	public String loginCtr(String email, String password,
-			HttpSession session, Model model) {
+			HttpSession session) {
 		
 		log.info("로그인!");
 		
 		MemberDto memberDto = memberService.memberExist(email, password);		
 		
-		session.setAttribute("memberDto", memberDto);
+		session.setAttribute("member", memberDto);
 
-		return "member/MemberDetailView";
+		return "redirect:/member/detail.do";
 		
 	}
 	// 로그아웃
 	@RequestMapping(value = "/logout.do", method = RequestMethod.GET)
-	public String logout(HttpSession session, Model model) {
+	public String logout(HttpSession session) {
 		log.info("로그아웃~");
 
 		session.invalidate();
@@ -76,45 +79,77 @@ public class MemberController {
 	}
 		
 	@RequestMapping(value = "/member/detail.do", method = RequestMethod.GET)
-	public String memberListOneView(HttpSession session, Model model) {
+	public String memberListOneView() {
 		
 		log.info("내 정보 상세 페이지폼으로");
 		
 		return "member/MemberDetailView";
 	}
 	
-	@RequestMapping(value = "/member/checkPassword.do", method = {RequestMethod.POST,RequestMethod.GET})
-	public String checkPasswordForm(HttpSession session, Model model) {
+	@RequestMapping(value = "/member/checkPassword.do", method = RequestMethod.GET)
+	public String checkPasswordForm() {
 		
 		log.info("정보 수정 전 비밀번호 확인 폼");
+		
 		return "member/CheckPasswordForm";
 	}
-//	
-//	@RequestMapping(value = "/member/checkPasswordCtr.do", method = RequestMethod.POST)
-//	public String checkPassword(@RequestParam("password") String password
-//			, HttpSession session) {
-//		
-//		log.info("정보 수정 전 비밀번호 확인 컨트롤러");
-//		
-//		// password = memberService.findPassword();
-//		
-//		return "member/UpdateMemberDetailForm";
-//	}
-//	
+
 	@RequestMapping(value = "/member/update.do", method = {RequestMethod.POST, RequestMethod.GET})
-	public String updateMemberDetail(HttpSession session, Model model) {
+	public String updateMemberDetail() {
 		
 		log.info("내 정보 수정 페이지폼으로");
 		
 		return "member/UpdateMemberDetailForm";
 	}
 	
-	@RequestMapping(value = "/member/updateCtr.do", method = RequestMethod.GET)
-	public String updateMemberDetailCtr(HttpSession session, Model model) {
+	@RequestMapping(value = "/member/updateCtr.do", method = RequestMethod.POST)
+	public String updateMemberDetailCtr(HttpSession session
+				, MemberDto memberDto
+				,RedirectAttributes rttr) {
 		
-		log.info("내 정보 수정 컨트롤러");
+		log.info("내 정보 수정 컨트롤러 {}", memberDto);
 		
-		return "member/MemberDetailUpdateForm";
+		
+		int resultNum = 0;
+		
+		try {
+			resultNum = memberService.updateOneMember(memberDto);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if(resultNum != 0) {
+			MemberDto sessionMemberDto 
+				= (MemberDto)session.getAttribute("member");
+			
+			if(sessionMemberDto != null) {
+				
+				if(sessionMemberDto.getNo() == memberDto.getNo()) {
+
+					String password = memberService.findPassword(memberDto.getEmail());
+					MemberDto newMemberDto = memberService.memberExist(memberDto.getEmail(), password);
+					
+					session.removeAttribute("member");
+					
+					session.setAttribute("member", newMemberDto);
+					rttr.addFlashAttribute("message", "회원정보 수정 완료");
+				}
+				
+			}
+		}
+
+		return "redirect:./detail.do";
+	}
+	
+	@RequestMapping(value = "/member/deleteCtr.do", method = RequestMethod.GET)
+	public String deleteMember(int no, Model model) {
+		
+		log.info("회원탈퇴");
+		
+		memberService.deleteOneMember(no);
+		
+		return "redirect:/login.do";
 	}
 	
 	@ResponseBody
