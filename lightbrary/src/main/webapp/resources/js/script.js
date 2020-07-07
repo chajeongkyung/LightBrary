@@ -103,6 +103,36 @@ function myPageDrop(){
 	});
 }
 
+
+//선택된 체크박스 전체를 배열로 반환
 function checkedObjArr(){
 	return $('input[id^=chk]:checked');
+}
+
+//이미지파일 미리보기 및 유효성검사
+function imageFileSelectFnc(e){
+	var files = e.target.files;
+	var filesArr = Array.prototype.slice.call(files);
+	
+	filesArr.forEach(function(file){
+		if(!file.type.match("image.*")){
+			alert("이미지 파일만 업로드 가능합니다.");
+			if (/(MSIE|Trident)/.test(navigator.userAgent)) {
+				// ie 일때 input[type=file] init. 
+				$("#file").replaceWith( $("#file").clone(true) ); 
+			} else { 
+				// other browser 일때 input[type=file] init. 
+				$("#file").val("");
+			}
+			$('#bookImage').css("background-image", $('#fileUrlDefault').val());
+		} else{
+			selectedFile = file;
+			
+			var reader = new FileReader();
+			reader.onload = function(e){
+				$('#bookImage').css("background-image", "url(" + e.target.result + ")");
+			}
+			reader.readAsDataURL(file)
+		}
+	});
 }

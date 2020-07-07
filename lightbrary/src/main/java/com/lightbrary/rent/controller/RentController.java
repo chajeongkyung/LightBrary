@@ -27,6 +27,11 @@ public class RentController {
 	@Autowired
 	private RentService rentService;
 	
+	
+	/*******************
+			대출
+	*******************/
+	
 	// 대출 목록
 	@RequestMapping(value = "/rent/list.do"
 			, method = {RequestMethod.GET, RequestMethod.POST})
@@ -36,22 +41,18 @@ public class RentController {
 			, @RequestParam(defaultValue = "all") String searchOption
 			, @RequestParam(defaultValue = "") String keyword
 			, Model model) {
-		log.info("대출현황목록 : 현재페이지 : " + curPage + " : " 
-			+ searchOption + " : " + keyword);
+		log.info("대출현황목록 : 현재페이지 : " + curPage + " : searchOption = " 
+			+ searchOption + " : keyword = " + keyword);
 	
 		System.out.println();
 		// 전체 예약 도서 갯수
-		int totalCount = 
-			rentService.totalCountRent(
-				searchOption, keyword
-			);
+		int totalCount = rentService.totalCountRent(searchOption, keyword);
 		
 		
 //				이전 페이지로 회원으이 번호가 명확하게 나온경우
 //				자신의 curPage 찾는 로직
 		if(no != 0) {
-			curPage
-				= rentService.selectRentCurPage(searchOption, keyword, no);
+			curPage = rentService.selectRentCurPage(searchOption, keyword, no);
 		}
 		
 		
@@ -90,7 +91,7 @@ public class RentController {
 	public String rentDetail(int no, String searchOption,
 			String keyword, Model model) {
 		log.info("대출 도서 상세 - " + no + "\n" + "검색옵션 : " + searchOption
-				+ "\n" + "검색문장" + keyword);
+				+ "\n" + "검색문장 : " + keyword);
 		
 		RentDto rentDto = rentService.selectOneRent(no);
 		
@@ -101,6 +102,28 @@ public class RentController {
 		model.addAttribute("keyword", keyword);
 		
 		return "rent/RentDetailView";
+	}
+	
+	// 대출 상태 변경
+	@RequestMapping(value = "/rent/statusUpdateCtr.do"
+			, method = RequestMethod.POST)
+	public String rentStatusUpdateCtr(RentDto rentDto, Model model) {
+		log.info("보관 중으로 변경된 도서 번호 : {}", rentDto.getBookNo());
+		
+		System.out.println(rentDto.toString());
+		
+		try {
+			rentService.updateOneRentStatus(rentDto);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		rentDto = rentService.selectOneRent(rentDto.getBookNo()); 
+		
+		model.addAttribute("no", rentDto.getNo());
+		
+		return "redirect:/rent/detail.do";
 	}
 	
 	
@@ -118,32 +141,27 @@ public class RentController {
 			, @RequestParam(defaultValue = "") String keyword
 			, Model model) {
 		
-		log.info("예약현황목록 : 현재페이지 : " + curPage + " : " 
-			+ searchOption + " : " + keyword);
+		log.info("예약현황목록 : 현재페이지 = " + curPage + " : searchOption = " + searchOption + " : keyword = " + keyword);
 	
 		System.out.println();
 		// 전체 예약 도서 갯수
-		int totalCount = 
-			rentService.totalCountReserve(
-				searchOption, keyword
-			);
+		int totalCount = rentService.totalCountReserve(searchOption, keyword);
 		
-		
-//			이전 페이지로 회원으이 번호가 명확하게 나온경우
-//			자신의 curPage 찾는 로직
 		if(no != 0) {
-			curPage
-				= rentService.selectReserveCurPage(searchOption, keyword, no);
+			curPage = rentService.selectReserveCurPage(searchOption, keyword, no);
 		}
-		
+		System.out.println(curPage);
+		System.out.println(totalCount);
 		
 		Paging pagingInfo = new Paging(totalCount, curPage);
+		
+		System.out.println("-------------------");
+		System.out.println(pagingInfo);
+		System.out.println("-------------------");
 		int start = pagingInfo.getPageBegin();
 		int end = pagingInfo.getPageEnd();
 		
-		List<RentDto> reserveList = 
-			rentService.selectReserve(searchOption, keyword
-				, start, end);
+		List<RentDto> reserveList = rentService.selectReserve(searchOption, keyword, start, end);
 		
 		// 검색
 		HashMap<String, Object> searchMap = new HashMap<String, Object>();
@@ -189,6 +207,8 @@ public class RentController {
 	public String reserveStatusUpdateCtr(RentDto rentDto, Model model) {
 		log.info("대출 중으로 변경된 도서 번호 : {}", rentDto.getBookNo());
 		
+		System.out.println(rentDto.toString());
+		
 		try {
 			rentService.updateOneReserveStatus(rentDto);
 		} catch (Exception e) {
@@ -197,6 +217,99 @@ public class RentController {
 		}
 		
 		return "redirect:/rent/reserve/list.do";
+	}
+	
+	
+	/*******************
+			연체
+	*******************/
+	
+	// 연체 목록
+	@RequestMapping(value = "/rent/overdue/list.do"
+		, method = {RequestMethod.GET, RequestMethod.POST})
+	public String overdueList(@RequestParam(defaultValue = "1") 
+		int curPage
+		, @RequestParam(defaultValue = "0") int no
+		, @RequestParam(defaultValue = "all") String searchOption
+		, @RequestParam(defaultValue = "") String keyword
+		, Model model) {
+	
+		log.info("연체목록 : 현재페이지 = " + curPage + " : searchOption = " + searchOption + " : keyword = " + keyword);
+		
+		System.out.println();
+		// 전체 예약 도서 갯수
+		int totalCount = rentService.totalCountOverdue(searchOption, keyword);
+		
+		if(no != 0) {
+			curPage = rentService.selectOverdueCurPage(searchOption, keyword, no);
+		}
+		System.out.println(curPage);
+		System.out.println(totalCount);
+		
+		Paging pagingInfo = new Paging(totalCount, curPage);
+		
+		System.out.println("-------------------");
+		System.out.println(pagingInfo);
+		System.out.println("-------------------");
+		int start = pagingInfo.getPageBegin();
+		int end = pagingInfo.getPageEnd();
+		
+		List<RentDto> overdueList = rentService.selectOverdue(searchOption, keyword, start, end);
+		
+		// 검색
+		HashMap<String, Object> searchMap = new HashMap<String, Object>();
+		searchMap.put("searchOption", searchOption);
+		searchMap.put("keyword", keyword);
+		
+		// 페이징
+		Map<String, Object> pagingMap = new HashMap<>();
+		pagingMap.put("totalCount", totalCount);
+		pagingMap.put("pagingInfo", pagingInfo);
+		
+		model.addAttribute("overdueList", overdueList);
+		model.addAttribute("pagingMap", pagingMap);
+		model.addAttribute("pagingInfo", pagingInfo);
+		model.addAttribute("searchMap", searchMap);
+		
+		System.out.println("검색 문자 : " + keyword);
+		System.out.println("검색 옵션 : " + searchOption);
+		
+		return "rent/overdue/OverdueListView";
+	}
+
+	// 예약 상세
+	@RequestMapping(value = "/rent/overdue/detail.do"
+		, method = RequestMethod.GET)
+	public String overdueView(int no, String searchOption,
+			String keyword, Model model) {
+		log.info("연체 도서 상세 - " + no + "\n" + "검색옵션 : " + searchOption
+				+ "\n" + "검색문장" + keyword);
+		
+		RentDto rentDto = rentService.selectOneOverdue(no);
+		
+		model.addAttribute("rentDto", rentDto);
+		model.addAttribute("searchOption", searchOption);
+		model.addAttribute("keyword", keyword);
+		
+		return "rent/overdue/OverdueDetailView";
+	}
+	
+	// 예약 상태 변경
+	@RequestMapping(value = "/rent/overdue/statusUpdateCtr.do"
+			, method = RequestMethod.POST)
+	public String overdueStatusUpdateCtr(RentDto rentDto, Model model) {
+		log.info("대출 중으로 변경된 도서 번호 : {}", rentDto.getBookNo());
+		
+		System.out.println(rentDto.toString());
+		
+		try {
+			rentService.updateOneOverdueStatus(rentDto);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "redirect:/rent/overdue/list.do";
 	}
 	
 }

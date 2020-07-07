@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 
 <meta charset="UTF-8">
-<title>Lightbrary : 예약 도서 상세</title>
+<title>Lightbrary : 연체 도서 상세</title>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
@@ -46,8 +47,8 @@
 	
 	function changeStatusFnc() {
 		$('#changeStatus').click(function() {
-			if(confirm("예약된 도서를 대출 중으로 변경하시겠습니까?")){
-				alert("도서의 상태가 예약에서 대출 중으로 성공적으로 변경 되었습니다. \n대출 도서는 대출 현황 목록에서 확인해주세요.");
+			if(confirm("선택하신 도서의 반납처리를 진행하시겠습니까?")){
+				alert("선택하신 도서의 반납처리가 성공적으로 처리되었습니다.");
 				return;
 			}else{
 				return false;
@@ -65,7 +66,7 @@
 		
 		<!-- 컨테이너 start -->
 		<div id='container'>
-			<h2 id='pageTitle'>예약 도서 상세</h2>
+			<h2 id='pageTitle'>연체 도서 상세</h2>
 			
 			<!-- 상세페이지 start -->
 			<form action="./statusUpdateCtr.do" method="post">
@@ -109,7 +110,7 @@
 					</div>
 					<!--  -->
 					<div class='detailTable'>
-						<p class='text bold textDark'>예약정보</p>
+						<p class='text bold textDark'>대출정보</p>
 						<table>
 							<colgroup>
 								<col width="214px">
@@ -117,16 +118,17 @@
 							</colgroup>
 							<tbody>
 								<tr>
-									<th class='text bold textDark'>방문일</th>
+									<th class='text bold textDark'>반납예정일</th>
 									<td class='text textGrey'>
-										<fmt:formatDate value="${rentDto.rentDate}" pattern="yyyy/MM/dd "/>
+										<fmt:formatDate value="${rentDto.expire	Date}" pattern="yyyy/MM/dd "/>
 									</td>
 								</tr>
 								<tr>
-									<th class='text bold textDark'>예약상태</th>
-									<td class='text textGrey'>
-										${rentDto.bookStatus}
+									<th class='text bold textDark'>반납여부</th>
+									<td class='text textRed bold'>
+										${rentDto.bookStatus} ${rentDto.overdueDays}일
 									</td>
+									
 								</tr>
 							</tbody>
 						</table>
@@ -163,9 +165,18 @@
 					
 					<!-- 상세페이지 버튼 start -->
 					<div class='btnWrap viewBtns fs0 tCenter'>
+						<input type="hidden" value="${rentDto.no}" name="no">
 						<input type="hidden" value="${rentDto.bookNo}" name="bookNo">
-						<button type="submit" id='changeStatus' class='btn grey'>대출 중으로 변경</button>
-						
+						<input type="hidden" value="${rentDto.bookStatus}" name="bookStatus">
+						<c:choose>
+							<c:when test="${rentDto.bookStatus eq '보관'}">
+								<button type="submit" id='changeStatus' class='btn grey disabled' disabled="disabled">반납 처리</button>
+							</c:when>
+							<c:otherwise>
+								<button type="submit" id='changeStatus' class='btn grey'>반납 처리</button>
+							</c:otherwise>
+						</c:choose>
+						<button type="button" class='btn grey'>반납 안내 이메일 발송</button>
 						<a href="./list.do" class='btn green'>뒤로</a>
 					</div>
 					<!-- //상세페이지 버튼 end -->

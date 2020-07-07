@@ -92,6 +92,14 @@ public class Paging implements Serializable{
 
 	public void setTotPage(int count) {
 		this.totPage = (int)Math.ceil(count * 1.0 / PAGE_SCALE);
+		
+		System.out.println("-----------------setTotPage----------------");
+		System.out.println("count: " + count);
+		System.out.println("PAGE_SCALE:" + PAGE_SCALE);
+		System.out.println((int)Math.ceil(count * 1.0 / PAGE_SCALE));
+		System.out.println((count * 1.0 / PAGE_SCALE));
+		System.out.println((int)Math.floor(count * 1.0 / PAGE_SCALE));
+		System.out.println("-----------------setTotPage----------------");
 	}
 
 	public int getTotBlock() {
@@ -157,6 +165,14 @@ public class Paging implements Serializable{
 
 	public void setBlockEnd(int blockEnd) {
 		this.blockEnd = blockEnd;
+	}
+
+	@Override
+	public String toString() {
+		return "Paging [curPage=" + curPage + ", prevPage=" + prevPage + ", nextPage=" + nextPage + ", totPage="
+				+ totPage + ", totBlock=" + totBlock + ", curBlock=" + curBlock + ", prevBlock=" + prevBlock
+				+ ", nextBlock=" + nextBlock + ", pageBegin=" + pageBegin + ", pageEnd=" + pageEnd + ", blockBegin="
+				+ blockBegin + ", blockEnd=" + blockEnd + "]";
 	}
 	
 }
