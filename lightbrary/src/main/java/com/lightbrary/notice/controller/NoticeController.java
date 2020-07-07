@@ -237,7 +237,9 @@ public class NoticeController {
 		
 		NoticeCategoryDto noticeDto = noticeService.selectOneNotice(no);
 		
+		
 		model.addAttribute("noticeDto", noticeDto);
+		
 		model.addAttribute("serverTime", formattedDate);
 		
 		model.addAttribute("keyword", keyword);

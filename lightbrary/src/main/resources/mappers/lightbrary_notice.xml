@@ -162,12 +162,22 @@
 	<update id="updateOneNotice" parameterType="noticeDto">
 	
 		UPDATE NOTICE
-		SET CATEGORY_CODE = #{categoryCode}, 
+		SET 
+		CATEGORY_CODE = #{categoryCode}, 
 		TITLE = #{title},
 		CONTENT = #{content},
-		START_DATE = #{startDate},
-		END_DATE = #{endDate}
+		
+		<if test="categoryCode != 0">	
+			START_DATE = #{startDate},
+			END_DATE = #{endDate}
+		</if>
+		
+		<if test="categoryCode == 0">	
+			START_DATE = null,
+			END_DATE = null
+		</if>
 		WHERE NO = #{no}
+		
 		
 	</update>
 	

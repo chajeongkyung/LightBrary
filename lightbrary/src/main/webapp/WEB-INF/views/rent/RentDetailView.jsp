@@ -7,7 +7,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Lightbrary : 예약 도서 상세</title>
+<title>Lightbrary : 대출 도서 상세</title>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
@@ -55,6 +55,23 @@
 			}
 		});
 	}
+	
+	function pageMoveListFnc(){
+		var noObj = $('#no');
+		var keywordObj = $('#keyword');
+		var searchOptionObj = $('#searchOption');
+		var statusObj = $('#status');
+		
+		var url = '';
+		
+		url += './list.do?';
+		url += 'no=' + noObj.val();
+		url += '&keyword=' + keywordObj.val();
+		url += '&searchOption=' + searchOptionObj.val();
+		url += '&status=' + statusObj.val();
+		
+		location.href = url;
+	}
 </script>
 
 </head>
@@ -66,7 +83,7 @@
 		
 		<!-- 컨테이너 start -->
 		<div id='container'>
-			<h2 id='pageTitle'>예약 도서 상세</h2>
+			<h2 id='pageTitle'>대출 도서 상세</h2>
 			
 			<!-- 상세페이지 start -->
 			<form action="./statusUpdateCtr.do" method="post">
@@ -174,7 +191,7 @@
 					
 					<!-- 상세페이지 버튼 start -->
 					<div class='btnWrap viewBtns fs0 tCenter'>
-						<input type="hidden" value="${rentDto.no}" name="no">
+						<input type="hidden" id='no' value="${rentDto.no}" name="no">
 						<input type="hidden" value="${rentDto.bookNo}" name="bookNo">
 						<input type="hidden" value="${rentDto.bookStatus}" name="bookStatus">
 						<c:choose>
@@ -186,7 +203,12 @@
 							</c:otherwise>
 						</c:choose>
 						<button type="button" class='btn grey'>반납 안내 이메일 발송</button>
-						<a href="./list.do" class='btn green'>뒤로</a>
+						
+						<input type="hidden" id='searchOption' name="searchOption" value="${searchOption}">
+						<input type="hidden" id='keyword' name="keyword" value="${keyword}">
+						<input type="hidden" id='status' name="status" value="${status}">
+						
+						<a href="#none" class='btn green' onclick='pageMoveListFnc();'>뒤로</a>
 					</div>
 					<!-- //상세페이지 버튼 end -->
 				</div>

@@ -25,25 +25,25 @@ public class RentServiceImpl implements RentService{
 
 	// 대출 목록 출력
 	@Override
-	public List<RentDto> selectRent(String searchOption, String keyword, int start, int end) {
+	public List<RentDto> selectRent(String searchOption, String keyword, int start, int end, String status) {
 		// TODO Auto-generated method stub
-		List<RentDto> reserveList = rentDao.selectRent(searchOption, keyword, start, end);
+		List<RentDto> reserveList = rentDao.selectRent(searchOption, keyword, start, end, status);
 		
 		return reserveList;
 	}
 
 	// 대출 목록 총 갯수
 	@Override
-	public int totalCountRent(String searchOption, String keyword) {
+	public int totalCountRent(String searchOption, String keyword, String status) {
 		// TODO Auto-generated method stub
-		return rentDao.totalCountRent(searchOption, keyword);
+		return rentDao.totalCountRent(searchOption, keyword, status);
 	}
 
 	// 대출 목록 현재 페이지
 	@Override
-	public int selectRentCurPage(String searchOption, String keyword, int no) {
+	public int selectRentCurPage(String searchOption, String keyword, int no, String status) {
 		// TODO Auto-generated method stub
-		return rentDao.selectRentCurPage(searchOption, keyword, no);
+		return rentDao.selectRentCurPage(searchOption, keyword, no, status);
 	}
 	
 	// 대출 상세
@@ -73,6 +73,12 @@ public class RentServiceImpl implements RentService{
 		List<RentDto> reserveList = rentDao.selectReserve(searchOption, keyword, start, end);
 		
 		return reserveList;
+	}
+	
+	@Override
+	public List<RentDto> selectReservebyStatus(String statusName) {
+		// TODO Auto-generated method stub
+		return rentDao.selectReservebyStatus(statusName);
 	}
 
 	// 예약 목록 총 갯수
@@ -145,5 +151,17 @@ public class RentServiceImpl implements RentService{
 	public int updateOneOverdueStatus(RentDto rentDto) {
 		// TODO Auto-generated method stub
 		return rentDao.updateOneOverdueStatus(rentDto);
+	}
+
+	@Override
+	public List<RentDto> selectRentAll() {
+		// TODO Auto-generated method stub
+		return rentDao.selectRentAll();
+	}
+
+	@Override
+	public int updateOneStatusToOverdue(RentDto rentDto) {
+		// TODO Auto-generated method stub
+		return rentDao.updateOneStatusToOverdue(rentDto);
 	}
 }

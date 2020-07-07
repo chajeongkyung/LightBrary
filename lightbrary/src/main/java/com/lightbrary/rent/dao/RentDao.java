@@ -11,9 +11,9 @@ public interface RentDao {
 	*******************/
 	
 	// 대출 목록
-	public List<RentDto> selectRent(String searchOption, String keyword, int start, int end);
-	public int totalCountRent(String searchOption, String keyword);
-	public int selectRentCurPage(String searchOption, String keyword, int no);
+	public List<RentDto> selectRent(String searchOption, String keyword, int start, int end, String status);
+	public int totalCountRent(String searchOption, String keyword, String status);
+	public int selectRentCurPage(String searchOption, String keyword, int no, String status);
 	// 대출 상세
 	public RentDto selectOneRent(int no);
 	public int updateOneRentStatus(RentDto rentDto); //상태변경
@@ -41,7 +41,9 @@ public interface RentDao {
 	// 연체 상세
 	public RentDto selectOneOverdue(int no);
 	public int updateOneOverdueStatus(RentDto rentDto); //상태변경
-	
+	public List<RentDto> selectReservebyStatus(String statusName);
+	public List<RentDto> selectRentAll();
+	public int updateOneStatusToOverdue(RentDto rentDto);
 
 }
 

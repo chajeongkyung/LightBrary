@@ -26,7 +26,7 @@ public class RentDaoImpl implements RentDao{
 
 	// 대출 목록 출력
 	@Override
-	public List<RentDto> selectRent(String searchOption, String keyword, int start, int end) {
+	public List<RentDto> selectRent(String searchOption, String keyword, int start, int end, String status) {
 		// TODO Auto-generated method stub
 
 		Map<String, Object> map = new HashMap<>();
@@ -34,34 +34,36 @@ public class RentDaoImpl implements RentDao{
 		map.put("keyword", keyword);
 		map.put("start", start);
 		map.put("end", end);
+		map.put("status", status);
 		
-		List<RentDto> rentList = 
-				sqlSession.selectList(namespace + "selectRent", map);
+		List<RentDto> rentList = sqlSession.selectList(namespace + "selectRent", map);
 		
 		return rentList;
 	}
 
 	// 대출 목록 총 갯수
 	@Override
-	public int totalCountRent(String searchOption, String keyword) {
+	public int totalCountRent(String searchOption, String keyword, String status) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> paramMap = new HashMap<String, Object>();
 		
 		paramMap.put("searchOption", searchOption);
 		paramMap.put("keyword", keyword);
+		paramMap.put("status", status);
 		
 		return sqlSession.selectOne(namespace + "totalCountRent", paramMap);
 	}
 
 	// 대출 목록 현재 페이지
 	@Override
-	public int selectRentCurPage(String searchOption, String keyword, int no) {
+	public int selectRentCurPage(String searchOption, String keyword, int no, String status) {
 		// TODO Auto-generated method stub
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		
 		paramMap.put("searchOption", searchOption);
 		paramMap.put("keyword", keyword);
 		paramMap.put("no", no);
+		paramMap.put("status", status);
 		
 		return sqlSession.selectOne(namespace + "selectRentCurPage", paramMap);
 	}
@@ -198,6 +200,25 @@ public class RentDaoImpl implements RentDao{
 	public int updateOneOverdueStatus(RentDto rentDto) {
 		// TODO Auto-generated method stub
 		return sqlSession.update(namespace + "updateOneOverdueStatus", rentDto);
+	}
+
+	@Override
+	public List<RentDto> selectReservebyStatus(String statusName) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(namespace + "selectReservebyStatus", statusName);
+	}
+	
+
+	@Override
+	public List<RentDto> selectRentAll() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(namespace + "selectRentAll");
+	}
+
+	@Override
+	public int updateOneStatusToOverdue(RentDto rentDto) {
+		// TODO Auto-generated method stub
+		return sqlSession.update(namespace + "updateOneStatusToOverdue", rentDto);
 	}
 	
 }

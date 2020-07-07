@@ -43,6 +43,7 @@
 		<result column="EXPIRE_DATE" property="expireDate" javaType="java.util.Date"/>
 		<result column="RETURN_DATE" property="returnDate" javaType="java.util.Date"/>
 		<result column="OVERDUE_DAYS" property="overdueDays"/>
+		<result column="PICKUP_DATE" property="pickUpDate" javaType="java.util.Date"/>
 		<result column="SEND_FLAG" property="sendFlag"/>
 		<result column="DEL_FLAG" property="delFlag"/>
 		
@@ -92,8 +93,16 @@
 			            ON R.MEMBER_NO = M.NO
 			            JOIN BOOK B
 			            ON R.BOOK_NO = B.NO
+			            <if test="status == 'statusAll'">
 			            WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='대출')
 			            OR B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='보관')
+			            </if>
+			            <if test="status == 'statusRent'">
+			            WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='대출')
+			            </if>
+			            <if test="status == 'statusKeep'">
+			            WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='보관')
+			            </if>
 			         ) RENT_ROW
 			         <include refid="search"></include>
 			         ORDER BY RENT_ROW.RETURN_DATE DESC
@@ -129,8 +138,16 @@
 			            ON R.MEMBER_NO = M.NO
 			            JOIN BOOK B
 			            ON R.BOOK_NO = B.NO
+			            <if test="status == 'statusAll'">
 			            WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='대출')
 			            OR B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='보관')
+			            </if>
+			            <if test="status == 'statusRent'">
+			            WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='대출')
+			            </if>
+			            <if test="status == 'statusKeep'">
+			            WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='보관')
+			            </if>
 			         ) RENT_ROW
 			         <include refid="search"></include>
 			         ORDER BY RENT_ROW.RETURN_DATE DESC
@@ -190,15 +207,15 @@
 		    SELECT ROWNUM AS RNUM
 		    , RENT.NO AS NO, RENT.BOOK_NO AS BOOK_NO, RENT.NAME AS BOOK_NAME, RENT.WRITER AS WRITER, RENT.PUBLISH AS PUBLISH
 		    , RENT.M_NAME AS M_NAME, RENT.EMAIL AS EMAIL, RENT.PHONE AS PHONE, RENT.ADDRESS AS ADDRESS
-		    , RENT.B_STATUS AS B_STATUS, RENT.RESERVE_DATE, RENT.RETURN_DATE AS RETURN_DATE
+		    , RENT.B_STATUS AS B_STATUS, RENT.RESERVE_DATE, RENT.RETURN_DATE AS RETURN_DATE, RENT.RENT_DATE AS RENT_DATE, (RENT.RESERVE_DATE + 5) AS PICKUP_DATE
 		    FROM (
 		        SELECT RENT_ROW.NO AS NO, RENT_ROW.BOOK_NO AS BOOK_NO, RENT_ROW.NAME AS NAME, RENT_ROW.WRITER AS WRITER, RENT_ROW.PUBLISH AS PUBLISH
 		        , RENT_ROW.M_NAME AS M_NAME, RENT_ROW.EMAIL AS EMAIL, RENT_ROW.PHONE AS PHONE, RENT_ROW.ADDRESS AS ADDRESS
-		        , RENT_ROW.B_STATUS AS B_STATUS, RENT_ROW.RESERVE_DATE AS RESERVE_DATE, RENT_ROW.RETURN_DATE AS RETURN_DATE
+		        , RENT_ROW.B_STATUS AS B_STATUS, RENT_ROW.RESERVE_DATE AS RESERVE_DATE, RENT_ROW.RETURN_DATE AS RETURN_DATE, RENT_ROW.RENT_DATE AS RENT_DATE
 		        FROM (
 		            SELECT R.NO AS NO, R.BOOK_NO AS BOOK_NO, B.NAME AS NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH
 		            , M.NAME AS M_NAME, M.EMAIL AS EMAIL, M.PHONE AS PHONE, M.ADDRESS AS ADDRESS,
-		            (SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS, R.RESERVE_DATE, R.RETURN_DATE
+		            (SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS, R.RESERVE_DATE AS RESERVE_DATE, R.RETURN_DATE AS RETURN_DATE, R.RENT_DATE AS RENT_DATE
 		            FROM RENT R
 		            JOIN MEMBER M
 		            ON R.MEMBER_NO = M.NO
@@ -206,7 +223,7 @@
 		            ON R.BOOK_NO = B.NO
 		            WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='예약')
 		         ) RENT_ROW
-		         --<include refid="search"></include>
+		         <include refid="search"></include>
 		         ORDER BY RENT_ROW.RESERVE_DATE DESC
 		    ) RENT
 		)
@@ -219,31 +236,35 @@
 		parameterType="map">
 		SELECT COUNT(*)
 		FROM (
-		    SELECT ROWNUM AS RNUM
-		    , RENT.NO AS NO, RENT.BOOK_NO AS BOOK_NO, RENT.NAME AS BOOK_NAME, RENT.WRITER AS WRITER, RENT.PUBLISH AS PUBLISH
-		    , RENT.M_NAME AS M_NAME, RENT.EMAIL AS EMAIL, RENT.PHONE AS PHONE, RENT.ADDRESS AS ADDRESS
-		    , RENT.B_STATUS AS B_STATUS, RENT.RESERVE_DATE, RENT.RETURN_DATE AS RETURN_DATE
+		    SELECT RENT_ROW.NO AS NO, RENT_ROW.BOOK_NO AS BOOK_NO, RENT_ROW.NAME AS NAME, RENT_ROW.WRITER AS WRITER, RENT_ROW.PUBLISH AS PUBLISH
+		    , RENT_ROW.M_NAME AS M_NAME, RENT_ROW.EMAIL AS EMAIL, RENT_ROW.PHONE AS PHONE, RENT_ROW.ADDRESS AS ADDRESS
+		    , RENT_ROW.B_STATUS AS B_STATUS, RENT_ROW.RESERVE_DATE AS RESERVE_DATE, RENT_ROW.RETURN_DATE AS RETURN_DATE
 		    FROM (
-		        SELECT RENT_ROW.NO AS NO, RENT_ROW.BOOK_NO AS BOOK_NO, RENT_ROW.NAME AS NAME, RENT_ROW.WRITER AS WRITER, RENT_ROW.PUBLISH AS PUBLISH
-		        , RENT_ROW.M_NAME AS M_NAME, RENT_ROW.EMAIL AS EMAIL, RENT_ROW.PHONE AS PHONE, RENT_ROW.ADDRESS AS ADDRESS
-		        , RENT_ROW.B_STATUS AS B_STATUS, RENT_ROW.RESERVE_DATE AS RESERVE_DATE, RENT_ROW.RETURN_DATE AS RETURN_DATE
-		        FROM (
-		            SELECT R.NO AS NO, R.BOOK_NO AS BOOK_NO, B.NAME AS NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH
-		            , M.NAME AS M_NAME, M.EMAIL AS EMAIL, M.PHONE AS PHONE, M.ADDRESS AS ADDRESS,
-		            (SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS, R.RESERVE_DATE, R.RETURN_DATE
-		            FROM RENT R
-		            JOIN MEMBER M
-		            ON R.MEMBER_NO = M.NO
-		            JOIN BOOK B
-		            ON R.BOOK_NO = B.NO
-		            WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='예약')
-		         ) RENT_ROW
-		         <include refid="search"></include>
-		         ORDER BY RENT_ROW.RESERVE_DATE DESC
-		    ) RENT
+		        SELECT R.NO AS NO, R.BOOK_NO AS BOOK_NO, B.NAME AS NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH
+		        , M.NAME AS M_NAME, M.EMAIL AS EMAIL, M.PHONE AS PHONE, M.ADDRESS AS ADDRESS,
+		        (SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS, R.RESERVE_DATE, R.RETURN_DATE
+		        FROM RENT R
+		        JOIN MEMBER M
+		        ON R.MEMBER_NO = M.NO
+		        JOIN BOOK B
+		        ON R.BOOK_NO = B.NO
+		        WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='예약')
+		     ) RENT_ROW
+		     <include refid="search"></include>
 		)
 	</select>
 	<!-- //예약 전체 수 end -->
+	
+	<!-- 예약 전체 조회 (검색어/상태 없이) start -->
+	<select id="selectReservebyStatus" parameterType="String" resultMap="rentResultMap">
+		SELECT R.NO AS NO, R.BOOK_NO AS BOOK_NO, B.NAME AS NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH,
+	        (SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS, R.RESERVE_DATE, R.RETURN_DATE
+		FROM RENT R
+		JOIN BOOK B
+		ON R.BOOK_NO = B.NO
+		WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME=#{statusName})
+	</select>
+	<!-- //예약 전체 조회 (검색어/상태 없이) end -->
 	
 	<!-- 예약 상세 start -->
 	<select id="selectOneReserve" parameterType="int"
@@ -275,12 +296,11 @@
 	
 	
 	<!--****************
-			예약
+			
 	 **************** -->
 	
 	<!-- 연체 목록 start -->
-	<select id="selectOverdue" parameterType="map"
-		resultMap="rentResultMap">
+	<select id="selectOverdue" parameterType="map" resultMap="rentResultMap">
 		SELECT *
 		FROM (
 		    SELECT ROWNUM AS RNUM
@@ -302,10 +322,9 @@
 		            ON R.BOOK_NO = B.NO
 		            WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='연체')
 		         ) RENT_ROW
-		         --<include refid="search"></include>
-		         ORDER BY RENT_ROW.RESERVE_DATE DESC
+		         <include refid="search"></include>
+		         ORDER BY EXPIRE_DATE ASC
 		    ) RENT
-		    ORDER BY OVERDUE_DAYS DESC
 		)
 		WHERE RNUM BETWEEN #{start} AND #{end}
 	</select>
@@ -336,15 +355,23 @@
 		            WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='연체')
 		         ) RENT_ROW
 		         <include refid="search"></include>
-		         ORDER BY RENT_ROW.RESERVE_DATE DESC
 		    ) RENT
 		)
 	</select>
 	<!-- //연체 전체 수 end -->
 	
+	<!-- 연체로 변경 start -->
+	<update id="updateOneStatusToOverdue" parameterType="rentDto">
+		UPDATE BOOK
+		SET
+		STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='연체')
+		WHERE NO = #{bookNo}
+	</update>
+	<!-- //연체로 변경 end -->
+	
+	
 	<!-- 연체 상세 start -->
-	<select id="selectOneOverdue" parameterType="int"
-		resultMap="rentResultMap">
+	<select id="selectOneOverdue" parameterType="int" resultMap="rentResultMap">
 		SELECT R.NO AS NO
 		, B.NO AS BOOK_NO, B.CATEGORY_CODE AS CATEGORY_CODE, B.NAME AS BOOK_NAME
 		, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH, B.PUBLISH_DATE AS PUBLISH_DATE
@@ -369,5 +396,16 @@
 		WHERE NO = #{bookNo}
 	</update>
 	<!-- //연체 상세에서 상태 변경 end -->
+	
+	
+	<select id="selectRentAll" resultMap="rentResultMap">
+		SELECT R.NO AS NO, R.BOOK_NO AS BOOK_NO, B.NAME AS NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH
+		,(SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS, R.RESERVE_DATE AS RESERVE_DATE
+		, R.RETURN_DATE AS RETURN_DATE, R.EXPIRE_DATE AS EXPIRE_DATE
+		FROM RENT R
+		JOIN BOOK B
+		ON R.BOOK_NO = B.NO
+		WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='대출')
+	</select>
 	
 </mapper>

@@ -48,7 +48,7 @@
 		url += '&searchOption=' + searchOptionObj.val();
 			
 //	 	alert(url);
-				
+		alert($('#count').val());
 		location.href = url;
 
 		return false;
@@ -65,7 +65,7 @@
 	
 
 	<div id='wrap'>
-		<jsp:include page="/WEB-INF/views/Header_temp.jsp" />
+		<jsp:include page="/WEB-INF/views/Header.jsp" />
 		
 		
 		
@@ -319,6 +319,7 @@
 				name="keyword" value="${searchMap.keyword}">
 			<input type="hidden" class='searchInput fLeft' id="searchOption"
 				name="searchOption" value="${searchMap.searchOption}">
+				<input type="hidden" id='count' name='count' value="${pagingMap.totalCount}">
 		</form>
 			
 		</div>
@@ -328,7 +329,7 @@
 		
 		
 		
-		<jsp:include page="/WEB-INF/views/Tail_temp.jsp" />
+		<jsp:include page="/WEB-INF/views/Tail.jsp" />
 	</div>
 
 </body>

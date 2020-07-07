@@ -55,6 +55,19 @@
 			}
 		});
 	}
+	
+	function pageMoveListFnc(){
+		var keywordObj = $('#keyword');
+		var searchOptionObj = $('#searchOption');
+		
+		var url = '';
+		
+		url += './list.do?';
+		url += 'keyword=' + keywordObj.val();
+		url += '&searchOption=' + searchOptionObj.val();
+		
+		location.href = url;
+	}
 </script>
 
 </head>
@@ -120,7 +133,7 @@
 								<tr>
 									<th class='text bold textDark'>반납예정일</th>
 									<td class='text textGrey'>
-										<fmt:formatDate value="${rentDto.expire	Date}" pattern="yyyy/MM/dd "/>
+										<fmt:formatDate value="${rentDto.expireDate}" pattern="yyyy/MM/dd "/>
 									</td>
 								</tr>
 								<tr>
@@ -176,8 +189,13 @@
 								<button type="submit" id='changeStatus' class='btn grey'>반납 처리</button>
 							</c:otherwise>
 						</c:choose>
+						
 						<button type="button" class='btn grey'>반납 안내 이메일 발송</button>
-						<a href="./list.do" class='btn green'>뒤로</a>
+						
+						<input type="hidden" id='searchOption' name="searchOption" value="${searchOption}">
+						<input type="hidden" id='keyword' name="keyword" value="${keyword}">
+						
+						<a href="#none" class='btn green' onclick='pageMoveListFnc();'>뒤로</a>
 					</div>
 					<!-- //상세페이지 버튼 end -->
 				</div>

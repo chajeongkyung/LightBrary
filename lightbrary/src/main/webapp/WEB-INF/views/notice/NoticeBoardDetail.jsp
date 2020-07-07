@@ -19,7 +19,6 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
 
 <script type="text/javascript">
-
 //이전글 
 
 $("#preDoc").on("click",function(){
@@ -106,18 +105,25 @@ $("#nxtDoc").on("click",function(){
 		var searchOptionObj = $('#searchOption');
 		
 		
-		noticeNoObj = $('#no').html();
+		noticeNoObj = $('#no').val();
 		
+		alert(noticeNoObj);
 		var url = '';
 		
-		url += './detailList.do?';
-		url += 'no=' + (parseInt(noticeNoObj) + 1);
-		url += '&keyword=' + keywordObj.val();
-		url += '&searchOption=' + searchOptionObj.val();
+		if (noticeNoObj < 23) {
+			url += './detailList.do?';
+			url += 'no=' + (parseInt(noticeNoObj) + 1);
+			url += '&keyword=' + keywordObj.val();
+			url += '&searchOption=' + searchOptionObj.val();
+				
+			location.href = url;
+			return false;
 			
-		location.href = url;
+		}else{
+			return true;			
+		}
+		
 
-		return false;
 	}	
 	
 	function previousPageFnc() {
@@ -126,7 +132,7 @@ $("#nxtDoc").on("click",function(){
 		var keywordObj = $('#keyword');
 		var searchOptionObj = $('#searchOption');
 		
-		noticeNoObj = $('#no').html();
+		noticeNoObj = $('#no').val();
 		
 		var url = '';
 		
@@ -150,7 +156,7 @@ $("#nxtDoc").on("click",function(){
 <body>
 
 	<div id='wrap'>
-		<jsp:include page="/WEB-INF/views/Header_temp.jsp" />
+		<jsp:include page="/WEB-INF/views/Header.jsp" />
 		<!-- 컨테이너 start -->
 		<div id='container'>
 			<h2 id='pageTitle'>페이지 제목</h2>
@@ -271,6 +277,7 @@ $("#nxtDoc").on("click",function(){
 						name="searchOption" value="${searchOption}">
 						<input type="hidden" class='searchInput fLeft' id="keyword"
 							name="keyword" value="${keyword}">
+						<input type="hidden" id='count' name='count' value="${count}">
 					
 					<a href="./update.do?no=${noticeDto.no}" class='btn grey'>수정</a>
 					<a href="#" class='btn green' onclick="pageMoveListFnc()">목록</a>
@@ -283,7 +290,7 @@ $("#nxtDoc").on("click",function(){
 		<!-- //컨테이너 end -->
 		
 	
-		<jsp:include page="/WEB-INF/views/Tail_temp.jsp" />
+		<jsp:include page="/WEB-INF/views/Tail.jsp" />
 	</div>
 
 </body>

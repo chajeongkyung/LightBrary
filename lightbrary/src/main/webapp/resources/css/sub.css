@@ -79,6 +79,24 @@
 	background-color: rgba(238, 238, 238, 0.45);
 }
 
+.dateInputBox {
+	position: relative;
+	width: 342px;
+	height: 100%;
+}
+
+.dateInputBox .clear {
+	position: absolute;
+	right: 50px;
+	top: 50%;
+	width: 19px;
+	height: 19px;
+	margin-top: -9px;
+	background: url('../img/clear-btn.png') no-repeat center;
+	border: none;
+	outline: none;
+}
+
 /* 셀렉트 검색 폼 */
 .searchForm.type2 {
 	width: 700px;
@@ -129,6 +147,10 @@
 #selectSearch .searchInput {
 	width: 430px;
 	margin-left: 10px;
+}
+
+#viewWithinDates .dateInputBox {
+	width: 282px;
 }
 
 .searchForm.type2 .btn {

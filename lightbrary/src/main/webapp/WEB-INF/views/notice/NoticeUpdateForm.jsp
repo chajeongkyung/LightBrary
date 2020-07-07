@@ -40,18 +40,180 @@
 		initNoticeCategory();
 		var noticeCategoryObj = $('#hiddenNoticeCategory').val();
 		$('#noticeCategory').val(noticeCategoryObj);
+		
+		if (noticeCategoryObj == 0){
+			$('input[id^=noticeDate]').attr('disabled', 'disabled');
+		}
 	}
 	
+	
+	
+	function onchangeFnc() {
+		
+		var noticeCategoryObj = document.getElementById('noticeCategory').value;
+		
+		var noticeDateStartObj = document.getElementById('noticeDateStart');
+		
+		var noticeDateEndObj = document.getElementById('noticeDateEnd');
+		
+		if (noticeCategoryObj == 0 || noticeCategoryObj == ""){
+			$('input[id^=noticeDate]').attr('disabled', 'disabled');
+			$('#noticeDateStart').attr('value','');
+			$('#noticeDateEnd').attr('value','');
+		}else {
+			$('input[id^=noticeDate]').removeAttr('disabled');
+		}
+		
+	}
+	
+	
+	function registrationFnc() {
+		
+		var categoryValid = noticeCategoryValidFnc();
+		var titleValid = titleValidFnc();
+		var contentValid = contentValidFnc();
+		var noticeDateStartValid = noticeDateStartValidFnc();
+		var noticeDateEndValid = noticeDateEndValidFnc();
+		
+		if(categoryValid && titleValid && contentValid && noticeDateStartValid && noticeDateEndValid){
+			var registration = confirm("게시글을 수정 하시겠습니다??");
+		
+			if (registration == true) {
+				alert("게시글이 수정되었습니다.");
+			}else if(registration == false){
+				alert("취소되었습니다.");
+				return false;
+			}
+		   	return true;
+		}
+		return false;
+	}
+		
+	function noticeCategoryValidFnc() {
+		var noticeCategoryObj = $('#noticeCategory').val();
+		
+		 if(noticeCategoryObj == "") {
+			 $('#typeCheck').html("종류를 선택해주세요.");
+			 $('#typeCheck').css('color', 'red');
+			 return false;
+		 }else if (noticeCategoryObj != "") {
+			 $('#typeCheck').html("");
+			 return true;
+		 }
+		
+	}
+	
+	function titleValidFnc() {
+		
+		
+		var titleObj = $('#title').val();
+		
+		 if(titleObj == "") {
+			 $('#titleCheck').html("제목을 입력해 주세요.");
+			 $('#titleCheck').css('color', 'red');
+			 return false;
+		 }else if (titleObj != "") {
+			 $('#titleCheck').html("");
+			 return true;
+		 }
+	}
+	
+	function contentValidFnc() {
+		var contentObj = $('#content').val();
+		
+		 if(contentObj == "") {
+			 $('#contentCheck').html("내용을 입력해주세요.");
+			 $('#contentCheck').css('color', 'red');
+			 return false;
+		 }else if (contentObj != "") {
+			 $('#contentCheck').html("");
+			 return true;
+		 }
+	}
 
+	function noticeDateStartValidFnc() {
+		
+		var noticeCategoryObj = $('#noticeCategory').val();
+		
+		var noticeDateStartObj = $('#noticeDateStart').val();
+		
+		var noticeDateEndObj = $('#noticeDateEnd').val();
+		
+		if(noticeCategoryObj != 0 && noticeDateStartObj == "") {
+			 $('#noticeDateCheck').html("시작일을 선택해주세요.");
+			 $('#noticeDateCheck').css('color', 'red');
+			 return false;
+		 }else if (noticeDateStartObj != "") {
+			 $('#noticeDateCheck').html("");
+			 
+		 }
+		 
+		 if (noticeDateStartObj > noticeDateEndObj && noticeDateEndObj != '') {
+			 $('#noticeDateCheck').html("시작일이 종료일보다 클 수 없습니다.");
+			 $('#noticeDateCheck').css('color', 'red');
+			 return false;
+		}else if(noticeDateStartObj <= noticeDateEndObj){
+			$('#noticeDateCheck').html("");
+			return true;
+		}
+	}
+	
+	function noticeDateEndValidFnc() {
+		
+		var noticeCategoryObj = $('#noticeCategory').val();
+		var noticeDateEndObj = $('#noticeDateEnd').val();
+		var noticeDateStartObj = $('#noticeDateStart').val();
+		
+		if(noticeCategoryObj != 0 && noticeDateEndObj == "") {
+			$('#noticeDateCheck').html("종료일을 선택해주세요.");
+			$('#noticeDateCheck').css('color', 'red');
+			return false;
+		}else if (noticeDateEndObj != "") {
+			$('#noticeDateCheck').html("");	
+			
+		}
+		
+		if (noticeDateStartObj > noticeDateEndObj && noticeDateEndObj != '') {
+			$('#noticeDateCheck').html("시작일이 종료일보다 클 수 없습니다.");
+			$('#noticeDateCheck').css('color', 'red');
+			return false;
+		}else if(noticeDateStartObj <= noticeDateEndObj){
+			$('#noticeDateCheck').html("");
+			return true;
+		}
+	}
+	
+$(document).ready(function() {
+	
+	$("#noticeCategory").on("change", noticeCategoryValidFnc);
+
+	$("#title").on("blur", titleValidFnc);
+	
+	$("#content").on("change", contentValidFnc);
+	
+	$("#noticeDateStart").on("change", noticeDateStartValidFnc);
+	
+	$("#noticeDateEnd").on("change", noticeDateEndValidFnc);
+	
+	
+})
+	
+	
+	
 	function updateFnc() {
 		
 		var updateCtrDtoObj = document.getElementById('updateCtrDto');
 		
-		updateCtrDtoObj.submit();
+		if(registrationFnc()){
+			updateCtrDtoObj.submit();
+		}
+		
 		
 	}
 		
-
+	
+	
+	
 	
 	
 	
@@ -62,7 +224,7 @@
 <body>
 
 	<div id='wrap'>
-		<jsp:include page="/WEB-INF/views/Header_temp.jsp" />
+		<jsp:include page="/WEB-INF/views/Header.jsp" />
 		
 		<!-- 컨테이너 start -->
 		<div id='container'>
@@ -88,26 +250,32 @@
 										<input id="hiddenNoticeCategory" type="hidden" name="code" 
 											value="${noticeDto.code}">
 										<select id="noticeCategory" name="categoryCode" 
-											class='detailSelect text textGrey'>
+											class='detailSelect text textGrey' onchange = "onchangeFnc()">
 											
 										</select>
+										<p id="typeCheck">
+										</p>
 									</td>
 								</tr>
 								
 								<tr>
 									<th class='text bold textDark inputTh'>제목</th>
 									<td class='inputTd'>
-										<input id="noticeTitle" type="text" name="title" 
+										<input id="title" type="text" name="title" 
 											class='detailInput text textGrey' value="${noticeDto.title }">
+										<p id="titleCheck">
+										</p>	
 									</td>
 								</tr>
 								<tr>
 									<th class='text bold textDark inputTh'>내용</th>
 									<td class='inputTd'>
-										<textarea id="textareaContent" rows="50" cols="20" 
+										<textarea id="content" rows="50" cols="20" 
 											class='detailInput detailTextArea text textGrey' name='content'>
 										${noticeDto.content }
 										</textarea>
+										<p id="contentCheck">
+										</p>
 									</td>
 								</tr>
 								
@@ -139,6 +307,8 @@
 												class='searchInput searchDate fLeft datePicker'
 													 readonly="readonly" style="width: 345px;" name="endDate" >
 										</div>
+										<p id="noticeDateCheck">
+										</p>
 									</td>
 								</tr>
 						
@@ -163,7 +333,7 @@
 		</div>
 		<!-- //컨테이너 end -->
 		
-		<jsp:include page="/WEB-INF/views/Tail_temp.jsp" />
+		<jsp:include page="/WEB-INF/views/Tail.jsp" />
 	
 
 </body>

@@ -47,6 +47,16 @@
 	
 		return false;
 	}
+	
+	function refreshFnc() {
+		if(confirm('연체 목록을 업데이트 시키겠습니까?')){
+			alert('연체 도서 목록을 업데이트합니다.');
+			return;
+		} else{
+			return false;
+		}
+	}
+	
 </script>
 
 </head>
@@ -136,12 +146,17 @@
 			<!-- 테이블 목록 start -->
 			<div id='tableListWrap'>
 				<div class='listSettings overH'>
-					<ul class='settings fRight fs0'>
+					<ul class='settings fLeft fs0'>
 						<li>
-							<a href="#none" class='text'>반납처리</a>
+							<a href="#none" class='text'>선택 반납처리</a>
 						</li>
 						<li>
-							<a href="#none" class='text'>연체 안내 이메일 발송</a>
+							<a href="#none" class='text'>선택 연체 안내 이메일 발송</a>
+						</li>
+					</ul>
+					<ul class='settings fRight fs0'>
+						<li>
+							<a href="./refresh.do" class='text' onclick="refreshFnc();">연체 목록 업데이트</a>
 						</li>
 					</ul>
 				</div>

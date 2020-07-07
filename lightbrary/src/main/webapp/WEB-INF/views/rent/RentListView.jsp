@@ -26,22 +26,80 @@
 		$('#depth1Ul > li:nth-child(2)').addClass('active');
 		// depth2 네비
 		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(1)').addClass('active');
+		
+		// 상태 분류 탭
+		statusTab();
+		
+		var statusObj = $('#status');
+		
+		if(statusObj.val() == 'statusAll'){
+			$('#statusAll').parent().addClass('active');
+			$('#statusAll').parent().siblings().removeClass('active');
+		} else if(statusObj.val() == 'statusRent'){
+			$('#statusRent').parent().addClass('active');
+			$('#statusRent').parent().siblings().removeClass('active');
+		} else if(statusObj.val() == 'statusKeep'){
+			$('#statusKeep').parent().addClass('active');
+			$('#statusKeep').parent().siblings().removeClass('active');
+		}
+		
 	});
+	
+	// 상태 분류 탭
+	function statusTab() {
+		
+		var keywordObj = $('#keyword');
+		var searchOptionObj = $('#searchOption');
+		var statusObj = $('#status');
+		var statusStr = '';
+		var url = '';
+		
+		url += './list.do?';
+		url += 'keyword=' + keywordObj.val();
+		url += '&searchOption=' + searchOptionObj.val();
+		
+		// 전체
+		$('#statusAll').click(function() {
+			statusStr = 'statusAll';
+			
+			url += '&status=' + statusStr;
+			
+			location.href = url;
+		});
+		// 대출 중
+		$('#statusRent').click(function() {
+			statusStr = 'statusRent';
+			
+			url += '&status=' + statusStr;
+			
+			location.href = url;
+		});
+		// 보관 중
+		$('#statusKeep').click(function() {
+			statusStr = 'statusKeep';
+			
+			url += '&status=' + statusStr;
+			
+			location.href = url;
+		});
+	}
 	
 	// 상세페이지로 이동
 	function listOnePageFnc(clickObj){	
-		var reserveNoObj = '';
+		var noObj = '';
 		var keywordObj = $('#keyword');
 		var searchOptionObj = $('#searchOption');
+		var statusObj = $('#status');
 		
-		reserveNoObj = $(clickObj).parent().parent().find('input[type="hidden"]');
+		noObj = $(clickObj).parent().parent().find('input[type="hidden"]');
 		
 		var url = '';
 		
 		url += './detail.do?';
-		url += 'no=' + reserveNoObj.val();
+		url += 'no=' + noObj.val();
 		url += '&keyword=' + keywordObj.val();
 		url += '&searchOption=' + searchOptionObj.val();
+		url += '&status=' + statusObj.val();
 		
 		location.href = url;
 	
@@ -136,15 +194,16 @@
 			<!-- 테이블 목록 start -->
 			<div id='tableListWrap'>
 				<div class='listSettings overH'>
+					<input type="hidden" id='status' value="${status}">
 					<ul class='settings fLeft fs0'>
 						<li class='active'>
-							<a href="#none" class='text'>전체 현황 보기</a>
+							<a href="#none" class='text' id='statusAll'>전체 현황 보기</a>
 						</li>
 						<li>
-							<a href="#none" class='text'>대출 중</a>
+							<a href="#none" class='text' id='statusRent'>대출 중</a>
 						</li>
 						<li>
-							<a href="#none" class='text'>반납완료</a>
+							<a href="#none" class='text' id='statusKeep'>반납완료</a>
 						</li>
 					</ul>
 					<ul class='settings fRight fs0'>
@@ -217,7 +276,7 @@
 													<label for="check${rentDto.no}" style="cursor: default;"></label>
 												</c:when>
 												<c:otherwise>
-													<input type="checkbox" id='check${rentDto.no}'>
+													<input type="checkbox" id='check${rentDto.no}' value="${rentDto.no}">
 													<label for="check${rentDto.no}"></label>
 												</c:otherwise>
 											</c:choose>
@@ -254,6 +313,7 @@
 										</span>
 									</td>
 									<td>
+										<input type="hidden" value="${rentDto.bookStatus}" class='bookStatus'>
 										<c:choose>
 											<c:when test="${rentDto.bookStatus eq '대출'}">
 												<span class='textGreen'>${rentDto.bookStatus}</span>

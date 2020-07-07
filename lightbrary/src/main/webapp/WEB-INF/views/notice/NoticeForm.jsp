@@ -44,8 +44,6 @@
 		
 		var noticeCategoryObj = document.getElementById('noticeCategory').value;
 		
-		var typeObj = document.getElementById('type').value;
-		
 		var noticeDateStartObj = document.getElementById('noticeDateStart');
 		
 		var noticeDateEndObj = document.getElementById('noticeDateEnd');
@@ -132,11 +130,16 @@
 	}
 
 	function noticeDateStartValidFnc() {
+		
+		var noticeCategoryObj = $('#noticeCategory').val();
+		
 		var noticeDateStartObj = $('#noticeDateStart').val();
 		
 		var noticeDateEndObj = $('#noticeDateEnd').val();
 		
-		if(noticeDateStartObj == "") {
+		
+		
+		if(noticeCategoryObj != 0 && noticeDateStartObj == "") {
 			 $('#noticeDateCheck').html("시작일을 선택해주세요.");
 			 $('#noticeDateCheck').css('color', 'red');
 			 return false;
@@ -156,10 +159,12 @@
 	}
 	
 	function noticeDateEndValidFnc() {
+		
+		var noticeCategoryObj = $('#noticeCategory').val();
 		var noticeDateEndObj = $('#noticeDateEnd').val();
 		var noticeDateStartObj = $('#noticeDateStart').val();
 		
-		if(noticeDateEndObj == "") {
+		if(noticeCategoryObj != 0 && noticeDateEndObj == "") {
 			$('#noticeDateCheck').html("종료일을 선택해주세요.");
 			$('#noticeDateCheck').css('color', 'red');
 			return false;
@@ -204,7 +209,7 @@ $(document).ready(function() {
 <body>
 
 	<div id='wrap'>
-		<jsp:include page="/WEB-INF/views/Header_temp.jsp" />
+		<jsp:include page="/WEB-INF/views/Header.jsp" />
 		
 		<!-- 컨테이너 start -->
 		<div id='container'>
@@ -291,7 +296,7 @@ $(document).ready(function() {
 		</div>
 		<!-- //컨테이너 end -->
 		
-		<jsp:include page="/WEB-INF/views/Tail_temp.jsp" />
+		<jsp:include page="/WEB-INF/views/Tail.jsp" />
 	
 
 </body>
