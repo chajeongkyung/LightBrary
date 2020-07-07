@@ -5,6 +5,22 @@
   
 <mapper namespace="com.lightbrary.notice">
 	
+	<sql id="search">
+		<choose>
+        	<!-- 검색옵션이 전체 검색일 경우  -->
+        	<when test="searchOption == 'all'">
+        		WHERE TITLE LIKE '%' || #{keyword} || '%'
+        		OR    CONTENT LIKE '%' || #{keyword} || '%'
+        	</when>
+        	
+        	<!-- 전체 검색이 아닐 경우 -->
+        	<otherwise>
+        		WHERE ${searchOption} LIKE '%' || #{keyword} || '%'
+        	</otherwise>
+        </choose>
+	</sql>
+	
+	
 	<resultMap type="com.lightbrary.notice.model.NoticeDto" 
 		id="noticeResultMap">
 		<id column="NO" property="no"/>
@@ -44,23 +60,158 @@
 		<result column="CODE"             	property="code"	/>
 		<result column="NAME"       	property="name"	/>
 		<result column="SCHEDULE_FLAG"	property="scheduleFlag"	/>
+		<result column="PREVNUM"	property="prevNum"	/>
+		<result column="NEXTNUM"	property="nextNum"	/>
 	
 	</resultMap>
 	
-	<select id="noticeSelectList" parameterType="map"
+	<select id="selectMainNotice" parameterType="map"
 		resultMap="noticeCategoryResultMap">
-<!-- 		SELECT N.NO, NC.NAME, N.TITLE, N.STARTDATE -->
-<!-- FROM NOTICE N -->
-<!-- JOIN NOTICE_CATEGORY NC -->
-<!-- ON N.CATEGORY_CODE = NC.CODE -->
 
-	SELECT N.NO , NC.NAME , N.TITLE , N.START_DATE, N.END_DATE, 
-NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE 
-FROM NOTICE N
-JOIN NOTICE_CATEGORY NC
-ON N.CATEGORY_CODE = NC.CODE
+	SELECT N.RNUM, N.NO, N.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
+	N.SCHEDULE_FLAG , N.CREATED_DATE, N.CODE
+   		FROM (
+      			SELECT ROWNUM RNUM, M.NO, M.NAME , M.TITLE , M.START_DATE, M.END_DATE, 
+                    M.SCHEDULE_FLAG , M.CREATED_DATE, M.CODE
+       			FROM(
+	           		SELECT N.NO, NC.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
+                    NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE 
+                    FROM NOTICE N
+                    JOIN NOTICE_CATEGORY NC
+                    ON N.CATEGORY_CODE = NC.CODE
+            		
+            		<include refid="search"></include>
+            		
+			        ORDER BY NO DESC
+           		) M
+        ) N
+        WHERE N.RNUM BETWEEN #{start} AND #{end}  
+	
 	</select>
 	
+	<select id="selectNotice" parameterType="map"
+		resultMap="noticeCategoryResultMap">
+		
+		SELECT N.NO , NC.NAME , N.TITLE , N.START_DATE, N.END_DATE, 
+		NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE
+		FROM NOTICE N
+		JOIN NOTICE_CATEGORY NC
+		ON N.CATEGORY_CODE = NC.CODE
+		WHERE NC.CODE = 0
+		
+	</select>
+	
+	<select id="selectClosedNotice" parameterType="map"
+		resultMap="noticeCategoryResultMap">
+		
+		SELECT N.NO , NC.NAME , N.TITLE , N.START_DATE, N.END_DATE, 
+		NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE
+		FROM NOTICE N
+		JOIN NOTICE_CATEGORY NC
+		ON N.CATEGORY_CODE = NC.CODE
+		WHERE NC.CODE = 2
+		
+	</select>
+	
+	<select id="selectEventNotice" parameterType="map"
+		resultMap="noticeCategoryResultMap">
+		
+		SELECT N.NO , NC.NAME , N.TITLE , N.START_DATE, N.END_DATE, 
+		NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE
+		FROM NOTICE N
+		JOIN NOTICE_CATEGORY NC
+		ON N.CATEGORY_CODE = NC.CODE
+		WHERE NC.CODE = 1
+		
+	</select>
+	
+	<delete id="deleteNotice" parameterType="int">
+		
+		DELETE FROM NOTICE
+		WHERE NO = #{NO}
+		
+	</delete>
+	
+	<select id="selectOneNotice" parameterType="int"
+		resultMap="noticeCategoryResultMap">
+		SELECT N.NO , NC.NAME , N.TITLE , N.START_DATE, N.END_DATE, 
+		NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE, N.CONTENT
+		FROM NOTICE N
+		JOIN NOTICE_CATEGORY NC
+		ON N.CATEGORY_CODE = NC.CODE
+		WHERE N.NO = #{NO}
+	</select>
+	
+	<insert id="insertOneNotice" parameterType="noticeDto"
+		useGeneratedKeys="true" keyProperty="no">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			SELECT notice_NO_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO NOTICE 
+		VALUE(NO, MEMBER_NO, CATEGORY_CODE, TITLE, CONTENT, START_DATE, END_DATE, CREATED_DATE, MODIFIED_DATE) 
+		VALUES(#{no}, #{memberNo}, #{categoryCode}, #{title}, #{content}, #{startDate}, #{endDate}, SYSDATE, SYSDATE)
+	
+	</insert>
+	
+	<select id="selectNoticeCategory" resultMap="noticeCategoryResultMap">
+		SELECT *
+		FROM NOTICE_CATEGORY
+	</select>
+	
+	
+	<update id="updateOneNotice" parameterType="noticeDto">
+	
+		UPDATE NOTICE
+		SET CATEGORY_CODE = #{categoryCode}, 
+		TITLE = #{title},
+		CONTENT = #{content},
+		START_DATE = #{startDate},
+		END_DATE = #{endDate}
+		WHERE NO = #{no}
+		
+	</update>
+	
+	<select id="selectTotalCountNotice" resultType="int">
+		SELECT COUNT(*)
+		FROM NOTICE
+		<include refid="search"></include>
+	</select>
+	
+	<select id="selectCurPageNotice" parameterType="map"
+		resultType="int">
+		
+		SELECT FLOOR((RNUM-1) / 10)+1 NO
+		FROM ( SELECT ROWNUM RNUM, M.NO, M.NAME , M.TITLE , M.START_DATE, M.END_DATE, 
+                    M.SCHEDULE_FLAG , M.CREATED_DATE, M.CODE FROM
+			( SELECT N.NO, NC.NAME , N.TITLE , N.START_DATE, N.END_DATE, 
+                    NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE 
+			FROM NOTICE N
+            JOIN NOTICE_CATEGORY NC
+            ON N.CATEGORY_CODE = NC.CODE
+			
+			<include refid="search"></include>
+			
+			ORDER BY NO DESC )
+		M )
+		WHERE NO = #{no}  
+		
+	</select>
+	
+	
+	<select id="selectNextNotice"  parameterType="int"
+		resultMap="noticeCategoryResultMap">
+		
+		SELECT N.NO , NC.NAME , N.TITLE , N.START_DATE, N.END_DATE, 
+		NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE, N.CONTENT
+		FROM NOTICE N
+		JOIN NOTICE_CATEGORY NC
+		ON N.CATEGORY_CODE = NC.CODE
+		WHERE N.NO = #{NO}
+		
+
+
+
+	</select>
 	
 </mapper>
 
