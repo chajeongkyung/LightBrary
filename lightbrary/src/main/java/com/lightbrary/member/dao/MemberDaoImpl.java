@@ -34,6 +34,16 @@ public class MemberDaoImpl implements MemberDao{
 	@Override
 	public int updateOneMember(MemberDto memberDto) {
 		// TODO Auto-generated method stub
+		System.out.println(memberDto);
+		System.out.println(memberDto);
+		System.out.println(memberDto);
+		System.out.println(memberDto);
+		System.out.println(memberDto);
+		System.out.println(memberDto);
+		System.out.println(memberDto);
+		System.out.println(memberDto);
+		System.out.println(memberDto);
+		System.out.println(memberDto);
 		return sqlSession.update(namespace + "updateOneMember", memberDto);
 	}
 

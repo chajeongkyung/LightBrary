@@ -1,8 +1,6 @@
 package com.lightbrary.rent.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +27,7 @@ public class RentServiceImpl implements RentService{
 	@Override
 	public List<RentDto> selectRent(String searchOption, String keyword, int start, int end) {
 		// TODO Auto-generated method stub
-		List<RentDto> reserveList = 
-				rentDao.selectRent(searchOption, keyword
-					, start, end);
+		List<RentDto> reserveList = rentDao.selectRent(searchOption, keyword, start, end);
 		
 		return reserveList;
 	}
@@ -40,8 +36,7 @@ public class RentServiceImpl implements RentService{
 	@Override
 	public int totalCountRent(String searchOption, String keyword) {
 		// TODO Auto-generated method stub
-		return rentDao.totalCountRent(searchOption
-				, keyword);
+		return rentDao.totalCountRent(searchOption, keyword);
 	}
 
 	// 대출 목록 현재 페이지
@@ -59,6 +54,13 @@ public class RentServiceImpl implements RentService{
 		return rentDao.selectOneRent(no);
 	}
 	
+	// 대출 상세에서 상태 변경
+	@Override
+	public int updateOneRentStatus(RentDto rentDto) {
+		// TODO Auto-generated method stub
+		return rentDao.updateOneRentStatus(rentDto);
+	}
+	
 	
 	/*******************
 			예약
@@ -68,9 +70,7 @@ public class RentServiceImpl implements RentService{
 	@Override
 	public List<RentDto> selectReserve(String searchOption, String keyword, int start, int end) {
 		// TODO Auto-generated method stub
-		List<RentDto> reserveList = 
-				rentDao.selectReserve(searchOption, keyword
-					, start, end);
+		List<RentDto> reserveList = rentDao.selectReserve(searchOption, keyword, start, end);
 		
 		return reserveList;
 	}
@@ -79,8 +79,7 @@ public class RentServiceImpl implements RentService{
 	@Override
 	public int totalCountReserve(String searchOption, String keyword) {
 		// TODO Auto-generated method stub
-		return rentDao.totalCountReserve(searchOption
-				, keyword);
+		return rentDao.totalCountReserve(searchOption, keyword);
 	}
 
 	// 예약 목록 현재 페이지
@@ -104,5 +103,47 @@ public class RentServiceImpl implements RentService{
 		// TODO Auto-generated method stub
 		return rentDao.updateOneReserveStatus(rentDto);
 	}
+
 	
+	/*******************
+			연체
+	*******************/
+	
+	// 연체 목록 출력
+	@Override
+	public List<RentDto> selectOverdue(String searchOption, String keyword, int start, int end) {
+		// TODO Auto-generated method stub
+		List<RentDto> overdueList = rentDao.selectOverdue(searchOption, keyword, start, end);
+		
+		return overdueList;
+	}
+
+	// 연체 목록 총 갯수
+	@Override
+	public int totalCountOverdue(String searchOption, String keyword) {
+		// TODO Auto-generated method stub
+		return rentDao.totalCountOverdue(searchOption, keyword);
+	}
+
+	// 연체 목록 현재 페이지
+	@Override
+	public int selectOverdueCurPage(String searchOption, String keyword, int no) {
+		// TODO Auto-generated method stub
+		return rentDao.selectOverdueCurPage(searchOption, keyword, no);
+	}
+	
+	// 연체 상세
+	@Override
+	public RentDto selectOneOverdue(int no) {
+		// TODO Auto-generated method stub
+		
+		return rentDao.selectOneOverdue(no);
+	}
+
+	// 연체 상세에서 상태 변경
+	@Override
+	public int updateOneOverdueStatus(RentDto rentDto) {
+		// TODO Auto-generated method stub
+		return rentDao.updateOneOverdueStatus(rentDto);
+	}
 }

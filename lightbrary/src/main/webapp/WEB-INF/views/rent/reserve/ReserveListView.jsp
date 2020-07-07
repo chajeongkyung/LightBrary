@@ -170,7 +170,7 @@
 								<th>회원명</th>
 								<th>이메일</th>
 								<th>예약현황</th>
-								<th>반납일</th>
+								<th>픽업일</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -227,7 +227,7 @@
 									</td>
 									<td>
 										<span>
-											<fmt:formatDate value="${rentDto.returnDate}" pattern="yyyy.MM.dd "/>
+											<fmt:formatDate value="${rentDto.returnDate}" pattern="yyyy/MM/dd "/>
 										</span>
 									</td>
 								</tr>
@@ -240,14 +240,16 @@
 			</div>
 			<!-- //테이블 목록 end -->
 			
-			<jsp:include page="/WEB-INF/views/common/paging.jsp">
-				<jsp:param value="${pagingInfo}" name="pagingMap"/>
-			</jsp:include>
-			
-			<form action="./list.do" id='pagingForm' method="post">
-				<input type="hidden" id='curPage' name='curPage' 
-					value="${pagingInfo.curPage}">
-			</form>
+			<c:if test="${!empty reserveList}">
+				<jsp:include page="/WEB-INF/views/common/paging.jsp">
+					<jsp:param value="${pagingInfo}" name="pagingMap"/>
+				</jsp:include>
+				
+				<form action="./list.do" id='pagingForm' method="post">
+					<input type="hidden" id='curPage' name='curPage' 
+						value="${pagingInfo.curPage}">
+				</form>
+			</c:if>
 			
 		</div>
 		<!-- //컨테이너 end -->

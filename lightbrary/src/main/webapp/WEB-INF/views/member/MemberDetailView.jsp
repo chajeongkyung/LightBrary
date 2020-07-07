@@ -14,13 +14,18 @@
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
-
+<script type="text/javascript">
+	$(document).ready(function() {
+		if(${message ne null}){
+			alert('${message}');	
+	});
+</script>
 </head>
 
 <body>
 
 	<div id='wrap'>
-		<jsp:include page="/WEB-INF/views/Header_temp.jsp" />
+		<jsp:include page="/WEB-INF/views/Header.jsp" />
 		
 		<!-- 컨테이너 start -->
 		<div id='container'>
@@ -37,7 +42,7 @@
 						<tbody>
 							<tr>
 								<th class='text bold textDark'>이메일</th>
-								<td class='text textGrey'>${memberDto.email}</td>
+								<td class='text textGrey'>${member.email}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -53,20 +58,20 @@
 						<tbody>
 							<tr>
 								<th class='text bold textDark'>이름</th>
-								<td class='text textGrey'>${memberDto.name}</td>
+								<td class='text textGrey'>${member.name}</td>
 							</tr>
 							<tr>
 								<th class='text bold textDark'>연락처</th>
-								<td class='text textGrey'>${memberDto.phone}</td>
+								<td class='text textGrey'>${member.phone}</td>
 							</tr>
 							<tr>
 								<th class='text bold textDark'>주소</th>
-								<td class='text textGrey'>${memberDto.address}</td>
+								<td class='text textGrey'>${member.address}</td>
 							</tr>
 							<tr>
 								<th class='text bold textDark'>가입일</th>
 								<td class='text textGrey'>
-									<fmt:formatDate value="${memberDto.createdDate}" pattern="yyyy년 MM월 dd일 "/>
+									<fmt:formatDate value="${member.createdDate}" pattern="yyyy년 MM월 dd일 "/>
 								</td>
 							</tr>
 						</tbody>
@@ -84,7 +89,7 @@
 		</div>
 		<!-- //컨테이너 end -->
 		
-		<jsp:include page="/WEB-INF/views/Tail_temp.jsp" />
+		<jsp:include page="/WEB-INF/views/Tail.jsp" />
 	</div>
 
 </body>

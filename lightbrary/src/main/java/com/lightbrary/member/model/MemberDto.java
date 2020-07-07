@@ -2,6 +2,8 @@ package com.lightbrary.member.model;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class MemberDto {
 
 	private int no;
@@ -11,7 +13,9 @@ public class MemberDto {
 	private String name;
 	private String phone;
 	private String address;
+	@DateTimeFormat(pattern="yyyy년 MM월 dd일 ")
 	private Date createdDate;
+	@DateTimeFormat(pattern="yyyy년 MM월 dd일 ")
 	private Date modifiedDate;
 	private String delFlag;
 	
@@ -52,6 +56,17 @@ public class MemberDto {
 		super();
 		this.no = no;
 		this.email = email;
+	}
+
+	
+	
+	public MemberDto(int no, String password, String name, String phone, String address) {
+		super();
+		this.no = no;
+		this.password = password;
+		this.name = name;
+		this.phone = phone;
+		this.address = address;
 	}
 
 	public int getNo() {

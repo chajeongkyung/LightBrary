@@ -3,19 +3,23 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!-- 기본 헤더 start -->
-<c:if test="${memberDto.gradeCode eq null}">
+<c:if test="${member.gradeCode eq null}">
 <header>
 	<div id='headerTop'>
 		<h1 id='logo'>
 			<a href="#none"></a>
 		</h1>
+		<p>${member.name }</p>
+		<p>${member.no }</p>
+		<p>${member.gradeCode}</p>
+		<p>${member.email}</p>
 	</div>
 </header>
 </c:if>
 <!-- //기본 헤더 end -->
 
 <!-- 관리자 헤더 start -->
-<c:if test="${memberDto.gradeCode eq 0}">
+<c:if test="${member.gradeCode eq 0}">
 <header>
 	<div  id='headerSearch'>
 		<form action="">
@@ -32,7 +36,7 @@
 				<a href="#none" class='hOptionsText'>관리자</a>
 			</li>
 			<li>
-				<a href="#" id='logout' class='hOptionsText'>로그아웃</a>
+				<a href="<%=request.getContextPath()%>/logout.do" id='logout' class='hOptionsText'>로그아웃</a>
 			</li>
 		</ul>
 	</div>
@@ -78,7 +82,7 @@
 
 
 <!-- 사용자 헤더 start -->
-<c:if test="${memberDto.gradeCode eq 1}">
+<c:if test="${member.gradeCode eq 1}">
 <header>
 	<div  id='headerSearch'>
 		<form action="">
@@ -98,7 +102,7 @@
 			</li>
 			<li>
 				<a href="#none" id='myPageClick' class='hOptionsText'>
-					<span>${memberDto.name}</span> 님
+					<span>${member.name}</span> 님
 					<img alt="화살표" src="<%=request.getContextPath()%>/resources/img/arrow.png" style="vertical-align: 2px">
 				</a>
 				<div id='myPageDrop' style="display:none">

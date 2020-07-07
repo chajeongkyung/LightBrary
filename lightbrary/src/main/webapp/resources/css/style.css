@@ -450,6 +450,7 @@ header {
 
 .settings li.active a, .settings a:hover {
 	font-weight: bold;
+	color: #2B9447;
 }
 
 /* 책 목록 */

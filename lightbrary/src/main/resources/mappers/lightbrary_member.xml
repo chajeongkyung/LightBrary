@@ -61,7 +61,26 @@
 		FROM MEMBER
 		WHERE EMAIL = #{email}
 	</select>
-
+	
+	<update id="deleteOneMember" parameterType="java.lang.Integer">
+		UPDATE MEMBER
+		<set>
+			DEL_FLAG= 'Y'
+		</set>
+		WHERE NO = #{no}
+	</update>
+	
+	<update id="updateOneMember" parameterType="memberDto">
+		UPDATE MEMBER
+		<set>
+			<if test="password != ''">PASSWORD = #{password},</if>
+			<if test="name != ''">NAME = #{name},</if>
+			<if test="phone != ''">PHONE = #{phone},</if>
+			<if test="address != ''">ADDRESS = #{address},</if>
+			MODIFIED_DATE = SYSDATE
+		</set>
+		WHERE NO = #{no}
+	</update>
 </mapper>
 
 
