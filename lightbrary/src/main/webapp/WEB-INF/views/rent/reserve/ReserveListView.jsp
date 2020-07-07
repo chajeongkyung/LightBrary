@@ -47,6 +47,16 @@
 	
 		return false;
 	}
+	
+	function cancelStatusFnc() {
+		if(confirm('픽업일이 지난 도서들의 예약을 취소하시겠습니까?')){
+			alert('예약 취소가 성공적으로 처리되었습니다.');
+			
+			return;
+		} else{
+			return false;
+		}
+	}
 </script>
 
 </head>
@@ -136,9 +146,16 @@
 			<!-- 테이블 목록 start -->
 			<div id='tableListWrap'>
 				<div class='listSettings overH'>
+					<ul class='settings fLeft fs0'>
+						<li>
+							<a href="#none" class='text'>선택 대출 중으로 상태 변경</a>
+						</li>
+					</ul>
 					<ul class='settings fRight fs0'>
 						<li>
-							<a href="#none" class='text'>대출 중으로 상태 변경</a>
+							<a href="./cancel.do" class='text' onclick="cancelStatusFnc();">
+								픽업일 지난 예약 자동 취소
+							</a>
 						</li>
 					</ul>
 				</div>
@@ -227,7 +244,7 @@
 									</td>
 									<td>
 										<span>
-											<fmt:formatDate value="${rentDto.returnDate}" pattern="yyyy/MM/dd "/>
+											<fmt:formatDate value="${rentDto.pickUpDate}" pattern="yyyy/MM/dd "/>
 										</span>
 									</td>
 								</tr>

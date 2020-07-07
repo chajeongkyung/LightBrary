@@ -62,9 +62,15 @@
 								<th class='text bold textDark inputTh'>기간</th>
 								<td class='inputTd'>
 									<div class='searchInputBox overH' style="width: 100%;">
-										<input type="text" id="bookPublishDateStart" class='searchInput searchDate fLeft' readonly="readonly" style="width: 345px;">
+										<div class='dateInputBox fLeft' style="width: 345px;">
+											<input type="text" id="bookPublishDateStart" class='searchInput searchDate' readonly="readonly" style="width: 345px;">
+											<button type="button" class='clear'></button>
+										</div>
 										<span class='range fLeft text bold' style="padding-left: 10px; padding-right: 10px;">~</span>
-										<input type="text" id="bookPublishDateEnd" class='searchInput searchDate fLeft' readonly="readonly" style="width: 345px;">
+										<div class='dateInputBox fLeft' style="width: 345px;">
+											<input type="text" id="bookPublishDateEnd" class='searchInput searchDate' readonly="readonly" style="width: 345px;">
+											<button type="button" class='clear'></button>
+										</div>
 									</div>
 								</td>
 							</tr>

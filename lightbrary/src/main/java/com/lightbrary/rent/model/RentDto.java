@@ -11,6 +11,7 @@ public class RentDto {
 	private Date expireDate;
 	private Date returnDate;
 	private int overdueDays;
+	private Date pickUpDate;
 	private String sendFlag;
 	private String delFlag;
 	
@@ -32,11 +33,9 @@ public class RentDto {
 		// TODO Auto-generated constructor stub
 	}
 
-	
-
 	public RentDto(int no, int memberNo, int bookNo, Date reserveDate, Date rentDate, Date expireDate, Date returnDate,
-			int overdueDays, String sendFlag, String delFlag, String bookCategoryCode, String bookName, String writer,
-			String publish, Date publishDate, String mname, String email, String phone, String address,
+			int overdueDays, Date pickUpDate, String sendFlag, String delFlag, String bookCategoryCode, String bookName,
+			String writer, String publish, Date publishDate, String mname, String email, String phone, String address,
 			String bookStatus) {
 		super();
 		this.no = no;
@@ -47,6 +46,7 @@ public class RentDto {
 		this.expireDate = expireDate;
 		this.returnDate = returnDate;
 		this.overdueDays = overdueDays;
+		this.pickUpDate = pickUpDate;
 		this.sendFlag = sendFlag;
 		this.delFlag = delFlag;
 		this.bookCategoryCode = bookCategoryCode;
@@ -60,8 +60,6 @@ public class RentDto {
 		this.address = address;
 		this.bookStatus = bookStatus;
 	}
-
-
 
 	public int getNo() {
 		return no;
@@ -223,16 +221,23 @@ public class RentDto {
 		this.overdueDays = overdueDays;
 	}
 
+	public Date getpickUpDate() {
+		return pickUpDate;
+	}
+
+	public void setpickUpDate(Date pickUpDate) {
+		this.pickUpDate = pickUpDate;
+	}
+
 	@Override
 	public String toString() {
 		return "RentDto [no=" + no + ", memberNo=" + memberNo + ", bookNo=" + bookNo + ", reserveDate=" + reserveDate
 				+ ", rentDate=" + rentDate + ", expireDate=" + expireDate + ", returnDate=" + returnDate
-				+ ", overdueDays=" + overdueDays + ", sendFlag=" + sendFlag + ", delFlag=" + delFlag
-				+ ", bookCategoryCode=" + bookCategoryCode + ", bookName=" + bookName + ", writer=" + writer
+				+ ", overdueDays=" + overdueDays + ", pickUpDate=" + pickUpDate + ", sendFlag=" + sendFlag + ", delFlag="
+				+ delFlag + ", bookCategoryCode=" + bookCategoryCode + ", bookName=" + bookName + ", writer=" + writer
 				+ ", publish=" + publish + ", publishDate=" + publishDate + ", mname=" + mname + ", email=" + email
 				+ ", phone=" + phone + ", address=" + address + ", bookStatus=" + bookStatus + "]";
 	}
-
 	
 	
 }

@@ -58,9 +58,15 @@
 						<div class='searchInputWrap fs0'>
 							<span class='label text bold'>출판일</span>
 							<div class='searchInputBox overH'>
-								<input type="text" id="bookPublishDateStart" class='searchInput searchDate fLeft' readonly="readonly">
+								<div class='dateInputBox fLeft'>
+									<input type="text" id="bookPublishDateStart" class='searchInput searchDate' readonly="readonly">
+									<button type="button" class='clear'></button>
+								</div>
 								<span class='range fLeft text bold'>~</span>
-								<input type="text" id="bookPublishDateEnd" class='searchInput searchDate fRight' readonly="readonly">
+								<div class='dateInputBox fRight'>
+									<input type="text" id="bookPublishDateEnd" class='searchInput searchDate' readonly="readonly">
+									<button type="button" class='clear'></button>
+								</div>
 							</div>
 						</div>
 						<!-- //기간 범위 인풋 (달력) end -->
@@ -118,9 +124,15 @@
 				<form action="" id='viewWithinDates'>
 					<fieldset>
 						<div class='searchInputBox overH'>
-							<input type="text" id="dateStart" class='searchInput searchDate fLeft' readonly="readonly">
+							<div class='dateInputBox fLeft'>
+								<input type="text" id="dateStart" class='searchInput searchDate' readonly="readonly">
+								<button type="button" class='clear'></button>
+							</div>
 							<span class='range fLeft text bold'>~</span>
-							<input type="text" id="dateEnd" class='searchInput searchDate fLeft' readonly="readonly" style="margin-left:3px">
+							<div class='dateInputBox fLeft' style="margin-left:3px">
+								<input type="text" id="dateEnd" class='searchInput searchDate fLeft' readonly="readonly">
+								<button type="button" class='clear'></button>
+							</div>
 							<div class='btnWrap fs0 tCenter fRight'>
 								<input type="submit" class='btn grey' value="조회">
 							</div>
