@@ -41,7 +41,7 @@ public class MemberController {
 		
 		log.info("회원가입 폼으로");
 		
-		return "member/MemberForm";
+		return "member/MemberJoinForm";
 	}
 
 	@RequestMapping(value = "/member/addCtr.do", method = {RequestMethod.GET, RequestMethod.POST})

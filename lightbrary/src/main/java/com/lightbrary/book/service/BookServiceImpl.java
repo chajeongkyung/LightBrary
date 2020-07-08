@@ -126,27 +126,30 @@ public class BookServiceImpl implements BookService{
 	}
 
 	@Override
-	public int updateOneBook(BookDto bookDto, MultipartHttpServletRequest request) {
+	public int updateOneBook(BookDto bookDto, MultipartHttpServletRequest request, int imageStatus) {
 		// TODO Auto-generated method stub
 		
 		FileUtils fileUtils = new FileUtils();
 		
 		try {
-			BookImageDto bookImageDto = new BookImageDto();
-			List<Map<String,Object>> bookImageDtoList = fileUtils.parseInsertFileInfo(request);
-			
-			if(bookImageDtoList != null) {
-				for (Map<String, Object> map : bookImageDtoList) {
-					bookImageDto.setOriginalFileName((String) map.get("ORIGINAL_FILE_NAME"));
-					bookImageDto.setStoredFileName((String) map.get("STORED_FILE_NAME"));
-					bookImageDto.setFileSize((long) map.get("FILE_SIZE"));
-					bookImageDto.setCreatedDate((Date) map.get("CREATED_DATE"));
-					
-					bookDao.insertOneImage(bookImageDto);
-					bookDto.setImageNo(bookImageDto.getNo());
+			if(imageStatus == 1) {
+				BookImageDto bookImageDto = new BookImageDto();
+				List<Map<String,Object>> bookImageDtoList = fileUtils.parseInsertFileInfo(request);
+				
+				if(bookImageDtoList != null) {
+					for (Map<String, Object> map : bookImageDtoList) {
+						bookImageDto.setOriginalFileName((String) map.get("ORIGINAL_FILE_NAME"));
+						bookImageDto.setStoredFileName((String) map.get("STORED_FILE_NAME"));
+						bookImageDto.setFileSize((long) map.get("FILE_SIZE"));
+						bookImageDto.setCreatedDate((Date) map.get("CREATED_DATE"));
+						
+						bookDao.insertOneImage(bookImageDto);
+						bookDto.setImageNo(bookImageDto.getNo());
+					}
 				}
+			} else if (imageStatus == 2) {
+				bookDto.setImageNo(0);
 			}
-			
 			return bookDao.updateOneBook(bookDto);
 			
 		} catch (IllegalStateException e) {

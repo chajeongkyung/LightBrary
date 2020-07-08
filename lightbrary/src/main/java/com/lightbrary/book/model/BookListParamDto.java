@@ -20,8 +20,8 @@ public class BookListParamDto {
 			categoryStart = searchCategory3;
 			categoryEnd = searchCategory3;
 		} else if(searchCategory2 != "") {
-			categoryStart = searchCategory2.substring(1, 1) + "0";
-			categoryEnd = searchCategory2.substring(1, 1) + "9";
+			categoryStart = searchCategory2.substring(0, 2) + "0";
+			categoryEnd = searchCategory2.substring(0, 2) + "9";
 		} else if(searchCategory1 != "") {
 			categoryStart = searchCategory1.substring(0, 1) + "00";
 			categoryEnd = searchCategory1.substring(0, 1) + "99";

@@ -18,6 +18,6 @@ public interface BookService {
 	public BookImageDto selectOneImage(int no);
 	public void insertOneBook(BookDto bookDto, MultipartHttpServletRequest request);
 	public int deleteOneBook(int no);
-	public int updateOneBook(BookDto bookDto, MultipartHttpServletRequest request);
+	public int updateOneBook(BookDto bookDto, MultipartHttpServletRequest request, int imageStatus);
 	public void insertBookBatch(BookDto bookDto, MultipartHttpServletRequest request, int seriesStart, int seriesEnd);
 }

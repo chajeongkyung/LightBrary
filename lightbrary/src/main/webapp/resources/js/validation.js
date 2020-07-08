@@ -55,3 +55,7 @@
 		}
 	}
 	
+	function isNum(input){
+		var format = /^\d+/;
+		return isValidFormat(input, format);
+	}

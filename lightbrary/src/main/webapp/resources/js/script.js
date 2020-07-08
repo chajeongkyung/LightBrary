@@ -117,22 +117,28 @@ function imageFileSelectFnc(e){
 	filesArr.forEach(function(file){
 		if(!file.type.match("image.*")){
 			alert("이미지 파일만 업로드 가능합니다.");
-			if (/(MSIE|Trident)/.test(navigator.userAgent)) {
-				// ie 일때 input[type=file] init. 
-				$("#file").replaceWith( $("#file").clone(true) ); 
-			} else { 
-				// other browser 일때 input[type=file] init. 
-				$("#file").val("");
-			}
+			initInputFile();
 			$('#bookImage').css("background-image", $('#fileUrlDefault').val());
+			$('#imageStatus').val(0);
 		} else{
 			selectedFile = file;
 			
 			var reader = new FileReader();
 			reader.onload = function(e){
 				$('#bookImage').css("background-image", "url(" + e.target.result + ")");
+				$('#imageStatus').val(1);
 			}
 			reader.readAsDataURL(file)
 		}
 	});
+}
+
+function initInputFile(){
+	if (/(MSIE|Trident)/.test(navigator.userAgent)) {
+		// ie 일때 input[type=file] init. 
+		$("#file").replaceWith( $("#file").clone(true) ); 
+	} else { 
+		// other browser 일때 input[type=file] init. 
+		$("#file").val("");
+	}
 }

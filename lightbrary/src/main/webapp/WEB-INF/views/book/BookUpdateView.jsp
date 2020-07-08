@@ -20,6 +20,15 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/bookCategorySelect.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/bookStatusSelect.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/validation.js"></script>
+
+<style type="text/css">
+	.alertMsgBox {
+		clear: left;
+		font-size:13px;
+		display: block;
+	}
+</style>
 
 <script type="text/javascript">
 	$(function(){
@@ -27,6 +36,7 @@
 		bookStatusSelect();
 		
 		$('#publishDate').datepicker("setDate", $('#hiddenPublishDate').val());
+		$('#file').on("change", imageFileSelectFnc);
 	});
 	
 	function selectCategorybySearchParam(){
@@ -71,20 +81,22 @@
 	}
 	
 	function updateBookFnc(){
-		$appendStr = $('<form action="./updateCtr.do" id="bookUpdateForm" name="bookUpdateDto" method="post" enctype="multipart/form-data"></form>');
-		$('#container').append($appendStr);
-		
-		$.each($('#bookDtoForm select[id^=bookCategory]'), function(idx, item){
-			$appendStr = $('<input type="hidden" id="' + item.getAttribute("id")
-					+'" name="' + item.getAttribute("name")
-					+'" value="' + item.value + '">');
-			$('#bookUpdateForm').append($appendStr);
-		});
-		$('#bookDtoForm input').clone().appendTo('#bookUpdateForm');
-		$('#bookListParamDto input').clone().appendTo('#bookUpdateForm');
-		$('#bookUpdateForm').attr('style', 'visibility: hidden');
-		
-		$('#bookUpdateForm').submit();
+		if(validateAll()){
+			$appendStr = $('<form action="./updateCtr.do" id="bookUpdateForm" name="bookUpdateDto" method="post" enctype="multipart/form-data"></form>');
+			$('#container').append($appendStr);
+			
+			$.each($('#bookDtoForm select[id^=bookCategory]'), function(idx, item){
+				$appendStr = $('<input type="hidden" id="' + item.getAttribute("id")
+						+'" name="' + item.getAttribute("name")
+						+'" value="' + item.value + '">');
+				$('#bookUpdateForm').append($appendStr);
+			});
+			$('#bookDtoForm input').clone().appendTo('#bookUpdateForm');
+			$('#bookListParamDto input').clone().appendTo('#bookUpdateForm');
+			$('#bookUpdateForm').attr('style', 'visibility: hidden');
+			
+			$('#bookUpdateForm').submit();
+		}
 	}
 	
 	function deleteBookFnc(){
@@ -102,6 +114,60 @@
 				alert('오류');
 			}
 		});
+	}
+	
+	function validateAll(){
+		var categoryValid = !(isEmpty($('#bookCategory3').val()));
+		if(categoryValid){
+			$('#alertInvalidCategoryMsg').html('');
+		} else{
+			$('#alertInvalidCategoryMsg').html('분류를 모두 선택해 주세요');
+		}
+		
+		var nameValid = !(isEmpty($('#name').val()));
+		if(nameValid) {
+			$('#alertInvalidNameMsg').html('');
+		} else{
+			$('#alertInvalidNameMsg').html('이름을 입력해 주세요');
+		}
+			
+		var writerValid = !(isEmpty($('#writer').val()));
+		if(writerValid){
+			$('#alertInvalidWriterMsg').html('');
+		} else{
+			$('#alertInvalidWriterMsg').html('저자를 입력해 주세요');
+		}
+		
+		var publishValid = !(isEmpty($('#publish').val()));
+		if(publishValid){
+			$('#alertInvalidPublishMsg').html('');
+		} else{
+			$('#alertInvalidPublishMsg').html('출판사를 입력해 주세요');
+		}
+		
+		var publishDateValid = !(isEmpty($('#publishDate').val()));
+		if(publishDateValid){
+			$('#alertInvalidPublishDateMsg').html('');
+		} else{
+			$('#alertInvalidPublishDateMsg').html('출판일을 입력해 주세요');
+		}
+		return categoryValid && nameValid && writerValid && publishValid && publishDateValid;
+	}	
+	
+	function imageDeleteFnc(){
+		var imageStatusObj = $('#imageStatus');
+		var imageStatus = $('#imageStatus').val();
+		
+		//imageStatus 0:default 1:modify 2:delete
+		if (imageStatus == 0){
+			initInputFile();
+			$('#bookImage').css("background-image", $('#deletedFileUrlDefault').val());
+			imageStatusObj.val(2);
+		} else if(imageStatus == 1){
+			initInputFile();
+			$('#bookImage').css("background-image", $('#fileUrlDefault').val());
+			imageStatusObj.val(0);
+		}
 	}
 </script>
 
@@ -134,7 +200,12 @@
 									<td class='overH'>
 										<input type="file" id="file" name="file" class='fLeft'>
 										<c:url var="imgUrl" value='/img/${bookDto.imageName}'/>
+										<input type="hidden" id="fileUrlDefault" value="url('${imgUrl}')">
+										<input type="hidden" id="deletedFileUrlDefault" value="url('<%=request.getContextPath()%>/resources/img/noimage.jpg')">
 										<div id='bookImage' class='fRight bgCover' style="margin: 0px; background-image: url('${imgUrl}')"></div>
+										<!-- imageStatus 0:default 1:modify 2:delete -->
+										<input type="hidden" id="imageStatus" name="imageStatus" value="0">
+										<a href="#none" onclick="imageDeleteFnc();" class="text bold">이미지 삭제</a>
 									</td>
 								</tr>
 							</tbody>
@@ -159,24 +230,28 @@
 										</select>
 										<select id='bookCategory3' name="bookCategory3" class='detailSelect bigger text textGrey'>
 										</select>
+										<div id="alertInvalidCategoryMsg" class="textRed alertMsgBox"></div>
 									</td>
 								</tr>
 								<tr>
 									<th class='text bold textDark inputTh'>제목</th>
 									<td class='inputTd fs0'>
 										<input type="text" id="name" name="name" class='detailInput text textGrey' value="${bookDto.name}">
+										<div id="alertInvalidNameMsg" class="textRed alertMsgBox"></div>
 									</td>
 								</tr>
 								<tr>
 									<th class='text bold textDark inputTh'>저자</th>
 									<td class='inputTd'>
 										<input type="text" id="writer" name="writer" class='detailInput text textGrey' value="${bookDto.writer}">
+										<div id="alertInvalidWriterMsg" class="textRed alertMsgBox"></div>
 									</td>
 								</tr>
 								<tr>
 									<th class='text bold textDark inputTh'>출판사</th>
 									<td class='inputTd'>
 										<input type="text" id="publish" name="publish" class='detailInput text textGrey' value="${bookDto.publish}">
+										<div id="alertInvalidPublishMsg" class="textRed alertMsgBox"></div>
 									</td>
 								</tr>
 								<tr>
@@ -185,6 +260,7 @@
 										<fmt:formatDate var="fommatedPublishDate" value="${bookDto.publishDate}" pattern="yyyy/MM/dd"/>
 										<input type="hidden" id="hiddenPublishDate" value="${fommatedPublishDate}">
 										<input type="text" id="publishDate" name="publishDate" class='searchInput searchDate textGrey datePicker' readonly="readonly" style="height: 50px;">
+										<div id="alertInvalidPublishDateMsg" class="textRed alertMsgBox"></div>
 									</td>
 								</tr>
 								<tr>

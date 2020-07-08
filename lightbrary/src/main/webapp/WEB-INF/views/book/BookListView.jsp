@@ -60,13 +60,19 @@
 	}
 	
 	function bookListParamDtoSubmit(){
+		var msgObj = $('#alertInvalidDateMsg');
+		
 		if(isValidDateRange($('#publishDateStart').val(), $('#publishDateEnd').val())){
 			$('#bookListParamDto').submit();
 		} else{
-			alert('시작 날짜가 끝 날짜보다 클 수 없습니다.');
+			msgObj.addClass('textRed');
+			msgObj.html('시작 날짜가 끝 날짜보다 클 수 없습니다.');
 		}
 	}
-
+	
+	function clearDateFnc(obj){
+		obj.previousElementSibling.value = "";
+	}
 </script>
 
 </head>
@@ -111,10 +117,17 @@
 						<div class='searchInputWrap fs0'>
 							<span class='label text bold'>출판일</span>
 							<div class='searchInputBox overH'>
-								<input type="text" id="publishDateStart" name="publishDateStart" class='searchInput searchDate fLeft datePicker' readonly="readonly" value='${bookListParamDto.publishDateStart}'>
+								<div class='dateInputBox fLeft'>
+									<input type="text" id="publishDateStart" name="publishDateStart" class='searchInput searchDate fLeft datePicker' readonly="readonly" value='${bookListParamDto.publishDateStart}'>
+									<button type="button" class='clear' onclick='clearDateFnc(this);'></button>
+								</div>
 								<span class='range fLeft text bold'>~</span>
-								<input type="text" id="publishDateEnd" name="publishDateEnd" class='searchInput searchDate fRight datePicker' readonly="readonly" value='${bookListParamDto.publishDateEnd}'>
+								<div class='dateInputBox fRight'>
+									<input type="text" id="publishDateEnd" name="publishDateEnd" class='searchInput searchDate fRight datePicker' readonly="readonly" value='${bookListParamDto.publishDateEnd}'>
+									<button type="button" class='clear' onclick='clearDateFnc(this);'></button>
+								</div>
 							</div>
+							<p style="margin:5px 0px 5px 95px; font-size:13px;" id="alertInvalidDateMsg"></p>
 						</div>
 						<!-- //기간 범위 인풋 (달력) end -->
 						
@@ -155,7 +168,7 @@
 					<!-- 동그란 체크박스 전체선택 end -->
 					<ul class='settings fRight fs0'>
 						<li>
-							<a href="#none" onclick='testFnc();' class='text'>테스트</a>
+							<a href="#none" class='text'>테스트</a>
 						</li>
 						<li>
 							<a href="#none" class='text'>바구니 담기</a>

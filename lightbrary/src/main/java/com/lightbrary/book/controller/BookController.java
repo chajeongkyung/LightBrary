@@ -47,10 +47,6 @@ public class BookController {
 		bookListParamDto.setStartPage(pagingInfo.getPageBegin());
 		bookListParamDto.setEndPage(pagingInfo.getPageEnd());
 		
-//		Map<String, Integer> pagingParamMap = new HashMap<String, Integer>();
-//		pagingParamMap.put("start", start);
-//		pagingParamMap.put("end", end);
-		
 		List<BookDto> bookDtoList = bookService.selectBook(bookListParamDto);
 		
 		model.addAttribute("bookDtoList", bookDtoList);
@@ -167,7 +163,9 @@ public class BookController {
 	
 	@RequestMapping(value = "/book/updateCtr.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String BookUpdateCtr(BookUpdateParamDto bookUpdateParamDto, MultipartHttpServletRequest request
-			, String bookCategory1, String bookCategory2, String bookCategory3, Model model) {
+			, String bookCategory1, String bookCategory2, String bookCategory3
+			, int imageNo, int imageStatus
+			, Model model) {
 		
 		log.info("------Called BookUpdateCtr------");
 		log.info(bookUpdateParamDto.toString());
@@ -190,8 +188,9 @@ public class BookController {
 		}
 		
 		bookDto.setCategoryCode(categoryCode);
+		bookDto.setImageNo(imageNo);
 		System.out.println(bookDto);
-		bookService.updateOneBook(bookDto, request);
+		bookService.updateOneBook(bookDto, request, imageStatus);
 		
 		bookDto = bookService.selectOneBook(bookDto.getNo());
 		
