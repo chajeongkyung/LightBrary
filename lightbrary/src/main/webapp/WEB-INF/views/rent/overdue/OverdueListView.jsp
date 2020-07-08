@@ -57,6 +57,33 @@
 		}
 	}
 	
+	// 이메일 전송
+	function sendEmailFnc(clickObj) {
+		var url = "";
+		var no = $(clickObj).find('.no').val();
+		var userEmail = $(clickObj).find('.userEmail').val();
+		var memberName = $(clickObj).find('.memberName').val();
+		var bookName = $(clickObj).find('.bookName').val();
+		var overdueDays = $(clickObj).find('.overdueDays').val();
+		var expireDate = $(clickObj).parent().parent().parent().find('.expireDate span').html();
+		
+		url = "./sendEmail.do?";
+		url += "no=" + no;
+		url += "&userEmail=" + userEmail;
+		url += "&memberName=" + memberName;
+		url += "&bookName=" + bookName;
+		url += "&overdueDays=" + overdueDays;
+		url += "&expireDate=" + expireDate;
+		
+		if(confirm('연체 안내 이메일을 전송하시겠습니까?')){
+			alert('연체 안내 이메일이 전송되었습니다.');
+			location.href = url;
+			return;
+		} else{
+			return false;
+		}
+	}
+	
 </script>
 
 </head>
@@ -229,26 +256,24 @@
 									</td>
 									<td>
 										<span class='ellipsis'>
-											<c:choose>
-												<c:when test="${rentDto.bookStatus eq '대출'}">
-													<a href="#none">
-														<img alt="이메일" src="<%=request.getContextPath()%>/resources/img/icon-mail.png" style="width: 24px; vertical-align: middle;">
-													</a>
-												</c:when>
-												<c:otherwise>
-												 	<img alt="이메일" src="<%=request.getContextPath()%>/resources/img/icon-mail.png" style="width: 24px; vertical-align: middle;">
-												</c:otherwise>
-											</c:choose>
+											<c:if test="${rentDto.overdueSendFlag eq 'N'}">
+												<a href="#none" onclick="sendEmailFnc(this);">
+													<input type="hidden" class='no' value="${rentDto.no}">
+													<input type="hidden" class='userEmail' value="${rentDto.email}">
+													<input type="hidden" class='memberName' value="${rentDto.mname}">
+													<input type="hidden" class='bookName' value="${rentDto.bookName}">
+													<input type="hidden" class='overdueDays' value="${rentDto.overdueDays}">
+													<img alt="이메일" src="<%=request.getContextPath()%>/resources/img/icon-mail.png" style="width: 24px; vertical-align: middle;">
+												</a>
+											</c:if>
 											${rentDto.email}
 										</span>
 									</td>
 									<td>
 										<span>${rentDto.overdueDays}일</span>
 									</td>
-									<td>
-										<span>
-											<fmt:formatDate value="${rentDto.expireDate}" pattern="yyyy/MM/dd "/>
-										</span>
+									<td class='expireDate'>
+										<span><fmt:formatDate value="${rentDto.expireDate}" pattern="yyyy/MM/dd"/></span>
 									</td>
 								</tr>
 							</c:forEach>
@@ -265,8 +290,9 @@
 				</jsp:include>
 				
 				<form action="./list.do" id='pagingForm' method="post">
-					<input type="hidden" id='curPage' name='curPage' 
-						value="${pagingInfo.curPage}">
+					<input type="hidden" id='curPage' name='curPage' value="${pagingInfo.curPage}">
+					<input type="hidden" id='searchOption' name='searchOption' value="${searchMap.searchOption}">
+					<input type="hidden" id='keyword' name='keyword' value="${searchMap.keyword}">
 				</form>
 			</c:if>
 			

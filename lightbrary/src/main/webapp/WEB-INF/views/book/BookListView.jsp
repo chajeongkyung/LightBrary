@@ -73,6 +73,29 @@
 	function clearDateFnc(obj){
 		obj.previousElementSibling.value = "";
 	}
+	
+	function getStatusCodebyName(name){
+		for (var i = 0; i < bookStatusObj.length; i++) {
+			if(bookStatusObj[i].name == name){
+				return bookStatusObj[i].code;
+			}
+		}
+	}
+	
+	function searchStatusAllFnc(){
+		$('#searchStatus').val("-1");
+		bookListParamDtoSubmit();
+	}
+	
+	function searchStatusDamagedFnc(){
+		$('#searchStatus').val(getStatusCodebyName("파손"));
+		bookListParamDtoSubmit();
+	}
+	
+	function searchStatusLostFnc(){
+		$('#searchStatus').val(getStatusCodebyName("분실"));
+		bookListParamDtoSubmit();
+	}
 </script>
 
 </head>
@@ -149,6 +172,7 @@
 							</div>
 						</div>
 						<!-- //분류 셀렉트 박스 end -->
+						<input type="hidden" id="searchStatus" name="searchStatus" value="">
 					</fieldset>
 					<div class='btnWrap searchBtnWrap fs0 tCenter'>
 						<input type="button" onclick="bookListParamDtoSubmit();" class='btn green' value="검색">
@@ -167,17 +191,32 @@
 					</div>
 					<!-- 동그란 체크박스 전체선택 end -->
 					<ul class='settings fRight fs0'>
-						<li>
-							<a href="#none" class='text'>테스트</a>
-						</li>
-						<li>
-							<a href="#none" class='text'>바구니 담기</a>
-						</li>
-						<li>
-							<a href="#none" class='text'>대출 예약</a>
-						</li>
+						<c:choose>
+							<c:when test="${member.gradeCode eq 0}">
+								<li>
+									<a href="#none" class='text' onclick="searchStatusAllFnc();">전체도서 보기</a>
+								</li>
+								<li>
+									<a href="#none" class='text' onclick="searchStatusDamagedFnc();">파손도서 보기</a>
+								</li>
+								<li>
+									<a href="#none" class='text' onclick="searchStatusLostFnc();">분실도서 보기</a>
+								</li>
+							</c:when>
+							<c:when test="${member.gradeCode eq 1}">
+								<li>
+									<a href="#none" class='text'>대출 예약</a>
+								</li>
+							</c:when>
+						</c:choose>
 					</ul>
+					<input type="hidden" id="searchStatus" name="searchStatus" value="">
 				</div>
+				<!-- 책 정보가 없을때 start -->
+				<c:if test="${empty bookDtoList}">
+					<div style="text-align: center; font-size: 16px; color: #686868; height:100px; margin-top: 100px;">해당 도서가 없습니다.</div>
+				</c:if>
+				<!-- 책 정보가 없을때 end -->
 				<ul id='bookList'>
 					<!-- 책 정보 출력 start -->
 					<c:forEach var="bookDto" items="${bookDtoList}">					
@@ -205,12 +244,11 @@
 						</div>
 						<div class='listOptions fRight'>
 							<ul class='listOptionsUl fs0'>
-								<li>
-									<a href="#none" class="text bold">바구니 담기</a> 
-								</li>
-								<li>
-									<a href="#none" class="text bold">대출 예약</a> 
-								</li>
+								<c:if test="${member.gradeCode eq 1}">
+									<li>
+										<a href="#none" class="text bold">대출 예약</a> 
+									</li>
+								</c:if>
 							</ul>
 							<p class='bookState text'>
 								<span class="bold">상태 : </span>
@@ -222,12 +260,14 @@
 				</ul>
 				
 				<ul class='settings fRight fs0'>
+					<c:if test="${member.gradeCode eq 0}">
 						<li>
 							<a href="./insert.do" class='text'>단편도서 등록</a>
 						</li>
 						<li>
 							<a href="./insertBatch.do" class='text'>시리즈 등록</a>
 						</li>
+					</c:if>
 				</ul>
 				
 				<jsp:include page="/WEB-INF/views/common/paging.jsp">
@@ -245,6 +285,7 @@
 					<input type="hidden" name="searchCategory1" value="${bookListParamDto.searchCategory1}">
 					<input type="hidden" name="searchCategory2" value="${bookListParamDto.searchCategory2}">
 					<input type="hidden" name="searchCategory3" value="${bookListParamDto.searchCategory3}">
+					<input type="hidden" name="searchStatus" value="${bookListParamDto.searchStatus}">
 					<input type="hidden" id="no" name="no" value="">
 				</form>
 				

@@ -1,13 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 
 <meta charset="UTF-8">
-<title>Lightbrary : 대출 도서 상세</title>
+<title>Lightbrary : 예약 도서 상세</title>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
@@ -47,8 +46,8 @@
 	
 	function changeStatusFnc() {
 		$('#changeStatus').click(function() {
-			if(confirm("선택하신 도서의 반납처리를 진행하시겠습니까?")){
-				alert("선택하신 도서의 반납처리가 성공적으로 처리되었습니다.");
+			if(confirm("예약된 도서를 대출 중으로 변경하시겠습니까?")){
+				alert("도서의 상태가 예약에서 대출 중으로 성공적으로 변경 되었습니다. \n대출 도서는 대출 현황 목록에서 확인해주세요.");
 				return;
 			}else{
 				return false;
@@ -57,45 +56,16 @@
 	}
 	
 	function pageMoveListFnc(){
-		var noObj = $('#no');
 		var keywordObj = $('#keyword');
 		var searchOptionObj = $('#searchOption');
-		var statusObj = $('#status');
 		
 		var url = '';
 		
 		url += './list.do?';
-		url += 'no=' + noObj.val();
-		url += '&keyword=' + keywordObj.val();
+		url += 'keyword=' + keywordObj.val();
 		url += '&searchOption=' + searchOptionObj.val();
-		url += '&status=' + statusObj.val();
 		
 		location.href = url;
-	}
-	
-	// 이메일 전송
-	function sendEmailFnc(clickObj) {
-		var url = "";
-		var no = $(clickObj).parent().find('#no').val();
-		var userEmail = $(clickObj).parent().find('.userEmail').val();
-		var memberName = $(clickObj).parent().find('.memberName').val();
-		var bookName = $(clickObj).parent().find('.bookName').val();
-		var expireDate = $('#expireDateObj').html();
-		
-		url = "./sendEmail.do?";
-		url += "no=" + no;
-		url += "&userEmail=" + userEmail;
-		url += "&memberName=" + memberName;
-		url += "&bookName=" + bookName;
-		url += "&expireDate=" + expireDate;
-		
-		if(confirm('반납일 안내 이메일을 전송하시겠습니까?')){
-			alert('반납일 안내 이메일이 전송되었습니다.');
-			location.href = url;
-			return;
-		} else{
-			return false;
-		}
 	}
 </script>
 
@@ -108,7 +78,7 @@
 		
 		<!-- 컨테이너 start -->
 		<div id='container'>
-			<h2 id='pageTitle'>대출 도서 상세</h2>
+			<h2 id='pageTitle'>예약 도서 상세</h2>
 			
 			<!-- 상세페이지 start -->
 			<form action="./statusUpdateCtr.do" method="post">
@@ -152,7 +122,7 @@
 					</div>
 					<!--  -->
 					<div class='detailTable'>
-						<p class='text bold textDark'>대출정보</p>
+						<p class='text bold textDark'>예약정보</p>
 						<table>
 							<colgroup>
 								<col width="214px">
@@ -160,24 +130,16 @@
 							</colgroup>
 							<tbody>
 								<tr>
-									<th class='text bold textDark'>반납예정일</th>
-									<td class='text textGrey' id='expireDateObj'><fmt:formatDate value="${rentDto.expireDate}" pattern="yyyy/MM/dd "/></td>
+									<th class='text bold textDark'>방문일</th>
+									<td class='text textGrey'>
+										<fmt:formatDate value="${rentDto.rentDate}" pattern="yyyy/MM/dd "/>
+									</td>
 								</tr>
 								<tr>
-									<th class='text bold textDark'>반납여부</th>
-									<c:choose>
-										<c:when test="${rentDto.bookStatus eq '대출'}">
-											<td class='text textGreen'>
-												${rentDto.bookStatus}
-											</td>
-										</c:when>
-										<c:otherwise>
-											<td class='text textGrey bold'>
-												반납완료
-											</td>
-										</c:otherwise>
-									</c:choose>
-									
+									<th class='text bold textDark'>예약상태</th>
+									<td class='text textGrey'>
+										${rentDto.bookStatus}
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -214,35 +176,13 @@
 					
 					<!-- 상세페이지 버튼 start -->
 					<div class='btnWrap viewBtns fs0 tCenter'>
-						<input type="hidden" id='no' value="${rentDto.no}" name="no">
-						<input type="hidden" value="${rentDto.memberNo}" name="memberNo">
-						<input type="hidden" value="${rentDto.bookNo}" name="bookNo">
+						<input type="hidden" id='bookNo' name="bookNo" value="${rentDto.bookNo}">
 						
-						<c:choose>
-							<c:when test="${rentDto.bookStatus eq '보관'}">
-								<button type="submit" id='changeStatus' class='btn grey disabled' disabled="disabled">반납 처리</button>
-							</c:when>
-							<c:otherwise>
-								<button type="submit" id='changeStatus' class='btn grey'>반납 처리</button>
-							</c:otherwise>
-						</c:choose>
+						<button type="submit" id='changeStatus' class='btn grey'>대출 중으로 변경</button>
 						
-						<input type="hidden" class='userEmail' value="${rentDto.email}">
-						<input type="hidden" class='memberName' value="${rentDto.mname}">
-						<input type="hidden" class='bookName' value="${rentDto.bookName}">
-						
-						<c:choose>
-							<c:when test="${rentDto.returnSendFlag eq 'Y' || rentDto.bookStatus eq '보관'}">
-								<button type="button" class='btn grey disabled'>반납 안내 이메일 발송</button>
-							</c:when>
-							<c:otherwise>
-								<button type="button" class='btn grey' onclick="sendEmailFnc(this);">반납 안내 이메일 발송</button>
-							</c:otherwise>
-						</c:choose>
-						
+<%-- 						<input type="hidden" id='no' name="no" value="${rentDto.no}"> --%>
 						<input type="hidden" id='searchOption' name="searchOption" value="${searchOption}">
 						<input type="hidden" id='keyword' name="keyword" value="${keyword}">
-						<input type="hidden" id='status' name="status" value="${status}">
 						
 						<a href="#none" class='btn green' onclick='pageMoveListFnc();'>뒤로</a>
 					</div>

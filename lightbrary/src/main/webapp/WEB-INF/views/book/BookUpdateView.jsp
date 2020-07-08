@@ -295,6 +295,7 @@
 					<input type="hidden" name="searchCategory1" value="${bookListParamDto.searchCategory1}">
 					<input type="hidden" name="searchCategory2" value="${bookListParamDto.searchCategory2}">
 					<input type="hidden" name="searchCategory3" value="${bookListParamDto.searchCategory3}">
+					<input type="hidden" name="searchStatus" value="${bookListParamDto.searchStatus}">
 				</form>
 				<!-- //상세페이지 버튼 end -->
 			</div>

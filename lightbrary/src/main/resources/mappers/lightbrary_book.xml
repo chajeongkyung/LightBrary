@@ -61,6 +61,9 @@
 			            <if test="categoryStart != ''">
 			            	AND CATEGORY_CODE BETWEEN #{categoryStart} AND #{categoryEnd}
 			            </if>
+			            <if test="searchStatus != -1">
+			            	AND STATUS_CODE = #{searchStatus}
+			            </if>
 		            </where>
 		            ) B
 		        JOIN BOOK_IMAGE BI
@@ -100,6 +103,9 @@
 	            </choose>
 	            <if test="categoryStart != ''">
 	            	AND CATEGORY_CODE BETWEEN #{categoryStart} AND #{categoryEnd}
+	            </if>
+    			<if test="searchStatus != -1">
+	            	AND STATUS_CODE = #{searchStatus}
 	            </if>
             </where>
             ) B

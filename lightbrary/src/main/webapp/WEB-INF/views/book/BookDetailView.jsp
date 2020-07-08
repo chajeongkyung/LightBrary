@@ -56,7 +56,7 @@
 <body>
 
 	<div id='wrap'>
-		<jsp:include page="/WEB-INF/views/Header_temp.jsp" />
+		<jsp:include page="/WEB-INF/views/Header.jsp" />
 		
 		<!-- 컨테이너 start -->
 		<div id='container'>
@@ -122,6 +122,7 @@
 					<input type="hidden" id="searchCategory1" name="searchCategory1" value="${bookListParamDto.searchCategory1}">
 					<input type="hidden" id="searchCategory2" name="searchCategory2" value="${bookListParamDto.searchCategory2}">
 					<input type="hidden" id="searchCategory3" name="searchCategory3" value="${bookListParamDto.searchCategory3}">
+					<input type="hidden" id="searchStatus" name="searchStatus" value="${bookListParamDto.searchStatus}">
 				</form>
 				<!-- //상세페이지 버튼 end -->
 			</div>

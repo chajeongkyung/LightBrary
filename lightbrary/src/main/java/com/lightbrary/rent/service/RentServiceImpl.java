@@ -61,6 +61,13 @@ public class RentServiceImpl implements RentService{
 		return rentDao.updateOneRentStatus(rentDto);
 	}
 	
+	// 대출 이메일 상태 변경
+	@Override
+	public int updateSend(int no) {
+		// TODO Auto-generated method stub
+		return rentDao.updateSend(no);
+	}
+	
 	
 	/*******************
 			예약
@@ -163,5 +170,20 @@ public class RentServiceImpl implements RentService{
 	public int updateOneStatusToOverdue(RentDto rentDto) {
 		// TODO Auto-generated method stub
 		return rentDao.updateOneStatusToOverdue(rentDto);
+	}
+	
+	// 대출 이메일 상태 변경
+	@Override
+	public int updateOverdueSend(int no) {
+		// TODO Auto-generated method stub
+		return rentDao.updateOverdueSend(no);
+	}
+	
+
+	@Override
+	public void insertReserve(RentDto rentDto) {
+
+		rentDao.insertReserve(rentDto);
+
 	}
 }
