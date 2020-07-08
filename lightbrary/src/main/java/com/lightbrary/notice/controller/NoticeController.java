@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.lightbrary.notice.model.NoticeCategoryDto;
+import com.lightbrary.notice.model.NoticeDto;
 import com.lightbrary.notice.service.NoticeService;
 import com.lightbrary.util.Paging;
 
@@ -125,12 +126,13 @@ public class NoticeController {
 	}
 	
 	@RequestMapping(value = "/notice/addCtr.do"
-			, method = {RequestMethod.GET, RequestMethod.POST})
-		public String NoticeAdd2(NoticeCategoryDto noticeDto
+			, method = RequestMethod.POST)
+		public String NoticeAdd2(NoticeDto noticeDto
 			, Model model) {
 			log.info("call memberAdd_ctr! {}", noticeDto);
 			System.out.println("add");
 			noticeService.insertOneNotice(noticeDto);
+			
 			
 			return "redirect:/notice/list.do";
 		}
@@ -235,8 +237,9 @@ public class NoticeController {
 				
 		String formattedDate = format1.format(time);
 		
-		NoticeCategoryDto noticeDto = noticeService.selectOneNotice(no);
+		int totalCount = noticeService.selectTotalCountNotice(searchOption, keyword);
 		
+		NoticeCategoryDto noticeDto = noticeService.selectOneNotice(no);
 		
 		model.addAttribute("noticeDto", noticeDto);
 		
@@ -244,6 +247,7 @@ public class NoticeController {
 		
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("searchOption", searchOption);
+		model.addAttribute("totalCount", totalCount);
 		
 		return "/notice/NoticeBoardDetail";
 		

@@ -15,6 +15,15 @@ public class NoticeDto {
 	
 	public NoticeDto() {
 		super();
+		no = 0;             
+		memberNo = 0;       
+		categoryCode = "";
+		title = "";       
+		content = "";     
+		startDate = new Date();     
+		endDate = new Date();       
+		createdDate = new Date();   
+		modifiedDate = new Date();  
 	}
 
 	public NoticeDto(int no, int memberNo, String categoryCode, String title, String content, Date startDate,

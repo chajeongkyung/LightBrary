@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.lightbrary.notice.model.NoticeCategoryDto;
+import com.lightbrary.notice.model.NoticeDto;
 
 
 @Repository
@@ -89,7 +90,7 @@ public class NoticeDaoImpl implements NoticeDao{
 	}
 
 	@Override
-	public void insertOneNotice(NoticeCategoryDto noticeDto) {
+	public void insertOneNotice(NoticeDto noticeDto) {
 		// TODO Auto-generated method stub
 		sqlSession.insert(namespace + "insertOneNotice", noticeDto);
 	}

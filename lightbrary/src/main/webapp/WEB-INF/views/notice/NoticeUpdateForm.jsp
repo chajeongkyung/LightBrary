@@ -8,7 +8,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>상세페이지</title>
+<title>LightBrary : 게시판수정</title>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
@@ -19,6 +19,7 @@
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/noticeCategorySelect.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/validation.js"></script>
 
 <script type="text/javascript">
 	
@@ -60,6 +61,7 @@
 			$('input[id^=noticeDate]').attr('disabled', 'disabled');
 			$('#noticeDateStart').attr('value','');
 			$('#noticeDateEnd').attr('value','');
+			$('#noticeDateCheck').html('');
 		}else {
 			$('input[id^=noticeDate]').removeAttr('disabled');
 		}
@@ -67,16 +69,44 @@
 	}
 	
 	
-	function registrationFnc() {
+function registrationFnc() {
 		
 		var categoryValid = noticeCategoryValidFnc();
 		var titleValid = titleValidFnc();
 		var contentValid = contentValidFnc();
-		var noticeDateStartValid = noticeDateStartValidFnc();
-		var noticeDateEndValid = noticeDateEndValidFnc();
+		var noticeDateStartValid = true;
+		var noticeDateEndValid = true;
+		var noticeDateValid = true;
 		
-		if(categoryValid && titleValid && contentValid && noticeDateStartValid && noticeDateEndValid){
-			var registration = confirm("게시글을 수정 하시겠습니다??");
+		var noticeCategoryObj = $('#noticeCategory').val();
+		var noticeDateStartObj = $('#noticeDateStart').val();
+		
+		var noticeDateEndObj = $('#noticeDateEnd').val();
+		
+		if (noticeCategoryObj == "" || (noticeDateStartObj == "" && noticeDateEndObj == "" 
+				&& noticeCategoryObj != 0)) {
+			$('#noticeDateCheck').html("날짜를 선택해주세요");
+			$('#noticeDateCheck').css('color', 'red');
+			return false;
+		}else if(noticeCategoryObj != ""){
+			$('#noticeDateCheck').html("");
+		}
+		
+		if(noticeCategoryObj != 0){
+			noticeDateStartValid = noticeDateStartValidFnc();
+			if(noticeDateStartValid){
+				noticeDateEndValid = noticeDateEndValidFnc();
+				if(noticeDateEndValid){
+					noticeDateValid = noticeDateValidFnc();
+				}
+			}
+		}
+		
+
+		if(categoryValid && titleValid && contentValid && noticeDateStartValid 
+					&& noticeDateEndValid && noticeDateValid){
+			
+			var registration = confirm("게시글을 수정 하시겠습니다?");
 		
 			if (registration == true) {
 				alert("게시글이 수정되었습니다.");
@@ -88,7 +118,35 @@
 		}
 		return false;
 	}
+	
+	function noticeDateValidFnc() {
 		
+		var noticeDateStartObj = $('#noticeDateStart').val();
+		
+		var noticeDateEndObj = $('#noticeDateEnd').val();
+		
+		var noticeCategoryObj = $('#noticeCategory').val();
+		
+		var noticeDateValid = isValidDateRange($('#noticeDateStart').val(), $('#noticeDateEnd').val());
+		
+		if(noticeDateValid && noticeCategoryObj != 0){
+			return true;
+		}else if(!noticeDateValid && noticeCategoryObj != 0){
+			$('#noticeDateCheck').html("시작일이 종료일보다 클 수 없습니다.");
+			$('#noticeDateCheck').css('color', 'red');
+			return false;
+		}
+		
+// 		if ((noticeDateStartObj == "" && noticeDateEndObj == "") && noticeCategoryObj != 0) {
+// 			$('#noticeDateCheck').html("날짜를 선택해주세요");
+// 			$('#noticeDateCheck').css('color', 'red');
+// 			return false;
+// 		}else{
+// 			return true;
+// 		}
+		
+	}
+
 	function noticeCategoryValidFnc() {
 		var noticeCategoryObj = $('#noticeCategory').val();
 		
@@ -137,51 +195,51 @@
 		
 		var noticeDateStartObj = $('#noticeDateStart').val();
 		
-		var noticeDateEndObj = $('#noticeDateEnd').val();
-		
-		if(noticeCategoryObj != 0 && noticeDateStartObj == "") {
+		if(noticeDateStartObj == "") {
 			 $('#noticeDateCheck').html("시작일을 선택해주세요.");
 			 $('#noticeDateCheck').css('color', 'red');
 			 return false;
-		 }else if (noticeDateStartObj != "") {
+		 }else if (noticeDateStartObj != "" || noticeCategoryObj == 0) {
 			 $('#noticeDateCheck').html("");
-			 
-		 }
-		 
-		 if (noticeDateStartObj > noticeDateEndObj && noticeDateEndObj != '') {
-			 $('#noticeDateCheck').html("시작일이 종료일보다 클 수 없습니다.");
-			 $('#noticeDateCheck').css('color', 'red');
-			 return false;
-		}else if(noticeDateStartObj <= noticeDateEndObj){
-			$('#noticeDateCheck').html("");
-			return true;
+			 return true;
 		}
+		 
+// 		 if (noticeDateStartObj > noticeDateEndObj && noticeDateEndObj != '') {
+// 			 $('#noticeDateCheck').html("시작일이 종료일보다 클 수 없습니다.");
+// 			 $('#noticeDateCheck').css('color', 'red');
+// 			 return false;
+// 		}else if(noticeDateStartObj <= noticeDateEndObj){
+// 			$('#noticeDateCheck').html("");
+// 			return true;
+// 		}
 	}
 	
 	function noticeDateEndValidFnc() {
 		
 		var noticeCategoryObj = $('#noticeCategory').val();
 		var noticeDateEndObj = $('#noticeDateEnd').val();
-		var noticeDateStartObj = $('#noticeDateStart').val();
 		
-		if(noticeCategoryObj != 0 && noticeDateEndObj == "") {
+		if(noticeDateEndObj == "") {
 			$('#noticeDateCheck').html("종료일을 선택해주세요.");
 			$('#noticeDateCheck').css('color', 'red');
 			return false;
-		}else if (noticeDateEndObj != "") {
+		}else if (noticeDateEndObj != "" || noticeCategoryObj == 0) {
 			$('#noticeDateCheck').html("");	
-			
-		}
-		
-		if (noticeDateStartObj > noticeDateEndObj && noticeDateEndObj != '') {
-			$('#noticeDateCheck').html("시작일이 종료일보다 클 수 없습니다.");
-			$('#noticeDateCheck').css('color', 'red');
-			return false;
-		}else if(noticeDateStartObj <= noticeDateEndObj){
-			$('#noticeDateCheck').html("");
 			return true;
 		}
+		
+// 		if (noticeDateStartObj > noticeDateEndObj && noticeDateEndObj != '') {
+// 			$('#noticeDateCheck').html("시작일이 종료일보다 클 수 없습니다.");
+// 			$('#noticeDateCheck').css('color', 'red');
+// 			return false;
+// 		}else if(noticeDateStartObj <= noticeDateEndObj){
+// 			$('#noticeDateCheck').html("");
+// 			return true;
+// 		}
 	}
+	
+	
+	
 	
 $(document).ready(function() {
 	
@@ -196,7 +254,7 @@ $(document).ready(function() {
 	$("#noticeDateEnd").on("change", noticeDateEndValidFnc);
 	
 	
-})
+});
 	
 	
 	
@@ -228,7 +286,7 @@ $(document).ready(function() {
 		
 		<!-- 컨테이너 start -->
 		<div id='container'>
-			<h2 id='pageTitle'>페이지 제목</h2>
+			<h2 id='pageTitle'>게시글수정</h2>
 			
 			<!-- 도서 등록 start -->
 			<div id='detailWrap'>
@@ -307,8 +365,9 @@ $(document).ready(function() {
 												class='searchInput searchDate fLeft datePicker'
 													 readonly="readonly" style="width: 345px;" name="endDate" >
 										</div>
-										<p id="noticeDateCheck">
-										</p>
+										<span id="noticeDateCheck">
+										</span>
+										<span id="noticeDateCheck2"></span>
 									</td>
 								</tr>
 						

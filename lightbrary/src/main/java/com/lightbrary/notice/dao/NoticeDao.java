@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.lightbrary.bookCategory.model.BookCategoryDto;
 import com.lightbrary.notice.model.NoticeCategoryDto;
+import com.lightbrary.notice.model.NoticeDto;
 
 public interface NoticeDao {
 
@@ -24,7 +25,7 @@ public interface NoticeDao {
 	
 	public NoticeCategoryDto selectOneNotice(int no);
 	
-	public void insertOneNotice(NoticeCategoryDto noticeDto);
+	public void insertOneNotice(NoticeDto noticeDto);
 	
 	public List<NoticeCategoryDto> selectNoticeCategory();
 	

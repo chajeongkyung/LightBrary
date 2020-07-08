@@ -255,8 +255,9 @@ $("#nxtDoc").on("click",function(){
 							name="keyword" value="${keyword}">
 						<input type="hidden" id='totalCount' name='totalCount' value="${totalCount}">
 					
-					
-					<a href="./update.do?no=${noticeDto.no}" class='btn grey'>수정</a>
+					<c:if test="${notictDto.memberNo == 0 }">
+						<a href="./update.do?no=${noticeDto.no}" class='btn grey'>수정</a>
+					</c:if>
 					<a href="#" class='btn green' onclick="pageMoveListFnc()">목록</a>
 				</div>
 				<!-- //상세페이지 버튼 end -->

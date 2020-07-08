@@ -6,6 +6,7 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 
 import com.lightbrary.notice.model.NoticeCategoryDto;
+import com.lightbrary.notice.model.NoticeDto;
 
 public interface NoticeService {
 
@@ -24,7 +25,7 @@ public interface NoticeService {
 	
 	public NoticeCategoryDto selectOneNotice(int no);
 	
-	public void insertOneNotice(NoticeCategoryDto noticeDto);
+	public void insertOneNotice(NoticeDto noticeDto);
 	
 	public JSONArray mkJson();
 	

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.lightbrary.notice.dao.NoticeDao;
 import com.lightbrary.notice.model.NoticeCategoryDto;
+import com.lightbrary.notice.model.NoticeDto;
 
 @Service
 public class NoticeServiceImpl implements NoticeService{
@@ -75,7 +76,7 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public void insertOneNotice(NoticeCategoryDto noticeDto) {
+	public void insertOneNotice(NoticeDto noticeDto) {
 		// TODO Auto-generated method stub
 		noticeDao.insertOneNotice(noticeDto);
 	}

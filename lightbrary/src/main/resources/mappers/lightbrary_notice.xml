@@ -145,12 +145,21 @@
 	<insert id="insertOneNotice" parameterType="noticeDto"
 		useGeneratedKeys="true" keyProperty="no">
 		<selectKey keyProperty="no" resultType="int" order="BEFORE">
-			SELECT notice_NO_SEQ.NEXTVAL FROM DUAL
+			SELECT NOTICE_NO_SEQ.NEXTVAL FROM DUAL
 		</selectKey>
-		INSERT INTO NOTICE 
+		INSERT INTO NOTICE
+
 		VALUE(NO, MEMBER_NO, CATEGORY_CODE, TITLE, CONTENT, START_DATE, END_DATE, CREATED_DATE, MODIFIED_DATE) 
-		VALUES(#{no}, #{memberNo}, #{categoryCode}, #{title}, #{content}, #{startDate}, #{endDate}, SYSDATE, SYSDATE)
-	
+		VALUES(#{no}, #{memberNo}, #{categoryCode}, #{title}, #{content}
+			<choose>
+				<when test="categoryCode == 0">
+					, null, null
+				</when>
+				<otherwise>
+					, #{startDate}, #{endDate}
+				</otherwise>
+			</choose>
+			, SYSDATE, SYSDATE)
 	</insert>
 	
 	<select id="selectNoticeCategory" resultMap="noticeCategoryResultMap">

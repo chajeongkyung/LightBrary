@@ -23,10 +23,12 @@
 
 	function deleteBatchFnc() {
 		
+	
 	}
 	
 	function listOnePageFnc(mNo){
 		
+
 		var keywordObj = $('#keyword');
 		var searchOptionObj = $('#searchOption');
 		
@@ -213,6 +215,10 @@
 									</td>
 									
 									<td>
+				
+										<c:if test="${noticeDto.startDate == null }">
+											<c:out value=""></c:out>
+										</c:if>
 										
 										<c:if test="${noticeDto.startDate != null }">
 											<fmt:formatDate value="${noticeDto.startDate}"
@@ -281,18 +287,21 @@
 						</tbody>
 					</table>
 				</div>
-				<div class='listSettings bottomSettings overH'>
-					<ul class='settings fLeft'>
-						<li>
- 							<a href="#none" class='text' onclick="deleteBatchFnc()">게시글 삭제</a>
-						</li>
-					</ul>
-					<ul class='settings fRight'>
-						<li>
-							<a href="./add.do" class='text'>게시글 등록</a>
-						</li>
-					</ul>
-				</div>
+				
+				<c:if test="${noticeDto.memberNo == 0 }">
+					<div class='listSettings bottomSettings overH'>
+						<ul class='settings fLeft'>
+							<li>
+	 							<a href="#none" class='text' onclick="deleteBatchFnc()">게시글 삭제</a>
+							</li>
+						</ul>
+						<ul class='settings fRight'>
+							<li>
+								<a href="./add.do" class='text'>게시글 등록</a>
+							</li>
+						</ul>
+					</div>
+				</c:if>
 			</div>
 			<!-- //테이블 목록 end -->
 			
