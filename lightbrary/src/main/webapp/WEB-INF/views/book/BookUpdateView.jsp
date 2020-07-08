@@ -176,7 +176,7 @@
 <body>
 
 	<div id='wrap'>
-		<jsp:include page="/WEB-INF/views/Header_temp.jsp" />
+		<jsp:include page="/WEB-INF/views/Header.jsp" />
 		
 		<!-- 컨테이너 start -->
 		<div id='container'>
@@ -197,7 +197,7 @@
 							<tbody>
 								<tr>
 									<th class='text bold textDark'>이미지</th>
-									<td class='overH'>
+									<td class='overH' style="position: relative;">
 										<input type="file" id="file" name="file" class='fLeft'>
 										<c:url var="imgUrl" value='/img/${bookDto.imageName}'/>
 										<input type="hidden" id="fileUrlDefault" value="url('${imgUrl}')">
@@ -205,7 +205,9 @@
 										<div id='bookImage' class='fRight bgCover' style="margin: 0px; background-image: url('${imgUrl}')"></div>
 										<!-- imageStatus 0:default 1:modify 2:delete -->
 										<input type="hidden" id="imageStatus" name="imageStatus" value="0">
-										<a href="#none" onclick="imageDeleteFnc();" class="text bold">이미지 삭제</a>
+										<a href="#none" onclick="imageDeleteFnc();" class="text textGrey" style="position: absolute; right: 34px; bottom: 5px; font-size: 14px;">
+											이미지 삭제
+										</a>
 									</td>
 								</tr>
 							</tbody>
