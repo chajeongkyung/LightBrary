@@ -36,7 +36,7 @@
 						</div>
 						<div class='btnWrap tCenter' style="margin-top: 30px;">
 							<input type="button" onclick="checkAccountFnc();" class='btn green' value="로그인">
-							<a href="./member/add.do" class="subBtn text bold">회원가입</a>
+							<a href="/lightbrary/member/add.do" class="subBtn text bold">회원가입</a>
 						</div>
 					</form>
 			</div>
