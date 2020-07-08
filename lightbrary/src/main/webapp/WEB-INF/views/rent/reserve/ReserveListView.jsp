@@ -263,8 +263,9 @@
 				</jsp:include>
 				
 				<form action="./list.do" id='pagingForm' method="post">
-					<input type="hidden" id='curPage' name='curPage' 
-						value="${pagingInfo.curPage}">
+					<input type="hidden" id='curPage' name='curPage' value="${pagingInfo.curPage}">
+					<input type="hidden" id='searchOption' name='searchOption' value="${searchMap.searchOption}">
+					<input type="hidden" id='keyword' name='keyword' value="${searchMap.keyword}">
 				</form>
 			</c:if>
 			

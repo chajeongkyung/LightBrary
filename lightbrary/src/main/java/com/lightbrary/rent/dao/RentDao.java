@@ -17,6 +17,7 @@ public interface RentDao {
 	// 대출 상세
 	public RentDto selectOneRent(int no);
 	public int updateOneRentStatus(RentDto rentDto); //상태변경
+	public int updateSend(int no); //대출 이메일 상태 변경
 	
 	/*******************
 			예약
@@ -44,6 +45,10 @@ public interface RentDao {
 	public List<RentDto> selectReservebyStatus(String statusName);
 	public List<RentDto> selectRentAll();
 	public int updateOneStatusToOverdue(RentDto rentDto);
+	
+	public int updateOverdueSend(int no); //연체 이메일 상태 변경
 
+	
+	public void insertReserve(RentDto rentDto);
 }
 

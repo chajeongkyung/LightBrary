@@ -57,16 +57,45 @@
 	}
 	
 	function pageMoveListFnc(){
+		var noObj = $('#no');
 		var keywordObj = $('#keyword');
 		var searchOptionObj = $('#searchOption');
 		
 		var url = '';
 		
 		url += './list.do?';
-		url += 'keyword=' + keywordObj.val();
+		url += 'no=' + noObj.val();
+		url += '&keyword=' + keywordObj.val();
 		url += '&searchOption=' + searchOptionObj.val();
 		
 		location.href = url;
+	}
+	
+	// 이메일 전송
+	function sendEmailFnc(clickObj) {
+		var url = "";
+		var no = $(clickObj).parent().find('#no').val();
+		var userEmail = $(clickObj).parent().find('.userEmail').val();
+		var memberName = $(clickObj).parent().find('.memberName').val();
+		var bookName = $(clickObj).parent().find('.bookName').val();
+		var overdueDays = $(clickObj).parent().find('.overdueDays').val();
+		var expireDate = $('#expireDateObj').html();
+		
+		url = "./sendEmail.do?";
+		url += "no=" + no;
+		url += "&userEmail=" + userEmail;
+		url += "&memberName=" + memberName;
+		url += "&bookName=" + bookName;
+		url += "&overdueDays=" + overdueDays;
+		url += "&expireDate=" + expireDate;
+		
+		if(confirm('반납일 안내 이메일을 전송하시겠습니까?')){
+			alert('반납일 안내 이메일이 전송되었습니다.');
+			location.href = url;
+			return;
+		} else{
+			return false;
+		}
 	}
 </script>
 
@@ -132,7 +161,7 @@
 							<tbody>
 								<tr>
 									<th class='text bold textDark'>반납예정일</th>
-									<td class='text textGrey'>
+									<td class='text textGrey' id='expireDateObj'>
 										<fmt:formatDate value="${rentDto.expireDate}" pattern="yyyy/MM/dd "/>
 									</td>
 								</tr>
@@ -178,7 +207,7 @@
 					
 					<!-- 상세페이지 버튼 start -->
 					<div class='btnWrap viewBtns fs0 tCenter'>
-						<input type="hidden" value="${rentDto.no}" name="no">
+						<input type="hidden" id='no' value="${rentDto.no}" name="no">
 						<input type="hidden" value="${rentDto.bookNo}" name="bookNo">
 						<input type="hidden" value="${rentDto.bookStatus}" name="bookStatus">
 						<c:choose>
@@ -190,7 +219,18 @@
 							</c:otherwise>
 						</c:choose>
 						
-						<button type="button" class='btn grey'>반납 안내 이메일 발송</button>
+						<input type="hidden" class='userEmail' value="${rentDto.email}">
+						<input type="hidden" class='memberName' value="${rentDto.mname}">
+						<input type="hidden" class='bookName' value="${rentDto.bookName}">
+						<input type="hidden" class='overdueDays' value="${rentDto.overdueDays}">
+						<c:choose>
+							<c:when test="${rentDto.overdueSendFlag eq 'Y'}">
+								<button type="button" class='btn grey disabled'>반납 안내 이메일 발송</button>
+							</c:when>
+							<c:otherwise>
+								<button type="button" class='btn grey' onclick="sendEmailFnc(this);">연체 안내 이메일 발송</button>
+							</c:otherwise>
+						</c:choose>
 						
 						<input type="hidden" id='searchOption' name="searchOption" value="${searchOption}">
 						<input type="hidden" id='keyword' name="keyword" value="${keyword}">
