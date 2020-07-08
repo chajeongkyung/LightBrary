@@ -9,10 +9,6 @@
 		<h1 id='logo'>
 			<a href="#none"></a>
 		</h1>
-		<p>${member.name }</p>
-		<p>${member.no }</p>
-		<p>${member.gradeCode}</p>
-		<p>${member.email}</p>
 	</div>
 </header>
 </c:if>
@@ -21,9 +17,9 @@
 <!-- 관리자 헤더 start -->
 <c:if test="${member.gradeCode eq 0}">
 <header>
-	<div  id='headerSearch'>
-		<form action="">
-			<input type="text" id='hSearchInput' name='hSearchInput' placeholder="도서 검색">
+	<div id='headerSearch'>
+		<form name="bookListParamDto" action="/lightbrary/book/list.do" method="post">
+			<input type="text" id='hSearchInput' name='searchName' placeholder="도서 검색">
 			<input type="submit" id='hSearchBtn' value="">
 		</form>
 	</div>
@@ -33,46 +29,46 @@
 		</h1>
 		<ul id='headerOptions' class='fs0'>
 			<li>
-				<a href="#none" class='hOptionsText'>관리자</a>
+				<a href="/lightbrary/member/detail.do" class='hOptionsText'>관리자</a>
 			</li>
 			<li>
-				<a href="<%=request.getContextPath()%>/logout.do" id='logout' class='hOptionsText'>로그아웃</a>
+				<a href="/lightbrary/logout.do" id='logout' class='hOptionsText'>로그아웃</a>
 			</li>
 		</ul>
 	</div>
 	<!-- 네비 start -->
 	<nav id='nav'>
 		<ul id='depth1Ul' class='fs0 tCenter'>
-			<li><a href="/lightbrary/">회원관리</a></li>
+			<li><a href="/lightbrary/member/list.do">회원관리</a></li>
 			<li id='rentNav' class='depthNav'>
-				<a href="/lightbrary/">대출관리</a>
+				<a href="/lightbrary/rent/list.do">대출관리</a>
 				<ul id='rentDepth2' class="depth2Ul fs0">
 					<li>
-						<a href="<%=request.getContextPath()%>/rent/list.do">대출현황</a>
+						<a href="/lightbrary/rent/list.do">대출현황</a>
 					</li>
 					<li>
-						<a href="#none">연체현황</a>
+						<a href="/lightbrary/rent/overdue/list.do">연체현황</a>
 					</li>
 					<li>
-						<a href="<%=request.getContextPath()%>/rent/reserve/list.do">예약현황</a>
+						<a href="/lightbrary/rent/reserve/list.do">예약현황</a>
 					</li>
 				</ul>
 			</li>
 			<li id='bookNav' class='depthNav'>
-				<a href="<%=request.getContextPath()%>/book/list.do">도서관리</a>
+				<a href="/lightbrary/book/list.do">도서관리</a>
 				<ul id='bookDepth2' class="depth2Ul fs0">
 					<li>
-						<a href="<%=request.getContextPath()%>/book/list.do">도서조회</a>
+						<a href="/lightbrary/book/list.do">도서조회</a>
 					</li>
 					<li>
-						<a href="#none">단편 도서 등록</a>
+						<a href="/lightbrary/book/insert.do">단편 도서 등록</a>
 					</li>
 					<li>
-						<a href="#none">시리즈 도서 등록</a>
+						<a href="/lightbrary/book/insertBatch.do">시리즈 도서 등록</a>
 					</li>
 				</ul>
 			</li>
-			<li><a href="/lightbrary/">게시판관리</a></li>
+			<li><a href="/lightbrary/notice/list.do">게시판관리</a></li>
 		</ul>
 	</nav>
 	<!-- //네비 end -->
@@ -84,9 +80,9 @@
 <!-- 사용자 헤더 start -->
 <c:if test="${member.gradeCode eq 1}">
 <header>
-	<div  id='headerSearch'>
-		<form action="">
-			<input type="text" id='hSearchInput' name='hSearchInput' placeholder="도서 검색">
+	<div id='headerSearch'>
+		<form name="bookListParamDto" action="/lightbrary/book/list.do" method="post">
+			<input type="text" id='hSearchInput' name='searchName' placeholder="도서 검색">
 			<input type="submit" id='hSearchBtn' value="">
 		</form>
 	</div>
@@ -101,7 +97,7 @@
 				</a>
 			</li>
 			<li>
-				<a href="#none" id='myPageClick' class='hOptionsText'>
+				<a href="#" id='myPageClick' class='hOptionsText'>
 					<span>${member.name}</span> 님
 					<img alt="화살표" src="<%=request.getContextPath()%>/resources/img/arrow.png" style="vertical-align: 2px">
 				</a>
@@ -136,9 +132,9 @@
 	</div>
 	<!-- 네비 start -->
 	<nav id='nav'>
-		<ul class='fs0 tCenter'>
-			<li><a href="/lightbrary/">도서조회</a></li>
-			<li><a href="/lightbrary/">공지게시판</a></li>
+		<ul id='depth1Ul' class='fs0 tCenter'>
+			<li><a href="/lightbrary/book/list.do">도서조회</a></li>
+			<li><a href="/lightbrary/notice/list.do">공지게시판</a></li>
 		</ul>
 	</nav>
 	<!-- //네비 end -->

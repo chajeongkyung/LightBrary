@@ -1,153 +1,224 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
-<title>회원 목록</title>
 
-<style type="text/css">
-table {
-	border-collapse: collapse;
-}
+<meta charset="UTF-8">
+<title>Lightbrary : 회원검색</title>
 
-table, tr, th, td{
-	border: 1px solid black;
-}
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/sub.css">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
 
-</style>
 
-<script type="text/javascript" 
-	src="/springHome/resources/js/jquery-3.5.1.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>  
+<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+<%-- <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-3.5.1.js"></script> --%>
+<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/validation.js"></script>
+
 
 <script type="text/javascript">
+	$(document).ready(function() {
+		// depth1 네비
+		$('#depth1Ul > li:nth-child(1)').addClass('active');
+		// depth2 네비
+		//$('#depth1Ul > li.active > .depth2Ul > li:nth-child(1)').addClass('active');
+	});
+	
+	// 상세페이지로 이동
+	function listOnePageFnc(obj, event){	
+		var aTagObj = $(obj);
+		   
+		event.preventDefault();
 		
-function listOnePageFnc(obj, event){
-	
-	var aTagObj = $(obj);
-	
-	event.preventDefault();
-	
-	var memberNoObj = '';
-	var keywordObj = $('#keyword');
-	var searchOptionObj = $('#searchOption');
-	
-	// 회원이름 클릭시 자신의 회원번호 td태그
-	memberNoObj = aTagObj.parent().parent().children('td').eq(0);
-	
-	var url = '';
-	
-	url += './listOne.do?';
-	url += 'no=' + memberNoObj.html();
-	url += '&keyword=' + keywordObj.val();
-	url += '&searchOption=' + searchOptionObj.val();
+		var noObj = '';
 		
-// 	alert(url);
-			
-	location.href = url;
-
-	return false;
-}
+		noObj = aTagObj.parent().parent().children('td').children().eq(2);
 		
+		$('#pagingForm').attr("action", "<%=request.getContextPath()%>/auth/detail.do?no=" + noObj.html());
+		$('#pagingForm').submit();
+	}
+	
+	function memberListParamDtoSubmit(){
+		if(isValidDateRange($('#joinDateStart').val(), $('#joinDateEnd').val())){
+			$('#memberListParamDto').submit();
+		} else{
+			alert('시작 날짜가 끝 날짜보다 클 수 없습니다.');
+		}
+	}
 </script>
 
 </head>
 
 <body>
-	<jsp:include page="/WEB-INF/views/Header.jsp" />
-	<h1>회원목록</h1>
+
 	<div>
-		<a href='./add.do'>회원가입</a>
+		<div id='wrap'>
+		<jsp:include page="/WEB-INF/views/Header.jsp" />
+		
+			<!-- 컨테이너 start -->
+			<div id='container'>
+				<h2 id='pageTitle'>회원검색</h2>
+				
+				<div class='searchForm type1'>
+	            <form id="memberListParamDto" name="memberListParamDto" action="./list.do" method="post">
+	              	 <fieldset>
+	                  <!-- 기본 인풋 start -->
+	                  <div class='searchInputWrap fs0'>
+	                     <span class='label text bold'>이름</span>
+	                     <div class='searchInputBox'>
+	                        <input type="text" id="name" name="name" class='searchInput' value='${memberListParamDto.name}'>
+	                     </div>
+	                  </div>
+	                  <!-- //기본 인풋 end -->
+	                  <!-- 기본 인풋 start -->
+	                  <div class='searchInputWrap fs0'>
+	                     <span class='label text bold'>이메일</span>
+	                     <div class='searchInputBox'>
+	                        <input type="text" id="email" name="email" class='searchInput' value='${memberListParamDto.email}'>
+	                     </div>
+	                  </div>
+	                  <!-- //기본 인풋 end -->      
+	                  <!-- 기간 범위 인풋 (달력) start -->
+	                  <div class='searchInputWrap fs0'>
+	                     <span class='label text bold'>가입일</span>
+	                     <div class='searchInputBox overH'>
+	                        <input type="text" id="joinDateStart" name="joinDateStart"
+	                        	class='searchInput searchDate fLeft datePicker' readonly="readonly"
+	                        		value='${memberListParamDto.joinDateStart}'>
+	                        <span class='range fLeft text bold'>~</span>
+	                        <input type="text" id="joinDateEnd" name="joinDateEnd"
+	                        	class='searchInput searchDate fRight datePicker' readonly="readonly"
+	                        		value='${memberListParamDto.joinDateEnd}'>
+	                     </div>
+	                  </div>
+	                  <!-- //기간 범위 인풋 (달력) end -->
+	               </fieldset>
+	               <div class='btnWrap searchBtnWrap fs0 tCenter'>
+	                  <input type="button" onclick="memberListParamDtoSubmit();" class='btn green' value="검색">
+	              </div>
+	            </form>
+	          </div>
+	        </div>
+    	    <!-- //컨테이너 end -->
+    	    
+			<!-- 테이블 목록 start -->
+			<div id='tableListWrap'>
+				<div class='listSettings overH'>
+					<ul class='settings fLeft fs0'>
+						<li class='active'>
+							<a href="#none" class='text'>전체 회원 보기</a>
+						</li>
+						<li>
+							<a href="#none" class='text'>연체 회원 보기</a>
+						</li>
+					</ul>
+				</div>
+				<div id='tableWrap'>
+					<table id='table'>
+<%-- 						<colgroup> --%>
+<%-- 							<col width="52px"> --%>
+<%-- 							<col width="260px"> --%>
+<%-- 							<col width="85px"> --%>
+<%-- 							<col width="120px"> --%>
+<%-- 							<col width="80px"> --%>
+<%-- 							<col width="202px"> --%>
+<%-- 						</colgroup> --%>
+						<thead>
+							<tr>
+								<th class='checkboxTd'>
+									<!--기본 체크박스 전체선택 start -->
+									<div class='selectAll checkbox type2 fLeft'>
+										<input type="checkbox" id='all'>
+										<label for="all"></label>
+									</div>
+									<!--기본 체크박스 전체선택 end -->
+								</th>
+								<th>회원번호</th>
+								<th>이름</th>
+								<th>연락처</th>
+								<th>이메일</th>
+								<th>가입일</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:if test="${empty memberDtoList}">
+								
+								<tr>
+									<td colspan="8" style="text-align: center; padding: 56px 0px;">
+										<span style="font-size: 16px; color: #686868;">검색하신 내용에 대한 결과가 없습니다.</span>
+									</td>
+								</tr>
+									
+							</c:if>
+							
+							<c:forEach var="memberDto" items="${memberDtoList}">
+								<tr>
+									<td class='checkboxTd'>
+										<input type="hidden" value='${memberDto.no}' class='noObj'>
+										<!--기본 체크박스 start -->
+										<div class='checkbox type2 fLeft'>
+											<input type="checkbox" id='check${memberDto.no}'>
+											<label for="check${memberDto.no}"></label>
+										</div>
+										<!--기본 체크박스 end -->
+									</td>
+									<td>
+										<a href='#' onclick="listOnePageFnc(this, event);" class='ellipsis'>${memberDto.no}</a>
+									</td>
+									<td>
+										<span class='ellipsis'>${memberDto.name}</span>
+									</td>
+									<td>
+										<span class='ellipsis'>${memberDto.phone}</span>
+									</td>
+									<td>
+										<span class='ellipsis'>${memberDto.email}</span>
+									</td>
+									<td>
+										<span>
+											<fmt:formatDate value="${memberDto.createdDate}" pattern="yyyy년MM월dd일 "/>
+										</span>
+									</td>
+								</tr>
+							</c:forEach>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-- //테이블 목록 end -->
+			<div class='listSettings overH'>
+				<ul class='settings fLeft fs0'>
+					<li>
+						<a href="#none" class='text'>선택 회원 강퇴</a>
+					</li>
+				</ul>
+			</div>
+			
+			<jsp:include page="/WEB-INF/views/common/paging.jsp">
+				<jsp:param value="${pagingInfo}" name="pagingMap"/>
+			</jsp:include>
+			
+			<form id='pagingForm' method="post">
+				<input type="hidden" id="no" name="no" value="${memberListParamDto.no}">
+				<input type="hidden" name="name" value="${memberListParamDto.name}">
+				<input type="hidden" name="email" value="${memberListParamDto.email}">
+				<input type="hidden" name="phone" value="${memberListParamDto.phone}">
+				<input type="hidden" name="joinDateStart" value="${memberListParamDto.joinDateStart}">
+				<input type="hidden" name="joinDateEnd" value="${memberListParamDto.joinDateEnd}">
+				<input type="hidden" id='curPage' name='curPage' value="${memberListParamDto.curPage}">
+			</form>
+		</div>
+		<!-- //컨테이너 end -->
+		<jsp:include page="/WEB-INF/views/Tail.jsp" />
 	</div>
 
-	<form id='searchingForm' action="./list.do" method="post">
-		<select id='searchOption' name='searchOption'>
-		<c:choose>
-			<c:when test="${searchMap.searchOption eq 'all'}">
-				<option value="all" selected="selected">이름+이메일</option>
-				<option value="name">이름</option>
-				<option value="email">이메일</option>
-			</c:when>
-			
-			<c:when test="${searchMap.searchOption eq 'name'}">
-				<option value="all">이름+이메일</option>
-				<option value="name" selected="selected">이름</option>
-				<option value="email">이메일</option>
-			</c:when>
-
-			<c:when test="${searchMap.searchOption eq 'email'}">
-				<option value="all">이름+이메일</option>
-				<option value="name">이름</option>
-				<option value="email" selected="selected">이메일</option>
-			</c:when>
-		</c:choose>
-		</select>
-<!-- 			<input type="hidden" id='curPage' name='curPage'  -->
-<%-- 			value="${pagingMap.memberPaging.curPage}"> --%>
-		<input type="text" id='keyword' 
-			name="keyword" value="${searchMap.keyword}"
-			placeholder="회원이름 or 이메일 검색">
-		<input type="submit" value="검색">
-		
-	</form>	
-	
-	<table>
-		<tr>
-			<th>번호</th><th>회원이름</th>
-			<th>이메일</th><th>가입일</th>
-			<th>첨부파일명</th><th></th>
-		</tr>
-	<c:choose>
-		<c:when test="${empty memberList}">
-			<tr>
-				<td colspan="6" style="text-align: center;">
-					등록된 게시글이 없습니다.
-				</td>
-			</tr>
-		</c:when>
-		<c:otherwise>
-			<c:forEach var="memberDto" items="${memberList}">
-			<tr>
-				<td>${memberDto.no}</td>
-				<td>
-					<a href='#' onclick="listOnePageFnc(this, event);">
-						${memberDto.name}
-					</a>
-				</td>
-				<td>${memberDto.email}</td>
-				<td>
-					<fmt:formatDate value="${memberDto.createdDate}" 
-						pattern="yyyy년MM월dd일 hh시mm분"/>
-				</td>
-				
-				<c:if test="${empty memberDto.originalFileName}" var="fileFlag">
-					<td>첨부파일 없음</td>			
-				</c:if>
-				<c:if test="${fileFlag eq false}">
-					<td>${memberDto.originalFileName}</td>			
-				</c:if>
-				
-				<td>
-					<a href='./deleteCtr.do?no=${memberDto.no}'>[삭제]</a>
-				</td>
-			</tr>
-			</c:forEach>
-		</c:otherwise>
-	</c:choose>
-	
-	</table>
-	
-	<jsp:include page="/WEB-INF/views/common/paging.jsp">
-		<jsp:param value="${pagingMap}" name="pagingMap"/>
-	</jsp:include>
-	
-	<form action="./list.do" id='pagingForm' method="get">
-		<input type="hidden" id='curPage' name='curPage' 
-			value="${pagingMap.memberPaging.curPage}">
-	</form>
-	
-	
-	<jsp:include page="/WEB-INF/views/Tail.jsp" />
 </body>
+
 </html>

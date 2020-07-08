@@ -10,7 +10,7 @@
 <script type="text/javascript">
 
 	window.onload = function(){
-		location.href = '/lightbrary/common.do';
+		location.href = '/lightbrary/login.do';
 	}
 	
 </script>

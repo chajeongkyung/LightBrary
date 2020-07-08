@@ -2,12 +2,15 @@ package com.lightbrary.member.dao;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.lightbrary.member.model.MemberDto;
+import com.lightbrary.member.model.MemberListParamDto;
+import com.lightbrary.rent.model.RentDto;
 
 
 @Repository
@@ -54,15 +57,6 @@ public class MemberDaoImpl implements MemberDao{
 	}
 
 	@Override
-	public List<MemberDto> selectListMember() {
-		// TODO Auto-generated method stub
-		List<MemberDto> memberList = 
-				sqlSession.selectList(namespace + "selectListMember");
-		
-		return memberList;
-	}
-
-	@Override
 	public MemberDto memberExist(String email, String password) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> paramMap = new HashMap<>();
@@ -99,5 +93,20 @@ public class MemberDaoImpl implements MemberDao{
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace + "findPassword", email);
 	}
+
+	@Override
+	public List<MemberDto> selectMember(MemberListParamDto memberListParamDto) {
+		// TODO Auto-generated method stub
+		
+		return sqlSession.selectList(namespace + "selectMember", memberListParamDto);
+	}
+
+	@Override
+	public int totalCountMember(MemberListParamDto memberListParamDto) {
+		// TODO Auto-generated method stub
+
+		return sqlSession.selectOne(namespace + "totalCountMember", memberListParamDto);
+	}
+
 
 }

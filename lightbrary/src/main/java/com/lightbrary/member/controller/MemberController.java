@@ -1,5 +1,9 @@
 package com.lightbrary.member.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
@@ -10,15 +14,18 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.lightbrary.book.model.BookDto;
+import com.lightbrary.book.model.BookListParamDto;
 import com.lightbrary.member.model.MemberDto;
+import com.lightbrary.member.model.MemberListParamDto;
 import com.lightbrary.member.service.MemberService;
+import com.lightbrary.util.Paging;
 
 @Controller
 public class MemberController {
@@ -77,9 +84,76 @@ public class MemberController {
 		
 		return "redirect:/login.do";
 	}
+	
+	//회원 목록
+	@RequestMapping(value = "/member/list.do"
+			, method = {RequestMethod.GET, RequestMethod.POST})
+	public String rentList(@RequestParam(defaultValue = "1") int curPage
+			, MemberListParamDto memberListParamDto
+			, Model model) {
 		
-	@RequestMapping(value = "/member/detail.do", method = RequestMethod.GET)
-	public String memberListOneView() {
+		log.info("------MemberList------");
+		log.info("curPage: " + curPage);
+		log.info(memberListParamDto.toString());
+		log.info("---------------------------");
+		
+		//memberListParamDto.initBookListParamDto();
+		
+		int totalCount = memberService.totalCountMember(memberListParamDto);
+		Paging pagingInfo = new Paging(totalCount, curPage);
+		
+		memberListParamDto.setCurPage(curPage);
+		memberListParamDto.setStartPage(pagingInfo.getPageBegin());
+		memberListParamDto.setEndPage(pagingInfo.getPageEnd());
+		
+//		Map<String, Integer> pagingParamMap = new HashMap<String, Integer>();
+//		pagingParamMap.put("start", start);
+//		pagingParamMap.put("end", end);
+		
+		List<MemberDto> memberDtoList = memberService.selectMember(memberListParamDto);
+		
+		model.addAttribute("memberDtoList", memberDtoList);
+		model.addAttribute("memberListParamDto", memberListParamDto);
+		model.addAttribute("pagingInfo", pagingInfo);
+		
+		return "member/MemberListView";
+	}
+	
+	@RequestMapping(value = "/auth/detail.do", method = {RequestMethod.GET, RequestMethod.POST})
+	public String memberListOneView(int no, MemberListParamDto memberListParamDto
+			, Model model) {
+		
+		log.info("------Called MemberDetail------");
+		log.info("no: " + no);
+		log.info(memberListParamDto.toString());
+		log.info("-----------------------------");
+		
+		MemberDto memberDto = memberService.selectOneMember(no);
+		
+		model.addAttribute("member", memberDto);
+		model.addAttribute("memberListParamDto", memberListParamDto);
+		
+		return "auth/MemberListOneView";
+	}
+	
+	@RequestMapping(value = "/auth/update.do", method = {RequestMethod.POST, RequestMethod.GET})
+	public String updateMemberListOne(int no, MemberListParamDto memberListParamDto, Model model) {
+
+		log.info("------Called MemberUpdate------");
+		log.info("no: " + no);
+		log.info(memberListParamDto.toString());
+		log.info("-----------------------------");
+		
+		MemberDto memberDto = memberService.selectOneMember(no);
+		
+		model.addAttribute("memberDto", memberDto);
+		model.addAttribute("memberListParamDto", memberListParamDto);
+		
+		return "auth/UpdateMemberListOneForm";
+	}
+		
+	@RequestMapping(value = "/member/detail.do", method = {RequestMethod.GET, RequestMethod.POST})
+	public String memberDetailView() {
 		
 		log.info("내 정보 상세 페이지폼으로");
 		

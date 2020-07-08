@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.lightbrary.member.dao.MemberDao;
 import com.lightbrary.member.model.MemberDto;
+import com.lightbrary.member.model.MemberListParamDto;
+import com.lightbrary.rent.model.RentDto;
 
 @Service
 public class MemberServiceImpl implements MemberService{
@@ -48,14 +50,6 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public List<MemberDto> selectListMember() {
-		// TODO Auto-generated method stub
-		List<MemberDto> memberList = memberDao.selectListMember();
-		
-		return memberList;
-	}
-
-	@Override
 	public MemberDto memberExist(String email, String password) {
 		// TODO Auto-generated method stub
 		MemberDto memberDto = memberDao.memberExist(email, password);
@@ -84,6 +78,19 @@ public class MemberServiceImpl implements MemberService{
 	public String findPassword(String email) {
 		// TODO Auto-generated method stub
 		return memberDao.findPassword(email);
+	}
+
+	@Override
+	public List<MemberDto> selectMember(MemberListParamDto memberListParamDto) {
+		// TODO Auto-generated method stub
+		
+		return memberDao.selectMember(memberListParamDto);
+	}
+
+	@Override
+	public int totalCountMember(MemberListParamDto memberListParamDto) {
+		// TODO Auto-generated method stub
+		return memberDao.totalCountMember(memberListParamDto);
 	}
 
 	

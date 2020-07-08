@@ -34,6 +34,71 @@
 
 	</insert>
 	
+	<select id="selectMember" resultMap="memberResultMap"
+		parameterType="com.lightbrary.member.model.MemberListParamDto">
+		SELECT * FROM
+		    (
+		        SELECT ROWNUM RNUM, M.*
+		        FROM
+		            (
+		            SELECT *
+		            FROM MEMBER
+		            <where>
+			            DEL_FLAG = 'N'
+			            <if test="name != ''">AND NAME LIKE '%' || #{name} || '%'</if>
+			            <if test="email != ''">AND EMAIL LIKE '%' || #{email} || '%'</if>
+			            <choose>
+			            	<when test="joinDateStart != ''">
+			            		<choose>
+			            			<when test="joinDateEnd != ''">
+			            				AND CREATED_DATE BETWEEN #{joinDateStart} AND #{joinDateEnd}
+			            			</when>
+			            			<otherwise>
+			            				AND CREATED_DATE &gt;= #{joinDateStart}
+			            			</otherwise>
+			            		</choose>
+							</when>
+							<otherwise>
+								<if test="joinDateEnd != ''">
+									AND CREATED_DATE &lt;= #{joinDateEnd}
+								</if>
+							</otherwise>
+			            </choose>
+		            </where>
+		            ORDER BY NO DESC
+		           ) M
+		    )
+		WHERE RNUM BETWEEN #{startPage} AND #{endPage}
+	</select>
+	
+	<select id="totalCountMember" resultType="int" 
+		parameterType="com.lightbrary.member.model.MemberListParamDto">
+		SELECT COUNT(*)
+		FROM MEMBER
+	   <where>
+           DEL_FLAG = 'N'
+           <if test="name != ''">AND NAME LIKE '%' || #{name} || '%'</if>
+           <if test="email != ''">AND EMAIL LIKE '%' || #{email} || '%'</if>
+           <choose>
+           	<when test="joinDateStart != ''">
+           		<choose>
+           			<when test="joinDateEnd != ''">
+           				AND CREATED_DATE BETWEEN #{joinDateStart} AND #{joinDateEnd}
+           			</when>
+           			<otherwise>
+           				AND CREATED_DATE &gt;= #{joinDateStart}
+           			</otherwise>
+           		</choose>
+			</when>
+			<otherwise>
+				<if test="joinDateEnd != ''">
+					AND CREATED_DATE &lt;= #{joinDateEnd}
+				</if>
+			</otherwise>
+           </choose>
+	    </where>
+	</select>
+	
 	<select id="checkEmail" parameterType="String" resultType="int">
 		SELECT COUNT(*)
 		FROM MEMBER
@@ -46,6 +111,13 @@
 		FROM MEMBER
 		WHERE EMAIL = #{email}
 		AND PASSWORD = #{password}
+	</select>
+	
+	<select id="selectOneMember" parameterType="map" 
+		resultMap="memberResultMap">
+		SELECT *
+		FROM MEMBER
+		WHERE NO = #{no}
 	</select>
 	
 	<select id="findEmail" parameterType="map" 
