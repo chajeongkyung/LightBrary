@@ -14,12 +14,7 @@
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		if(${message ne null}){
-			alert('${message}');	
-	});
-</script>
+
 </head>
 
 <body>
@@ -71,7 +66,7 @@
 							<tr>
 								<th class='text bold textDark'>가입일</th>
 								<td class='text textGrey'>
-									<fmt:formatDate value="${member.createdDate}" pattern="yyyy년 MM월 dd일 "/>
+									<fmt:formatDate value="${member.createdDate}" pattern="yyyy/MM/dd HH:mm:ss"/>
 								</td>
 							</tr>
 						</tbody>

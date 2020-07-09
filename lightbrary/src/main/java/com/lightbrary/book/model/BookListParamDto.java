@@ -11,6 +11,7 @@ public class BookListParamDto {
 	private String searchCategory3;
 	private String categoryStart = "";
 	private String categoryEnd = "";
+	private int searchStatus;
 	private int curPage;
 	private int startPage;
 	private int endPage;
@@ -40,6 +41,7 @@ public class BookListParamDto {
 		searchCategory3 = "";
 		categoryStart = "";
 		categoryEnd = "";
+		searchStatus = -1;
 		curPage = 0;
 		startPage = 0;
 		endPage = 0;
@@ -47,7 +49,7 @@ public class BookListParamDto {
 
 	public BookListParamDto(String searchName, String searchWriter, String searchPublish, String publishDateStart,
 			String publishDateEnd, String searchCategory1, String searchCategory2, String searchCategory3,
-			String categoryStart, String categoryEnd, int curPage, int startPage, int endPage) {
+			String categoryStart, String categoryEnd, int searchStatus, int curPage, int startPage, int endPage) {
 		super();
 		this.searchName = searchName;
 		this.searchWriter = searchWriter;
@@ -59,10 +61,10 @@ public class BookListParamDto {
 		this.searchCategory3 = searchCategory3;
 		this.categoryStart = categoryStart;
 		this.categoryEnd = categoryEnd;
+		this.searchStatus = searchStatus;
 		this.curPage = curPage;
 		this.startPage = startPage;
 		this.endPage = endPage;
-		initBookListParamDto();
 	}
 
 	public String getSearchName() {
@@ -145,6 +147,14 @@ public class BookListParamDto {
 		this.categoryEnd = categoryEnd;
 	}
 
+	public int getSearchStatus() {
+		return searchStatus;
+	}
+
+	public void setSearchStatus(int searchStatus) {
+		this.searchStatus = searchStatus;
+	}
+
 	public int getCurPage() {
 		return curPage;
 	}
@@ -174,9 +184,9 @@ public class BookListParamDto {
 		return "BookListParamDto [searchName=" + searchName + ", searchWriter=" + searchWriter + ", searchPublish="
 				+ searchPublish + ", publishDateStart=" + publishDateStart + ", publishDateEnd=" + publishDateEnd
 				+ ", searchCategory1=" + searchCategory1 + ", searchCategory2=" + searchCategory2 + ", searchCategory3="
-				+ searchCategory3 + ", categoryStart=" + categoryStart + ", categoryEnd=" + categoryEnd + ", curPage="
-				+ curPage + ", startPage=" + startPage + ", endPage=" + endPage + "]";
+				+ searchCategory3 + ", categoryStart=" + categoryStart + ", categoryEnd=" + categoryEnd
+				+ ", searchStatus=" + searchStatus + ", curPage=" + curPage + ", startPage=" + startPage + ", endPage="
+				+ endPage + "]";
 	}
 
-	
 }

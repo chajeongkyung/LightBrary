@@ -12,7 +12,8 @@ public class RentDto {
 	private Date returnDate;
 	private int overdueDays;
 	private Date pickUpDate;
-	private String sendFlag;
+	private String returnSendFlag;
+	private String overdueSendFlag;
 	private String delFlag;
 	
 	private String bookCategoryCode;
@@ -34,9 +35,9 @@ public class RentDto {
 	}
 
 	public RentDto(int no, int memberNo, int bookNo, Date reserveDate, Date rentDate, Date expireDate, Date returnDate,
-			int overdueDays, Date pickUpDate, String sendFlag, String delFlag, String bookCategoryCode, String bookName,
-			String writer, String publish, Date publishDate, String mname, String email, String phone, String address,
-			String bookStatus) {
+			int overdueDays, Date pickUpDate, String returnSendFlag, String overdueSendFlag, String delFlag,
+			String bookCategoryCode, String bookName, String writer, String publish, Date publishDate, String mname,
+			String email, String phone, String address, String bookStatus) {
 		super();
 		this.no = no;
 		this.memberNo = memberNo;
@@ -47,7 +48,8 @@ public class RentDto {
 		this.returnDate = returnDate;
 		this.overdueDays = overdueDays;
 		this.pickUpDate = pickUpDate;
-		this.sendFlag = sendFlag;
+		this.returnSendFlag = returnSendFlag;
+		this.overdueSendFlag = overdueSendFlag;
 		this.delFlag = delFlag;
 		this.bookCategoryCode = bookCategoryCode;
 		this.bookName = bookName;
@@ -117,12 +119,36 @@ public class RentDto {
 		this.returnDate = returnDate;
 	}
 
-	public String getSendFlag() {
-		return sendFlag;
+	public int getOverdueDays() {
+		return overdueDays;
 	}
 
-	public void setSendFlag(String sendFlag) {
-		this.sendFlag = sendFlag;
+	public void setOverdueDays(int overdueDays) {
+		this.overdueDays = overdueDays;
+	}
+
+	public Date getPickUpDate() {
+		return pickUpDate;
+	}
+
+	public void setPickUpDate(Date pickUpDate) {
+		this.pickUpDate = pickUpDate;
+	}
+
+	public String getReturnSendFlag() {
+		return returnSendFlag;
+	}
+
+	public void setReturnSendFlag(String returnSendFlag) {
+		this.returnSendFlag = returnSendFlag;
+	}
+
+	public String getOverdueSendFlag() {
+		return overdueSendFlag;
+	}
+
+	public void setOverdueSendFlag(String overdueSendFlag) {
+		this.overdueSendFlag = overdueSendFlag;
 	}
 
 	public String getDelFlag() {
@@ -149,6 +175,14 @@ public class RentDto {
 		this.bookName = bookName;
 	}
 
+	public String getWriter() {
+		return writer;
+	}
+
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
+
 	public String getPublish() {
 		return publish;
 	}
@@ -163,14 +197,6 @@ public class RentDto {
 
 	public void setPublishDate(Date publishDate) {
 		this.publishDate = publishDate;
-	}
-
-	public String getWriter() {
-		return writer;
-	}
-
-	public void setWriter(String writer) {
-		this.writer = writer;
 	}
 
 	public String getMname() {
@@ -188,7 +214,7 @@ public class RentDto {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public String getPhone() {
 		return phone;
 	}
@@ -213,30 +239,15 @@ public class RentDto {
 		this.bookStatus = bookStatus;
 	}
 
-	public int getOverdueDays() {
-		return overdueDays;
-	}
-
-	public void setOverdueDays(int overdueDays) {
-		this.overdueDays = overdueDays;
-	}
-
-	public Date getpickUpDate() {
-		return pickUpDate;
-	}
-
-	public void setpickUpDate(Date pickUpDate) {
-		this.pickUpDate = pickUpDate;
-	}
-
 	@Override
 	public String toString() {
 		return "RentDto [no=" + no + ", memberNo=" + memberNo + ", bookNo=" + bookNo + ", reserveDate=" + reserveDate
 				+ ", rentDate=" + rentDate + ", expireDate=" + expireDate + ", returnDate=" + returnDate
-				+ ", overdueDays=" + overdueDays + ", pickUpDate=" + pickUpDate + ", sendFlag=" + sendFlag + ", delFlag="
-				+ delFlag + ", bookCategoryCode=" + bookCategoryCode + ", bookName=" + bookName + ", writer=" + writer
-				+ ", publish=" + publish + ", publishDate=" + publishDate + ", mname=" + mname + ", email=" + email
-				+ ", phone=" + phone + ", address=" + address + ", bookStatus=" + bookStatus + "]";
+				+ ", overdueDays=" + overdueDays + ", pickUpDate=" + pickUpDate + ", returnSendFlag=" + returnSendFlag
+				+ ", overdueSendFlag=" + overdueSendFlag + ", delFlag=" + delFlag + ", bookCategoryCode="
+				+ bookCategoryCode + ", bookName=" + bookName + ", writer=" + writer + ", publish=" + publish
+				+ ", publishDate=" + publishDate + ", mname=" + mname + ", email=" + email + ", phone=" + phone
+				+ ", address=" + address + ", bookStatus=" + bookStatus + "]";
 	}
 	
 	

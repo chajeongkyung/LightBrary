@@ -184,7 +184,7 @@
 					<!-- 동그란 체크박스 전체선택 end -->
 					<ul class='settings fRight fs0'>
 						<li>
-							<a href="#none" class='text'>선택 대출 예약</a>
+							<a href="#none" class='text'>선택 예약 취소</a>
 						</li>
 					</ul>
 				</div>
@@ -194,11 +194,11 @@
 						<li>
 							<!-- 동그란 체크박스 start -->
 							<div class='checkbox type1'>
-								<input type="checkbox" id='check${rentDto.no}'>
-								<label for="check${rentDto.no}"></label>
+								<input type="checkbox" id='check1'>
+								<label for="check1"></label>
 							</div>
 							<!-- //동그란 체크박스 end -->
-							<span class='num'>${rentDto.no}</span>
+							<span class='num'>1</span>
 							<a href="#none" class="fLeft">
 								<span class='bookImage bgCover' style="background-image: url('<%=request.getContextPath()%>/resources/img/book-img1-limgaejang.jpg');"></span>
 							</a>
@@ -213,7 +213,7 @@
 							<div class='listOptions fRight'>
 								<ul class='listOptionsUl fs0'>
 									<li>
-										<a href="#none" class="text bold">대출 예약</a> 
+										<a href="#none" class="text bold">예약 취소</a> 
 									</li>
 								</ul>
 							</div>

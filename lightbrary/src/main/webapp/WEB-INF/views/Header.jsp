@@ -39,7 +39,7 @@
 	<!-- 네비 start -->
 	<nav id='nav'>
 		<ul id='depth1Ul' class='fs0 tCenter'>
-			<li><a href="/lightbrary/member/list.do">회원관리</a></li>
+			<li><a href="/lightbrary/auth/list.do">회원관리</a></li>
 			<li id='rentNav' class='depthNav'>
 				<a href="/lightbrary/rent/list.do">대출관리</a>
 				<ul id='rentDepth2' class="depth2Ul fs0">

@@ -6,7 +6,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>회원관리</title>
+<title>Lightbrary : 회원관리</title>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
@@ -69,8 +69,8 @@
 									<td class='text textGrey'>${memberDto.address}</td>
 								</tr>
 								<tr>
-									<th class='inputTd'>가입일</th>
-									<td class='text textGrey'><fmt:formatDate value="${memberDto.createdDate}" pattern="yyyy년 MM월 dd일 "/></td>
+									<th class='text bold textDark inputTh'>가입일</th>
+									<td class='text textGrey'><fmt:formatDate value="${memberDto.createdDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
 								</tr>
 							</tbody>
 						</table>
@@ -78,9 +78,9 @@
 					
 					<!-- 상세페이지 버튼 start -->
 					<div class='btnWrap viewBtns fs0 tCenter'>
-						<a href="#" class='btn grey'>비밀번호 초기화</a>
+						<a href="#" onclick="resetMemberPasswordFnc();" class='btn grey'>비밀번호 초기화</a>
 						<a href="#" onclick="deleteMemberFnc();" class='btn grey'>강퇴</a>
-						<a href="<%=request.getContextPath()%>/member/list.do" class='btn green'>목록</a>
+						<a href="<%=request.getContextPath()%>/auth/list.do" class='btn green'>목록</a>
 					</div>
 					<!-- //상세페이지 버튼 end -->
 				</form>
@@ -96,12 +96,27 @@
 </body>
 
 <script type="text/javascript">
+
+	$(document).ready(function() {
+		// depth1 네비
+		$('#depth1Ul > li:nth-child(1)').addClass('active');
+	});
 	
 	function deleteMemberFnc() {
-		var answer = confirm('정말 탈퇴하시겠습니까?');
+		var answer = confirm('해당 회원을 강퇴 시키겠습니까? \n해당 회원이 연체 도서가 있을 시 강퇴가 불가합니다.');
 		
 		if (answer) {
+			alert('회원이 삭제 되었습니다');
 			location.href = '<%=request.getContextPath()%>/member/deleteCtr.do?no=${memberDto.no}';	
+		}
+	}
+	
+	function resetMemberPasswordFnc() {
+		var answer = confirm('비밀번호 초기화를 진행하시겠습니까?');
+		
+		if (answer) {
+			alert('비밀번호가 초기화 되었습니다');
+			location.href = '<%=request.getContextPath()%>/sendEmail.do?email=${memberDto.email}';	
 		}
 	}
 

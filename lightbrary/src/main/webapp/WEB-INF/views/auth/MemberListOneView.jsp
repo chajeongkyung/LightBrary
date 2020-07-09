@@ -6,7 +6,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>회원 상세</title>
+<title>Lightbrary : 회원 상세</title>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
@@ -14,7 +14,14 @@
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
+<script type="text/javascript">
 
+	$(document).ready(function() {
+		// depth1 네비
+		$('#depth1Ul > li:nth-child(1)').addClass('active');
+	});
+
+</script>
 </head>
 
 <body>
@@ -37,11 +44,11 @@
 						<tbody>
 							<tr>
 								<th class='text bold textDark'>회원번호</th>
-								<td class='text textGrey'>${member.no}</td>
+								<td class='text textGrey'>${memberDto.no}</td>
 							</tr>
 							<tr>
 								<th class='text bold textDark'>이메일</th>
-								<td class='text textGrey'>${member.email}</td>
+								<td class='text textGrey'>${memberDto.email}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -57,20 +64,20 @@
 						<tbody>
 							<tr>
 								<th class='text bold textDark'>이름</th>
-								<td class='text textGrey'>${member.name}</td>
+								<td class='text textGrey'>${memberDto.name}</td>
 							</tr>
 							<tr>
 								<th class='text bold textDark'>연락처</th>
-								<td class='text textGrey'>${member.phone}</td>
+								<td class='text textGrey'>${memberDto.phone}</td>
 							</tr>
 							<tr>
 								<th class='text bold textDark'>주소</th>
-								<td class='text textGrey'>${member.address}</td>
+								<td class='text textGrey'>${memberDto.address}</td>
 							</tr>
 							<tr>
 								<th class='text bold textDark'>가입일</th>
 								<td class='text textGrey'>
-									<fmt:formatDate value="${member.createdDate}" pattern="yyyy년 MM월 dd일 "/>
+									<fmt:formatDate value="${memberDto.createdDate}" pattern="yyyy/MM/dd HH:mm:ss"/>
 								</td>
 							</tr>
 						</tbody>
@@ -79,8 +86,9 @@
 				
 				<!-- 상세페이지 버튼 start -->
 				<div class='btnWrap viewBtns fs0 tCenter'>
+				<a href="<%=request.getContextPath()%>/auth/list.do" class='btn grey'>목록</a>
 				<form action="./update.do" method="post">
-					<input type="submit" class='btn grey' value="수정">
+					<input type="submit" class='btn green' value="수정">
 					
 					<input type="hidden" id="no" name="no" value="${memberListParamDto.no}">
 					<input type="hidden" name="name" value="${memberListParamDto.name}">
@@ -88,8 +96,9 @@
 					<input type="hidden" name="phone" value="${memberListParamDto.phone}">
 					<input type="hidden" name="address" value="${memberListParamDto.address}">
 					<input type="hidden" name="createdDate" value="${memberListParamDto.createdDate}">
+					<input type="hidden" name="curPage" value="${memberListParamDto.curPage}">
 				</form>	
-					<a href="<%=request.getContextPath()%>/member/list.do" class='btn green'>목록</a>
+					
 				</div>
 				<!-- //상세페이지 버튼 end -->
 			</div>

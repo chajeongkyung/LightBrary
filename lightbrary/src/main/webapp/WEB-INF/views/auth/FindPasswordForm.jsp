@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>비밀번호 찾기</title>
+<title>Lightbrary : 비밀번호 찾기</title>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
@@ -18,7 +18,7 @@
 <body>
 
 	<div id='wrap'>
-		<jsp:include page="/WEB-INF/views/Header_temp.jsp" />
+		<jsp:include page="/WEB-INF/views/Header.jsp" />
 	
 		<!-- 컨테이너 start -->
 			<div id='container'>
@@ -27,9 +27,8 @@
 						<div class='infoInputWrap'>
 							<input type="text" class='infoInput infoName' id="email" name="email" placeholder="이메일">
 								<p style="margin-bottom: 10px;" id="alertNoAccountMsg"></p>
-								<div class="text" style="margin-top: 10px;">	
-									고객님께서 회원가입 시 입력한 이메일 주소로 비밀번호를 재설정 할 수 있는
-									링크를 보내드립니다.
+								<div class="text" style="margin-top: 10px; line-height: 120%;">	
+									고객님께서 회원가입 시 입력한 이메일 주소로 비밀번호를 보내드립니다.
 								</div>
 						</div>
 						<div class='btnWrap tCenter' style="margin-top: 30px;">
@@ -39,7 +38,7 @@
 					</form>
 			</div>
 		<!-- //컨테이너 end -->
-		<jsp:include page="/WEB-INF/views/Tail_temp.jsp" />
+		<jsp:include page="/WEB-INF/views/Tail.jsp" />
 		
 	</div>
 	

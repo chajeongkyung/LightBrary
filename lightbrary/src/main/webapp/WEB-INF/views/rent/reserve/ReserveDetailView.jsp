@@ -56,13 +56,15 @@
 	}
 	
 	function pageMoveListFnc(){
+		var noObj = $('#no');
 		var keywordObj = $('#keyword');
 		var searchOptionObj = $('#searchOption');
 		
 		var url = '';
 		
 		url += './list.do?';
-		url += 'keyword=' + keywordObj.val();
+		url += 'no=' + noObj.val();
+		url += '&keyword=' + keywordObj.val();
 		url += '&searchOption=' + searchOptionObj.val();
 		
 		location.href = url;
@@ -180,7 +182,7 @@
 						
 						<button type="submit" id='changeStatus' class='btn grey'>대출 중으로 변경</button>
 						
-<%-- 						<input type="hidden" id='no' name="no" value="${rentDto.no}"> --%>
+						<input type="hidden" id='no' name="no" value="${rentDto.no}">
 						<input type="hidden" id='searchOption' name="searchOption" value="${searchOption}">
 						<input type="hidden" id='keyword' name="keyword" value="${keyword}">
 						

@@ -17,6 +17,8 @@ public interface RentService {
 	// 대출 상세
 	public RentDto selectOneRent(int no);
 	public int updateOneRentStatus(RentDto rentDto); //상태변경
+	
+	public int updateSend(int no); //반납 이메일 상태 변경
 
 	
 	/*******************
@@ -44,8 +46,14 @@ public interface RentService {
 	public int updateOneOverdueStatus(RentDto rentDto); //상태변경
 	public List<RentDto> selectReservebyStatus(String statusName);
 	
-	
-	public List<RentDto> selectRentAll();
+	public List<RentDto> selectRentAll(); // 상태 대출 목록
 	public int updateOneStatusToOverdue(RentDto rentDto);
+	
+	public int updateOverdueSend(int no); //연체 이메일 상태 변경
+	
+	/*******************
+		    대출 예약
+	*******************/
+	public void insertReserve(RentDto rentDto);
 	
 }

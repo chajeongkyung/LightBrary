@@ -1,8 +1,6 @@
 package com.lightbrary.member.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
@@ -18,15 +16,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.lightbrary.book.model.BookDto;
-import com.lightbrary.book.model.BookListParamDto;
 import com.lightbrary.member.model.MemberDto;
 import com.lightbrary.member.model.MemberListParamDto;
 import com.lightbrary.member.service.MemberService;
+import com.lightbrary.util.CommonUtils;
 import com.lightbrary.util.Paging;
 
+/**
+ * @author TJ
+ *
+ */
+/**
+ * @author TJ
+ *
+ */
 @Controller
 public class MemberController {
 
@@ -37,14 +41,14 @@ public class MemberController {
 	private MemberService memberService;
 
 	@RequestMapping(value = "/member/add.do")
-	public String memberAdd(Model model) {
+	public String memberAdd() {
 		
 		log.info("회원가입 폼으로");
 		
 		return "member/MemberJoinForm";
 	}
 
-	@RequestMapping(value = "/member/addCtr.do", method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "/member/addCtr.do", method = RequestMethod.POST)
 	public String memberAdd(MemberDto memberDto) {
 		
 		log.info("회원가입 컨트롤러입니다", memberDto);
@@ -52,7 +56,7 @@ public class MemberController {
 		memberService.insertOneMember(memberDto);
 		
 		return "redirect:/login.do";
-		}
+	}
 	
 	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
 	public String login() {
@@ -75,6 +79,7 @@ public class MemberController {
 		return "redirect:/member/detail.do";
 		
 	}
+	
 	// 로그아웃
 	@RequestMapping(value = "/logout.do", method = RequestMethod.GET)
 	public String logout(HttpSession session) {
@@ -86,7 +91,7 @@ public class MemberController {
 	}
 	
 	//회원 목록
-	@RequestMapping(value = "/member/list.do"
+	@RequestMapping(value = "/auth/list.do"
 			, method = {RequestMethod.GET, RequestMethod.POST})
 	public String rentList(@RequestParam(defaultValue = "1") int curPage
 			, MemberListParamDto memberListParamDto
@@ -94,7 +99,7 @@ public class MemberController {
 		
 		log.info("------MemberList------");
 		log.info("curPage: " + curPage);
-		log.info(memberListParamDto.toString());
+		log.info("" + memberListParamDto);
 		log.info("---------------------------");
 		
 		//memberListParamDto.initBookListParamDto();
@@ -116,7 +121,7 @@ public class MemberController {
 		model.addAttribute("memberListParamDto", memberListParamDto);
 		model.addAttribute("pagingInfo", pagingInfo);
 		
-		return "member/MemberListView";
+		return "auth/MemberListView";
 	}
 	
 	@RequestMapping(value = "/auth/detail.do", method = {RequestMethod.GET, RequestMethod.POST})
@@ -130,7 +135,7 @@ public class MemberController {
 		
 		MemberDto memberDto = memberService.selectOneMember(no);
 		
-		model.addAttribute("member", memberDto);
+		model.addAttribute("memberDto", memberDto);
 		model.addAttribute("memberListParamDto", memberListParamDto);
 		
 		return "auth/MemberListOneView";
@@ -152,7 +157,7 @@ public class MemberController {
 		return "auth/UpdateMemberListOneForm";
 	}
 		
-	@RequestMapping(value = "/member/detail.do", method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "/member/detail.do", method = RequestMethod.GET)
 	public String memberDetailView() {
 		
 		log.info("내 정보 상세 페이지폼으로");
@@ -160,7 +165,7 @@ public class MemberController {
 		return "member/MemberDetailView";
 	}
 	
-	@RequestMapping(value = "/member/checkPassword.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/checkPassword.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String checkPasswordForm() {
 		
 		log.info("정보 수정 전 비밀번호 확인 폼");
@@ -176,13 +181,11 @@ public class MemberController {
 		return "member/UpdateMemberDetailForm";
 	}
 	
-	@RequestMapping(value = "/member/updateCtr.do", method = RequestMethod.POST)
-	public String updateMemberDetailCtr(HttpSession session
-				, MemberDto memberDto
-				,RedirectAttributes rttr) {
+	
+	@RequestMapping(value = "/member/updateCtr.do", method = {RequestMethod.POST, RequestMethod.GET})
+	public String updateMemberDetailCtr(HttpSession session, MemberDto memberDto) {
 		
 		log.info("내 정보 수정 컨트롤러 {}", memberDto);
-		
 		
 		int resultNum = 0;
 		
@@ -201,13 +204,13 @@ public class MemberController {
 				
 				if(sessionMemberDto.getNo() == memberDto.getNo()) {
 
-					String password = memberService.findPassword(memberDto.getEmail());
+					//String password = memberService.findPassword(memberDto.getEmail());
+					String password = memberDto.getPassword();
 					MemberDto newMemberDto = memberService.memberExist(memberDto.getEmail(), password);
 					
 					session.removeAttribute("member");
 					
 					session.setAttribute("member", newMemberDto);
-					rttr.addFlashAttribute("message", "회원정보 수정 완료");
 				}
 				
 			}
@@ -216,14 +219,46 @@ public class MemberController {
 		return "redirect:./detail.do";
 	}
 	
+	@RequestMapping(value = "/auth/deletePasswordCtr.do", method = RequestMethod.GET)
+	public String deleteMemberPassword(int no, HttpSession session) {
+		
+		log.info("비밀번호 초기화 컨트롤러");
+		
+		memberService.deleteOneMember(no);
+		
+		String url = "";
+		
+		MemberDto sessionMemberDto 
+			= (MemberDto)session.getAttribute("member");
+		
+		if (sessionMemberDto.getGradeCode() == 0) {
+			url = "redirect:/auth/list.do";
+		} else {
+			url = "redirect:/login.do";
+		}
+		
+		return url;
+	}
+	
 	@RequestMapping(value = "/member/deleteCtr.do", method = RequestMethod.GET)
-	public String deleteMember(int no, Model model) {
+	public String deleteMember(int no, HttpSession session) {
 		
 		log.info("회원탈퇴");
 		
 		memberService.deleteOneMember(no);
 		
-		return "redirect:/login.do";
+		String url = "";
+		
+		MemberDto sessionMemberDto 
+			= (MemberDto)session.getAttribute("member");
+		
+		if (sessionMemberDto.getGradeCode() == 0) {
+			url = "redirect:/auth/list.do";
+		} else {
+			url = "redirect:/login.do";
+		}
+		
+		return url;
 	}
 	
 	@ResponseBody
@@ -248,7 +283,7 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/findEmail.do", method = RequestMethod.GET)
-	public String findEmail(Model model) {
+	public String findEmail() {
 		
 		log.info("이메일 찾기 폼으로");
 		
@@ -267,7 +302,7 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/findPassword.do", method = RequestMethod.GET)
-	public String findPassword(Model model) {
+	public String findPassword() {
 		
 		log.info("비밀번호 찾기 폼으로");
 		
@@ -278,35 +313,46 @@ public class MemberController {
     private JavaMailSender mailSender;
 	
 	@RequestMapping("/sendEmail.do")
-    public String sendEmail(@RequestParam("email") String userEmail
-          , Model model) throws Exception {
+    public String sendEmail(@RequestParam("email") String email, HttpSession session)
+    		throws Exception {
         
       log.info("이메일전송 해보자");
       
-      String password = memberService.findPassword(userEmail);
-      System.out.println("비밀번호를 잘 찾아왔니: " + password);
-        
+      String password = CommonUtils.getRandomPassword();
+      memberService.resetPassword(email, password);
+    
       try {
-	       if(password!=null) {
-	          MimeMessage message = mailSender.createMimeMessage();
-	          
-	          MimeMessageHelper messageHelper = 
-	                new MimeMessageHelper(message, true, "UTF-8");
-	          
-	          messageHelper.setFrom("Lightbrary");		//보내는 사람, 생략시 오류발생
-	          messageHelper.setTo(userEmail);			//받는 사람
-	          messageHelper.setSubject("요청하신 비밀번호입니다."); //제목
-	          messageHelper.setText("회원님의 비밀번호는 " + password + "입니다.");
-	          
-	          mailSender.send(message);
-           }
-         
+    	  
+          MimeMessage message = mailSender.createMimeMessage();
+          
+          MimeMessageHelper messageHelper = 
+                new MimeMessageHelper(message, true, "UTF-8");
+          
+          messageHelper.setFrom("Lightbrary");		//보내는 사람, 생략시 오류발생
+          messageHelper.setTo(email);			//받는 사람
+          messageHelper.setSubject("요청하신 비밀번호입니다."); //제목
+          messageHelper.setText("회원님의 비밀번호는 " + password + "입니다.");
+          
+          mailSender.send(message);
+       
       } catch (Exception e) {
          // TODO: handle exception
-         System.out.println(e);
+         System.out.println("------------이멜전송에러-------------");
       }
-        
-        return "redirect:/login.do";
+      
+      String url = "";
+	
+      MemberDto sessionMemberDto = (MemberDto)session.getAttribute("member");
+      
+      if (sessionMemberDto.getGradeCode() == 0) {
+    	  int no = memberService.findMemberNo(email);
+    	  
+    	  url = "redirect:/auth/update.do?no="+no;
+      } else {
+    	  url = "redirect:/login.do";
+      }
+	
+      return url;
     }
 
 

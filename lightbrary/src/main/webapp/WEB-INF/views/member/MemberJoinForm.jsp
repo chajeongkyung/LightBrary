@@ -15,6 +15,13 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/validation.js"></script>
 
+<style type="text/css">
+	.alertMsgBox {
+		padding-top:10px; 
+		font-size:13px;
+	}
+</style>
+
 </head>
 
 <body>
@@ -26,20 +33,20 @@
 			<div id='container'>
 				<h2 id='pageTitle'>회원가입</h2>
 					<form action='./addCtr.do' onsubmit="return checkValidationFnc();" method='post' class='infoForm'>
-						<p id="alertNecessaryMsg"></p>
+						<p id="alertNecessaryMsg" class="textRed alertMsgBox"></p>
 						<div class='infoInputWrap'>
 							<input type="text" class='infoInput infoName' id="name" name="name" placeholder="성함">
-							<p id="alertNameErrorMsg"></p>
-							<input type="text" style="margin-top: 20px;" class='infoInput infoPhone' id="phone" name="phone" placeholder="연락처">
-							<p id="alertPhoneErrorMsg"></p>
+							<p id="alertNameErrorMsg" class="textRed alertMsgBox"></p>
+							<input type="text" style="margin-top: 20px;" class='infoInput infoPhone' id="phone" name="phone" placeholder="연락처 ex) 01012345678">
+							<p id="alertPhoneErrorMsg" class="textRed alertMsgBox"></p>
 							<input type="text" style="margin-top: 20px;" class='infoInput infoEmail' id="email" name="email" placeholder="이메일">
-							<p id="alertEmailErrorMsg"></p>
+							<p id="alertEmailErrorMsg" class="textRed alertMsgBox"></p>
 							<input type="password" style="margin-top: 20px;" class='infoInput infoPassword' id="password" name="password" placeholder="비밀번호">
-							<p id="alertPasswordErrorMsg"></p>
+							<p id="alertPasswordErrorMsg" class="textRed alertMsgBox"></p>
 							<input type="password" style="margin-top: 20px;" class='infoInput infoPassword' id="checkPassword" name="checkPassword" placeholder="비밀번호 재확인">
-							<p id="alertcheckPasswordErrorMsg"></p>
+							<p id="alertcheckPasswordErrorMsg" class="textRed alertMsgBox"></p>
 							<input type="text" style="margin-top: 20px;" class='infoInput infoLocation' id="address" name="address" placeholder="주소">
-							<p id="alertAddressErrorMsg"></p>
+							<p id="alertAddressErrorMsg" class="textRed alertMsgBox"></p>
 						</div>
 						<div class='btnWrap tCenter' style="margin-top: 30px;">
 							<input type="submit" class='btn green' value="가입하기">
@@ -60,10 +67,8 @@ $("#name").blur(function() {
 	
 	 if(isNull(nameObj)) {
 		 $('#alertNameErrorMsg').html("성함을 입력해 주세요.");
-		 $('#alertNameErrorMsg').css('color', 'red');
 	 }else if (!isValidName(nameObj)) {
 		 $('#alertNameErrorMsg').html("한글과 영문 대 소문자를 사용하세요.<br>(특수기호, 공백 사용 불가)");
-		 $('#alertNameErrorMsg').css('color', 'red');
 	 }else {
 		 $('#alertNameErrorMsg').html("");	
 	}
@@ -74,10 +79,8 @@ $("#phone").blur(function() {
 	
 	 if(isNull(phoneObj)) {
 		 $('#alertPhoneErrorMsg').html("연락처를 입력해 주세요.");
-		 $('#alertPhoneErrorMsg').css('color', 'red');
 	}else if (!isValidPhone(phoneObj)) {
 		 $('#alertPhoneErrorMsg').html("숫자만 입력해 주세요.");
-		 $('#alertPhoneErrorMsg').css('color', 'red');
 	}else {
 		 $('#alertPhoneErrorMsg').html("");	
 	}
@@ -95,24 +98,20 @@ $("#email").blur(function() {
 			console.log("1 = 중복o / 0 = 중복x : "+ data);							
 			
 			if (data == 1) {
+					$('#alertEmailErrorMsg').css('color', '#EC8686');	
 					$('#alertEmailErrorMsg').html("사용중인 이메일입니다.");
-					$("#alertEmailErrorMsg").css("color", "red");
-					
 				} else if (data == 0){
 
 					if(isNull(emailObj)){
-						
+						$('#alertEmailErrorMsg').css('color', '#EC8686');	
 						$('#alertEmailErrorMsg').html('이메일을 입력해주세요.');
-						$('#alertEmailErrorMsg').css('color', 'red');
 						
 					} else if (!isValidEmail(emailObj)){
-						
+						$('#alertEmailErrorMsg').css('color', '#EC8686');	
 						$('#alertEmailErrorMsg').html('이메일 형식이 맞지 않습니다.');
-						$('#alertEmailErrorMsg').css('color', 'red');
 					} else{
-						
-						$('#alertEmailErrorMsg').html('사용가능한 이메일입니다.');
 						$('#alertEmailErrorMsg').css('color', 'blue');						
+						$('#alertEmailErrorMsg').html('사용가능한 이메일입니다.');
 					}	
 				}
 			}, error : function() {
@@ -126,27 +125,24 @@ $("#password").blur(function() {
 	
 	 if(isNull(passwordObj)) {
 		 $('#alertPasswordErrorMsg').html("비밀번호를 입력해 주세요.");
-		 $('#alertPasswordErrorMsg').css('color', 'red');
 	}else if (!isValidPassword(passwordObj)) {
 		 $('#alertPasswordErrorMsg').html("8~16자 영문 대 소문자,숫자,특수문자를 사용하세요.");
-		 $('#alertPasswordErrorMsg').css('color', 'red');
 	}else {
 		 $('#alertPasswordErrorMsg').html("");	
 	}
 });
 
 $("#checkPassword").blur(function() {
+	
 	var passwordObj = $('#password').val();
 	var checkPasswordObj = $('#checkPassword').val();
 	
 	 if(isNull(checkPasswordObj)) {
-		 $('#alertCheckPasswordErrorMsg').html("비밀번호를 확인해 주세요.");
-		 $('#alertCheckPasswordErrorMsg').css('color', 'red');
+		 $('#alertcheckPasswordErrorMsg').html("비밀번호를 확인해 주세요.");
 	}else if (passwordObj != checkPasswordObj) {
-		 $('#alertCheckPasswordErrorMsg').html("비밀번호가 일치하지 않습니다.");
-		 $('#alertCheckPasswordErrorMsg').css('color', 'red');
+		 $('#alertcheckPasswordErrorMsg').html("비밀번호가 일치하지 않습니다.");
 	}else {
-		 $('#alertCheckPasswordErrorMsg').html("");	
+		 $('#alertcheckPasswordErrorMsg').html("");	
 	}
 });
 
@@ -155,7 +151,6 @@ $("#address").blur(function() {
 	
 	 if(isNull(addressObj)) {
 		 $('#alertAddressErrorMsg').html("주소를 입력해 주세요.");
-		 $('#alertAddressErrorMsg').css('color', 'red');
 	}else {
 		 $('#alertAddressErrorMsg').html("");	
 	}
@@ -173,48 +168,36 @@ function checkValidationFnc() {
     
     if(isNull(nameObj)) {
     	$('#alertNecessaryMsg').html("모든 항목은 필수입니다.");
-		$('#alertNecessaryMsg').css('color', 'red');
-//         nameObj.focus();
         return false;
     }
     
  	if(isNull(phoneObj)) {
     	$('#alertNecessaryMsg').html("모든 항목은 필수입니다.");
-		$('#alertNecessaryMsg').css('color', 'red');
-//         phoneObj.focus();
         return false;
     }
  
     if(isNull(emailObj)) {
     	$('#alertNecessaryMsg').html("모든 항목은 필수입니다.");
-		$('#alertNecessaryMsg').css('color', 'red');
-//         emailObj.focus();
         return false;
     }
 
     if(isNull(passwordObj)) {
     	$('#alertNecessaryMsg').html("모든 항목은 필수입니다.");
-		$('#alertNecessaryMsg').css('color', 'red');
-//         passwordObj.focus();
         return false;
     }
 
     if(isNull(checkPasswordObj)) {
     	$('#alertNecessaryMsg').html("모든 항목은 필수입니다.");
-		$('#alertNecessaryMsg').css('color', 'red');
-//         checkPasswordObj.focus();
         return false;
     }
 	
     if(isNull(addressObj)) {
     	$('#alertNecessaryMsg').html("모든 항목은 필수입니다.");
-		$('#alertNecessaryMsg').css('color', 'red');
-//         passwordObj.focus();
         return false;
     }
-   
-	    alert("회원가입이 완료되었습니다.");
-    	return true;
+    
+    alert("회원가입이 완료되었습니다.");
+   	return true;
 	
 }
 

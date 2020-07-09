@@ -10,7 +10,7 @@ public class MemberListParamDto {
 	private String email;
 	private String phone;
 	private String address;
-	@DateTimeFormat(pattern="yyyy/MM/dd ")
+	@DateTimeFormat(pattern="yyyy/MM/dd HH:mm:ss")
 	private Date createdDate;
 	
 	private String joinDateStart;

@@ -82,6 +82,13 @@ public class RentDaoImpl implements RentDao{
 		return sqlSession.update(namespace + "updateOneRentStatus", rentDto);
 	}
 	
+	// 대출 이메일 상태 변경
+	@Override
+	public int updateSend(int no) {
+		// TODO Auto-generated method stub
+		return sqlSession.update(namespace + "updateSend", no);
+	}
+	
 	
 	/*******************
 			예약
@@ -219,6 +226,22 @@ public class RentDaoImpl implements RentDao{
 	public int updateOneStatusToOverdue(RentDto rentDto) {
 		// TODO Auto-generated method stub
 		return sqlSession.update(namespace + "updateOneStatusToOverdue", rentDto);
+	}
+	
+	// 연체 이메일 상태 변경
+	@Override
+	public int updateOverdueSend(int no) {
+		// TODO Auto-generated method stub
+		return sqlSession.update(namespace + "updateOverdueSend", no);
+	}
+	
+	
+	
+	@Override
+	public void insertReserve(RentDto rentDto) {
+		// TODO Auto-generated method stub
+		
+		sqlSession.insert(namespace + "insertReserve", rentDto);
 	}
 	
 }

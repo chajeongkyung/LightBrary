@@ -557,6 +557,7 @@ header {
 	background: rgba(238, 238, 238, 0.7);
 	color: #464646;
 	font-weight: bold;
+	text-align: center;
 }
 
 #table tbody td {
