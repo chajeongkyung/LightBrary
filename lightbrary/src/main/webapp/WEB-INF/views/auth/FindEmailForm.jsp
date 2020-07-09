@@ -29,7 +29,7 @@
 							<input type="text" style="margin-top: 20px;" class='infoInput infoPhone'
 								 id="phone" name="phone" placeholder="연락처">
 								<p style="margin-bottom: 10px;" id="alertNoAccountMsg"></p>
-								<div class="text" style="margin-top: 10px;">	
+								<div class="text" style="margin-top: 10px; line-height: 120%;">	
 									고객님께서 회원가입 시 입력한 성함과 연락처를 입력해주시면, 이에 해당하는
 									이메일 주소를 찾아드립니다.
 								</div>
