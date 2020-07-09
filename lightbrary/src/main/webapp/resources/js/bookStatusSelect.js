@@ -15,3 +15,11 @@ function bookStatusSelect() {
 		}
 	});
 }
+
+function getStatusCodebyName(name){
+	for (var i = 0; i < bookStatusObj.length; i++) {
+		if(bookStatusObj[i].name == name){
+			return bookStatusObj[i].code;
+		}
+	}
+}

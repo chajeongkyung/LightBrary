@@ -96,11 +96,32 @@
 		$('#searchStatus').val(getStatusCodebyName("분실"));
 		bookListParamDtoSubmit();
 	}
+	
+	// 도서 예약
+	function reserveFnc(clickObj) {
+		var memberNoObj = $(clickObj).parent().find($('.memberNo'));
+		var bookNoObj = $(clickObj).parent().find($('.bookNo'));
+		
+		var url = './reserve.do?';
+		url += 'memberNo=' + memberNoObj.val();
+		url += '&bookNo=' + bookNoObj.val();
+		
+		if(confirm('도서의 대출 예약을 하시겠습니까?')){
+			alert('대출 가능한 날짜는 오늘로 부터 5일입니다.\n픽업일 내에 도서를 찾아가지 않을 시 예약은 취소됩니다.');
+			location.href = url;
+			
+			return;
+		} else{
+			return false;
+		}
+		
+	}
 </script>
 
 </head>
 
 <body>
+
 	<div id='wrap'>
 		<jsp:include page="/WEB-INF/views/Header.jsp" />
 	
@@ -205,7 +226,7 @@
 							</c:when>
 							<c:when test="${member.gradeCode eq 1}">
 								<li>
-									<a href="#none" class='text'>대출 예약</a>
+									<a href="#none" class='text'>선택 대출 예약하기</a>
 								</li>
 							</c:when>
 						</c:choose>
@@ -244,16 +265,46 @@
 						</div>
 						<div class='listOptions fRight'>
 							<ul class='listOptionsUl fs0'>
-								<c:if test="${member.gradeCode eq 1}">
+								<c:if test="${member.gradeCode eq 1 && bookDto.statusCode ne 1}">
 									<li>
-										<a href="#none" class="text bold">대출 예약</a> 
+										<input type="hidden" class="memberNo" name="memberNo" value="${member.no}">
+										<input type="hidden" class="bookNo" name="bookNo" value="${bookDto.no}">
+										<input type="hidden" class="statusCode" name="statusCode" value="${bookDto.statusCode}">
+										<a href="#none" class="text bold" onclick="reserveFnc(this);">대출 예약 하기</a> 
 									</li>
 								</c:if>
 							</ul>
-							<p class='bookState text'>
-								<span class="bold">상태 : </span>
-								<span id='bookStatus${bookDto.no}'>${bookDto.statusCode}</span>
-							</p>
+							<c:choose>
+								<c:when test="${member.gradeCode eq 1 && bookDto.statusCode ne 0}">
+									<p class='bookState text' style="margin-top: 132px;">
+										<span class="bold">상태 : </span>
+										<c:choose>
+											<c:when test="${bookDto.statusCode eq 1 || bookDto.statusCode eq 2}">
+												<span id='bookStatus${bookDto.no}' class='textGreen bold'>${bookDto.statusCode}</span>
+											</c:when>
+											<c:otherwise>
+												<span id='bookStatus${bookDto.no}' class='textRed bold'>${bookDto.statusCode}</span>
+											</c:otherwise>
+										</c:choose>
+									</p>
+								</c:when>
+								<c:otherwise>
+									<p class='bookState text'>
+										<span class="bold">상태 : </span>
+										<c:choose>
+											<c:when test="${bookDto.statusCode eq 0}">
+												<span id='bookStatus${bookDto.no}' class='textGrey bold'>${bookDto.statusCode}</span>
+											</c:when>
+											<c:when test="${bookDto.statusCode eq 1 || bookDto.statusCode eq 2}">
+												<span id='bookStatus${bookDto.no}' class='textGreen bold'>${bookDto.statusCode}</span>
+											</c:when>
+											<c:otherwise>
+												<span id='bookStatus${bookDto.no}' class='textRed bold'>${bookDto.statusCode}</span>
+											</c:otherwise>
+										</c:choose>
+									</p>
+								</c:otherwise>
+							</c:choose>
 						</div>
 						</li>
 					</c:forEach>
@@ -298,7 +349,6 @@
 		<!-- //컨테이너 end -->
 		
 		<jsp:include page="/WEB-INF/views/Tail.jsp" />
-		<div id="test"></div>
 	</div>
 
 </body>

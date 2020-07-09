@@ -30,10 +30,13 @@
 	
 	<select id="selectBook" parameterType="com.lightbrary.book.model.BookListParamDto" resultMap="BookResultMap">
 		SELECT * FROM
-		    (
-		        SELECT ROWNUM RNUM, B.*, BI.STORED_FILE_NAME IMAGE_NAME
+	    (
+		    SELECT ROWNUM RNUM, B_ORDER.*
+		    FROM
+    		(
+		        SELECT B.*, BI.STORED_FILE_NAME IMAGE_NAME
 		        FROM
-		            (
+	            (
 		            SELECT *
 		            FROM BOOK
 		            <where>
@@ -65,11 +68,12 @@
 			            	AND STATUS_CODE = #{searchStatus}
 			            </if>
 		            </where>
-		            ) B
+				) B
 		        JOIN BOOK_IMAGE BI
 		        ON B.IMAGE_NO = BI.NO
-		        ORDER BY B.NO
-		    )
+		        ORDER BY B.NO DESC
+		    ) B_ORDER
+	    )
 		WHERE RNUM BETWEEN #{startPage} AND #{endPage}
 	</select>
 	
