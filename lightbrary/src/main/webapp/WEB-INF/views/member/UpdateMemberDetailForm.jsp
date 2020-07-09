@@ -6,7 +6,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>내 정보</title>
+<title>Lightbrary : 내 정보</title>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
@@ -14,6 +14,15 @@
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/validation.js"></script>
+
+<style type="text/css">
+	.alertMsgBox {
+		padding-top:10px;
+		font-size:13px;
+		display: block;
+	}
+</style>
 
 </head>
 
@@ -43,18 +52,19 @@
 								<tr>
 									<th class='text bold textDark inputTh'>비밀번호 재설정</th>
 									<td class='inputTd'>
-										<input type="password" name="password" class='detailInput text textGrey'>
+										<input type="password" id="password" name="password" class='detailInput text textGrey'>
 										<input type="hidden" name="no" value="${member.no}">
 										<input type="hidden" name="email" value="${member.email}">
 										<input type="hidden" name="createdDate"
-											value="<fmt:formatDate value="${member.createdDate}" pattern="yyyy년 MM월 dd일 "/>">
-
+											value="<fmt:formatDate value="${member.createdDate}" pattern="yyyy/MM/dd"/>">
+										<div id="alertPasswordErrorMsg" class="textRed alertMsgBox"></div>
 									</td>
 								</tr>
 								<tr>
 									<th class='text bold textDark inputTh'>비밀번호 재확인</th>
 									<td class='inputTd'>
-										<input type="password" class='detailInput text textGrey'>
+										<input type="password" id="checkPassword" class='detailInput text textGrey'>
+										<div id="alertcheckPasswordErrorMsg" class="textRed alertMsgBox"></div>
 									</td>
 								</tr>
 							</tbody>
@@ -72,25 +82,28 @@
 								<tr>
 									<th class='text bold textDark inputTh'>이름</th>
 									<td class='inputTd'>
-										<input type="text" name="name" class='detailInput text textGrey' value="${member.name}">
+										<input type="text" id="name" name="name" class='detailInput text textGrey' value="${member.name}">
+										<div id="alertNameErrorMsg" class="textRed alertMsgBox"></div>
 									</td>
 								</tr>
 								<tr>
 									<th class='text bold textDark inputTh'>연락처</th>
 									<td class='inputTd'>
-										<input type="text" name="phone" class='detailInput text textGrey' value="${member.phone}">
+										<input type="text" id="phone" name="phone" class='detailInput text textGrey' value="${member.phone}">
+										<div id="alertPhoneErrorMsg" class="textRed alertMsgBox"></div>
 									</td>
 								</tr>
 								<tr>
 									<th class='text bold textDark inputTh'>주소</th>
 									<td class='inputTd'>
-										<input type="text" name="address" class='detailInput text textGrey' value="${member.address}">
+										<input type="text" id="address" name="address" class='detailInput text textGrey' value="${member.address}">
+										<div id="alertAddressErrorMsg" class="textRed alertMsgBox"></div>
 									</td>
 								</tr>
 								<tr>
-									<th class='inputTd'>가입일</th>
+									<th class='text bold textDark inputTh'>가입일</th>
 									<td class='text textGrey'>
-										<fmt:formatDate value="${member.createdDate}" pattern="yyyy년 MM월 dd일 "/>
+										<fmt:formatDate value="${member.createdDate}" pattern="yyyy/MM/dd"/>
 									</td>
 								</tr>
 							</tbody>
@@ -99,9 +112,9 @@
 					
 					<!-- 상세페이지 버튼 start -->
 					<div class='btnWrap viewBtns fs0 tCenter'>
-						<a href="./detail.do" class='btn green'>뒤로</a>
+						<a href="./detail.do" class='btn grey'>뒤로</a>
 						<a onclick="deleteMemberFnc();" class='btn grey'>탈퇴하기</a>
-						<input type="submit" id="updateBtn" class='btn grey' value="적용">
+						<input type="submit" id="updateBtn" class='btn green' value="적용">
 					</div>
 					<!-- //상세페이지 버튼 end -->
 				</form>
@@ -119,9 +132,10 @@
 <script type="text/javascript">
 	
 	function deleteMemberFnc() {
-		var answer = confirm('정말 탈퇴하시겠습니까?');
+		var answer = confirm('정말 탈퇴하시겠습니까?\n(연체 도서가 남아 있을 시 탈퇴가 불가합니다)');
 		
 		if (answer) {
+			alert('성공적으로 탈퇴 처리되었습니다');
 			location.href = './deleteCtr.do?no=${member.no}';	
 		}
 	}
@@ -129,11 +143,73 @@
 		var answer = confirm('회원 정보를 수정하시겠습니까?');
 		
 		if (answer) {
+			alert('성공적으로 수정되었습니다.');
 			return true;
 		}else {
 			return false;
 		}
 	}
+	
+	$("#name").blur(function() {
+		var nameObj = $('#name').val();
+		
+		 if(isNull(nameObj)) {
+			 $('#alertNameErrorMsg').html("성함을 입력해 주세요.");
+		 }else if (!isValidName(nameObj)) {
+			 $('#alertNameErrorMsg').html("한글과 영문 대 소문자를 사용하세요. (특수기호, 공백 사용 불가)");
+		 }else {
+			 $('#alertNameErrorMsg').html("");	
+		}
+	});
+
+	$("#phone").blur(function() {
+		var phoneObj = $('#phone').val();
+		
+		 if(isNull(phoneObj)) {
+			 $('#alertPhoneErrorMsg').html("연락처를 입력해 주세요.");
+		}else if (!isValidPhone(phoneObj)) {
+			 $('#alertPhoneErrorMsg').html("숫자만 입력해 주세요.");
+		}else {
+			 $('#alertPhoneErrorMsg').html("");	
+		}
+	});
+	
+	$("#password").blur(function() {
+		var passwordObj = $('#password').val();
+		
+		 if(isNull(passwordObj)) {
+			 $('#alertPasswordErrorMsg').html("비밀번호를 입력해 주세요.");
+		}else if (!isValidPassword(passwordObj)) {
+			 $('#alertPasswordErrorMsg').html("8~16자 영문 대 소문자,숫자,특수문자를 사용하세요.");
+		}else {
+			 $('#alertPasswordErrorMsg').html("");	
+		}
+	});
+
+	$("#checkPassword").blur(function() {
+		
+		var passwordObj = $('#password').val();
+		var checkPasswordObj = $('#checkPassword').val();
+		
+		 if(isNull(checkPasswordObj)) {
+			 $('#alertcheckPasswordErrorMsg').html("비밀번호를 확인해 주세요.");
+		}else if (passwordObj != checkPasswordObj) {
+			 $('#alertcheckPasswordErrorMsg').html("비밀번호가 일치하지 않습니다.");
+		}else {
+			 $('#alertcheckPasswordErrorMsg').html("");	
+		}
+	});
+
+	$("#address").blur(function() {
+		var addressObj = $('#address').val();
+		
+		 if(isNull(addressObj)) {
+			 $('#alertAddressErrorMsg').html("주소를 입력해 주세요.");
+		}else {
+			 $('#alertAddressErrorMsg').html("");	
+		}
+	});
+
 </script>
 
 </html>

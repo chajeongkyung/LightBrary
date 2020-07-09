@@ -8,4 +8,8 @@ public class CommonUtils {
 		return UUID.randomUUID().toString().replaceAll("-", "");
 	}
 
+	public static String getRandomPassword() {
+		return UUID.randomUUID().toString().replaceAll("-", "").substring(0, 12);
+	}
+
 }

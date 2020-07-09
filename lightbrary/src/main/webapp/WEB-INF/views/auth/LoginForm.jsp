@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>로그인</title>
+<title>Lightbrary : 로그인</title>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
@@ -25,9 +25,9 @@
 				<h2 id='pageTitle'>로그인</h2>
 					<form action='./loginCtr.do' id="loginCtrForm" method='post' class='infoForm'>
 						<div class='infoInputWrap'>
-							<input type="text" class='infoInput infoEmail' id="email" name="email" placeholder="이메일" value="">
+							<input type="text" class='infoInput infoEmail' id="email" name="email" placeholder="이메일" value="dd">
 							<input type="password" style="margin-top: 20px;" class='infoInput infoPassword'
-								 id="password" name="password" placeholder="비밀번호" value="">
+								 id="password" name="password" placeholder="비밀번호" value="dd">
 								<p style="margin-top: 20px;" id="alertNoAccountMsg"></p>
 								<div style="margin-top: 20px;">	
 									<a href="./findEmail.do" class="text bold">이메일 찾기 | </a>

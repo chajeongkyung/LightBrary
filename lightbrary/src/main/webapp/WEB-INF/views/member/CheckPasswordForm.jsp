@@ -24,7 +24,7 @@
 			<div id='container'>
 				<h2 id='pageTitle'>내 정보</h2>
 					<form action='./update.do' onsubmit="return checkPasswordFnc();"  
-						id="findPasswordForm" method='post' class='infoForm'>
+						id="findPasswordForm" method="post" class='infoForm'>
 						<div class='infoInputWrap'>
 							<input type="password" class='infoInput infoPassword' 
 								id="inputPassword" name="inputPassword" placeholder="비밀번호">

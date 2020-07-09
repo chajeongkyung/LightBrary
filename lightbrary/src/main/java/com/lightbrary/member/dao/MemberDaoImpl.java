@@ -2,7 +2,6 @@ package com.lightbrary.member.dao;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.lightbrary.member.model.MemberDto;
 import com.lightbrary.member.model.MemberListParamDto;
-import com.lightbrary.rent.model.RentDto;
 
 
 @Repository
@@ -76,6 +74,12 @@ public class MemberDaoImpl implements MemberDao{
 	}
 
 	@Override
+	public int findMemberNo(String email) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + "findMemberNo", email);
+	}
+	
+	@Override
 	public MemberDto findEmail(String userName, String phone) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> paramMap = new HashMap<>();
@@ -86,12 +90,6 @@ public class MemberDaoImpl implements MemberDao{
 		MemberDto memberDto = sqlSession.selectOne(namespace + "findEmail", paramMap);
 		
 		return memberDto;
-	}
-
-	@Override
-	public String findPassword(String email) {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne(namespace + "findPassword", email);
 	}
 
 	@Override
@@ -106,6 +104,17 @@ public class MemberDaoImpl implements MemberDao{
 		// TODO Auto-generated method stub
 
 		return sqlSession.selectOne(namespace + "totalCountMember", memberListParamDto);
+	}
+
+	@Override
+	public int resetPassword(String email, String password) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> paramMap = new HashMap<>();
+		
+		paramMap.put("email", email);
+		paramMap.put("password", password);
+		
+		return sqlSession.update(namespace + "resetPassword", paramMap);
 	}
 
 

@@ -26,8 +26,6 @@
 	$(document).ready(function() {
 		// depth1 네비
 		$('#depth1Ul > li:nth-child(1)').addClass('active');
-		// depth2 네비
-		//$('#depth1Ul > li.active > .depth2Ul > li:nth-child(1)').addClass('active');
 	});
 	
 	// 상세페이지로 이동
@@ -57,8 +55,7 @@
 
 <body>
 
-	<div>
-		<div id='wrap'>
+	<div id='wrap'>
 		<jsp:include page="/WEB-INF/views/Header.jsp" />
 		
 			<!-- 컨테이너 start -->
@@ -103,119 +100,118 @@
 	                  <input type="button" onclick="memberListParamDtoSubmit();" class='btn green' value="검색">
 	              </div>
 	            </form>
-	          </div>
-	        </div>
-    	    <!-- //컨테이너 end -->
+	          	</div>
+	        
     	    
-			<!-- 테이블 목록 start -->
-			<div id='tableListWrap'>
+				<!-- 테이블 목록 start -->
+				<div id='tableListWrap'>
+					<div class='listSettings overH'>
+						<ul class='settings fLeft fs0'>
+							<li class='active'>
+								<a href="./list.do" class='text'>전체 회원 보기</a>
+							</li>
+							<li>
+								<a href="#none" class='text'>연체 회원 보기</a>
+							</li>
+						</ul>
+					</div>
+					<div id='tableWrap'>
+						<table id='table'>
+							<colgroup>
+								<col width="20px">
+								<col width="50px">
+								<col width="80px">
+								<col width="70px">
+								<col width="220px">
+								<col width="80px">
+							</colgroup>
+							<thead>
+								<tr>
+									<th class='checkboxTd'>
+										<!--기본 체크박스 전체선택 start -->
+										<div class='selectAll checkbox type2 fLeft'>
+											<input type="checkbox" id='all'>
+											<label for="all"></label>
+										</div>
+										<!--기본 체크박스 전체선택 end -->
+									</th>
+									<th>회원번호</th>
+									<th>이름</th>
+									<th>연락처</th>
+									<th>이메일</th>
+									<th>가입일</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:if test="${empty memberDtoList}">
+									
+									<tr>
+										<td colspan="8" style="text-align: center; padding: 56px 0px;">
+											<span style="font-size: 16px; color: #686868;">검색하신 내용에 대한 결과가 없습니다.</span>
+										</td>
+									</tr>
+										
+								</c:if>
+								
+								<c:forEach var="memberDto" items="${memberDtoList}">
+									<tr>
+										<td class='checkboxTd'>
+											<input type="hidden" value='${memberDto.no}' class='noObj'>
+											<!--기본 체크박스 start -->
+											<div class='checkbox type2 fLeft'>
+												<input type="checkbox" id='check${memberDto.no}'>
+												<label for="check${memberDto.no}"></label>
+											</div>
+											<!--기본 체크박스 end -->
+										</td>
+										<td>
+											<a href='#' onclick="listOnePageFnc(this, event);" class='ellipsis'>${memberDto.no}</a>
+										</td>
+										<td>
+											<span class='ellipsis'>${memberDto.name}</span>
+										</td>
+										<td>
+											<span class='ellipsis'>${memberDto.phone}</span>
+										</td>
+										<td>
+											<span class='ellipsis'>${memberDto.email}</span>
+										</td>
+										<td>
+											<span>
+												<fmt:formatDate value="${memberDto.createdDate}" pattern="yyyy/MM/dd"/>
+											</span>
+										</td>
+									</tr>
+								</c:forEach>
+								
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- //테이블 목록 end -->
 				<div class='listSettings overH'>
 					<ul class='settings fLeft fs0'>
-						<li class='active'>
-							<a href="#none" class='text'>전체 회원 보기</a>
-						</li>
 						<li>
-							<a href="#none" class='text'>연체 회원 보기</a>
+							<a href="../member/deleteCtr.do" class='text'>선택 회원 강퇴</a>
 						</li>
 					</ul>
 				</div>
-				<div id='tableWrap'>
-					<table id='table'>
-<%-- 						<colgroup> --%>
-<%-- 							<col width="52px"> --%>
-<%-- 							<col width="260px"> --%>
-<%-- 							<col width="85px"> --%>
-<%-- 							<col width="120px"> --%>
-<%-- 							<col width="80px"> --%>
-<%-- 							<col width="202px"> --%>
-<%-- 						</colgroup> --%>
-						<thead>
-							<tr>
-								<th class='checkboxTd'>
-									<!--기본 체크박스 전체선택 start -->
-									<div class='selectAll checkbox type2 fLeft'>
-										<input type="checkbox" id='all'>
-										<label for="all"></label>
-									</div>
-									<!--기본 체크박스 전체선택 end -->
-								</th>
-								<th>회원번호</th>
-								<th>이름</th>
-								<th>연락처</th>
-								<th>이메일</th>
-								<th>가입일</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:if test="${empty memberDtoList}">
-								
-								<tr>
-									<td colspan="8" style="text-align: center; padding: 56px 0px;">
-										<span style="font-size: 16px; color: #686868;">검색하신 내용에 대한 결과가 없습니다.</span>
-									</td>
-								</tr>
-									
-							</c:if>
-							
-							<c:forEach var="memberDto" items="${memberDtoList}">
-								<tr>
-									<td class='checkboxTd'>
-										<input type="hidden" value='${memberDto.no}' class='noObj'>
-										<!--기본 체크박스 start -->
-										<div class='checkbox type2 fLeft'>
-											<input type="checkbox" id='check${memberDto.no}'>
-											<label for="check${memberDto.no}"></label>
-										</div>
-										<!--기본 체크박스 end -->
-									</td>
-									<td>
-										<a href='#' onclick="listOnePageFnc(this, event);" class='ellipsis'>${memberDto.no}</a>
-									</td>
-									<td>
-										<span class='ellipsis'>${memberDto.name}</span>
-									</td>
-									<td>
-										<span class='ellipsis'>${memberDto.phone}</span>
-									</td>
-									<td>
-										<span class='ellipsis'>${memberDto.email}</span>
-									</td>
-									<td>
-										<span>
-											<fmt:formatDate value="${memberDto.createdDate}" pattern="yyyy년MM월dd일 "/>
-										</span>
-									</td>
-								</tr>
-							</c:forEach>
-							
-						</tbody>
-					</table>
-				</div>
+				
+				<jsp:include page="/WEB-INF/views/common/paging.jsp">
+					<jsp:param value="${pagingInfo}" name="pagingMap"/>
+				</jsp:include>
+				
+				<form id='pagingForm' method="post">
+					<input type="hidden" id="no" name="no" value="${memberListParamDto.no}">
+					<input type="hidden" name="name" value="${memberListParamDto.name}">
+					<input type="hidden" name="email" value="${memberListParamDto.email}">
+					<input type="hidden" name="phone" value="${memberListParamDto.phone}">
+					<input type="hidden" name="joinDateStart" value="${memberListParamDto.joinDateStart}">
+					<input type="hidden" name="joinDateEnd" value="${memberListParamDto.joinDateEnd}">
+					<input type="hidden" id='curPage' name='curPage' value="${memberListParamDto.curPage}">
+				</form>
 			</div>
-			<!-- //테이블 목록 end -->
-			<div class='listSettings overH'>
-				<ul class='settings fLeft fs0'>
-					<li>
-						<a href="#none" class='text'>선택 회원 강퇴</a>
-					</li>
-				</ul>
-			</div>
-			
-			<jsp:include page="/WEB-INF/views/common/paging.jsp">
-				<jsp:param value="${pagingInfo}" name="pagingMap"/>
-			</jsp:include>
-			
-			<form id='pagingForm' method="post">
-				<input type="hidden" id="no" name="no" value="${memberListParamDto.no}">
-				<input type="hidden" name="name" value="${memberListParamDto.name}">
-				<input type="hidden" name="email" value="${memberListParamDto.email}">
-				<input type="hidden" name="phone" value="${memberListParamDto.phone}">
-				<input type="hidden" name="joinDateStart" value="${memberListParamDto.joinDateStart}">
-				<input type="hidden" name="joinDateEnd" value="${memberListParamDto.joinDateEnd}">
-				<input type="hidden" id='curPage' name='curPage' value="${memberListParamDto.curPage}">
-			</form>
-		</div>
-		<!-- //컨테이너 end -->
+    	    <!-- //컨테이너 end -->
 		<jsp:include page="/WEB-INF/views/Tail.jsp" />
 	</div>
 

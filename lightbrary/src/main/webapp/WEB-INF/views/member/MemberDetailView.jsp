@@ -71,7 +71,7 @@
 							<tr>
 								<th class='text bold textDark'>가입일</th>
 								<td class='text textGrey'>
-									<fmt:formatDate value="${member.createdDate}" pattern="yyyy년 MM월 dd일 "/>
+									<fmt:formatDate value="${member.createdDate}" pattern="yyyy/MM/dd"/>
 								</td>
 							</tr>
 						</tbody>

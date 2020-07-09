@@ -128,16 +128,10 @@
 		AND PHONE = #{phone}
 	</select>
 	
-	<select id="findPassword" parameterType="String" resultType="String">
-		SELECT PASSWORD
-		FROM MEMBER
-		WHERE EMAIL = #{email}
-	</select>
-	
 	<update id="deleteOneMember" parameterType="java.lang.Integer">
 		UPDATE MEMBER
 		<set>
-			DEL_FLAG= 'Y'
+			 EMAIL=#{no}, PASSWORD=#{no}, NAME=#{no}, PHONE=#{no}, ADDRESS=#{no}, DEL_FLAG='Y'
 		</set>
 		WHERE NO = #{no}
 	</update>
@@ -152,6 +146,22 @@
 			MODIFIED_DATE = SYSDATE
 		</set>
 		WHERE NO = #{no}
+	</update>
+	
+	<select id="findMemberNo" parameterType="String" resultType="int">
+		SELECT NO
+		FROM MEMBER
+		WHERE EMAIL = #{email}
+	</select>
+	
+	<!--이메일로 확인하고 비밀번호를 랜덤으로 업뎃 -->
+	<update id="resetPassword" parameterType="map">
+		UPDATE MEMBER
+		<set>
+			PASSWORD = #{password},
+			MODIFIED_DATE = SYSDATE
+		</set>
+		WHERE EMAIL = #{email}
 	</update>
 </mapper>
 
