@@ -31,17 +31,19 @@
 	// 상세페이지로 이동
 	function listOnePageFnc(clickObj){	
 		var reserveNoObj = '';
-		var keywordObj = $('#keyword');
+		var myNoObj = $('#myNo');
 		var searchOptionObj = $('#searchOption');
+		var keywordObj = $('#keyword');
 		
-		reserveNoObj = $(clickObj).parent().parent().find('input[type="hidden"]');
+		reserveNoObj = $(clickObj).parent().parent().find('.no');
 		
 		var url = '';
 		
 		url += './detail.do?';
 		url += 'no=' + reserveNoObj.val();
-		url += '&keyword=' + keywordObj.val();
+		url += '&myNo=' + myNoObj.val();
 		url += '&searchOption=' + searchOptionObj.val();
+		url += '&keyword=' + keywordObj.val();
 		
 		location.href = url;
 	
@@ -184,13 +186,19 @@
 					<!-- 동그란 체크박스 전체선택 end -->
 					<ul class='settings fRight fs0'>
 						<li>
-							<a href="#none" class='text'>선택 대출 예약</a>
+							<a href="#none" class='text'>선택 예약 취소</a>
 						</li>
 					</ul>
 				</div>
 				<ul id='bookList'>
+					<!--  -->
+					<c:if test="${empty myReserveList}">
+						<li style="text-align: center; padding-top: 81px;">
+							<span style="font-size: 16px; color: #686868;">예약 도서가 없습니다.</span>
+						</li>
+					</c:if>
+					<!--  -->
 					<c:forEach var="rentDto" items="${myReserveList}">
-						<!--  -->
 						<li>
 							<!-- 동그란 체크박스 start -->
 							<div class='checkbox type1'>
@@ -198,12 +206,15 @@
 								<label for="check${rentDto.no}"></label>
 							</div>
 							<!-- //동그란 체크박스 end -->
-							<span class='num'>${rentDto.no}</span>
-							<a href="#none" class="fLeft">
-								<span class='bookImage bgCover' style="background-image: url('<%=request.getContextPath()%>/resources/img/book-img1-limgaejang.jpg');"></span>
+							<span class='num'>${rentDto.rnum}</span>
+							<a href="#none" onclick="listOnePageFnc(this);" class="fLeft">
+								<span class='bookImage bgCover' 
+									style="background-image: url('<%=request.getContextPath()%>/resources/img/book-img1-limgaejang.jpg');">
+								</span>
 							</a>
+							<input type="hidden" name="no" class='no' value="${rentDto.no}">
 							<div class='bookInfo fLeft'>
-								<a href="#none" class='bookTitle ellipsis'>${rentDto.bookName}</a>
+								<a href="#none" onclick="listOnePageFnc(this);" class='bookTitle ellipsis'>${rentDto.bookName}</a>
 								<p class='text ellipsis'>${rentDto.writer}</p>
 								<p class='text ellipsis'>${rentDto.publish}</p>
 								<p class='text'>
@@ -213,7 +224,7 @@
 							<div class='listOptions fRight'>
 								<ul class='listOptionsUl fs0'>
 									<li>
-										<a href="#none" class="text bold">대출 예약</a> 
+										<a href="#none" class="text bold">예약 취소</a> 
 									</li>
 								</ul>
 							</div>
@@ -221,21 +232,21 @@
 						<!--  -->
 					</c:forEach>
 				</ul>
-				
-				<jsp:include page="/WEB-INF/views/common/paging.jsp" />
 			</div>
 			<!-- //도서목록 end -->
 			
-			<c:if test="${!empty reserveList}">
+			<c:if test="${!empty myReserveList}">
 				<jsp:include page="/WEB-INF/views/common/paging.jsp">
 					<jsp:param value="${pagingInfo}" name="pagingMap"/>
 				</jsp:include>
-				
-				<form action="./list.do" id='pagingForm' method="post">
-					<input type="hidden" id='curPage' name='curPage' 
-						value="${pagingInfo.curPage}">
-				</form>
 			</c:if>
+			
+			<form action="./list.do" id='pagingForm' method="post">
+				<input type="hidden" id='curPage' name='curPage' value="${pagingInfo.curPage}">
+				<input type="hidden" id='searchOption' name='searchOption' value="${searchMap.searchOption}">
+				<input type="hidden" id='keyword' name='keyword' value="${searchMap.keyword}">
+			</form>
+			<input type="hidden" id="myNo" name="myNo" value="${member.no}">
 			
 		</div>
 		<!-- //컨테이너 end -->

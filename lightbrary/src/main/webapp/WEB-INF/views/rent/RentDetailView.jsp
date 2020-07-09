@@ -58,16 +58,16 @@
 	
 	function pageMoveListFnc(){
 		var noObj = $('#no');
-		var keywordObj = $('#keyword');
 		var searchOptionObj = $('#searchOption');
+		var keywordObj = $('#keyword');
 		var statusObj = $('#status');
 		
 		var url = '';
 		
 		url += './list.do?';
 		url += 'no=' + noObj.val();
-		url += '&keyword=' + keywordObj.val();
 		url += '&searchOption=' + searchOptionObj.val();
+		url += '&keyword=' + keywordObj.val();
 		url += '&status=' + statusObj.val();
 		
 		location.href = url;
@@ -167,8 +167,8 @@
 									<th class='text bold textDark'>반납여부</th>
 									<c:choose>
 										<c:when test="${rentDto.bookStatus eq '대출'}">
-											<td class='text textGreen'>
-												${rentDto.bookStatus}
+											<td class='text textGreen bold'>
+												${rentDto.bookStatus} 중
 											</td>
 										</c:when>
 										<c:otherwise>

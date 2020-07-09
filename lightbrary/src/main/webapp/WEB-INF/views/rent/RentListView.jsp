@@ -89,8 +89,8 @@
 	// 상세페이지로 이동
 	function listOnePageFnc(clickObj){	
 		var noObj = '';
-		var keywordObj = $('#keyword');
 		var searchOptionObj = $('#searchOption');
+		var keywordObj = $('#keyword');
 		var statusObj = $('#status');
 		
 		noObj = $(clickObj).parent().parent().find('input[type="hidden"]');
@@ -99,8 +99,8 @@
 		
 		url += './detail.do?';
 		url += 'no=' + noObj.val();
-		url += '&keyword=' + keywordObj.val();
 		url += '&searchOption=' + searchOptionObj.val();
+		url += '&keyword=' + keywordObj.val();
 		url += '&status=' + statusObj.val();
 		
 		location.href = url;
@@ -349,11 +349,13 @@
 															<input type="hidden" class='userEmail' value="${rentDto.email}">
 															<input type="hidden" class='memberName' value="${rentDto.mname}">
 															<input type="hidden" class='bookName' value="${rentDto.bookName}">
-															<img alt="이메일" src="<%=request.getContextPath()%>/resources/img/icon-mail.png" style="width: 24px; vertical-align: middle;">
+															<img alt="이메일" src="<%=request.getContextPath()%>/resources/img/icon-mail.png" 
+																style="width: 24px; vertical-align: middle;">
 														</a>
 													</c:when>
 													<c:otherwise>
-													 	<img alt="이메일" src="<%=request.getContextPath()%>/resources/img/icon-mail.png" style="width: 24px; vertical-align: middle;">
+													 	<img alt="이메일" src="<%=request.getContextPath()%>/resources/img/icon-mail.png" 
+													 		style="width: 24px; vertical-align: middle;">
 													</c:otherwise>
 												</c:choose>
 											</c:if>
@@ -387,14 +389,14 @@
 				<jsp:include page="/WEB-INF/views/common/paging.jsp">
 					<jsp:param value="${pagingInfo}" name="pagingMap"/>
 				</jsp:include>
-				
-				<form action="./list.do" id='pagingForm' method="post">
-					<input type="hidden" id='curPage' name='curPage' value="${pagingInfo.curPage}">
-					<input type="hidden" id='searchOption' name='searchOption' value="${searchMap.searchOption}">
-					<input type="hidden" id='keyword' name='keyword' value="${searchMap.keyword}">
-					<input type="hidden" id='status' name='status' value="${status}">
-				</form>
 			</c:if>
+			
+			<form action="./list.do" id='pagingForm' method="post">
+				<input type="hidden" id='curPage' name='curPage' value="${pagingInfo.curPage}">
+				<input type="hidden" id='searchOption' name='searchOption' value="${searchMap.searchOption}">
+				<input type="hidden" id='keyword' name='keyword' value="${searchMap.keyword}">
+				<input type="hidden" id='status' name='status' value="${status}">
+			</form>
 			
 		</div>
 		<!-- //컨테이너 end -->

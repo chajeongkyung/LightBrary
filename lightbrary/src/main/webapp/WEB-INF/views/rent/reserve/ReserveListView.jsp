@@ -154,7 +154,7 @@
 					<ul class='settings fRight fs0'>
 						<li>
 							<a href="./cancel.do" class='text' onclick="cancelStatusFnc();">
-								픽업일 지난 예약 자동 취소
+								픽업일 지난 예약 취소
 							</a>
 						</li>
 					</ul>

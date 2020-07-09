@@ -103,6 +103,11 @@ function myPageDrop(){
 	});
 }
 
+function moveToMyReserveFnc() {
+	var headerMyNo = $('#headerMyNo').val();
+	
+	location.href = '/lightbrary/rent/reserve/member/list.do?myNo=' + headerMyNo;
+}
 
 //선택된 체크박스 전체를 배열로 반환
 function checkedObjArr(){

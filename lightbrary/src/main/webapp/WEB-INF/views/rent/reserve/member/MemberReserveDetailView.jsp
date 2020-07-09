@@ -56,13 +56,17 @@
 	}
 	
 	function pageMoveListFnc(){
+		var noObj = $('#no');
 		var keywordObj = $('#keyword');
 		var searchOptionObj = $('#searchOption');
+		var myNoObj = $('#myNo');
 		
 		var url = '';
 		
 		url += './list.do?';
-		url += 'keyword=' + keywordObj.val();
+		url += 'no=' + noObj.val();
+		url += '&myNo=' + myNoObj.val();
+		url += '&keyword=' + keywordObj.val();
 		url += '&searchOption=' + searchOptionObj.val();
 		
 		location.href = url;
@@ -78,7 +82,7 @@
 		
 		<!-- 컨테이너 start -->
 		<div id='container'>
-			<h2 id='pageTitle'>예약 도서 상세</h2>
+			<h2 id='pageTitle'>나의 예약 도서 상세</h2>
 			
 			<!-- 상세페이지 start -->
 			<form action="./statusUpdateCtr.do" method="post">
@@ -130,45 +134,10 @@
 							</colgroup>
 							<tbody>
 								<tr>
-									<th class='text bold textDark'>방문일</th>
+									<th class='text bold textDark'>픽업일</th>
 									<td class='text textGrey'>
-										<fmt:formatDate value="${rentDto.rentDate}" pattern="yyyy/MM/dd "/>
+										<fmt:formatDate value="${rentDto.pickUpDate}" pattern="yyyy/MM/dd "/>
 									</td>
-								</tr>
-								<tr>
-									<th class='text bold textDark'>예약상태</th>
-									<td class='text textGrey'>
-										${rentDto.bookStatus}
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					
-					<!--  -->
-					<div class='detailTable'>
-						<p class='text bold textDark'>회원정보</p>
-						<table>
-							<colgroup>
-								<col width="214px">
-								<col width="786px">
-							</colgroup>
-							<tbody>
-								<tr>
-									<th class='text bold textDark'>이름</th>
-									<td class='text textGrey'>${rentDto.mname}</td>
-								</tr>
-								<tr>
-									<th class='text bold textDark'>이메일</th>
-									<td class='text textGrey'>${rentDto.email}</td>
-								</tr>
-								<tr>
-									<th class='text bold textDark'>연락처</th>
-									<td class='text textGrey'>${rentDto.phone}</td>
-								</tr>
-								<tr>
-									<th class='text bold textDark'>주소</th>
-									<td class='text textGrey'>${rentDto.address}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -180,7 +149,8 @@
 						
 						<button type="submit" id='changeStatus' class='btn grey'>대출 중으로 변경</button>
 						
-<%-- 						<input type="hidden" id='no' name="no" value="${rentDto.no}"> --%>
+						<input type="hidden" id='no' name="no" value="${rentDto.no}">
+						<input type="hidden" id='myNo' name="myNo" value="${member.no}">
 						<input type="hidden" id='searchOption' name="searchOption" value="${searchOption}">
 						<input type="hidden" id='keyword' name="keyword" value="${keyword}">
 						

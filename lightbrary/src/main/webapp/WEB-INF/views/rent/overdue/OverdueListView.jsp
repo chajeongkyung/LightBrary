@@ -31,8 +31,8 @@
 	// 상세페이지로 이동
 	function listOnePageFnc(clickObj){	
 		var reserveNoObj = '';
-		var keywordObj = $('#keyword');
 		var searchOptionObj = $('#searchOption');
+		var keywordObj = $('#keyword');
 		
 		reserveNoObj = $(clickObj).parent().parent().find('input[type="hidden"]');
 		
@@ -40,8 +40,8 @@
 		
 		url += './detail.do?';
 		url += 'no=' + reserveNoObj.val();
-		url += '&keyword=' + keywordObj.val();
 		url += '&searchOption=' + searchOptionObj.val();
+		url += '&keyword=' + keywordObj.val();
 		
 		location.href = url;
 	
