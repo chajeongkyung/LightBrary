@@ -75,7 +75,7 @@ select::-ms-expand {
 
 .text {
 	font-size: 15px;
-	color: #a8a8a8;
+	color: #636363;
 }
 
 .textRed {
@@ -91,7 +91,7 @@ select::-ms-expand {
 }
 
 .textGrey {
-	color: #636363;
+	color: #181818;
 }
 
 .ellipsis {
@@ -576,6 +576,10 @@ header {
 
 #table .checkboxTd {
 	padding-left: 20px;
+}
+
+#table .ellipsis {
+	line-height: 40px;
 }
 
 /*** 탑 버튼 ***/

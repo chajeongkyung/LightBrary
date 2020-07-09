@@ -27,7 +27,9 @@ public class RentDto {
 	private String phone;
 	private String address;
 	
-	private String bookStatus;	
+	private String bookStatus;
+	
+	private int rnum;
 	
 	public RentDto() {
 		super();
@@ -37,7 +39,7 @@ public class RentDto {
 	public RentDto(int no, int memberNo, int bookNo, Date reserveDate, Date rentDate, Date expireDate, Date returnDate,
 			int overdueDays, Date pickUpDate, String returnSendFlag, String overdueSendFlag, String delFlag,
 			String bookCategoryCode, String bookName, String writer, String publish, Date publishDate, String mname,
-			String email, String phone, String address, String bookStatus) {
+			String email, String phone, String address, String bookStatus, int rnum) {
 		super();
 		this.no = no;
 		this.memberNo = memberNo;
@@ -61,6 +63,7 @@ public class RentDto {
 		this.phone = phone;
 		this.address = address;
 		this.bookStatus = bookStatus;
+		this.rnum = rnum;
 	}
 
 	public int getNo() {
@@ -239,6 +242,14 @@ public class RentDto {
 		this.bookStatus = bookStatus;
 	}
 
+	public int getRnum() {
+		return rnum;
+	}
+
+	public void setRnum(int rnum) {
+		this.rnum = rnum;
+	}
+
 	@Override
 	public String toString() {
 		return "RentDto [no=" + no + ", memberNo=" + memberNo + ", bookNo=" + bookNo + ", reserveDate=" + reserveDate
@@ -247,7 +258,7 @@ public class RentDto {
 				+ ", overdueSendFlag=" + overdueSendFlag + ", delFlag=" + delFlag + ", bookCategoryCode="
 				+ bookCategoryCode + ", bookName=" + bookName + ", writer=" + writer + ", publish=" + publish
 				+ ", publishDate=" + publishDate + ", mname=" + mname + ", email=" + email + ", phone=" + phone
-				+ ", address=" + address + ", bookStatus=" + bookStatus + "]";
+				+ ", address=" + address + ", bookStatus=" + bookStatus + ", rnum=" + rnum + "]";
 	}
 	
 	

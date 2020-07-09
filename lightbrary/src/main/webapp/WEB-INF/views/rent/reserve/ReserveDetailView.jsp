@@ -132,14 +132,14 @@
 							</colgroup>
 							<tbody>
 								<tr>
-									<th class='text bold textDark'>방문일</th>
+									<th class='text bold textDark'>픽업일</th>
 									<td class='text textGrey'>
-										<fmt:formatDate value="${rentDto.rentDate}" pattern="yyyy/MM/dd "/>
+										<fmt:formatDate value="${rentDto.pickUpDate}" pattern="yyyy/MM/dd "/>
 									</td>
 								</tr>
 								<tr>
 									<th class='text bold textDark'>예약상태</th>
-									<td class='text textGrey'>
+									<td class='text textGreen bold'>
 										${rentDto.bookStatus}
 									</td>
 								</tr>
