@@ -13,9 +13,9 @@ public class MemberDto {
 	private String name;
 	private String phone;
 	private String address;
-	@DateTimeFormat(pattern="yyyy/MM/dd")
+	@DateTimeFormat(pattern="yyyy/MM/dd HH:mm:ss")
 	private Date createdDate;
-	@DateTimeFormat(pattern="yyyy/MM/dd")
+	@DateTimeFormat(pattern="yyyy/MM/dd HH:mm:ss")
 	private Date modifiedDate;
 	private String delFlag;
 	

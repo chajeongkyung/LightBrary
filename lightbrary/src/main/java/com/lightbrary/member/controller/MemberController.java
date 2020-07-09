@@ -23,6 +23,14 @@ import com.lightbrary.member.service.MemberService;
 import com.lightbrary.util.CommonUtils;
 import com.lightbrary.util.Paging;
 
+/**
+ * @author TJ
+ *
+ */
+/**
+ * @author TJ
+ *
+ */
 @Controller
 public class MemberController {
 
@@ -91,7 +99,7 @@ public class MemberController {
 		
 		log.info("------MemberList------");
 		log.info("curPage: " + curPage);
-		log.info(memberListParamDto.toString());
+		log.info("" + memberListParamDto);
 		log.info("---------------------------");
 		
 		//memberListParamDto.initBookListParamDto();
@@ -172,6 +180,7 @@ public class MemberController {
 		
 		return "member/UpdateMemberDetailForm";
 	}
+	
 	
 	@RequestMapping(value = "/member/updateCtr.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String updateMemberDetailCtr(HttpSession session, MemberDto memberDto) {

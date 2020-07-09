@@ -37,7 +37,7 @@
 						<div class='infoInputWrap'>
 							<input type="text" class='infoInput infoName' id="name" name="name" placeholder="성함">
 							<p id="alertNameErrorMsg" class="textRed alertMsgBox"></p>
-							<input type="text" style="margin-top: 20px;" class='infoInput infoPhone' id="phone" name="phone" placeholder="연락처">
+							<input type="text" style="margin-top: 20px;" class='infoInput infoPhone' id="phone" name="phone" placeholder="연락처 ex) 01012345678">
 							<p id="alertPhoneErrorMsg" class="textRed alertMsgBox"></p>
 							<input type="text" style="margin-top: 20px;" class='infoInput infoEmail' id="email" name="email" placeholder="이메일">
 							<p id="alertEmailErrorMsg" class="textRed alertMsgBox"></p>
@@ -98,21 +98,20 @@ $("#email").blur(function() {
 			console.log("1 = 중복o / 0 = 중복x : "+ data);							
 			
 			if (data == 1) {
+					$('#alertEmailErrorMsg').css('color', '#EC8686');	
 					$('#alertEmailErrorMsg').html("사용중인 이메일입니다.");
-					
 				} else if (data == 0){
 
 					if(isNull(emailObj)){
-						
+						$('#alertEmailErrorMsg').css('color', '#EC8686');	
 						$('#alertEmailErrorMsg').html('이메일을 입력해주세요.');
 						
 					} else if (!isValidEmail(emailObj)){
-						
+						$('#alertEmailErrorMsg').css('color', '#EC8686');	
 						$('#alertEmailErrorMsg').html('이메일 형식이 맞지 않습니다.');
 					} else{
-						
-						$('#alertEmailErrorMsg').html('사용가능한 이메일입니다.');
 						$('#alertEmailErrorMsg').css('color', 'blue');						
+						$('#alertEmailErrorMsg').html('사용가능한 이메일입니다.');
 					}	
 				}
 			}, error : function() {

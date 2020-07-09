@@ -70,7 +70,7 @@
 								</tr>
 								<tr>
 									<th class='text bold textDark inputTh'>가입일</th>
-									<td class='text textGrey'><fmt:formatDate value="${memberDto.createdDate}" pattern="yyyy/MM/dd"/></td>
+									<td class='text textGrey'><fmt:formatDate value="${memberDto.createdDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
 								</tr>
 							</tbody>
 						</table>

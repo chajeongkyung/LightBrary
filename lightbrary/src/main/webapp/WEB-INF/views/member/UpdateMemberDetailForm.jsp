@@ -56,7 +56,7 @@
 										<input type="hidden" name="no" value="${member.no}">
 										<input type="hidden" name="email" value="${member.email}">
 										<input type="hidden" name="createdDate"
-											value="<fmt:formatDate value="${member.createdDate}" pattern="yyyy/MM/dd"/>">
+											value="<fmt:formatDate value="${member.createdDate}" pattern="yyyy/MM/dd HH:mm:ss"/>">
 										<div id="alertPasswordErrorMsg" class="textRed alertMsgBox"></div>
 									</td>
 								</tr>
@@ -103,7 +103,7 @@
 								<tr>
 									<th class='text bold textDark inputTh'>가입일</th>
 									<td class='text textGrey'>
-										<fmt:formatDate value="${member.createdDate}" pattern="yyyy/MM/dd"/>
+										<fmt:formatDate value="${member.createdDate}" pattern="yyyy/MM/dd HH:mm:ss"/>
 									</td>
 								</tr>
 							</tbody>

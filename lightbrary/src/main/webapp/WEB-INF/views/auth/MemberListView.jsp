@@ -21,11 +21,22 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/validation.js"></script>
 
+<style type="text/css">
+	th {
+		text-align: center;
+	}
 
+</style>
 <script type="text/javascript">
 	$(document).ready(function() {
 		// depth1 네비
 		$('#depth1Ul > li:nth-child(1)').addClass('active');
+		
+		 $("a").hover(function(){
+			    $(this).css("font-weight", "bold");
+			    }, function(){
+			    $(this).css("font-weight", "normal");
+			  });
 	});
 	
 	// 상세페이지로 이동
@@ -120,7 +131,7 @@
 							<colgroup>
 								<col width="20px">
 								<col width="50px">
-								<col width="80px">
+								<col width="50px">
 								<col width="70px">
 								<col width="220px">
 								<col width="80px">
@@ -146,11 +157,10 @@
 								<c:if test="${empty memberDtoList}">
 									
 									<tr>
-										<td colspan="8" style="text-align: center; padding: 56px 0px;">
+										<td colspan="6" style="text-align: center; padding: 56px 0px;">
 											<span style="font-size: 16px; color: #686868;">검색하신 내용에 대한 결과가 없습니다.</span>
 										</td>
 									</tr>
-										
 								</c:if>
 								
 								<c:forEach var="memberDto" items="${memberDtoList}">
@@ -164,21 +174,21 @@
 											</div>
 											<!--기본 체크박스 end -->
 										</td>
-										<td>
+										<td style="text-align: center;">
 											<a href='#' onclick="listOnePageFnc(this, event);" class='ellipsis'>${memberDto.no}</a>
 										</td>
-										<td>
-											<span class='ellipsis'>${memberDto.name}</span>
+										<td style="text-align: center;">
+											<a href='#' onclick="listOnePageFnc(this, event);" class='ellipsis'>${memberDto.name}</a>
 										</td>
-										<td>
+										<td style="text-align: center;">
 											<span class='ellipsis'>${memberDto.phone}</span>
 										</td>
 										<td>
-											<span class='ellipsis'>${memberDto.email}</span>
+											<a href='#' onclick="listOnePageFnc(this, event);" class='ellipsis'>${memberDto.email}</a>
 										</td>
 										<td>
 											<span>
-												<fmt:formatDate value="${memberDto.createdDate}" pattern="yyyy/MM/dd"/>
+												<fmt:formatDate value="${memberDto.createdDate}" pattern="yyyy/MM/dd HH:mm:ss"/>
 											</span>
 										</td>
 									</tr>
@@ -197,9 +207,11 @@
 					</ul>
 				</div>
 				
-				<jsp:include page="/WEB-INF/views/common/paging.jsp">
-					<jsp:param value="${pagingInfo}" name="pagingMap"/>
-				</jsp:include>
+				<c:if test="${!empty memberDtoList}">
+					<jsp:include page="/WEB-INF/views/common/paging.jsp">
+						<jsp:param value="${pagingInfo}" name="pagingMap"/>
+					</jsp:include>
+				</c:if>
 				
 				<form id='pagingForm' method="post">
 					<input type="hidden" id="no" name="no" value="${memberListParamDto.no}">
