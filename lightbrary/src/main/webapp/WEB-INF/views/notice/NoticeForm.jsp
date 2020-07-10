@@ -34,32 +34,32 @@
 	}
 	
 	
-// 	window.onload = function() {
-// 		if (noticeCategoryObj == ""){
-// 			$('input[id^=noticeDate]').attr('disabled', 'disabled');
-// 		}
+	window.onload = function() {
+		if (noticeCategoryObj == ""){
+			$('input[id^=noticeDate]').attr('disabled', 'disabled');
+		}
 		
-// 	}
+	}
 	
 
-// 	function onchangeFnc() {
+	function onchangeFnc() {
 		
-// 		var noticeCategoryObj = document.getElementById('noticeCategory').value;
+		var noticeCategoryObj = document.getElementById('noticeCategory').value;
 		
-// 		var noticeDateStartObj = document.getElementById('noticeDateStart');
+		var noticeDateStartObj = document.getElementById('noticeDateStart');
 		
-// 		var noticeDateEndObj = document.getElementById('noticeDateEnd');
+		var noticeDateEndObj = document.getElementById('noticeDateEnd');
 		
-// 		if (noticeCategoryObj == 0 || noticeCategoryObj == ""){
-// 			$('input[id^=noticeDate]').attr('disabled', 'disabled');
-// 			$('#noticeDateStart').attr('value','');
-// 			$('#noticeDateEnd').attr('value','');
-// 			$('#noticeDateCheck').html('');
-// 		}else {
-// 			$('input[id^=noticeDate]').removeAttr('disabled');
-// 		}
+		if (noticeCategoryObj == 0 || noticeCategoryObj == ""){
+			$('input[id^=noticeDate]').attr('disabled', 'disabled');
+			$('#noticeDateStart').attr('value','');
+			$('#noticeDateEnd').attr('value','');
+			$('#noticeDateCheck').html('');
+		}else {
+			$('input[id^=noticeDate]').removeAttr('disabled');
+		}
 		
-// 	}
+	}
 	
 	function noticeFormSubmitFnc() {
 		
@@ -353,8 +353,6 @@ $(document).ready(function() {
 	<!-- 					./addCtr.do -->
 						<a href="./list.do" class='btn green'>목록</a>
 					</div>
-					<input type="hidden" name = 'startDate' value="${notictDto.startDate}">
-					<input type="hidden" name = 'endDate' value="${notictDto.endDate}">
 				</form>
 				</div>
 				<!-- //상세페이지 버튼 end -->
