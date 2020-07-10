@@ -35,6 +35,8 @@
 		bookCategorySelect();
 		bookStatusSelect();
 		$('#file').on("change", imageFileSelectFnc);
+		$('#bookNav').addClass('active');
+		$('#bookDepth2 > li:nth-child(3)').addClass('active');
 	});
 	
 	function selectCategorybySearchParam(){
@@ -144,7 +146,7 @@
 		
 		<!-- 컨테이너 start -->
 		<div id='container'>
-			<h2 id='pageTitle'>도서 등록</h2>
+			<h2 id='pageTitle'>시리즈 도서 등록</h2>
 			
 			<!-- 도서 등록 start -->
 			<div id='detailWrap'>

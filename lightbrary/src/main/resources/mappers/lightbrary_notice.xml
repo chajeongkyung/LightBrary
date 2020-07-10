@@ -68,6 +68,27 @@
 	
 	</resultMap>
 	
+
+	<select id="mainNotice" parameterType="map" 
+		resultMap="noticeCategoryResultMap">
+		SELECT N.RNUM, N.NO, N.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
+			N.SCHEDULE_FLAG , N.CREATED_DATE, N.CODE
+   		FROM (
+      			SELECT ROWNUM RNUM, M.NO, M.NAME , M.TITLE , M.START_DATE, M.END_DATE, 
+                    M.SCHEDULE_FLAG , M.CREATED_DATE, M.CODE
+       			FROM(
+	           		SELECT N.NO, NC.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
+                    NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE 
+                    FROM NOTICE N
+                    JOIN NOTICE_CATEGORY NC
+                    ON N.CATEGORY_CODE = NC.CODE
+			        ORDER BY NO DESC
+           		) M
+        ) N
+        WHERE N.RNUM &lt;= 5
+	</select>
+	
+	
 	<select id="selectMainNotice" parameterType="map"
 		resultMap="noticeCategoryResultMap">
 

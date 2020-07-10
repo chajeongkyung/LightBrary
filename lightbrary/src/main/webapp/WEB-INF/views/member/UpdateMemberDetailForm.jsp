@@ -130,6 +130,8 @@
 </body>
 
 <script type="text/javascript">
+
+	var validationBoolean = true; 
 	
 	function deleteMemberFnc() {
 		var answer = confirm('정말 탈퇴하시겠습니까?\n(연체 도서가 남아 있을 시 탈퇴가 불가합니다)');
@@ -143,8 +145,13 @@
 		var answer = confirm('회원 정보를 수정하시겠습니까?');
 		
 		if (answer) {
-			alert('성공적으로 수정되었습니다.');
-			return true;
+			
+			if (validationBoolean) {
+				alert('성공적으로 수정되었습니다.');
+				return true;
+			}else {
+				return false;
+			}
 		}else {
 			return false;
 		}
@@ -155,10 +162,13 @@
 		
 		 if(isNull(nameObj)) {
 			 $('#alertNameErrorMsg').html("성함을 입력해 주세요.");
+			 validationBoolean = false;
 		 }else if (!isValidName(nameObj)) {
 			 $('#alertNameErrorMsg').html("한글과 영문 대 소문자를 사용하세요. (특수기호, 공백 사용 불가)");
+			 validationBoolean = false;
 		 }else {
 			 $('#alertNameErrorMsg').html("");	
+			 validationBoolean = true;
 		}
 	});
 
@@ -167,10 +177,13 @@
 		
 		 if(isNull(phoneObj)) {
 			 $('#alertPhoneErrorMsg').html("연락처를 입력해 주세요.");
+			 validationBoolean = false;
 		}else if (!isValidPhone(phoneObj)) {
 			 $('#alertPhoneErrorMsg').html("숫자만 입력해 주세요.");
+			 validationBoolean = false;
 		}else {
 			 $('#alertPhoneErrorMsg').html("");	
+			 validationBoolean = true;
 		}
 	});
 	
@@ -179,10 +192,13 @@
 		
 		 if(isNull(passwordObj)) {
 			 $('#alertPasswordErrorMsg').html("비밀번호를 입력해 주세요.");
+			 validationBoolean = false;
 		}else if (!isValidPassword(passwordObj)) {
 			 $('#alertPasswordErrorMsg').html("8~16자 영문 대 소문자,숫자,특수문자를 사용하세요.");
+			 validationBoolean = false;
 		}else {
-			 $('#alertPasswordErrorMsg').html("");	
+			 $('#alertPasswordErrorMsg').html("");
+			 validationBoolean = true;
 		}
 	});
 
@@ -193,10 +209,13 @@
 		
 		 if(isNull(checkPasswordObj)) {
 			 $('#alertcheckPasswordErrorMsg').html("비밀번호를 확인해 주세요.");
+			 validationBoolean = false;
 		}else if (passwordObj != checkPasswordObj) {
 			 $('#alertcheckPasswordErrorMsg').html("비밀번호가 일치하지 않습니다.");
+			 validationBoolean = false;
 		}else {
 			 $('#alertcheckPasswordErrorMsg').html("");	
+			 validationBoolean = true;
 		}
 	});
 
@@ -205,10 +224,13 @@
 		
 		 if(isNull(addressObj)) {
 			 $('#alertAddressErrorMsg').html("주소를 입력해 주세요.");
+			 validationBoolean = false;
 		}else {
-			 $('#alertAddressErrorMsg').html("");	
+			 $('#alertAddressErrorMsg').html("");
+			 validationBoolean = true;
 		}
 	});
+
 
 </script>
 

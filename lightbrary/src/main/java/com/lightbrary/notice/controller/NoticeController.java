@@ -77,6 +77,7 @@ public class NoticeController {
 		System.out.println(categoryCode);
 		System.out.println("---------------------------------");
 		System.out.println("---------------------------------");
+		
 		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
 				
 		Date time = new Date();

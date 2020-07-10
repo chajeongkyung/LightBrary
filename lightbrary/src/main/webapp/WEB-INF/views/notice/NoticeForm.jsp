@@ -59,16 +59,27 @@
 		
 		if (noticeCategoryObj == 0 || noticeCategoryObj == ""){
 			$('input[id^=noticeDate]').attr('disabled', 'disabled');
-			$('#noticeDateStart').attr('value','');
-			$('#noticeDateEnd').attr('value','');
+			$('input[id^=noticeDate]').attr('value', '');
+			$('input[id^=noticeDate]').removeClass('searchDate');
+			$('input[id^=noticeDate]').css('background', '#BDBDBD');
 			$('#noticeDateCheck').html('');
-			$('#noticeDateStart').css('background', '#D5D5D5');
 			$('button').removeClass('clear');
-			$('#noticeDateEnd').removeClass('searchDate');
 			
+// 			$('#noticeDateStart').attr('value','');
+// 			$('#noticeDateEnd').attr('value','');
+// 			$('#noticeDateStart').removeClass('searchDate');
+// 			$('#noticeDateEnd').removeClass('searchDate');
+// 			$('#noticeDateStart').css('background', '#BDBDBD');
+// 			$('#noticeDateEnd').css('background', '#BDBDBD');
 			
 		}else {
 			$('input[id^=noticeDate]').removeAttr('disabled');
+			$('input[id^=noticeDate]').addClass('searchDate');
+			$('input[id^=noticeDate]').css('background', '');
+			$('button').addClass('clear');
+// 			$('#noticeDateStart').addClass('searchDate');
+// 			$('#noticeDateEnd').addClass('searchDate');
+// 			$('#noticeDateStart').css('background', '');
 		}
 		
 	}

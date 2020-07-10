@@ -356,7 +356,7 @@
 				name="keyword" value="${searchMap.keyword}">
 			<input type="hidden" class='searchInput fLeft' id="searchOption"
 				name="searchOption" value="${searchMap.searchOption}">
-			<input type="hidden" id="hiddenNoticeCategory" name="categoryCode" value="-1">
+			<input type="hidden" id="hiddenNoticeCategory" name="categoryCode" value="${searchMap.categoryCode}">
 		</form>
 			
 		</div>

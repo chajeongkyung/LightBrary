@@ -24,13 +24,10 @@ import com.lightbrary.util.CommonUtils;
 import com.lightbrary.util.Paging;
 
 /**
- * @author TJ
+ * @author 차정경
  *
  */
-/**
- * @author TJ
- *
- */
+
 @Controller
 public class MemberController {
 
@@ -102,19 +99,13 @@ public class MemberController {
 		log.info("" + memberListParamDto);
 		log.info("---------------------------");
 		
-		//memberListParamDto.initBookListParamDto();
-		
 		int totalCount = memberService.totalCountMember(memberListParamDto);
 		Paging pagingInfo = new Paging(totalCount, curPage);
 		
 		memberListParamDto.setCurPage(curPage);
 		memberListParamDto.setStartPage(pagingInfo.getPageBegin());
 		memberListParamDto.setEndPage(pagingInfo.getPageEnd());
-		
-//		Map<String, Integer> pagingParamMap = new HashMap<String, Integer>();
-//		pagingParamMap.put("start", start);
-//		pagingParamMap.put("end", end);
-		
+
 		List<MemberDto> memberDtoList = memberService.selectMember(memberListParamDto);
 		
 		model.addAttribute("memberDtoList", memberDtoList);
@@ -307,6 +298,18 @@ public class MemberController {
 		log.info("비밀번호 찾기 폼으로");
 		
 		return "auth/FindPasswordForm";
+	}
+	
+	@RequestMapping(value="/auth/deleteBatch.do", method = RequestMethod.POST, 
+			produces="text/plain;charset=UTF-8")
+	@ResponseBody
+	public void memberDeleteBatch(int[] noArr) {
+		log.info("선택된 회원 삭제 {}", noArr);
+
+		for (int no : noArr) {
+			log.info("{}", no);
+			memberService.deleteOneMember(no);
+		}
 	}
 	
 	@Autowired

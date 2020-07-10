@@ -28,8 +28,7 @@
 		VALUE(NO
 			, GRADE_CODE, NAME, PHONE
 			, EMAIL, PASSWORD, ADDRESS)
-		VALUES(MEMBER_NO_SEQ.NEXTVAL
-			, 1, #{name}, #{phone}
+		VALUES(#{no}, 1, #{name}, #{phone}
 			, #{email}, #{password}, #{address})
 
 	</insert>

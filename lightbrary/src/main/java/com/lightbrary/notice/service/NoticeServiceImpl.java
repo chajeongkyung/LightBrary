@@ -134,6 +134,12 @@ public class NoticeServiceImpl implements NoticeService{
 		return noticeDao.selectTotalNo(no);
 	}
 
+	@Override
+	public List<NoticeCategoryDto> mainNotice(NoticeCategoryDto noticeCategoryDto) {
+		// TODO Auto-generated method stub
+		return noticeDao.mainNotice(noticeCategoryDto);
+	}
+
 	
 
 //	@Override

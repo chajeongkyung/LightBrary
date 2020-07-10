@@ -23,6 +23,11 @@
 
 <script type="text/javascript">
 	
+	function clearDateFnc(obj){
+		obj.previousElementSibling.value = "";
+	}
+	
+	
 	function deleteFnc() {
 		
 		var result = confirm("게시글을 삭제 하시겠습니까?");
@@ -74,11 +79,27 @@
 		
 		if (noticeCategoryObj == 0 || noticeCategoryObj == ""){
 			$('input[id^=noticeDate]').attr('disabled', 'disabled');
-			$('#noticeDateStart').attr('value','');
-			$('#noticeDateEnd').attr('value','');
+			$('input[id^=noticeDate]').attr('value', '');
+			$('input[id^=noticeDate]').removeClass('searchDate');
+			$('input[id^=noticeDate]').css('background', '#BDBDBD');
 			$('#noticeDateCheck').html('');
+			$('button').removeClass('clear');
+			
+// 			$('#noticeDateStart').attr('value','');
+// 			$('#noticeDateEnd').attr('value','');
+// 			$('#noticeDateStart').removeClass('searchDate');
+// 			$('#noticeDateEnd').removeClass('searchDate');
+// 			$('#noticeDateStart').css('background', '#BDBDBD');
+// 			$('#noticeDateEnd').css('background', '#BDBDBD');
+			
 		}else {
 			$('input[id^=noticeDate]').removeAttr('disabled');
+			$('input[id^=noticeDate]').addClass('searchDate');
+			$('input[id^=noticeDate]').css('background', '');
+			$('button').addClass('clear');
+// 			$('#noticeDateStart').addClass('searchDate');
+// 			$('#noticeDateEnd').addClass('searchDate');
+// 			$('#noticeDateStart').css('background', '');
 		}
 		
 	}
@@ -362,22 +383,29 @@ $(document).ready(function() {
 										<div class='searchInputBox overH' style="width: 100%;">
 										
 											<input type="hidden" id="hiddenNoticeDateStart" 
-												value="${startDate}" >
-												
+												value="${startDate}" >	
 											<input type="hidden" id="hiddenNoticeDateEnd" 
 												value="${endDate}" >
-												
-											<input type="text" id="noticeDateStart" 
-												class='searchInput searchDate fLeft datePicker' 
-												readonly="readonly" style="width: 345px;" name="startDate"  >
+											
+											<div class='dateInputBox fLeft'>	
+												<input type="text" id="noticeDateStart" 
+													class='searchInput searchDate fLeft datePicker' 
+													readonly="readonly" style="width: 345px;" name="startDate"  >
+												<button type="button" class='clear' onclick='clearDateFnc(this);'>
+													</button>
+											</div>
 												
 											<span class='range fLeft text bold' style="padding-left: 10px;
 												 padding-right: 10px;">~
 											</span>
 											
-											<input type="text" id="noticeDateEnd" 
-												class='searchInput searchDate fLeft datePicker'
-													 readonly="readonly" style="width: 345px;" name="endDate" >
+											<div class='dateInputBox fLeft'>
+												<input type="text" id="noticeDateEnd" 
+													class='searchInput searchDate fLeft datePicker'
+														 readonly="readonly" style="width: 345px;" name="endDate" >
+												<button type="button" class='clear' onclick='clearDateFnc(this);'>
+												</button>	 
+											</div>		 
 										</div>
 										<span id="noticeDateCheck">
 										</span>

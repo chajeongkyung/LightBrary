@@ -147,6 +147,12 @@ public class NoticeDaoImpl implements NoticeDao{
 		return sqlSession.selectOne(namespace + "selectTotalNo", no);
 	}
 
+	@Override
+	public List<NoticeCategoryDto> mainNotice(NoticeCategoryDto noticeCategoryDto) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(namespace + "mainNotice", noticeCategoryDto);
+	}
+
 	
 
 	
