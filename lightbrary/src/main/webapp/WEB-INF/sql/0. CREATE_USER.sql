@@ -1,0 +1,2 @@
+CREATE USER lightbraryAdmin IDENTIFIED BY "LIT1234!";
+GRANT CONNECT, dba, RESOURCE TO lightbraryAdmin;
