@@ -22,7 +22,7 @@ public class NoticeDaoImpl implements NoticeDao{
 
 	@Override
 	public List<NoticeCategoryDto> selectMainNotice(String searchOption, 
-			String keyword, int start, int end) {
+			String keyword, int start, int end, int categoryCode) {
 		// TODO Auto-generated method stub
 		
 		Map<String, Object> map = new HashMap<>();
@@ -30,6 +30,7 @@ public class NoticeDaoImpl implements NoticeDao{
 		map.put("keyword", keyword);
 		map.put("start", start);
 		map.put("end", end);
+		map.put("categoryCode", categoryCode);
 		
 		List<NoticeCategoryDto> noticeList = 
 				sqlSession.selectList(namespace + "selectMainNotice", map);
@@ -109,25 +110,26 @@ public class NoticeDaoImpl implements NoticeDao{
 
 	
 	@Override
-	public int selectTotalCountNotice(String searchOption, String keyword) {
+	public int selectTotalCountNotice(String searchOption, String keyword, int categoryCode) {
 		// TODO Auto-generated method stub
 		
 		HashMap<String, Object> paramMap = new HashMap<String, Object>();
 		
 		paramMap.put("searchOption", searchOption);
 		paramMap.put("keyword", keyword);
-		
+		paramMap.put("categoryCode", categoryCode);
 		
 		return sqlSession.selectOne(namespace + "selectTotalCountNotice", paramMap);
 	}
 
 	@Override
-	public int selectCurPageNotice(String searchOption, String keyword, int no) {
+	public int selectCurPageNotice(String searchOption, String keyword, int no, int categoryCode) {
 		// TODO Auto-generated method stub
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("searchOption", searchOption);
 		paramMap.put("keyword", keyword);
 		paramMap.put("no", no);
+		paramMap.put("categoryCode", categoryCode);
 			
 		return sqlSession.selectOne(namespace 
 				+ "selectCurPageNotice", paramMap);
@@ -137,6 +139,12 @@ public class NoticeDaoImpl implements NoticeDao{
 	public NoticeCategoryDto selectNextNotice(int no) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace + "selectNextNotice", no);
+	}
+
+	@Override
+	public int selectTotalNo(int no) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + "selectTotalNo", no);
 	}
 
 	

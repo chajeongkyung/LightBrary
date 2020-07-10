@@ -27,10 +27,10 @@ public class NoticeServiceImpl implements NoticeService{
 
 	@Override
 	public List<NoticeCategoryDto> selectMainNotice(String searchOption, 
-			String keyword, int start, int end) {
+			String keyword, int start, int end, int categoryCode) {
 		// TODO Auto-generated method stub
 		List<NoticeCategoryDto> noticeList = noticeDao.selectMainNotice(searchOption,
-				keyword, start, end);
+				keyword, start, end, categoryCode);
 		
 		return noticeList;
 	}
@@ -111,21 +111,27 @@ public class NoticeServiceImpl implements NoticeService{
 
 	@Override
 	public int selectTotalCountNotice(String searchOption
-			, String keyword) {
+			, String keyword, int categoryCode) {
 		// TODO Auto-generated method stub
-		return noticeDao.selectTotalCountNotice(searchOption, keyword);
+		return noticeDao.selectTotalCountNotice(searchOption, keyword, categoryCode);
 	}
 
 	@Override
-	public int selectCurPageNotice(String searchOption, String keyword, int no) {
+	public int selectCurPageNotice(String searchOption, String keyword, int no, int categoryCode) {
 		// TODO Auto-generated method stub
-		return noticeDao.selectCurPageNotice(searchOption, keyword, no);
+		return noticeDao.selectCurPageNotice(searchOption, keyword, no, categoryCode);
 	}
 
 	@Override
 	public NoticeCategoryDto selectNextNotice(int no) {
 		// TODO Auto-generated method stub
 		return noticeDao.selectNextNotice(no);
+	}
+
+	@Override
+	public int selectTotalNo(int no) {
+		// TODO Auto-generated method stub
+		return noticeDao.selectTotalNo(no);
 	}
 
 	
@@ -142,31 +148,7 @@ public class NoticeServiceImpl implements NoticeService{
 //		
 //		return resultMap;
 //	}
-	
-//	@Override
-//	public Map preNextDoc(DataEntity param) { 
-//		Map resultObject = new HashMap(); 
-//		List result = new ArrayList(); 
-//		
-//		try{ 
-//			//구분값에 따라 분기처리 
-//			if( "pre".equals(param.getString("flag"))){
-//				result = noticeDao.getPreDocNum(param);
-//				}else{ 
-//					result = noticeDao.getNextDocNum(param);
-//			} 
-//			
-//			resultObject.put(EppltConstants.RESULT_ITEM, result ); 
-//			resultObject.put(EppltConstants.RESULT_CODE, "200"); 
-//			
-//		}catch(EpptlException e){
-//			resultObject.put(EppltConstants.RESULT_CODE, "500");
-//			resultObject.put(EppltConstants.RESULT_MESSAGE, e.getMessage());
-//		} 
-//		
-//		return resultObject; 
-//		
-//	}		
+		
 
 	
 

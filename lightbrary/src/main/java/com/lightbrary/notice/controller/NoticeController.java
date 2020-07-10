@@ -35,6 +35,7 @@ public class NoticeController {
 	@Autowired
 	private NoticeService noticeService;
 	
+	//종류 선택박스
 	@RequestMapping(value="/notice/category.do", method = RequestMethod.POST, 
 			produces="text/plain;charset=UTF-8")
 	@ResponseBody
@@ -42,6 +43,7 @@ public class NoticeController {
 		log.info("Called noticeCategoryJson");
 		return noticeService.mkJson().toJSONString();
 	}
+	
 	
 	@RequestMapping(value="/notice/deleteBatch.do", method = RequestMethod.POST, 
 			produces="text/plain;charset=UTF-8")
@@ -54,69 +56,52 @@ public class NoticeController {
 		}
 	}
 	
-	
-	
 	@RequestMapping(value = "/NoticeBoard.do", method = RequestMethod.GET)
-	public String common(HttpSession session, Model model) {
+	public String common() {
 		log.info("기본 템플릿");
 		
 		System.out.println("공지컨트롤러");
 		return "notice/NoticeBoard";
 	}
-	
-	
+
 	@RequestMapping(value = "/notice/list.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String NoticeBoardList(@RequestParam(defaultValue = "1") 
 			int curPage
 			, @RequestParam(defaultValue = "0") int no
 			, @RequestParam(defaultValue = "all") String searchOption
 			, @RequestParam(defaultValue = "") String keyword
+			, @RequestParam(defaultValue = "-1") int categoryCode 
 			, Model model) { 
-		
-//		System.out.println(searchOption);
-//		System.out.println(keyword);
-//		System.out.println(no);
-//		System.out.println(curPage);
-		
-		
-		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
+		System.out.println("---------------------------------");
+		System.out.println("---------------------------------");
+		System.out.println(categoryCode);
+		System.out.println("---------------------------------");
+		System.out.println("---------------------------------");
+		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
 				
 		Date time = new Date();
 				
-		String formattedDate = format1.format(time);
+		String formattedDate = format.format(time);
 		
-//		Date date = new Date();
-//		
-//		DateFormat dateFormat = 
-//			DateFormat.getDateTimeInstance(DateFormat.LONG
-//					, DateFormat.LONG, locale);
-//		
-//		String formattedDate = dateFormat.format(date);
-//		
-		int totalCount = noticeService.selectTotalCountNotice(searchOption, keyword);
+		int totalCount = noticeService.selectTotalCountNotice(searchOption, keyword, categoryCode);
 		
 		if(no != 0) {
 			curPage 
-				= noticeService.selectCurPageNotice(searchOption, keyword, no);
+				= noticeService.selectCurPageNotice(searchOption, keyword, no, categoryCode);
 		}
 		
-		// 화면의 form의 이름을 맞추기 위한 작업
-				if("mname".equals(searchOption)) {
-					searchOption = "name";
-				}
-				
 		HashMap<String, Object> searchMap 
 		= new HashMap<String, Object>();
 		searchMap.put("searchOption", searchOption);
 		searchMap.put("keyword", keyword);		
-		
+		searchMap.put("categoryCode", categoryCode);		
 		
 		Paging pagingInfo = new Paging(totalCount, curPage);
 		
 		int start = pagingInfo .getPageBegin();
 		int end = pagingInfo .getPageEnd();
 		
-		List<NoticeCategoryDto> noticeList = noticeService.selectMainNotice(searchOption, keyword, start, end);
+		List<NoticeCategoryDto> noticeList = noticeService.selectMainNotice(searchOption, keyword, start, end, categoryCode);
 		
 		model.addAttribute("noticeList", noticeList);
 		model.addAttribute("pagingInfo", pagingInfo);
@@ -129,7 +114,7 @@ public class NoticeController {
 	}
 	
 	@RequestMapping(value = "/notice/add.do", method = RequestMethod.GET)
-	public String NoticeAdd(Model model) {
+	public String NoticeAdd() {
 		
 		log.info("call NoticeAdd!");
 		
@@ -138,19 +123,13 @@ public class NoticeController {
 	
 	@RequestMapping(value = "/notice/addCtr.do"
 			, method = RequestMethod.POST)
-		public String NoticeAdd2(NoticeDto noticeDto
-			, Model model) {
+		public String NoticeAdd2(NoticeDto noticeDto) {
 			log.info("call memberAdd_ctr! {}", noticeDto);
 			System.out.println("add");
 			noticeService.insertOneNotice(noticeDto);
 			
-			
 			return "redirect:/notice/list.do";
 		}
-	
-	
-	
-	
 	
 //	@RequestMapping(value = "/notice/MainList.do", method = RequestMethod.GET)
 //	public String NoticeBoardAll(Locale locale, Model model) {
@@ -171,14 +150,15 @@ public class NoticeController {
 //		return "notice/NoticeBoardTest";
 //	}
 	
+	//공지만 조회
 	@RequestMapping(value = "/notice/noticeList.do", method = RequestMethod.GET)
-	public String NoticeBoardNotice(Locale locale, Model model) {
+	public String NoticeBoardNotice(Model model) {
 		
-		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
+		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
 				
 		Date time = new Date();
 				
-		String formattedDate = format1.format(time);
+		String formattedDate = format.format(time);
 		
 		List<NoticeCategoryDto> noticeList = noticeService.selectNotice();
 		
@@ -190,14 +170,15 @@ public class NoticeController {
 		return "notice/NoticeBoardMain";
 	}
 	
+	//휴관만 조회
 	@RequestMapping(value = "/notice/closedList.do", method = RequestMethod.GET)
-	public String NoticeBoardClosed(Locale locale, Model model) {
+	public String NoticeBoardClosed(Model model) {
 		
-		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
+		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
 				
 		Date time = new Date();
 				
-		String formattedDate = format1.format(time);
+		String formattedDate = format.format(time);
 		
 		List<NoticeCategoryDto> noticeList = noticeService.selectClosedNotice();
 		
@@ -210,13 +191,13 @@ public class NoticeController {
 	}
 	
 	@RequestMapping(value = "/notice/eventList.do", method = RequestMethod.GET)
-	public String NoticeBoardEvent(Locale locale, Model model) {
+	public String NoticeBoardEvent(Model model) {
 		
-		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
+		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
 				
 		Date time = new Date();
 				
-		String formattedDate = format1.format(time);
+		String formattedDate = format.format(time);
 		
 		List<NoticeCategoryDto> noticeList = noticeService.selectEventNotice();
 		
@@ -229,7 +210,7 @@ public class NoticeController {
 	}
 	
 	@RequestMapping(value = "/notice/deleteCtr.do", method = RequestMethod.GET)
-	public String NoticeBoardDelete(Locale locale, Model model, int no) {
+	public String NoticeBoardDelete(int no) {
 		
 		noticeService.deleteNotice(no);
 		
@@ -248,7 +229,9 @@ public class NoticeController {
 				
 		String formattedDate = format1.format(time);
 		
-		int totalCount = noticeService.selectTotalCountNotice(searchOption, keyword);
+//		int totalCount = noticeService.selectTotalCountNotice(searchOption, keyword);
+		
+		int totalNo = noticeService.selectTotalNo(no);
 		
 		NoticeCategoryDto noticeDto = noticeService.selectOneNotice(no);
 		
@@ -258,7 +241,8 @@ public class NoticeController {
 		
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("searchOption", searchOption);
-		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("totalNo", totalNo);
+//		model.addAttribute("totalCount", totalCount);
 		
 		return "/notice/NoticeBoardDetail";
 		

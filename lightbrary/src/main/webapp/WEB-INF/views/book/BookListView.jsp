@@ -349,7 +349,6 @@
 		<!-- //컨테이너 end -->
 		
 		<jsp:include page="/WEB-INF/views/Tail.jsp" />
-		<div id="test"></div>
 	</div>
 
 </body>

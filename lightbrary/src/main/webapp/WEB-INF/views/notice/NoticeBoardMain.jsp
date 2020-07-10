@@ -64,7 +64,25 @@
 		
 	}
 	
-	  
+	function pageMoveCategoryAllFnc(){
+		$('#hiddenNoticeCategory').val(-1);
+		$('#pagingForm').submit();
+	}
+	
+	function pageMoveCategoryNoticeFnc(){
+		$('#hiddenNoticeCategory').val(0);
+		$('#pagingForm').submit();
+	}
+	
+	function pageMoveCategoryClosedFnc(){
+		$('#hiddenNoticeCategory').val(1);
+		$('#pagingForm').submit();
+	}
+	
+	function pageMoveCategoryEventFnc(){
+		$('#hiddenNoticeCategory').val(2);
+		$('#pagingForm').submit();
+	}
 	
 </script>
 
@@ -133,16 +151,16 @@
 				<div class='listSettings'>
 					<ul class='settings fs0'>
 						<li class='active'>
-							<a href="/lightbrary/notice/list.do" class='text'>전체보기</a>
+							<a href="#none" onclick="pageMoveCategoryAllFnc();" class='text'>전체보기</a>
 						</li>
 						<li>
-							<a href="/lightbrary/notice/noticeList.do" class='text'>공지</a>
+							<a href="#none" onclick="pageMoveCategoryNoticeFnc();" class='text'>공지</a>
 						</li>
 						<li>
-							<a href="/lightbrary/notice/closedList.do" class='text'>휴관</a>
+							<a href="#none" onclick="pageMoveCategoryClosedFnc();" class='text'>휴관</a>
 						</li>
 						<li>
-							<a href="/lightbrary/notice/eventList.do" class='text'>행사</a>
+							<a href="#none" onclick="pageMoveCategoryEventFnc();" class='text'>행사</a>
 						</li>
 						
 					</ul>
@@ -151,25 +169,31 @@
 				<div id='tableWrap'>
 					<table id='table'>
 						<colgroup>
-							<col width="52px">
+							<c:if test="${member.gradeCode eq 0}">
+								<col width="52px">
+							</c:if>
 							<col width="55px">
 							<col width="52px">
 							<col width="312px">
-							<col width="172px">
-							<col width="90px">
-							<col width="92px">
+							<col width="192px">
+							<col width="80px">
+							<col width="82px">
 							<col width="175px">
 						</colgroup>
 						<thead>
+							
 							<tr>
-								<th class='checkboxTd'>
-									<!-- 기본 체크박스 전체선택 start -->
-									<div class='selectAll checkbox type2 fLeft'>
-										<input type="checkbox" id='all'>
-										<label for="all"></label>
-									</div>
-									<!-- //기본 체크박스 전체선택 end -->
-								</th>
+								<c:if test="${member.gradeCode eq 0}">
+									<th class='checkboxTd' style="padding-left: 0px;">
+										<!-- 기본 체크박스 전체선택 start -->
+										<div class='selectAll checkbox type2'>
+											<input type="checkbox" id='all'>
+											<label for="all"></label>
+										</div>
+										<!-- //기본 체크박스 전체선택 end -->
+									</th>
+								</c:if>
+								
 								<th>번호</th>
 								<th>종류</th>
 								<th>제목</th>
@@ -192,17 +216,20 @@
 								<c:otherwise>
 									<c:forEach var="noticeDto" items="${noticeList }">
 								<tr>
-									<td>
-										<div class='checkbox type2 fLeft'>
-											<input type="checkbox" name="box" id='chk${noticeDto.no}' value='${noticeDto.no}'>
-											<label for="chk${noticeDto.no}"></label>
-										</div>
-									</td>
-									<td>
-										<input type="hidden" id="no" name="no" value="${noticeDto.no}">	
+									<c:if test="${member.gradeCode eq 0}">
+										<td style="padding-left: 0px;">
+											<div class=' checkbox type2' style="text-align: center;">
+												<input type="checkbox" name="box" id='chk${noticeDto.no}' value='${noticeDto.no}'>
+												<label for="chk${noticeDto.no}"></label>
+											</div>
+										</td>
+									</c:if>
+									<td style="text-align: center;">
+										<input type="hidden" id="no" name="no" value="${noticeDto.no}"
+											>	
 										${noticeDto.no}
 									</td>
-									<td>
+									<td style="text-align: center;">
 										<c:if test="${noticeDto.code == 0}">
 											<span class= 'bold textDark'>
 												<c:out value="공지" ></c:out>
@@ -211,39 +238,39 @@
 										
 										<c:if test="${noticeDto.code == 1}" >
 											<span class='bold textGreen'>
-												<c:out value="행사"></c:out>
+												<c:out value="휴관"></c:out>
 											</span>
 										</c:if>
 										
 										<c:if test="${noticeDto.code == 2}" >
 											<span class='bold textRed'>
-												<c:out value="휴관"></c:out>
+												<c:out value="행사"></c:out>
 											</span>
 										</c:if>
 										
 									</td>
 									
-									<td>
+									<td style="text-align: center;">
 									
-										 <a href="#" onclick="listOnePageFnc(${noticeDto.no})">
-											${noticeDto.title}
+										 <a href="#" class="ellipsis" onclick="listOnePageFnc(${noticeDto.no})">
+												${noticeDto.title}
 										 </a>	
 										
 									</td>
 									
-									<td>
-										
-										<c:if test="${noticeDto.startDate != null }">
-											<fmt:formatDate value="${noticeDto.startDate}"
-										 		pattern="yyyy/MM/dd"/> 
-										 		<c:out value="~"/> 
-											<fmt:formatDate value="${noticeDto.endDate}" 
-										 		pattern="yyyy/MM/dd"/> 	
-										</c:if>	
-										
+									<td style="text-align: center;">
+										<div style="text-align: center;">
+											<c:if test="${noticeDto.startDate != null }">
+												<fmt:formatDate value="${noticeDto.startDate}"
+											 		pattern="yyyy/MM/dd"/> 
+											 		<c:out value="~"/> 
+												<fmt:formatDate value="${noticeDto.endDate}" 
+											 		pattern="yyyy/MM/dd"/> 	
+											</c:if>	
+										</div>
 									</td>
 									
-									<td>
+									<td style="text-align: center;">
 										
 										<fmt:formatDate value="${noticeDto.startDate}" var = "startDate"
 											pattern="yyyy/MM/dd"/> 
@@ -269,13 +296,13 @@
 								
 									</td>
 									
-									<td>
+									<td style="text-align: center;">
 									
 										관리자 
 	
 									</td>
 									
-									<td>
+									<td style="text-align: center;">
 							
 										<c:choose>
 											<c:when test="${fn:substring(noticeDto.createdDate, 11, 13) >= 12}">
@@ -329,7 +356,7 @@
 				name="keyword" value="${searchMap.keyword}">
 			<input type="hidden" class='searchInput fLeft' id="searchOption"
 				name="searchOption" value="${searchMap.searchOption}">
-			 
+			<input type="hidden" id="hiddenNoticeCategory" name="categoryCode" value="-1">
 		</form>
 			
 		</div>

@@ -23,6 +23,21 @@
 
 <script type="text/javascript">
 	
+	function deleteFnc() {
+		
+		var result = confirm("게시글을 삭제 하시겠습니까?");
+		
+		if(result){
+			alert("게시글이 삭제 되었습니다.");
+			location.href = "./deleteCtr.do?no=" + ${noticeDto.no};
+		}else if(result == false){
+			alert("취소되었습니다.");
+		}
+		
+		
+	}
+	
+	
 	$(function(){
 		
 		$(".datePicker").datepicker({
@@ -329,8 +344,7 @@ $(document).ready(function() {
 									<th class='text bold textDark inputTh'>내용</th>
 									<td class='inputTd'>
 										<textarea id="content" rows="50" cols="20" 
-											class='detailInput detailTextArea text textGrey' name='content'>
-										${noticeDto.content }
+											class='detailInput detailTextArea text textGrey' name='content'>${noticeDto.content }
 										</textarea>
 										<p id="contentCheck">
 										</p>
@@ -379,9 +393,9 @@ $(document).ready(function() {
 				<!-- 상세페이지 버튼 start -->
 				<div class='btnWrap viewBtns fs0 tCenter'>
 					
-					<a href="#none" class='btn grey' onclick="updateFnc()">등록</a>
-					<a href="./deleteCtr.do?no=${noticeDto.no}" class='btn green'>삭제</a>
-					<a href="./list.do" class='btn green'>목록</a>
+					<a href="./list.do" class='btn grey'>목록</a>
+					<a href="#none" class='btn grey' onclick="deleteFnc()">삭제</a>
+					<a href="#none" class='btn green' onclick="updateFnc()">등록</a>
 				</div>
 				
 				</div>

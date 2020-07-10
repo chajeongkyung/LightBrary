@@ -79,7 +79,7 @@ $("#nxtDoc").on("click",function(){
 		
 		var url = '';
 		
-		if (noticeNoObj < $('#totalCount').val()) {
+		if (noticeNoObj < $('#totalNo').val()) {
 			url += './detailList.do?';
 			url += 'no=' + (parseInt(noticeNoObj) + 1);
 			url += '&keyword=' + keywordObj.val();
@@ -253,11 +253,12 @@ $("#nxtDoc").on("click",function(){
 						name="searchOption" value="${searchOption}">
 						<input type="hidden" class='searchInput fLeft' id="keyword"
 							name="keyword" value="${keyword}">
-						<input type="hidden" id='totalCount' name='totalCount' value="${totalCount}">
+						<input type="hidden" id='totalNo' name='totalNo' value="${totalNo}">
 					
-					
-					<a href="./update.do?no=${noticeDto.no}" class='btn grey'>수정</a>
-					<a href="#" class='btn green' onclick="pageMoveListFnc()">목록</a>
+					<a href="#" class='btn grey' onclick="pageMoveListFnc()">목록</a>
+					<c:if test="${member.gradeCode eq 0}">
+						<a href="./update.do?no=${noticeDto.no}" class='btn green'>수정</a>
+					</c:if>
 				</div>
 				<!-- //상세페이지 버튼 end -->
 			</div>

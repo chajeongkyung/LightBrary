@@ -11,7 +11,7 @@ import com.lightbrary.notice.model.NoticeDto;
 public interface NoticeDao {
 
 	public List<NoticeCategoryDto> selectMainNotice(String searchOption, 
-			String keyword, int start, int end);
+			String keyword, int start, int end, int categoryCode);
 	
 	public List<NoticeCategoryDto> selectAllNotice();
 	
@@ -32,12 +32,14 @@ public interface NoticeDao {
 	public void updateOneNotice(NoticeCategoryDto noticeDto);
 	
 	public int selectTotalCountNotice(String searchOption
-			, String keyword);
+			, String keyword, int categoryCode);
 	
 	public int selectCurPageNotice(String searchOption
-			, String keyword, int no);
+			, String keyword, int no, int categoryCode);
 	
 	public NoticeCategoryDto selectNextNotice(int no);
+	
+	public int selectTotalNo(int no);
 	
 }
 

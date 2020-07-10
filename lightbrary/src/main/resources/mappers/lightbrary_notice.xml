@@ -9,8 +9,8 @@
 		<choose>
         	<!-- 검색옵션이 전체 검색일 경우  -->
         	<when test="searchOption == 'all'">
-        		WHERE TITLE LIKE '%' || #{keyword} || '%'
-        		OR    CONTENT LIKE '%' || #{keyword} || '%'
+        		WHERE (TITLE LIKE '%' || #{keyword} || '%'
+        		OR    CONTENT LIKE '%' || #{keyword} || '%')
         	</when>
         	
         	<!-- 전체 검색이 아닐 경우 -->
@@ -18,6 +18,9 @@
         		WHERE ${searchOption} LIKE '%' || #{keyword} || '%'
         	</otherwise>
         </choose>
+        <if test="categoryCode != -1">
+	        AND CATEGORY_CODE = ${categoryCode}
+        </if>
 	</sql>
 	
 	
@@ -217,20 +220,11 @@
 	</select>
 	
 	
-	<select id="selectNextNotice"  parameterType="int"
-		resultMap="noticeCategoryResultMap">
-		
-		SELECT N.NO , NC.NAME , N.TITLE , N.START_DATE, N.END_DATE, 
-		NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE, N.CONTENT
-		FROM NOTICE N
-		JOIN NOTICE_CATEGORY NC
-		ON N.CATEGORY_CODE = NC.CODE
-		WHERE N.NO = #{NO}
-		
-
-
-
+	<select id="selectTotalNo" resultType="int">
+		SELECT MAX(NO)
+		FROM NOTICE	
 	</select>
+	
 	
 </mapper>
 

@@ -81,17 +81,24 @@
 			$('#alertInvalidNameMsg').html('');
 			var seriesObj = $('input[id^=series]');
 			var seriesEmptyValid = true;
+			var seriesNumValid = true;
+			var seriesNumRangeValid = true;
+			
 			for (var i = 0; i < seriesObj.length; i++) {
 				seriesEmptyValid = seriesEmptyValid && !(isEmpty(seriesObj[i].value));
 			}
 			if(seriesEmptyValid){
 				$('#alertInvalidSeriesMsg').html('');
-				var seriesNumValid = true;
 				for (var i = 0; i < seriesObj.length; i++) {
 					seriesNumValid = seriesNumValid && isNum(seriesObj[i].value);
 				}
 				if(seriesNumValid){
-					$('#alertInvalidSeriesMsg').html('');
+					seriesNumRangeValid = seriesObj[0].value < seriesObj[1].value;
+					if(seriesNumRangeValid){
+						$('#alertInvalidSeriesMsg').html('');
+					} else{
+						$('#alertInvalidSeriesMsg').html('시작권은 끝권보다 작아야 합니다.');
+					}
 				} else {
 					$('#alertInvalidSeriesMsg').html('권수는 숫자로 입력해 주세요.');
 				}

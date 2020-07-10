@@ -10,7 +10,8 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/sub.css">
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" /> 
+ 
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
@@ -19,6 +20,12 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/validation.js"></script>
 
 <script type="text/javascript">
+
+	function clearDateFnc(obj){
+		obj.previousElementSibling.value = "";
+	}
+
+
 	$(function(){
 		$(".datePicker").datepicker({
 			dateFormat: "yy/mm/dd",
@@ -55,6 +62,11 @@
 			$('#noticeDateStart').attr('value','');
 			$('#noticeDateEnd').attr('value','');
 			$('#noticeDateCheck').html('');
+			$('#noticeDateStart').css('background', '#D5D5D5');
+			$('button').removeClass('clear');
+			$('#noticeDateEnd').removeClass('searchDate');
+			
+			
 		}else {
 			$('input[id^=noticeDate]').removeAttr('disabled');
 		}
@@ -325,16 +337,22 @@ $(document).ready(function() {
 									<th class='text bold textDark inputTh'>기간</th>
 									<td class='inputTd'>
 										<div class='searchInputBox overH' style="width: 100%;">
-											<input type="text" id="noticeDateStart" name="startDate" 
-											class='searchInput searchDate fLeft datePicker' readonly="readonly" 
-												style="width: 345px;" value="${noticeDto.startDate}">
+											<div class='dateInputBox fLeft'>
+												<input type="text" id="noticeDateStart" name="startDate" 
+													class='searchInput searchDate fLeft datePicker' readonly="readonly" 
+														style="width: 345px;" value="${noticeDto.startDate}">
+												<button type="button" class='clear' onclick='clearDateFnc(this);'></button>
+											</div>	
 											<span class='range fLeft text bold' style="padding-left: 10px; 
 												padding-right: 10px;">
 												~
 											</span>
-											<input type="text" id="noticeDateEnd" name="endDate" 
-												class='searchInput searchDate fLeft datePicker' readonly="readonly"
-													 style="width: 345px;" value="${noticeDto.endDate }">	
+											<div class='dateInputBox fLeft'>
+												<input type="text" id="noticeDateEnd" name="endDate" 
+													class='searchInput searchDate fLeft datePicker' readonly="readonly"
+														 style="width: 345px;" value="${noticeDto.endDate }">
+												<button type="button" class='clear' onclick='clearDateFnc(this);'></button>		 
+											</div>		 	
 										</div>
 										
 									<p id="noticeDateCheck"></p>
@@ -349,9 +367,9 @@ $(document).ready(function() {
 				
 					<!-- 상세페이지 버튼 start -->
 					<div class='btnWrap viewBtns fs0 tCenter'>
-						<a href="#none" class='btn grey' onclick="noticeFormSubmitFnc()">등록</a>
+						<a href="./list.do" class='btn grey'>목록</a>
+						<a href="#none" class='btn green' onclick="noticeFormSubmitFnc()">등록</a>
 	<!-- 					./addCtr.do -->
-						<a href="./list.do" class='btn green'>목록</a>
 					</div>
 				</form>
 				</div>
