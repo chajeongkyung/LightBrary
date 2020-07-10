@@ -34,6 +34,16 @@
 		} else{
 			$('#depth1Ul > li:nth-child(1)').addClass('active');
 		}
+		
+		clearFilterFnc();
+		var searchStatus = $('#hiddenSearchStatus').val();
+		if(searchStatus == -1){
+			$('#statusFilterAll').parent().addClass('active');
+		} else if(searchStatus == 4){
+			$('#statusFilterLost').parent().addClass('active');
+		} else if(searchStatus == 5){
+			$('#statusFilterDamaged').parent().addClass('active');
+		}
 	});
 	
 	function bookStatusOnload(){
@@ -87,6 +97,12 @@
 				return bookStatusObj[i].code;
 			}
 		}
+	}
+	
+	function clearFilterFnc(){
+		$('#statusFilterAll').parent().removeClass("active");
+		$('#statusFilterDamaged').parent().removeClass("active");
+		$('#statusFilterLost').parent().removeClass("active");
 	}
 	
 	function searchStatusAllFnc(){
@@ -222,13 +238,13 @@
 						<c:choose>
 							<c:when test="${member.gradeCode eq 0}">
 								<li>
-									<a href="#none" class='text' onclick="searchStatusAllFnc();">전체도서 보기</a>
+									<a href="#none" id='statusFilterAll' class='text' onclick="searchStatusAllFnc();">전체도서 보기</a>
 								</li>
 								<li>
-									<a href="#none" class='text' onclick="searchStatusDamagedFnc();">파손도서 보기</a>
+									<a href="#none" id='statusFilterDamaged' class='text' onclick="searchStatusDamagedFnc();">파손도서 보기</a>
 								</li>
 								<li>
-									<a href="#none" class='text' onclick="searchStatusLostFnc();">분실도서 보기</a>
+									<a href="#none" id='statusFilterLost' class='text' onclick="searchStatusLostFnc();">분실도서 보기</a>
 								</li>
 							</c:when>
 							<c:when test="${member.gradeCode eq 1}">
@@ -343,7 +359,7 @@
 					<input type="hidden" name="searchCategory1" value="${bookListParamDto.searchCategory1}">
 					<input type="hidden" name="searchCategory2" value="${bookListParamDto.searchCategory2}">
 					<input type="hidden" name="searchCategory3" value="${bookListParamDto.searchCategory3}">
-					<input type="hidden" name="searchStatus" value="${bookListParamDto.searchStatus}">
+					<input type="hidden" id='hiddenSearchStatus' name="searchStatus" value="${bookListParamDto.searchStatus}">
 					<input type="hidden" id="no" name="no" value="">
 				</form>
 				
