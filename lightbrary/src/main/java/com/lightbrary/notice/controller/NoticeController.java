@@ -43,6 +43,17 @@ public class NoticeController {
 		return noticeService.mkJson().toJSONString();
 	}
 	
+	@RequestMapping(value="/notice/deleteBatch.do", method = RequestMethod.POST, 
+			produces="text/plain;charset=UTF-8")
+	@ResponseBody
+	public void noticeDeleteBatch(int[] noArr) {
+		log.info("Called noticeDeleteBatch");
+
+		for (int no : noArr) {
+			noticeService.deleteNotice(no);
+		}
+	}
+	
 	
 	
 	@RequestMapping(value = "/NoticeBoard.do", method = RequestMethod.GET)

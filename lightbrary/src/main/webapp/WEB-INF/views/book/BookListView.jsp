@@ -27,6 +27,13 @@
 	$(function(){
 		bookCategorySelect();
 		bookStatusSelect();
+		
+		if($('#gradeCode').val() == 0){
+			$('#bookNav').addClass('active');
+			$('#bookDepth2 > li:nth-child(1)').addClass('active');
+		} else{
+			$('#depth1Ul > li:nth-child(1)').addClass('active');
+		}
 	});
 	
 	function bookStatusOnload(){
@@ -128,7 +135,7 @@
 		<!-- 컨테이너 start -->
 		<div id='container'>
 			<h2 id='pageTitle'>도서 조회</h2>
-			
+			<input type="hidden" id="gradeCode" value="${member.gradeCode}">
 			<div class='searchForm type1'>
 				<form id="bookListParamDto" name="bookListParamDto" action="./list.do" method="post">
 					<fieldset>

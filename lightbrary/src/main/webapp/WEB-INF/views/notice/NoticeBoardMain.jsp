@@ -22,7 +22,26 @@
 	
 
 	function deleteBatchFnc() {
+		var noObjArr = checkedObjArr();
+		var noArr = new Array();
 		
+		for (var i = 0; i < noObjArr.length; i++) {
+			noArr[i] = noObjArr[i].value;
+		}
+		
+		var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
+		$.ajax({
+			type: "POST",
+			url: baseUrl + '/notice/deleteBatch.do',
+			data: "noArr=" + noArr,
+			success:function(){
+				alert('삭제되었습니다');
+				$('#pagingForm').submit();
+			},
+			error: function(){
+				alert('오류');
+			}
+		});
 	}
 	
 	function listOnePageFnc(mNo){
@@ -175,7 +194,7 @@
 								<tr>
 									<td>
 										<div class='checkbox type2 fLeft'>
-											<input type="checkbox" name="box" id='chk${noticeDto.no}'>
+											<input type="checkbox" name="box" id='chk${noticeDto.no}' value='${noticeDto.no}'>
 											<label for="chk${noticeDto.no}"></label>
 										</div>
 									</td>
@@ -281,18 +300,21 @@
 						</tbody>
 					</table>
 				</div>
-				<div class='listSettings bottomSettings overH'>
-					<ul class='settings fLeft'>
-						<li>
- 							<a href="#none" class='text' onclick="deleteBatchFnc()">게시글 삭제</a>
-						</li>
-					</ul>
-					<ul class='settings fRight'>
-						<li>
-							<a href="./add.do" class='text'>게시글 등록</a>
-						</li>
-					</ul>
-				</div>
+				
+				<c:if test="${member.gradeCode eq 0}">
+					<div class='listSettings bottomSettings overH'>
+						<ul class='settings fLeft'>
+							<li>
+	 							<a href="#none" class='text' onclick="deleteBatchFnc()">게시글 삭제</a>
+							</li>
+						</ul>
+						<ul class='settings fRight'>
+							<li>
+								<a href="./add.do" class='text'>게시글 등록</a>
+							</li>
+						</ul>
+					</div>
+				</c:if>
 			</div>
 			<!-- //테이블 목록 end -->
 			
