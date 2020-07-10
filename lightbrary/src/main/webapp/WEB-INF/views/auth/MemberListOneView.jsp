@@ -86,7 +86,7 @@
 				
 				<!-- 상세페이지 버튼 start -->
 				<div class='btnWrap viewBtns fs0 tCenter'>
-				<a href="<%=request.getContextPath()%>/auth/list.do" class='btn grey'>목록</a>
+				<a href="<%=request.getContextPath()%>/auth/list.do?curPage=${memberListParamDto.curPage}" class='btn grey'>목록</a>
 				<form action="./update.do" method="post">
 					<input type="submit" class='btn green' value="수정">
 					

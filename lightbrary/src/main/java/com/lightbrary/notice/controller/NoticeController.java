@@ -54,8 +54,6 @@ public class NoticeController {
 		}
 	}
 	
-	
-	
 	@RequestMapping(value = "/NoticeBoard.do", method = RequestMethod.GET)
 	public String common(HttpSession session, Model model) {
 		log.info("기본 템플릿");

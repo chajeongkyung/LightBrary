@@ -39,6 +39,34 @@
 			  });
 	});
 	
+	//다중 선택 회원 탈퇴
+	function deleteBatchFnc() {
+		var noObjArr = checkedObjArr();
+		var noArr = new Array();
+		
+		alert(noObjArr.length);
+		
+		for (var i = 0; i < noObjArr.length; i++) {
+			alert(noObjArr[i].value);
+			noArr[i] = noObjArr[i].value;
+		}
+		
+		var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
+	
+		$.ajax({
+			type: "POST",
+			url: baseUrl + '/auth/deleteBatch.do',
+			data: "noArr=" + noArr,
+			success:function(){
+				alert('삭제되었습니다');
+				$('#pagingForm').submit();
+			},
+			error: function(){
+				alert('오류');
+			}
+		});
+	}
+	
 	// 상세페이지로 이동
 	function listOnePageFnc(obj, event){	
 		var aTagObj = $(obj);
@@ -169,15 +197,15 @@
 											<input type="hidden" value='${memberDto.no}' class='noObj'>
 											<!--기본 체크박스 start -->
 											<div class='checkbox type2 fLeft'>
-												<input type="checkbox" id='check${memberDto.no}'>
-												<label for="check${memberDto.no}"></label>
+												<input type="checkbox" name="box" id='chk${memberDto.no}' value='${memberDto.no}'>
+												<label for="chk${memberDto.no}"></label>
 											</div>
 											<!--기본 체크박스 end -->
 										</td>
 										<td style="text-align: center;">
 											<a href='#' onclick="listOnePageFnc(this, event);" class='ellipsis'>${memberDto.no}</a>
 										</td>
-										<td style="text-align: center;">
+										<td>
 											<a href='#' onclick="listOnePageFnc(this, event);" class='ellipsis'>${memberDto.name}</a>
 										</td>
 										<td style="text-align: center;">
@@ -202,7 +230,7 @@
 				<div class='listSettings overH'>
 					<ul class='settings fLeft fs0'>
 						<li>
-							<a href="../member/deleteCtr.do" class='text'>선택 회원 강퇴</a>
+							<a href="#" onclick="deleteBatchFnc();" class='text'>선택 회원 강퇴</a>
 						</li>
 					</ul>
 				</div>
