@@ -49,7 +49,7 @@
 			
 			<h3>공지게시판</h3>
 			<div>
-				<c:forEach var="noticeDto" items="${noticeDtoList }">
+				<c:forEach var="noticeDto" items="${noticeDtoList}">
 				
 				</c:forEach>
 			</div>

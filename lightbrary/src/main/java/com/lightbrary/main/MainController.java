@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.lightbrary.book.model.BookDto;
 import com.lightbrary.book.service.BookService;
+import com.lightbrary.notice.model.NoticeCategoryDto;
+import com.lightbrary.notice.model.NoticeDto;
 import com.lightbrary.notice.service.NoticeService;
 
 @Controller
@@ -28,9 +30,10 @@ public class MainController {
 	public String Main(Model model) {
 		
 		List<BookDto> bookDtoList = bookService.selectRankTenBook();
-//		List<NoticeDto> noticeDtoList = noticeService.select?????
+		List<NoticeDto> noticeDtoList = noticeService.mainNotice();
 		
 		model.addAttribute("bookDtoList", bookDtoList);
+		model.addAttribute("noticeDtoList", noticeDtoList);
 		
 		return "MainView";
 	}
