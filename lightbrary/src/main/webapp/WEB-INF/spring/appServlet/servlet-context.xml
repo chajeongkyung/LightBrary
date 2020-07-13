@@ -45,6 +45,14 @@ class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         </property>
     </bean>
 
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/auth/**"/>
+			<bean class="com.lightbrary.util.interceptor.IntercepterController"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 
 </beans>

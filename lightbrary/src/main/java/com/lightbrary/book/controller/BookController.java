@@ -18,6 +18,8 @@ import com.lightbrary.book.model.BookListParamDto;
 import com.lightbrary.book.model.BookUpdateParamDto;
 import com.lightbrary.book.service.BookService;
 import com.lightbrary.util.Paging;
+import com.lightbrary.util.interceptor.Auth;
+import com.lightbrary.util.interceptor.Auth.Role;
 
 @Controller
 public class BookController {
@@ -28,6 +30,7 @@ public class BookController {
 	@Autowired
 	private BookService bookService;
 	
+	@Auth(role=Role.USER)
 	@RequestMapping(value = "/book/list.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String BookList(@RequestParam(defaultValue = "1") int curPage
 			, BookListParamDto bookListParamDto
@@ -55,6 +58,7 @@ public class BookController {
 		return "book/BookListView";
 	}
 	
+	@Auth(role=Role.USER)
 	@RequestMapping(value = "/book/detail.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String BookDetail(int no, BookListParamDto bookListParamDto
 			, Model model) {
@@ -72,6 +76,7 @@ public class BookController {
 		return "book/BookDetailView";
 	}
 	
+	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/book/insert.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String BookInsertOne() {
 		
@@ -80,6 +85,7 @@ public class BookController {
 		return "book/BookInsertView";
 	}
 	
+	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/book/insertBatch.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String BookInsertBatch() {
 		
@@ -88,6 +94,7 @@ public class BookController {
 		return "book/BookInsertBatchView";
 	}
 	
+	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/book/insertCtr.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String BookInsertOne(BookDto bookDto, MultipartHttpServletRequest request
 			, String bookCategory1, String bookCategory2, String bookCategory3) {
@@ -116,6 +123,7 @@ public class BookController {
 		return "book/BookInsertView";
 	}
 	
+	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/book/insertBatchCtr.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String BookInsertBatch(BookDto bookDto, MultipartHttpServletRequest request
 			, String bookCategory1, String bookCategory2, String bookCategory3
@@ -145,6 +153,7 @@ public class BookController {
 		return "book/BookInsertBatchView";
 	}
 	
+	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/book/update.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String BookUpdate(int no, BookListParamDto bookListParamDto, Model model) {
 		
@@ -161,6 +170,7 @@ public class BookController {
 		return "book/BookUpdateView";
 	}
 	
+	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/book/updateCtr.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String BookUpdateCtr(BookUpdateParamDto bookUpdateParamDto, MultipartHttpServletRequest request
 			, String bookCategory1, String bookCategory2, String bookCategory3
@@ -200,6 +210,7 @@ public class BookController {
 		return "book/BookDetailView";
 	}
 	
+	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/book/delete.do", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public int BookDelete(int no) {
