@@ -19,19 +19,108 @@ public class RentServiceImpl implements RentService{
 	private static final Logger log = 
 			LoggerFactory.getLogger(RentServiceImpl.class);
 	
-	/*******************
-	 	     대출 예약
-	*******************/
+	
+	/** 사용자 대출 예약
+	 *
+	 */
 	@Override
 	public void insertReserve(int memberNo, int bookNo) {
 		// TODO Auto-generated method stub
 		rentDao.insertReserve(memberNo, bookNo);
 	}
-	
 	@Override
 	public int updateOneStatusToReserve(int bookNo) {
 		// TODO Auto-generated method stub
 		return rentDao.updateOneStatusToReserve(bookNo);
+	}
+	
+	
+	/** 사용자 나의 예약
+	 *
+	 */
+	@Override
+	public List<RentDto> selectMyReserve(String searchOption, String keyword, int start, int end, int myNo) {
+		// TODO Auto-generated method stub
+		List<RentDto> myReserveList = rentDao.selectMyReserve(searchOption, keyword, start, end, myNo);
+		
+		return myReserveList;
+	}
+	
+	// 나의 예약 목록 총 갯수
+	@Override
+	public int totalCountMyReserve(String searchOption, String keyword, int myNo) {
+		// TODO Auto-generated method stub
+		return rentDao.totalCountMyReserve(searchOption, keyword, myNo);
+	}
+	
+	// 나의 예약 목록 현재 페이지
+	@Override
+	public int selectMyReserveCurPage(String searchOption, String keyword, int no, int myNo) {
+		// TODO Auto-generated method stub
+		return rentDao.selectMyReserveCurPage(searchOption, keyword, no, myNo);
+	}
+	
+	// 나의 예약 상세
+	@Override
+	public RentDto selectOneMyReserve(int no) {
+		// TODO Auto-generated method stub
+		
+		return rentDao.selectOneMyReserve(no);
+	}
+	
+	/** 사용자 예약 취소
+	 *
+	 */
+	@Override
+	public int updateOneStatusToKeep(int bookNo) {
+		// TODO Auto-generated method stub
+		return rentDao.updateOneStatusToKeep(bookNo);
+	}
+	@Override
+	public int deleteOneFromRent(int no) {
+		// TODO Auto-generated method stub
+		return rentDao.deleteOneFromRent(no);
+	}
+	
+	
+	/** 사용자 나의 대출
+	 *
+	 */
+	@Override
+	public List<RentDto> selectMyRent(String searchOption, String keyword, int start, int end, int myNo) {
+		// TODO Auto-generated method stub
+		List<RentDto> myRentList = rentDao.selectMyRent(searchOption, keyword, start, end, myNo);
+		
+		return myRentList;
+	}
+	
+	// 나의 대출 목록 총 갯수
+	@Override
+	public int totalCountMyRent(String searchOption, String keyword, int myNo) {
+		// TODO Auto-generated method stub
+		return rentDao.totalCountMyRent(searchOption, keyword, myNo);
+	}
+	
+	// 나의 대출 목록 현재 페이지
+	@Override
+	public int selectMyRentCurPage(String searchOption, String keyword, int no, int myNo) {
+		// TODO Auto-generated method stub
+		return rentDao.selectMyRentCurPage(searchOption, keyword, no, myNo);
+	}
+	
+	// 나의 대출 상세
+	@Override
+	public RentDto selectOneMyRent(int no) {
+		// TODO Auto-generated method stub
+		
+		return rentDao.selectOneMyRent(no);
+	}
+	
+	// 반납일 연장
+	@Override
+	public int extendReturnDate(int no) {
+		// TODO Auto-generated method stub
+		return rentDao.extendReturnDate(no);
 	}
 	
 	
@@ -78,9 +167,9 @@ public class RentServiceImpl implements RentService{
 
 	// 예약 상세에서 상태 변경
 	@Override
-	public int updateOneReserveStatus(RentDto rentDto) {
+	public int updateOneStatusToRent(RentDto rentDto) {
 		// TODO Auto-generated method stub
-		return rentDao.updateOneReserveStatus(rentDto);
+		return rentDao.updateOneStatusToRent(rentDto);
 	}
 	
 	// 대출 날짜 오늘 날짜로 변경
@@ -205,47 +294,5 @@ public class RentServiceImpl implements RentService{
 	public int updateOverdueSend(int no) {
 		// TODO Auto-generated method stub
 		return rentDao.updateOverdueSend(no);
-	}
-	
-	
-	/*******************
-		   나의 예약 현황
-	*******************/
-	
-	// 나의 예약 목록 출력
-	@Override
-	public List<RentDto> selectMyReserve(String searchOption, String keyword, int start, int end, int myNo) {
-		// TODO Auto-generated method stub
-		List<RentDto> reserveList = rentDao.selectMyReserve(searchOption, keyword, start, end, myNo);
-		
-		return reserveList;
-	}
-	
-//	@Override
-//	public List<RentDto> selectMyReservebyStatus(String statusName) {
-//	// TODO Auto-generated method stub
-//	return rentDao.selectReservebyStatus(statusName);
-//	}
-	
-	// 나의 예약 목록 총 갯수
-	@Override
-	public int totalCountMyReserve(String searchOption, String keyword, int myNo) {
-		// TODO Auto-generated method stub
-		return rentDao.totalCountMyReserve(searchOption, keyword, myNo);
-	}
-	
-	// 나의 예약 목록 현재 페이지
-	@Override
-	public int selectMyReserveCurPage(String searchOption, String keyword, int no, int myNo) {
-		// TODO Auto-generated method stub
-		return rentDao.selectMyReserveCurPage(searchOption, keyword, no, myNo);
-	}
-	
-	// 나의 예약 상세
-	@Override
-	public RentDto selectOneMyReserve(int no) {
-		// TODO Auto-generated method stub
-		
-		return rentDao.selectOneMyReserve(no);
 	}
 }

@@ -49,6 +49,25 @@
 		$('#bookListParamDto').attr("action", "./update.do");
 		$('#bookListParamDto').submit();
 	}
+	
+	function moveReserveFnc() {
+		var memberNoObj = $('#memberNo');
+		var bookNoObj = $('#no');
+		
+		var url = './detail/reserve.do?';
+		url += 'memberNo=' + memberNoObj.val();
+		url += '&bookNo=' + bookNoObj.val();
+		
+		if(confirm('도서의 대출 예약을 하시겠습니까?')){
+			alert('대출 가능한 날짜는 오늘로 부터 5일입니다.\n픽업일 내에 도서를 찾아가지 않을 시 예약은 취소됩니다.');
+			
+			location.href = url;
+			
+			return;
+		} else{
+			return false;
+		}
+	}
 </script>
 
 </head>
@@ -99,7 +118,17 @@
 							</tr>
 							<tr>
 								<th class='text bold textDark inputTh'>상태</th>
-								<td id='bookStatus' class='text textGrey'>${bookDto.statusCode}</td>
+								<c:choose>
+									<c:when test="${bookDto.statusCode eq 1 || bookDto.statusCode eq 2}">
+										<td id='bookStatus' class='text textGreen bold'>${bookDto.statusCode}</td>
+									</c:when>
+									<c:when test="${bookDto.statusCode eq 3 || bookDto.statusCode eq 4 || bookDto.statusCode eq 5}">
+										<td id='bookStatus' class='text textRed bold'>${bookDto.statusCode}</td>
+									</c:when>
+									<c:otherwise>
+										<td id='bookStatus' class='text textGrey bold'>${bookDto.statusCode}</td>
+									</c:otherwise>
+								</c:choose>
 							</tr>
 						</tbody>
 					</table>
@@ -113,10 +142,12 @@
 					<c:if test="${member.gradeCode eq 1}">
 						<c:choose>
 							<c:when test="${bookDto.statusCode eq 0}">
+								<input type="hidden" id="memberNo" name="memberNo" value="${member.no}">
+								<input type="hidden" id="rentNo" name="rentNo" value="${rentDto.no}">
 								<a href="#none" id='reserveBtn' onclick='moveReserveFnc()' class='btn grey'>도서 대출 예약</a>
 							</c:when>
 							<c:otherwise>
-								<a href="#none" class='btn grey' style='opacity: 0.7;'>도서 대출 예약</a>
+								<a href="#none" class='btn grey disabled'>도서 대출 예약</a>
 							</c:otherwise>
 						</c:choose>
 					</c:if>

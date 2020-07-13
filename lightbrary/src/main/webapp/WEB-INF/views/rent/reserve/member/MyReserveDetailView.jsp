@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
@@ -25,9 +26,6 @@
 		
 		//분류 문자
 		bookCategorySelect();
-		
-		// 대출중으로 변경
-		changeStatusFnc();
 	});
 	
 	//분류 문자
@@ -44,26 +42,38 @@
 		$('#bookCategoryCode').html(resultStr);
 	}
 	
-	function changeStatusFnc() {
-		$('#changeStatus').click(function() {
-			if(confirm("예약된 도서를 대출 중으로 변경하시겠습니까?")){
-				alert("도서의 상태가 예약에서 대출 중으로 성공적으로 변경 되었습니다.\n대출 도서는 대출 현황 목록에서 확인해주세요.");
-				return;
-			}else{
-				return false;
-			}
-		});
+	function cancelReserveFnc() {
+		var myNoObj = $('#myNo');
+		var bookNoObj = $('#bookNo');
+		
+		var url = '';
+		
+		url += './statusUpdateCtr.do?';
+		url += 'myNo=' + myNoObj.val();
+		url += '&bookNo=' + bookNoObj.val();
+		
+		if(confirm('도서의 대출 예약을 취소하시겠습니까?')){
+			alert('도서의 대출 예약이 취소되었습니다.');
+			
+			location.href = url;
+			
+			return;
+		} else{
+			return false;
+		}
 	}
 	
 	function pageMoveListFnc(){
 		var noObj = $('#no');
 		var keywordObj = $('#keyword');
 		var searchOptionObj = $('#searchOption');
+		var myNoObj = $('#myNo');
 		
 		var url = '';
 		
 		url += './list.do?';
 		url += 'no=' + noObj.val();
+		url += '&myNo=' + myNoObj.val();
 		url += '&keyword=' + keywordObj.val();
 		url += '&searchOption=' + searchOptionObj.val();
 		
@@ -80,7 +90,7 @@
 		
 		<!-- 컨테이너 start -->
 		<div id='container'>
-			<h2 id='pageTitle'>예약 도서 상세</h2>
+			<h2 id='pageTitle'>나의 예약 도서 상세</h2>
 			
 			<!-- 상세페이지 start -->
 			<form action="./statusUpdateCtr.do" method="post">
@@ -139,41 +149,6 @@
 										<fmt:formatDate value="${rentDto.pickUpDate}" pattern="yyyy/MM/dd "/>
 									</td>
 								</tr>
-								<tr>
-									<th class='text bold textDark'>예약상태</th>
-									<td class='text textGreen bold'>
-										${rentDto.bookStatus}
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					
-					<!--  -->
-					<div class='detailTable'>
-						<p class='text bold textDark'>회원정보</p>
-						<table>
-							<colgroup>
-								<col width="214px">
-								<col width="786px">
-							</colgroup>
-							<tbody>
-								<tr>
-									<th class='text bold textDark'>이름</th>
-									<td class='text textGrey'>${rentDto.mname}</td>
-								</tr>
-								<tr>
-									<th class='text bold textDark'>이메일</th>
-									<td class='text textGrey'>${rentDto.email}</td>
-								</tr>
-								<tr>
-									<th class='text bold textDark'>연락처</th>
-									<td class='text textGrey'>${rentDto.phone}</td>
-								</tr>
-								<tr>
-									<th class='text bold textDark'>주소</th>
-									<td class='text textGrey'>${rentDto.address}</td>
-								</tr>
 							</tbody>
 						</table>
 					</div>
@@ -182,9 +157,11 @@
 					<div class='btnWrap viewBtns fs0 tCenter'>
 						<input type="hidden" id='bookNo' name="bookNo" value="${rentDto.bookNo}">
 						
-						<button type="submit" id='changeStatus' class='btn grey'>대출 중으로 변경</button>
+						
+						<button type="submit" class='btn grey' onclick="cancelReserveFnc();">예약 취소</button>
 						
 						<input type="hidden" id='no' name="no" value="${rentDto.no}">
+						<input type="hidden" id='myNo' name="myNo" value="${member.no}">
 						<input type="hidden" id='searchOption' name="searchOption" value="${searchOption}">
 						<input type="hidden" id='keyword' name="keyword" value="${keyword}">
 						

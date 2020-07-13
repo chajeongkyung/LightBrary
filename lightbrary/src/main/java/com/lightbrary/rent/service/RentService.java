@@ -6,11 +6,52 @@ import com.lightbrary.rent.model.RentDto;
 
 public interface RentService {
 
-	/*******************
-	    	대출 예약
-	*******************/
+	
+	/** 사용자 대출 예약
+	 * @param memberNo
+	 * @param bookNo
+	 */
 	public void insertReserve(int memberNo, int bookNo);
 	public int updateOneStatusToReserve(int bookNo);
+	
+	
+	/** 사용자 나의 예약
+	 * @param searchOption
+	 * @param keyword
+	 * @param start
+	 * @param end
+	 * @param myNo
+	 * @return
+	 */
+	public List<RentDto> selectMyReserve(String searchOption, String keyword, int start, int end, int myNo);
+	public int totalCountMyReserve(String searchOption, String keyword, int myNo);
+	public int selectMyReserveCurPage(String searchOption, String keyword, int no, int myNo);
+	// 나의 예약 상세
+	public RentDto selectOneMyReserve(int no);
+	
+	/** 사용자 예약 취소
+	 * @param no
+	 * @return
+	 */
+	public int updateOneStatusToKeep(int bookNo);
+	public int deleteOneFromRent(int no);
+	
+	
+	/** 사용자 나의 대출
+	 * @param searchOption
+	 * @param keyword
+	 * @param start
+	 * @param end
+	 * @param myNo
+	 * @return
+	 */
+	public List<RentDto> selectMyRent(String searchOption, String keyword, int start, int end, int myNo);
+	public int totalCountMyRent(String searchOption, String keyword, int myNo);
+	public int selectMyRentCurPage(String searchOption, String keyword, int no, int myNo);
+	// 나의 대출 상세
+	public RentDto selectOneMyRent(int no);
+	// 반납일 연장
+	public int extendReturnDate(int no);
 	
 	/*******************
 			예약
@@ -22,7 +63,7 @@ public interface RentService {
 	public int selectReserveCurPage(String searchOption, String keyword, int no);
 	// 예약 상세
 	public RentDto selectOneReserve(int no);
-	public int updateOneReserveStatus(RentDto rentDto); //대출 중으로 상태변경
+	public int updateOneStatusToRent(RentDto rentDto); //대출 중으로 상태변경
 	public int updateOneRentDate(RentDto rentDto); //대출 날짜 오늘 날짜로 변경
 	public int updateOneExpireDate(RentDto rentDto); //반납일 수정
 	
@@ -57,18 +98,5 @@ public interface RentService {
 	public int updateOneStatusToOverdue(RentDto rentDto);
 	
 	public int updateOverdueSend(int no); //연체 이메일 상태 변경
-	
-	
-	/*******************
-		나의 예약 현황
-	*******************/
-	
-	// 나의 예약 목록
-	public List<RentDto> selectMyReserve(String searchOption, String keyword, int start, int end, int myNo);
-	public int totalCountMyReserve(String searchOption, String keyword, int myNo);
-	public int selectMyReserveCurPage(String searchOption, String keyword, int no, int myNo);
-	// 나의 예약 상세
-	public RentDto selectOneMyReserve(int no);
-	
 	
 }
