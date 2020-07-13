@@ -2,20 +2,35 @@ package com.lightbrary.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-@ControllerAdvice
+@Controller
 public class ExceptionController {
-	
-	private static final Logger log = LoggerFactory.getLogger(ExceptionController.class);
-	
-	@ExceptionHandler({Exception.class})
-	public ResponseEntity<Object> handleAll(final Exception ex){
-		log.warn("error", ex);
-		return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
+
+   private static final Logger log = 
+      LoggerFactory.getLogger(ExceptionController.class);
+   
+   @RequestMapping(value="/error/400.do", method=RequestMethod.GET)
+   public String error400Exeption() {
+      log.info("*****Welcome Login!*****");
+      
+      return "common/failPage";
+   }
+
+   @RequestMapping(value="/error/404.do", method=RequestMethod.GET)
+   public String error404Exeption() {
+	   log.info("*****Welcome Login!*****");
+	   
+	   return "common/failPage";
+   }
+   
+   @RequestMapping(value="/error/500.do", method=RequestMethod.GET)
+   public String error500Exeption() {
+      log.info("*****Welcome Login!*****");
+      
+      return "common/failPage";
+   }
+   
 }
