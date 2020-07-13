@@ -122,20 +122,44 @@
 	
 	// 도서 예약
 	function reserveFnc(clickObj) {
-		var memberNoObj = $(clickObj).parent().find($('.memberNo'));
-		var bookNoObj = $(clickObj).parent().find($('.bookNo'));
-		
-		var url = './reserve.do?';
-		url += 'memberNo=' + memberNoObj.val();
-		url += '&bookNo=' + bookNoObj.val();
-		
 		if(confirm('도서의 대출 예약을 하시겠습니까?')){
 			alert('대출 가능한 날짜는 오늘로 부터 5일입니다.\n픽업일 내에 도서를 찾아가지 않을 시 예약은 취소됩니다.');
-			location.href = url;
+			
+			$('#no').val($(clickObj).parent().find($('.bookNo')).val());
+			$('#pagingForm').attr('action', './reserve.do');
+			$('#pagingForm').submit();
 			
 			return;
 		} else{
 			return false;
+		}
+	}
+	
+	// 다중 예약
+	function reserveBatchFnc() {
+		var noObjArr = checkedObjArr();
+		var noArr = new Array();
+		
+		for (var i = 0; i < noObjArr.length; i++) {
+			noArr[i] = noObjArr[i].value;
+		}
+		
+		if(noObjArr.length > 0){
+			var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
+			$.ajax({
+				type: "POST",
+				url: baseUrl + '/book/reserveBatch.do',
+				data: "noArr=" + noArr,
+				success:function(){
+					alert('선택 도서의 대출 예약이 성공적으로 이루어졌습니다.\n예약하신 도서 목록은 "나의 예약 현황"에서 확인해주세요.');
+					$('#pagingForm').submit();
+				},
+				error: function(){
+					alert('오류');
+				}
+			});
+		} else{
+			alert('선택된 도서가 없습니다.');
 		}
 	}
 </script>
@@ -248,7 +272,7 @@
 							</c:when>
 							<c:when test="${member.gradeCode eq 1}">
 								<li>
-									<a href="#none" class='text'>선택 대출 예약하기</a>
+									<a href="#none" class='text' onclick="reserveBatchFnc();">선택 대출 예약하기</a>
 								</li>
 							</c:when>
 						</c:choose>
@@ -269,8 +293,16 @@
 						<li>
 							<!-- 동그란 체크박스 start -->
 							<div class='checkbox type1'>
-								<input type="checkbox" id='chk${bookDto.no}' value='${bookDto.no}'>
-								<label for="chk${bookDto.no}"></label>
+								<c:choose>
+									<c:when test="${bookDto.statusCode ne 0}">
+										<input type="checkbox" id='chk${bookDto.no}' value='${bookDto.no}' disabled="disabled">
+										<label for="chk${bookDto.no}" style="opacity: 0.3; cursor: default;"></label>
+									</c:when>
+									<c:otherwise>
+										<input type="checkbox" id='chk${bookDto.no}' value='${bookDto.no}'>
+										<label for="chk${bookDto.no}"></label>
+									</c:otherwise>
+								</c:choose>
 							</div>
 							<!-- //동그란 체크박스 end -->
 							

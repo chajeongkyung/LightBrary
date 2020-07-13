@@ -19,10 +19,8 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		// depth1 네비
-		$('#depth1Ul > li:nth-child(2)').addClass('active');
-		// depth2 네비
-		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(3)').addClass('active');
+		// 마이페이지 메뉴 활성화
+		$('#myPageDrop ul > li:nth-child(2)').addClass('active');
 		
 		//분류 문자
 		bookCategorySelect();
@@ -42,20 +40,10 @@
 		$('#bookCategoryCode').html(resultStr);
 	}
 	
+	//대출 연장하기
 	function extendRentFnc() {
-		var myNoObj = $('#myNo');
-		var noObj = $('#no');
-		
-		var url = '';
-		
-		url += './detail/statusUpdateCtr.do?';
-		url += 'no=' + noObj.val();
-		url += '&myNo=' + myNoObj.val();
-		
 		if(confirm('선택 도서의 반납일을 3일 연장하시겠습니까?')){
 			alert('도서의 반납일이 3일 연장되었습니다.\n반납일 연장은 총 한번만 허용됨을 알려드립니다.');
-			
-			location.href = url;
 			
 			return;
 		} else{
@@ -93,7 +81,7 @@
 			<h2 id='pageTitle'>나의 예약 도서 상세</h2>
 			
 			<!-- 상세페이지 start -->
-			<form action="./statusUpdateCtr.do" method="post">
+			<form action="./detailStatusUpdateCtr.do" method="post">
 				<div id='detailWrap'>
 					<div id='bookImage' class='bgCover' style="background-image: url('<%=request.getContextPath()%>/resources/img/book-img1-limgaejang.jpg')"></div>
 					<!--  -->
@@ -170,8 +158,15 @@
 					<!-- 상세페이지 버튼 start -->
 					<div class='btnWrap viewBtns fs0 tCenter'>
 						<input type="hidden" id='bookNo' name="bookNo" value="${rentDto.bookNo}">
-						
-						<button type="submit" class='btn grey' onclick="extendRentFnc();">대출 연장 하기</button>
+
+						<c:choose>
+							<c:when test="${rentDto.expireDays le 7}">
+								<button type="submit" class='btn grey' onclick="extendRentFnc();">대출 연장 하기</button>
+							</c:when>
+							<c:otherwise>
+								<button type="submit" class='btn grey disabled' disabled="disabled">대출 연장 하기</button>
+							</c:otherwise>
+						</c:choose>	
 						
 						<input type="hidden" id='no' name="no" value="${rentDto.no}">
 						<input type="hidden" id='myNo' name="myNo" value="${member.no}">

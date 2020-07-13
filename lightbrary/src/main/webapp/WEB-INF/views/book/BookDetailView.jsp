@@ -51,17 +51,14 @@
 	}
 	
 	function moveReserveFnc() {
-		var memberNoObj = $('#memberNo');
 		var bookNoObj = $('#no');
-		
-		var url = './detail/reserve.do?';
-		url += 'memberNo=' + memberNoObj.val();
-		url += '&bookNo=' + bookNoObj.val();
 		
 		if(confirm('도서의 대출 예약을 하시겠습니까?')){
 			alert('대출 가능한 날짜는 오늘로 부터 5일입니다.\n픽업일 내에 도서를 찾아가지 않을 시 예약은 취소됩니다.');
 			
-			location.href = url;
+			$('#no').val(bookNoObj.val());
+			$('#bookListParamDto').attr("action", "./detailReserve.do");
+			$('#bookListParamDto').submit();
 			
 			return;
 		} else{

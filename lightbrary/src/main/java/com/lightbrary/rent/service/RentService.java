@@ -53,11 +53,14 @@ public interface RentService {
 	// 반납일 연장
 	public int extendReturnDate(int no);
 	
-	/*******************
-			예약
-	*******************/
-	
-	// 예약 목록
+
+	/** 관리자 예약 관리
+	 * @param searchOption
+	 * @param keyword
+	 * @param start
+	 * @param end
+	 * @return
+	 */
 	public List<RentDto> selectReserve(String searchOption, String keyword, int start, int end);
 	public int totalCountReserve(String searchOption, String keyword);
 	public int selectReserveCurPage(String searchOption, String keyword, int no);
@@ -67,11 +70,15 @@ public interface RentService {
 	public int updateOneRentDate(RentDto rentDto); //대출 날짜 오늘 날짜로 변경
 	public int updateOneExpireDate(RentDto rentDto); //반납일 수정
 	
-	/*******************
-			대출
-	*******************/
 	
-	// 대출 목록
+	/** 관리자 대출 관리
+	 * @param searchOption
+	 * @param keyword
+	 * @param start
+	 * @param end
+	 * @param status
+	 * @return
+	 */
 	public List<RentDto> selectRent(String searchOption, String keyword, int start, int end, String status);
 	public int totalCountRent(String searchOption, String keyword, String status);
 	public int selectRentCurPage(String searchOption, String keyword, int no, String status);
@@ -82,11 +89,14 @@ public interface RentService {
 	
 	public int updateSend(int no); //반납 이메일 상태 변경
 	
-	/*******************
-			연체
-	*******************/
 	
-	// 연체 목록
+	/** 관리자 연체 관리
+	 * @param searchOption
+	 * @param keyword
+	 * @param start
+	 * @param end
+	 * @return
+	 */
 	public List<RentDto> selectOverdue(String searchOption, String keyword, int start, int end);
 	public int totalCountOverdue(String searchOption, String keyword);
 	public int selectOverdueCurPage(String searchOption, String keyword, int no);

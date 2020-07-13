@@ -86,6 +86,39 @@
 		});
 	}
 	
+	function rentCheckedObjArr(){
+		return $('input[id^=chk]:checked ~ input[type="hidden"]');
+	}
+	
+	//다중 처리
+	function returnBatchFnc() {
+		var noObjArr = rentCheckedObjArr();
+		var noArr = new Array();
+		
+		for (var i = 0; i < noObjArr.length; i++) {
+			noArr[i] = noObjArr[i].value;
+		}
+		
+		if(noObjArr.length > 0){
+			var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
+			$.ajax({
+				type: "POST",
+				url: baseUrl + '/rent/returnBatch.do',
+				data: "noArr=" + noArr,
+				success:function(){
+					alert('반납처리 되었습니다.');
+					$('#pagingForm').submit();
+				},
+				error: function(){
+					alert('오류');
+				}
+			});
+		} else{
+			alert('선택된 도서가 없습니다.');
+		}
+		
+	}
+	
 	// 상세페이지로 이동
 	function listOnePageFnc(clickObj){	
 		var noObj = '';
@@ -107,21 +140,6 @@
 	
 		return false;
 	}
-	
-	// 다중 선택 상태 처리
-// 	function checkedItemReturnFnc(){
-// 		var $appendStr = $('<form id="rentDtoForm" name="rentDto" method="post"></form>');
-// 		$('#container').append($appendStr);
-		
-// 		$appendStr = $('<input id=">');
-// 		$('#rentDtoForm').append($appendStr);
-// 		$appendStr = $('<input id=">');
-// 		$('#rentDtoForm').append($appendStr);
-		
-// 		$.each(checkedObjArr(), function(idx, item){
-// 			$('#ddddd').val()
-// 		});
-// 	}
 	
 	// 이메일 전송
 	function sendEmailFnc(clickObj) {
@@ -250,7 +268,7 @@
 					</ul>
 					<ul class='settings fRight fs0'>
 						<li>
-							<a href="#none" onclick="checkedItemReturnFnc();" class='text'>선택 반납처리</a>
+							<a href="#none" onclick="returnBatchFnc();" class='text'>선택 반납처리</a>
 						</li>
 						<li>
 							<a href="#none" class='text'>선택 반납일 안내 이메일 발송</a>
@@ -319,6 +337,7 @@
 												</c:when>
 												<c:otherwise>
 													<input type="checkbox" id='chk${rentDto.no}' value="${rentDto.no}">
+													<input type="hidden" id='chk${rentDto.bookNo}' value="${rentDto.bookNo}">
 													<label for="chk${rentDto.no}"></label>
 												</c:otherwise>
 											</c:choose>

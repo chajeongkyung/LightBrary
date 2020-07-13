@@ -28,6 +28,34 @@
 		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(2)').addClass('active');
 	});
 	
+	function rentCheckedObjArr(){
+		return $('input[id^=chk]:checked ~ input[type="hidden"]');
+	}
+	
+	//다중 처리
+	function returnBatchFnc() {
+		var noObjArr = rentCheckedObjArr();
+		var noArr = new Array();
+		
+		for (var i = 0; i < noObjArr.length; i++) {
+			noArr[i] = noObjArr[i].value;
+		}
+		
+		var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
+		$.ajax({
+			type: "POST",
+			url: baseUrl + '/rent/returnBatch.do',
+			data: "noArr=" + noArr,
+			success:function(){
+				alert('반납처리 되었습니다.');
+				$('#pagingForm').submit();
+			},
+			error: function(){
+				alert('오류');
+			}
+		});
+	}
+	
 	// 상세페이지로 이동
 	function listOnePageFnc(clickObj){	
 		var reserveNoObj = '';
@@ -175,7 +203,7 @@
 				<div class='listSettings overH'>
 					<ul class='settings fLeft fs0'>
 						<li>
-							<a href="#none" class='text'>선택 반납처리</a>
+							<a href="#none" class='text' onclick="returnBatchFnc();">선택 반납처리</a>
 						</li>
 						<li>
 							<a href="#none" class='text'>선택 연체 안내 이메일 발송</a>
@@ -235,8 +263,9 @@
 										<input type="hidden" value='${rentDto.no}' class='noObj'>
 										<!-- 기본 체크박스 start -->
 										<div class='checkbox type2 fLeft'>
-											<input type="checkbox" id='check${rentDto.no}'>
-											<label for="check${rentDto.no}"></label>
+											<input type="checkbox" id='chk${rentDto.no}'>
+											<input type="hidden" id='check${rentDto.bookNo}'>
+											<label for="chk${rentDto.no}"></label>
 										</div>
 										<!-- //기본 체크박스 end -->
 									</td>
