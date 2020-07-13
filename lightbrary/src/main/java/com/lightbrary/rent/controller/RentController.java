@@ -20,10 +20,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.lightbrary.book.model.BookListParamDto;
 import com.lightbrary.rent.model.RentDto;
 import com.lightbrary.rent.service.RentService;
 import com.lightbrary.util.Paging;
 
+/**
+ * @author TJ
+ *
+ */
 @Controller
 public class RentController {
 
@@ -32,9 +37,13 @@ public class RentController {
 	@Autowired
 	private RentService rentService;
 	
-	/*******************
-		   도서 대출 예약
-	*******************/
+	
+	/** 사용자 대출 예약 - 목록
+	 * @param memberNo
+	 * @param bookNo
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/book/reserve.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String insertReserve(int memberNo, int bookNo, Model model) {
 		log.info("도서 예약 :: 회원번호 = " + memberNo + " : 도서번호 = " + bookNo);
@@ -45,12 +54,229 @@ public class RentController {
 		return "redirect:/book/list.do";
 	}
 	
+	/** 사용자 대출 예약 - 상세
+	 * @param memberNo
+	 * @param bookNo
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/book/detail/reserve.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String insertReserveFromDetail(int memberNo, int bookNo, Model model) {
+		log.info("도서 예약 :: 회원번호 = " + memberNo + " : 도서번호 = " + bookNo);
+	
+		rentService.insertReserve(memberNo, bookNo);
+		rentService.updateOneStatusToReserve(bookNo);
+		
+		model.addAttribute("no", bookNo);
+	
+		return "redirect:/book/detail.do";
+	}
+	
+	/** 사용자 나의 예약
+	 * @param curPage
+	 * @param no
+	 * @param searchOption
+	 * @param keyword
+	 * @param memberNo
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/rent/reserve/member/list.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String myReserveList(@RequestParam(defaultValue = "1") int curPage, @RequestParam(defaultValue = "0") int no,
+		@RequestParam(defaultValue = "all") String searchOption, @RequestParam(defaultValue = "") String keyword,
+		int myNo, Model model) {
+	
+		log.info("나의예약현황목록 :: 현재페이지 = " + curPage + " : searchOption = " + searchOption + " : keyword = " + keyword
+				+ " : 회원 번호 = " + myNo);
+		
+		// 전체 예약 도서 갯수
+		int totalCount = rentService.totalCountMyReserve(searchOption, keyword, myNo);
+		
+		if (no != 0) {
+			curPage = rentService.selectMyReserveCurPage(searchOption, keyword, no, myNo);
+		}
+		
+		Paging pagingInfo = new Paging(totalCount, curPage);
+		
+		System.out.println("-------------------");
+		System.out.println(pagingInfo);
+		System.out.println("-------------------");
+		int start = pagingInfo.getPageBegin();
+		int end = pagingInfo.getPageEnd();
+		
+		List<RentDto> myReserveList = rentService.selectMyReserve(searchOption, keyword, start, end, myNo);
+		
+		// 검색
+		HashMap<String, Object> searchMap = new HashMap<String, Object>();
+		searchMap.put("searchOption", searchOption);
+		searchMap.put("keyword", keyword);
+		
+		// 페이징
+		Map<String, Object> pagingMap = new HashMap<>();
+		pagingMap.put("totalCount", totalCount);
+		pagingMap.put("pagingInfo", pagingInfo);
+		
+		model.addAttribute("myReserveList", myReserveList);
+		model.addAttribute("pagingMap", pagingMap);
+		model.addAttribute("pagingInfo", pagingInfo);
+		model.addAttribute("searchMap", searchMap);
+		
+		log.info("검색 문자 : " + keyword);
+		log.info("검색 옵션 : " + searchOption);
+		
+		return "rent/reserve/member/MyReserveListView";
+	}
+	
+	// 나의 예약 상세
+	@RequestMapping(value = "/rent/reserve/member/detail.do", method = RequestMethod.GET)
+	public String myReserveView(int no, String searchOption, String keyword, Model model) {
+		log.info("예약 도서 상세 - " + no + "\n" + "검색옵션 : " + searchOption + "\n" + "검색문장" + keyword);
 
-	/*******************
-	 		예약
-	 *******************/
+		RentDto rentDto = rentService.selectOneMyReserve(no);
 
-	// 예약 목록
+		model.addAttribute("rentDto", rentDto);
+		model.addAttribute("searchOption", searchOption);
+		model.addAttribute("keyword", keyword);
+
+		return "rent/reserve/member/MyReserveDetailView";
+	}	
+	
+	/** 사용자 대출 예약 취소
+	 * @param rentDto
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/rent/reserve/member/statusUpdateCtr.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String reserveCancelUpdateCtr(int no, int myNo, int bookNo, Model model) {
+		log.info("예약 취소 :: RENT 번호 = " + no + " : 회원번호 = " + myNo + " : 책 번호 = " + bookNo);
+
+		try {
+			rentService.updateOneStatusToKeep(bookNo);
+			rentService.deleteOneFromRent(no);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		model.addAttribute("myNo", myNo);
+		
+		return "redirect:/rent/reserve/member/list.do";
+	}
+	
+	/** 사용자 나의 대출
+	 * @param curPage
+	 * @param no
+	 * @param searchOption
+	 * @param keyword
+	 * @param memberNo
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/rent/member/list.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String myRentList(@RequestParam(defaultValue = "1") int curPage, @RequestParam(defaultValue = "0") int no,
+		@RequestParam(defaultValue = "all") String searchOption, @RequestParam(defaultValue = "") String keyword,
+		int myNo, Model model) {
+	
+		log.info("나의대출현황목록 :: 현재페이지 = " + curPage + " : searchOption = " + searchOption + " : keyword = " + keyword
+				+ " : 회원 번호 = " + myNo);
+		
+		// 전체 예약 도서 갯수
+		int totalCount = rentService.totalCountMyRent(searchOption, keyword, myNo);
+		
+		if (no != 0) {
+			curPage = rentService.selectMyRentCurPage(searchOption, keyword, no, myNo);
+		}
+		
+		Paging pagingInfo = new Paging(totalCount, curPage);
+		
+		System.out.println("-------------------");
+		System.out.println(pagingInfo);
+		System.out.println("-------------------");
+		int start = pagingInfo.getPageBegin();
+		int end = pagingInfo.getPageEnd();
+		
+		List<RentDto> myRentList = rentService.selectMyRent(searchOption, keyword, start, end, myNo);
+		
+		// 검색
+		HashMap<String, Object> searchMap = new HashMap<String, Object>();
+		searchMap.put("searchOption", searchOption);
+		searchMap.put("keyword", keyword);
+		
+		// 페이징
+		Map<String, Object> pagingMap = new HashMap<>();
+		pagingMap.put("totalCount", totalCount);
+		pagingMap.put("pagingInfo", pagingInfo);
+		
+		model.addAttribute("myRentList", myRentList);
+		model.addAttribute("pagingMap", pagingMap);
+		model.addAttribute("pagingInfo", pagingInfo);
+		model.addAttribute("searchMap", searchMap);
+		
+		log.info("검색 문자 : " + keyword);
+		log.info("검색 옵션 : " + searchOption);
+		
+		return "rent/member/MyRentListView";
+	}
+	
+	// 나의 대출 상세
+	@RequestMapping(value = "/rent/member/detail.do", method = RequestMethod.GET)
+	public String myRentView(int no, String searchOption, String keyword, Model model) {
+		log.info("대출 도서 상세 - " + no + "\n" + "검색옵션 : " + searchOption + "\n" + "검색문장" + keyword);
+
+		RentDto rentDto = rentService.selectOneMyRent(no);
+
+		model.addAttribute("rentDto", rentDto);
+		model.addAttribute("searchOption", searchOption);
+		model.addAttribute("keyword", keyword);
+
+		return "rent/member/MyRentDetailView";
+	}
+	
+	// 목록에서 반납일 연장
+	@RequestMapping(value = "/rent/member/statusUpdateCtr.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String returnDateUpdateCtr(int no, int myNo, Model model) {
+		log.info("반납일 연장된 도서 번호 ===================== " + no);
+
+		try {
+			rentService.extendReturnDate(no);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		model.addAttribute("myNo", myNo);
+
+		return "redirect:/rent/member/list.do";
+	}
+	
+	// 상세에서 반납일 연장
+	@RequestMapping(value = "/rent/member/detail/statusUpdateCtr.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String returnDateUpdateFromDetailCtr(int no, int myNo, Model model) {
+		log.info("상세 :: 반납일 연장된 도서 번호 ===================== " + no);
+
+		try {
+			rentService.extendReturnDate(no);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		model.addAttribute("no", no);
+		model.addAttribute("myNo", myNo);
+
+		return "redirect:/rent/member/detail.do";
+	}
+	
+
+
+	/** 관리자 예약 관리
+	 * @param curPage
+	 * @param no
+	 * @param searchOption
+	 * @param keyword
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/rent/reserve/list.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String reserveList(@RequestParam(defaultValue = "1") int curPage, @RequestParam(defaultValue = "0") int no,
 			@RequestParam(defaultValue = "all") String searchOption, @RequestParam(defaultValue = "") String keyword,
@@ -104,16 +330,22 @@ public class RentController {
 		List<RentDto> reserveList = rentService.selectReservebyStatus("예약");
 
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(new Date());
+		Date today = new Date();
+		today.setTime(0);
+		cal.setTime(today);
 		cal.add(Calendar.DATE, -5);
 
 		Calendar cal2 = Calendar.getInstance();
 		for (RentDto rentDto : reserveList) {
-			cal2.setTime(rentDto.getReserveDate());
+			Date reserveDate = rentDto.getReserveDate();
+			reserveDate.setTime(0);
+			cal2.setTime(reserveDate);
 			if (cal.after(cal2)) {
-				rentService.updateOneReserveStatus(rentDto);
+				rentService.updateOneStatusToRent(rentDto);
 			}
 		}
+		
+		log.info("==========됐나===========");
 
 		return "redirect:/rent/reserve/list.do";
 	}
@@ -135,12 +367,12 @@ public class RentController {
 	// 예약 상태 변경
 	@RequestMapping(value = "/rent/reserve/statusUpdateCtr.do", method = RequestMethod.POST)
 	public String reserveStatusUpdateCtr(RentDto rentDto, Model model) {
-		log.info("대출 중으로 변경된 도서 번호 : {}", rentDto.getBookNo());
+		log.info("대출 중으로 변경된 도서 번호 = ", rentDto.getBookNo());
 
 		System.out.println(rentDto.toString());
 
 		try {
-			rentService.updateOneReserveStatus(rentDto);
+			rentService.updateOneStatusToRent(rentDto);
 			rentService.updateOneRentDate(rentDto);
 			rentService.updateOneExpireDate(rentDto);
 		} catch (Exception e) {
@@ -151,11 +383,16 @@ public class RentController {
 		return "redirect:/rent/reserve/list.do";
 	}
 	
-	/*******************
-			대출
-	*******************/
 	
-	// 대출 목록
+	/** 관리자 대출 관리
+	 * @param curPage
+	 * @param no
+	 * @param searchOption
+	 * @param keyword
+	 * @param status
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/rent/list.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String rentList(@RequestParam(defaultValue = "1") int curPage, @RequestParam(defaultValue = "0") int no,
 		@RequestParam(defaultValue = "all") String searchOption, @RequestParam(defaultValue = "") String keyword,
@@ -333,12 +570,16 @@ public class RentController {
 		List<RentDto> overdueList = rentService.selectRentAll();
 
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(new Date());
-		cal.add(Calendar.DATE, 0);
+		Date today = new Date();
+		today.setTime(0);
+		cal.setTime(today);
+		cal.add(Calendar.DATE, -1);
 
 		Calendar cal2 = Calendar.getInstance();
 		for (RentDto rentDto : overdueList) {
-			cal2.setTime(rentDto.getExpireDate());
+			Date expireDate = rentDto.getExpireDate();
+			expireDate.setTime(0);
+			cal2.setTime(expireDate);
 			if (cal.after(cal2)) {
 				rentService.updateOneStatusToOverdue(rentDto);
 			}
@@ -404,76 +645,5 @@ public class RentController {
 		rentService.updateOverdueSend(no);
 
 		return "redirect:/rent/overdue/list.do";
-	}
-	
-	
-	// 나의 예약 목록
-	/**
-	 * @param curPage
-	 * @param no
-	 * @param searchOption
-	 * @param keyword
-	 * @param memberNo
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value = "/rent/reserve/member/list.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String myReserveList(@RequestParam(defaultValue = "1") int curPage, @RequestParam(defaultValue = "0") int no,
-		@RequestParam(defaultValue = "all") String searchOption, @RequestParam(defaultValue = "") String keyword,
-		int myNo, Model model) {
-	
-		log.info("나의예약현황목록 :: 현재페이지 = " + curPage + " : searchOption = " + searchOption + " : keyword = " + keyword
-				+ " : 회원 번호 = " + myNo);
-		
-		// 전체 예약 도서 갯수
-		int totalCount = rentService.totalCountMyReserve(searchOption, keyword, myNo);
-		
-		if (no != 0) {
-			curPage = rentService.selectMyReserveCurPage(searchOption, keyword, no, myNo);
-		}
-		
-		Paging pagingInfo = new Paging(totalCount, curPage);
-		
-		System.out.println("-------------------");
-		System.out.println(pagingInfo);
-		System.out.println("-------------------");
-		int start = pagingInfo.getPageBegin();
-		int end = pagingInfo.getPageEnd();
-		
-		List<RentDto> myReserveList = rentService.selectMyReserve(searchOption, keyword, start, end, myNo);
-		
-		// 검색
-		HashMap<String, Object> searchMap = new HashMap<String, Object>();
-		searchMap.put("searchOption", searchOption);
-		searchMap.put("keyword", keyword);
-		
-		// 페이징
-		Map<String, Object> pagingMap = new HashMap<>();
-		pagingMap.put("totalCount", totalCount);
-		pagingMap.put("pagingInfo", pagingInfo);
-		
-		model.addAttribute("myReserveList", myReserveList);
-		model.addAttribute("pagingMap", pagingMap);
-		model.addAttribute("pagingInfo", pagingInfo);
-		model.addAttribute("searchMap", searchMap);
-		
-		log.info("검색 문자 : " + keyword);
-		log.info("검색 옵션 : " + searchOption);
-		
-		return "rent/reserve/member/MemberReserveListView";
-	}
-	
-	// 나의 예약 상세
-	@RequestMapping(value = "/rent/reserve/member/detail.do", method = RequestMethod.GET)
-	public String myReserveView(int no, String searchOption, String keyword, Model model) {
-		log.info("예약 도서 상세 - " + no + "\n" + "검색옵션 : " + searchOption + "\n" + "검색문장" + keyword);
-
-		RentDto rentDto = rentService.selectOneMyReserve(no);
-
-		model.addAttribute("rentDto", rentDto);
-		model.addAttribute("searchOption", searchOption);
-		model.addAttribute("keyword", keyword);
-
-		return "rent/reserve/member/MemberReserveDetailView";
 	}
 }

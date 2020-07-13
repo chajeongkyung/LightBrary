@@ -20,9 +20,9 @@ public class RentDaoImpl implements RentDao{
 	String namespace = "com.lightbrary.rent.";
 	
 	
-	/*******************
-	              대출 예약
-	*******************/
+	/** 사용자 대출 예약
+	 *
+	 */
 	@Override
 	public void insertReserve(int memberNo, int bookNo) {
 		// TODO Auto-generated method stub
@@ -33,8 +33,6 @@ public class RentDaoImpl implements RentDao{
 		
 		sqlSession.insert(namespace + "insertReserve", map);
 	}
-	
-	// 예약 상세에서 상태 변경
 	@Override
 	public int updateOneStatusToReserve(int bookNo) {
 		// TODO Auto-generated method stub
@@ -42,11 +40,140 @@ public class RentDaoImpl implements RentDao{
 	}
 	
 	
-	/*******************
-			예약
-	*******************/
+	/** 사용자 나의 예약
+	 *
+	 */
+	@Override
+	public List<RentDto> selectMyReserve(String searchOption, String keyword, int start, int end, int myNo) {
+		// TODO Auto-generated method stub
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("searchOption", searchOption);
+		map.put("keyword", keyword);
+		map.put("start", start);
+		map.put("end", end);
+		map.put("myNo", myNo);
+		
+		List<RentDto> myReserveList = sqlSession.selectList(namespace + "selectMyReserve", map);
+		
+		return myReserveList;
+	}
 	
-	// 예약 목록 출력
+	// 나의 예약 목록 총 갯수
+	@Override
+	public int totalCountMyReserve(String searchOption, String keyword, int myNo) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> paramMap = new HashMap<String, Object>();
+		
+		paramMap.put("searchOption", searchOption);
+		paramMap.put("keyword", keyword);
+		paramMap.put("myNo", myNo);
+		
+		return sqlSession.selectOne(namespace + "totalCountMyReserve", paramMap);
+	}
+	
+	// 나의 예약 목록 현재 페이지
+	@Override
+	public int selectMyReserveCurPage(String searchOption, String keyword, int no, int myNo) {
+		// TODO Auto-generated method stub
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		paramMap.put("searchOption", searchOption);
+		paramMap.put("keyword", keyword);
+		paramMap.put("no", no);
+		paramMap.put("myNo", myNo);
+		
+		return sqlSession.selectOne(namespace + "selectMyReserveCurPage", paramMap);
+	}
+	
+	// 나의 예약 상세
+	@Override
+	public RentDto selectOneMyReserve(int no) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + "selectOneMyReserve", no);
+	}
+	
+	/** 예약 취소
+	 *
+	 */
+	@Override
+	public int updateOneStatusToKeep(int bookNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.update(namespace + "updateOneStatusToKeep", bookNo);
+	}
+	// 예약 일 삭제
+	@Override
+	public int deleteOneFromRent(int no) {
+		// TODO Auto-generated method stub
+		return sqlSession.delete(namespace + "deleteOneFromRent", no);
+	}
+	
+	
+	/** 사용자 나의 대출
+	 *
+	 */
+	@Override
+	public List<RentDto> selectMyRent(String searchOption, String keyword, int start, int end, int myNo) {
+		// TODO Auto-generated method stub
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("searchOption", searchOption);
+		map.put("keyword", keyword);
+		map.put("start", start);
+		map.put("end", end);
+		map.put("myNo", myNo);
+		
+		List<RentDto> myRentList = sqlSession.selectList(namespace + "selectMyRent", map);
+		
+		return myRentList;
+	}
+	
+	// 나의 대출 목록 총 갯수
+	@Override
+	public int totalCountMyRent(String searchOption, String keyword, int myNo) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> paramMap = new HashMap<String, Object>();
+		
+		paramMap.put("searchOption", searchOption);
+		paramMap.put("keyword", keyword);
+		paramMap.put("myNo", myNo);
+		
+		return sqlSession.selectOne(namespace + "totalCountMyRent", paramMap);
+	}
+	
+	// 나의 대출 목록 현재 페이지
+	@Override
+	public int selectMyRentCurPage(String searchOption, String keyword, int no, int myNo) {
+		// TODO Auto-generated method stub
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		paramMap.put("searchOption", searchOption);
+		paramMap.put("keyword", keyword);
+		paramMap.put("no", no);
+		paramMap.put("myNo", myNo);
+		
+		return sqlSession.selectOne(namespace + "selectMyRentCurPage", paramMap);
+	}
+	
+	// 나의 대출 상세
+	@Override
+	public RentDto selectOneMyRent(int no) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + "selectOneMyRent", no);
+	}
+	
+	// 반납일 연장
+	@Override
+	public int extendReturnDate(int no) {
+		// TODO Auto-generated method stub
+		return sqlSession.update(namespace + "extendReturnDate", no);
+	}
+	
+	
+	
+	/** 관리자 예약 관리 목록
+	 *
+	 */
 	@Override
 	public List<RentDto> selectReserve(String searchOption, String keyword, int start, int end) {
 		// TODO Auto-generated method stub
@@ -96,9 +223,9 @@ public class RentDaoImpl implements RentDao{
 
 	// 예약 상세에서 상태 변경
 	@Override
-	public int updateOneReserveStatus(RentDto rentDto) {
+	public int updateOneStatusToRent(RentDto rentDto) {
 		// TODO Auto-generated method stub
-		return sqlSession.update(namespace + "updateOneReserveStatus", rentDto);
+		return sqlSession.update(namespace + "updateOneStatusToRent", rentDto);
 	}
 	
 	// 대출 날짜 오늘 날짜로 
@@ -269,62 +396,6 @@ public class RentDaoImpl implements RentDao{
 	public int updateOverdueSend(int no) {
 		// TODO Auto-generated method stub
 		return sqlSession.update(namespace + "updateOverdueSend", no);
-	}
-	
-	
-	/*******************
-		나의 예약 현황
-	*******************/
-	
-	// 나의 예약 목록 출력
-	@Override
-		public List<RentDto> selectMyReserve(String searchOption, String keyword, int start, int end, int myNo) {
-		// TODO Auto-generated method stub
-		
-		Map<String, Object> map = new HashMap<>();
-		map.put("searchOption", searchOption);
-		map.put("keyword", keyword);
-		map.put("start", start);
-		map.put("end", end);
-		map.put("myNo", myNo);
-		
-		List<RentDto> myReserveList = sqlSession.selectList(namespace + "selectMyReserve", map);
-		
-		return myReserveList;
-	}
-	
-	// 나의 예약 목록 총 갯수
-	@Override
-	public int totalCountMyReserve(String searchOption, String keyword, int myNo) {
-		// TODO Auto-generated method stub
-		HashMap<String, Object> paramMap = new HashMap<String, Object>();
-		
-		paramMap.put("searchOption", searchOption);
-		paramMap.put("keyword", keyword);
-		paramMap.put("myNo", myNo);
-		
-		return sqlSession.selectOne(namespace + "totalCountMyReserve", paramMap);
-	}
-	
-	// 나의 예약 목록 현재 페이지
-	@Override
-	public int selectMyReserveCurPage(String searchOption, String keyword, int no, int myNo) {
-		// TODO Auto-generated method stub
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		
-		paramMap.put("searchOption", searchOption);
-		paramMap.put("keyword", keyword);
-		paramMap.put("no", no);
-		paramMap.put("myNo", myNo);
-		
-		return sqlSession.selectOne(namespace + "selectMyReserveCurPage", paramMap);
-	}
-	
-	// 나의 예약 상세
-	@Override
-	public RentDto selectOneMyReserve(int no) {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne(namespace + "selectOneMyReserve", no);
 	}
 	
 }

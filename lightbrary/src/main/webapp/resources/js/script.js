@@ -103,6 +103,12 @@ function myPageDrop(){
 	});
 }
 
+function moveToMyRentFnc() {
+	var headerMyNo = $('#headerMyNo').val();
+	
+	location.href = '/lightbrary/rent/member/list.do?myNo=' + headerMyNo;
+}
+
 function moveToMyReserveFnc() {
 	var headerMyNo = $('#headerMyNo').val();
 	

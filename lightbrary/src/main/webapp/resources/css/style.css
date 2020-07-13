@@ -299,7 +299,7 @@ header {
 	display: block;
 	line-height: 72px;
 	font-size: 16px;
-	color: #a8a8a8;
+	color: #636363;
 }
 
 .depth2Ul {
@@ -315,13 +315,12 @@ header {
 .depth2Ul a {
 	display: block;
 	line-height: 40px;
-	font-size: 14px;
-	color: #a8a8a8;
+	color: #636363;
 }
 
 #nav a:hover, #depth1Ul>li.active>a, .depth2Ul>li.active a{
-	font-weight: bold;
 	color: #1C6931;
+	font-weight: bold;
 }
 
 

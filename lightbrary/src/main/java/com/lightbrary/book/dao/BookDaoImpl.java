@@ -79,4 +79,10 @@ public class BookDaoImpl implements BookDao{
 		// TODO Auto-generated method stub
 		return sqlSession.insert(namespace + "insertOneImage", bookImageDto);
 	}
+
+	@Override
+	public List<BookDto> selectRankTenBook() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(namespace + "selectRankTenBook");
+	}
 }

@@ -111,14 +111,13 @@
 							</a>
 						</li>
 						<li>
-							<a href="#none" class='fs0'>
+							<a href="#none" class='fs0' onclick="moveToMyRentFnc();">
 								<img alt="내 정보" src="<%=request.getContextPath()%>/resources/img/icon-single-book.png">
 								<span>나의 대출 기록</span>
 							</a>
 						</li>
 						<li>
 							<a href="#none" class='fs0' onclick="moveToMyReserveFnc();">
-								<input type="hidden" id="headerMyNo" name="headerMyNo" value="${member.no}">
 								<img alt="내 정보" src="<%=request.getContextPath()%>/resources/img/icon-clock.png">
 								<span>나의 예약 현황</span>
 							</a>
@@ -139,6 +138,7 @@
 		</ul>
 	</nav>
 	<!-- //네비 end -->
+	<input type="hidden" id="headerMyNo" name="headerMyNo" value="${member.no}">
 </header>
 </c:if>
 <!-- //사용자 헤더 end -->
