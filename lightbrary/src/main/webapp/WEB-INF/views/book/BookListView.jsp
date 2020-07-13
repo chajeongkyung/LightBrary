@@ -137,7 +137,6 @@
 		} else{
 			return false;
 		}
-		
 	}
 </script>
 
@@ -256,79 +255,82 @@
 					</ul>
 					<input type="hidden" id="searchStatus" name="searchStatus" value="">
 				</div>
-				<!-- 책 정보가 없을때 start -->
-				<c:if test="${empty bookDtoList}">
-					<div style="text-align: center; font-size: 16px; color: #686868; height:100px; margin-top: 100px;">해당 도서가 없습니다.</div>
-				</c:if>
-				<!-- 책 정보가 없을때 end -->
+				
 				<ul id='bookList'>
+					<!-- 책 정보가 없을때 start -->
+					<c:if test="${empty bookDtoList}">
+						<li style="text-align: center; padding-top: 81px;">
+							<span style="font-size: 16px; color: #686868;">해당 도서가 없습니다.</span>
+						</li>
+					</c:if>
+					<!-- 책 정보가 없을때 end -->
 					<!-- 책 정보 출력 start -->
 					<c:forEach var="bookDto" items="${bookDtoList}">					
 						<li>
-						<!-- 동그란 체크박스 start -->
-						<div class='checkbox type1'>
-							<input type="checkbox" id='chk${bookDto.no}' value='${bookDto.no}'>
-							<label for="chk${bookDto.no}"></label>
-						</div>
-						<!-- //동그란 체크박스 end -->
-						
-						<span class='num'>${bookDto.no}</span>
-						<a href="#none" onclick="bookDetailMove(${bookDto.no})" class="fLeft">
-							<c:url var="imgUrl" value='/img/${bookDto.imageName}'/>
-							<span class='bookImage bgCover' style="background-image: url('${imgUrl}');"></span>
-						</a>
-						<div class='bookInfo fLeft'>
-							<a href="#none" onclick="bookDetailMove(${bookDto.no})" class='bookTitle ellipsis'>${bookDto.name}</a>
-							<p class='text ellipsis'>${bookDto.writer}</p>
-							<p class='text ellipsis'>${bookDto.publish}</p>
-							<p class='text'>
-								<fmt:formatDate var="fommatedPublishDate" value="${bookDto.publishDate}" pattern="yyyy-MM-dd"/>
-								${fommatedPublishDate}
-							</p>
-						</div>
-						<div class='listOptions fRight'>
-							<ul class='listOptionsUl fs0'>
-								<c:if test="${member.gradeCode eq 1 && bookDto.statusCode ne 1}">
-									<li>
-										<input type="hidden" class="memberNo" name="memberNo" value="${member.no}">
-										<input type="hidden" class="bookNo" name="bookNo" value="${bookDto.no}">
-										<input type="hidden" class="statusCode" name="statusCode" value="${bookDto.statusCode}">
-										<a href="#none" class="text bold" onclick="reserveFnc(this);">대출 예약 하기</a> 
-									</li>
-								</c:if>
-							</ul>
-							<c:choose>
-								<c:when test="${member.gradeCode eq 1 && bookDto.statusCode ne 0}">
-									<p class='bookState text' style="margin-top: 132px;">
-										<span class="bold">상태 : </span>
-										<c:choose>
-											<c:when test="${bookDto.statusCode eq 1 || bookDto.statusCode eq 2}">
-												<span id='bookStatus${bookDto.no}' class='textGreen bold'>${bookDto.statusCode}</span>
-											</c:when>
-											<c:otherwise>
-												<span id='bookStatus${bookDto.no}' class='textRed bold'>${bookDto.statusCode}</span>
-											</c:otherwise>
-										</c:choose>
-									</p>
-								</c:when>
-								<c:otherwise>
-									<p class='bookState text'>
-										<span class="bold">상태 : </span>
-										<c:choose>
-											<c:when test="${bookDto.statusCode eq 0}">
-												<span id='bookStatus${bookDto.no}' class='textGrey bold'>${bookDto.statusCode}</span>
-											</c:when>
-											<c:when test="${bookDto.statusCode eq 1 || bookDto.statusCode eq 2}">
-												<span id='bookStatus${bookDto.no}' class='textGreen bold'>${bookDto.statusCode}</span>
-											</c:when>
-											<c:otherwise>
-												<span id='bookStatus${bookDto.no}' class='textRed bold'>${bookDto.statusCode}</span>
-											</c:otherwise>
-										</c:choose>
-									</p>
-								</c:otherwise>
-							</c:choose>
-						</div>
+							<!-- 동그란 체크박스 start -->
+							<div class='checkbox type1'>
+								<input type="checkbox" id='chk${bookDto.no}' value='${bookDto.no}'>
+								<label for="chk${bookDto.no}"></label>
+							</div>
+							<!-- //동그란 체크박스 end -->
+							
+							<span class='num'>${bookDto.no}</span>
+							<a href="#none" onclick="bookDetailMove(${bookDto.no})" class="fLeft">
+								<c:url var="imgUrl" value='/img/${bookDto.imageName}'/>
+								<span class='bookImage bgCover' style="background-image: url('${imgUrl}');"></span>
+							</a>
+							<div class='bookInfo fLeft'>
+								<a href="#none" onclick="bookDetailMove(${bookDto.no})" class='bookTitle ellipsis'>${bookDto.name}</a>
+								<p class='text ellipsis'>${bookDto.writer}</p>
+								<p class='text ellipsis'>${bookDto.publish}</p>
+								<p class='text'>
+									<fmt:formatDate var="fommatedPublishDate" value="${bookDto.publishDate}" pattern="yyyy-MM-dd"/>
+									${fommatedPublishDate}
+								</p>
+							</div>
+							<div class='listOptions fRight'>
+								<ul class='listOptionsUl fs0'>
+									<c:if test="${member.gradeCode eq 1 && bookDto.statusCode eq 0}">
+										<li>
+											<input type="hidden" class="memberNo" name="memberNo" value="${member.no}">
+											<input type="hidden" class="bookNo" name="bookNo" value="${bookDto.no}">
+											<input type="hidden" class="statusCode" name="statusCode" value="${bookDto.statusCode}">
+											<a href="#none" class="text bold" onclick="reserveFnc(this);">대출 예약 하기</a> 
+										</li>
+									</c:if>
+								</ul>
+								<c:choose>
+									<c:when test="${member.gradeCode eq 1 && bookDto.statusCode ne 0}">
+										<p class='bookState text' style="margin-top: 132px;">
+											<span class="bold">상태 : </span>
+											<c:choose>
+												<c:when test="${bookDto.statusCode eq 1 || bookDto.statusCode eq 2}">
+													<span id='bookStatus${bookDto.no}' class='textGreen bold'>${bookDto.statusCode}</span>
+												</c:when>
+												<c:otherwise>
+													<span id='bookStatus${bookDto.no}' class='textRed bold'>${bookDto.statusCode}</span>
+												</c:otherwise>
+											</c:choose>
+										</p>
+									</c:when>
+									<c:otherwise>
+										<p class='bookState text'>
+											<span class="bold">상태 : </span>
+											<c:choose>
+												<c:when test="${bookDto.statusCode eq 0}">
+													<span id='bookStatus${bookDto.no}' class='textGrey bold'>${bookDto.statusCode}</span>
+												</c:when>
+												<c:when test="${bookDto.statusCode eq 1 || bookDto.statusCode eq 2}">
+													<span id='bookStatus${bookDto.no}' class='textGreen bold'>${bookDto.statusCode}</span>
+												</c:when>
+												<c:otherwise>
+													<span id='bookStatus${bookDto.no}' class='textRed bold'>${bookDto.statusCode}</span>
+												</c:otherwise>
+											</c:choose>
+										</p>
+									</c:otherwise>
+								</c:choose>
+							</div>
 						</li>
 					</c:forEach>
 				</ul>

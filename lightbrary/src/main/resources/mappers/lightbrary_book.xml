@@ -5,6 +5,42 @@
   
 <mapper namespace="com.lightbrary.book">
 	
+	<sql id="search">
+		<where>
+            DEL_FLAG = 'N'
+            <if test="searchName != ''">AND NAME LIKE '%' || #{searchName} || '%'</if>
+            <if test="searchWriter != ''">AND WRITER LIKE '%' || #{searchWriter} || '%'</if>
+            <if test="searchPublish != ''">AND PUBLISH LIKE '%' || #{searchPublish} || '%'</if>
+            <choose>
+	           	<when test="publishDateStart != ''">
+	           		<choose>
+	           			<when test="publishDateEnd != ''">
+	           				AND PUBLISH_DATE BETWEEN #{publishDateStart} AND #{publishDateEnd}
+	           			</when>
+	           			<otherwise>
+	           				AND PUBLISH_DATE &gt;= #{publishDateStart}
+	           			</otherwise>
+	           		</choose>
+				</when>
+				<otherwise>
+					<if test="publishDateEnd != ''">
+						AND PUBLISH_DATE &lt;= #{publishDateEnd}
+					</if>
+				</otherwise>
+            </choose>
+            <if test="categoryStart != ''">
+            	AND CATEGORY_CODE BETWEEN #{categoryStart} AND #{categoryEnd}
+            </if>
+            <if test="searchStatus != -1">
+            	AND STATUS_CODE = #{searchStatus}
+            </if>
+		</where>
+	</sql>
+	
+	<sql id="orderby">
+	
+	</sql>
+	
 	<resultMap type="com.lightbrary.book.model.BookDto" 
 		id="BookResultMap">
 		
@@ -19,6 +55,20 @@
 		<result column="DEL_FLAG" property="delFlag"/>
 		<result column="IMAGE_NAME" property="imageName"/>
 	</resultMap>
+	
+	<select id="selectRankTenBook" resultMap="BookResultMap">
+		SELECT B2.NO, B2.NAME, BCOUNT.CNT
+		FROM BOOK B2
+		JOIN (
+		    SELECT COUNT(B.NAME) CNT, B.NAME NAME
+		    FROM RENT R
+		    JOIN BOOK B
+		    ON R.BOOK_NO = B.NO
+		    GROUP BY B.NAME
+		    ORDER BY CNT DESC) BCOUNT
+		ON BCOUNT.NAME = B2.NAME
+		WHERE ROWNUM &lt;= 10;
+	</select>
 	
 	<select id="selectOneBook" parameterType="int" resultMap="BookResultMap">
 		SELECT B.*, BI.STORED_FILE_NAME IMAGE_NAME
@@ -39,35 +89,7 @@
 	            (
 		            SELECT *
 		            FROM BOOK
-		            <where>
-			            DEL_FLAG = 'N'
-			            <if test="searchName != ''">AND NAME LIKE '%' || #{searchName} || '%'</if>
-			            <if test="searchWriter != ''">AND WRITER LIKE '%' || #{searchWriter} || '%'</if>
-			            <if test="searchPublish != ''">AND PUBLISH LIKE '%' || #{searchPublish} || '%'</if>
-			            <choose>
-			            	<when test="publishDateStart != ''">
-			            		<choose>
-			            			<when test="publishDateEnd != ''">
-			            				AND PUBLISH_DATE BETWEEN #{publishDateStart} AND #{publishDateEnd}
-			            			</when>
-			            			<otherwise>
-			            				AND PUBLISH_DATE &gt;= #{publishDateStart}
-			            			</otherwise>
-			            		</choose>
-							</when>
-							<otherwise>
-								<if test="publishDateEnd != ''">
-									AND PUBLISH_DATE &lt;= #{publishDateEnd}
-								</if>
-							</otherwise>
-			            </choose>
-			            <if test="categoryStart != ''">
-			            	AND CATEGORY_CODE BETWEEN #{categoryStart} AND #{categoryEnd}
-			            </if>
-			            <if test="searchStatus != -1">
-			            	AND STATUS_CODE = #{searchStatus}
-			            </if>
-		            </where>
+		            <include refid="search"/>
 				) B
 		        JOIN BOOK_IMAGE BI
 		        ON B.IMAGE_NO = BI.NO
@@ -80,41 +102,11 @@
 	<select id="totalCountBook" parameterType="com.lightbrary.book.model.BookListParamDto" resultType="int">
         SELECT COUNT(*)
         FROM
-            (
+        (
             SELECT *
             FROM BOOK
-            <where>
-	            DEL_FLAG = 'N'
-	            <if test="searchName != ''">AND NAME LIKE '%' || #{searchName} || '%'</if>
-	            <if test="searchWriter != ''">AND WRITER LIKE '%' || #{searchWriter} || '%'</if>
-	            <if test="searchPublish != ''">AND PUBLISH LIKE '%' || #{searchPublish} || '%'</if>
-	            <choose>
-	            	<when test="publishDateStart != ''">
-	            		<choose>
-	            			<when test="publishDateEnd != ''">
-	            				AND PUBLISH_DATE BETWEEN #{publishDateStart} AND #{publishDateEnd}
-	            			</when>
-	            			<otherwise>
-	            				AND PUBLISH_DATE &gt;= #{publishDateStart}
-	            			</otherwise>
-	            		</choose>
-					</when>
-					<otherwise>
-						<if test="publishDateEnd != ''">
-							AND PUBLISH_DATE &lt;= #{publishDateEnd}
-						</if>
-					</otherwise>
-	            </choose>
-	            <if test="categoryStart != ''">
-	            	AND CATEGORY_CODE BETWEEN #{categoryStart} AND #{categoryEnd}
-	            </if>
-    			<if test="searchStatus != -1">
-	            	AND STATUS_CODE = #{searchStatus}
-	            </if>
-            </where>
-            ) B
-        JOIN BOOK_IMAGE BI
-        ON B.IMAGE_NO = BI.NO
+            <include refid="search"/>
+        )
 	</select>
 	
 	<insert id="insertOneBook" parameterType="bookDto"
