@@ -117,5 +117,11 @@ public class MemberDaoImpl implements MemberDao{
 		return sqlSession.update(namespace + "resetPassword", paramMap);
 	}
 
+	@Override
+	public int checkPhone(String phone) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + "checkPhone", phone);
+	}
+
 
 }

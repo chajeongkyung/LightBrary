@@ -104,6 +104,12 @@
 		WHERE EMAIL = #{email}
 	</select>
 	
+	<select id="checkPhone" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE PHONE = #{phone}
+	</select>
+	
 	<select id="memberExist" parameterType="map" 
 		resultMap="memberResultMap">
 		SELECT NO, GRADE_CODE, NAME, EMAIL, PHONE, ADDRESS, CREATED_DATE, PASSWORD

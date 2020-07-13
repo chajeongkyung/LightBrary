@@ -21,6 +21,10 @@
 		$('#depth1Ul > li:nth-child(1)').addClass('active');
 	});
 
+	function moveListFnc(){
+		$('#memberListParamDto').attr('action', './list.do');
+		$('#memberListParamDto').submit();
+	}
 </script>
 </head>
 
@@ -86,8 +90,10 @@
 				
 				<!-- 상세페이지 버튼 start -->
 				<div class='btnWrap viewBtns fs0 tCenter'>
-				<a href="<%=request.getContextPath()%>/auth/list.do?curPage=${memberListParamDto.curPage}" class='btn grey'>목록</a>
-				<form action="./update.do" method="post">
+				
+				<a href="#none" onclick="moveListFnc()" class='btn grey'>목록</a>
+				
+				<form id="memberListParamDto" name="memberListParamDto" action="./update.do" method="post">
 					<input type="submit" class='btn green' value="수정">
 					
 					<input type="hidden" id="no" name="no" value="${memberListParamDto.no}">

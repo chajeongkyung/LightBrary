@@ -260,6 +260,15 @@ public class MemberController {
 		
 		return memberService.checkEmail(email);
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/member/checkPhone.do", method = RequestMethod.POST)
+	public int checkPhone(@RequestParam("phone") String phone) {
+
+		log.info("폰번호 중복체크 {}", phone);
+		
+		return memberService.checkPhone(phone);
+	}
 
 	@ResponseBody
 	@RequestMapping(value = "/member/checkAccount.do", method = RequestMethod.POST)
@@ -320,6 +329,13 @@ public class MemberController {
     		throws Exception {
         
       log.info("이메일전송 해보자");
+      log.info("{}",session);
+      log.info("{}",session);
+      log.info("{}",session);
+      log.info("{}",session);
+      log.info("{}",session);
+      log.info("{}",session);
+      log.info("{}",session);
       
       String password = CommonUtils.getRandomPassword();
       memberService.resetPassword(email, password);
@@ -337,25 +353,26 @@ public class MemberController {
           messageHelper.setText("회원님의 비밀번호는 " + password + "입니다.");
           
           mailSender.send(message);
-       
+          
+          
+        
       } catch (Exception e) {
          // TODO: handle exception
          System.out.println("------------이멜전송에러-------------");
       }
       
-      String url = "";
-	
-      MemberDto sessionMemberDto = (MemberDto)session.getAttribute("member");
+      MemberDto sessionMemberDto 
+		= (MemberDto)session.getAttribute("member");
       
-      if (sessionMemberDto.getGradeCode() == 0) {
-    	  int no = memberService.findMemberNo(email);
-    	  
-    	  url = "redirect:/auth/update.do?no="+no;
+      if (sessionMemberDto == null) {
+		
+		return "redirect:/login.do";
       } else {
-    	  url = "redirect:/login.do";
-      }
-	
-      return url;
+		int no = memberService.findMemberNo(email);
+		
+		return "redirect:/auth/update.do?no="+no;	
+		}
+
     }
 
 

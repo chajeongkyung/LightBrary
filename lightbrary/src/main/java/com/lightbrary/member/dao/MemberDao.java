@@ -18,6 +18,7 @@ public interface MemberDao {
 	
 	public MemberDto memberExist(String email, String password);
 	public int checkEmail(String email);
+	public int checkPhone(String phone);
 	public MemberDto findEmail(String userName, String phone);
 	public int resetPassword(String email, String password);
 	public int findMemberNo(String email);

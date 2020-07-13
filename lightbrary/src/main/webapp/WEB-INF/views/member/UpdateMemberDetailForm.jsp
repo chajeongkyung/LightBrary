@@ -131,7 +131,7 @@
 
 <script type="text/javascript">
 
-	var validationBoolean = true; 
+	var validationCount = 0; 
 	
 	function deleteMemberFnc() {
 		var answer = confirm('정말 탈퇴하시겠습니까?\n(연체 도서가 남아 있을 시 탈퇴가 불가합니다)');
@@ -142,17 +142,18 @@
 		}
 	}
 	function updateMemberFnc() {
-		var answer = confirm('회원 정보를 수정하시겠습니까?');
-		
-		if (answer) {
+
+		if (validationCount == 0) {
+			var answer = confirm('회원 정보를 수정하시겠습니까?');
 			
-			if (validationBoolean) {
+			if (answer) {
 				alert('성공적으로 수정되었습니다.');
 				return true;
 			}else {
 				return false;
 			}
 		}else {
+			alert('다시 확인해주세요');
 			return false;
 		}
 	}
@@ -162,13 +163,12 @@
 		
 		 if(isNull(nameObj)) {
 			 $('#alertNameErrorMsg').html("성함을 입력해 주세요.");
-			 validationBoolean = false;
+			 validationCount++;
 		 }else if (!isValidName(nameObj)) {
 			 $('#alertNameErrorMsg').html("한글과 영문 대 소문자를 사용하세요. (특수기호, 공백 사용 불가)");
-			 validationBoolean = false;
+			 validationCount++;
 		 }else {
 			 $('#alertNameErrorMsg').html("");	
-			 validationBoolean = true;
 		}
 	});
 
@@ -177,13 +177,12 @@
 		
 		 if(isNull(phoneObj)) {
 			 $('#alertPhoneErrorMsg').html("연락처를 입력해 주세요.");
-			 validationBoolean = false;
+			 validationCount++;
 		}else if (!isValidPhone(phoneObj)) {
 			 $('#alertPhoneErrorMsg').html("숫자만 입력해 주세요.");
-			 validationBoolean = false;
+			 validationCount++;
 		}else {
 			 $('#alertPhoneErrorMsg').html("");	
-			 validationBoolean = true;
 		}
 	});
 	
@@ -192,13 +191,12 @@
 		
 		 if(isNull(passwordObj)) {
 			 $('#alertPasswordErrorMsg').html("비밀번호를 입력해 주세요.");
-			 validationBoolean = false;
-		}else if (!isValidPassword(passwordObj)) {
-			 $('#alertPasswordErrorMsg').html("8~16자 영문 대 소문자,숫자,특수문자를 사용하세요.");
-			 validationBoolean = false;
+			 validationCount++;
+		 }else if (!isValidPassword(passwordObj)) {
+			 $('#alertPasswordErrorMsg').html("8~16자 영문,숫자,특수문자를 사용하세요.");
+			 validationCount++;
 		}else {
 			 $('#alertPasswordErrorMsg').html("");
-			 validationBoolean = true;
 		}
 	});
 
@@ -209,13 +207,12 @@
 		
 		 if(isNull(checkPasswordObj)) {
 			 $('#alertcheckPasswordErrorMsg').html("비밀번호를 확인해 주세요.");
-			 validationBoolean = false;
+			 validationCount++;
 		}else if (passwordObj != checkPasswordObj) {
 			 $('#alertcheckPasswordErrorMsg').html("비밀번호가 일치하지 않습니다.");
-			 validationBoolean = false;
+			 validationCount++;
 		}else {
 			 $('#alertcheckPasswordErrorMsg').html("");	
-			 validationBoolean = true;
 		}
 	});
 
@@ -224,10 +221,9 @@
 		
 		 if(isNull(addressObj)) {
 			 $('#alertAddressErrorMsg').html("주소를 입력해 주세요.");
-			 validationBoolean = false;
+			 validationCount++;
 		}else {
 			 $('#alertAddressErrorMsg').html("");
-			 validationBoolean = true;
 		}
 	});
 

@@ -241,7 +241,7 @@
 					</jsp:include>
 				</c:if>
 				
-				<form id='pagingForm' method="post">
+				<form id='pagingForm' name='memberListParamDto' method="post" action="./list.do">
 					<input type="hidden" id="no" name="no" value="${memberListParamDto.no}">
 					<input type="hidden" name="name" value="${memberListParamDto.name}">
 					<input type="hidden" name="email" value="${memberListParamDto.email}">

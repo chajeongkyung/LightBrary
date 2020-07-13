@@ -28,7 +28,7 @@
 						<div class='infoInputWrap'>
 							<input type="password" class='infoInput infoPassword' 
 								id="inputPassword" name="inputPassword" placeholder="비밀번호">
-								<p style="margin-bottom: 10px;" id="alertNoPasswordMsg"></p>
+								<p style="margin: 10px 0px 10px 0px;" id="alertNoPasswordMsg"></p>
 								<div class="text" style="margin-top: 10px;">	
 									본인 확인을 위해서 비밀번호를 입력해 주세요.
 								</div>
@@ -55,7 +55,7 @@
 		
 		if (passwordObj != '${member.password}') {
 			$('#alertNoPasswordMsg').html("비밀번호가 틀립니다. 다시 확인해 주세요.");
-			$("#alertNoPasswordMsg").css("color", "red");
+			$("#alertNoPasswordMsg").css("color", "#EC8686");
 			$("#alertNoPasswordMsg").attr('class', 'text');
 			return false;
 		}else {
