@@ -26,10 +26,10 @@ public class NoticeServiceImpl implements NoticeService{
 	public NoticeDao noticeDao;
 
 	@Override
-	public List<NoticeCategoryDto> selectMainNotice(String searchOption, 
+	public List<NoticeDto> selectMainNotice(String searchOption, 
 			String keyword, int start, int end, int categoryCode) {
 		// TODO Auto-generated method stub
-		List<NoticeCategoryDto> noticeList = noticeDao.selectMainNotice(searchOption,
+		List<NoticeDto> noticeList = noticeDao.selectMainNotice(searchOption,
 				keyword, start, end, categoryCode);
 		
 		return noticeList;
@@ -129,18 +129,24 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public int selectTotalNo(int no) {
-		// TODO Auto-generated method stub
-		return noticeDao.selectTotalNo(no);
-	}
-
-	@Override
 	public List<NoticeDto> mainNotice() {
 		// TODO Auto-generated method stub
 		return noticeDao.mainNotice();
 	}
 
-	
+	@Override
+	public NoticeCategoryDto nextWriteNotice(String searchOption, 
+			String keyword, int categoryCode, int rnum) {
+		// TODO Auto-generated method stub
+		return noticeDao.nextWriteNotice(searchOption, keyword, categoryCode, rnum);
+	}
+
+	@Override
+	public NoticeCategoryDto previousWriteNotice(String searchOption, String keyword,
+				int categoryCode, int rnum) {
+		// TODO Auto-generated method stub
+		return noticeDao.previousWriteNotice(searchOption, keyword, categoryCode, rnum);
+	}
 
 //	@Override
 //	public Map<String, Object> selectOneNotice(int no) {

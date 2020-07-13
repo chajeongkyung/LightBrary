@@ -44,10 +44,11 @@
 		});
 	}
 	
-	function listOnePageFnc(mNo){
+	function listOnePageFnc(mNo, rnum){
 		
 		var keywordObj = $('#keyword');
 		var searchOptionObj = $('#searchOption');
+		var hiddenNoticeCategoryObj = $('#hiddenNoticeCategory');
 		
 // 		var mNo = $('#no');
 		
@@ -56,22 +57,63 @@
 		url += './detailList.do?';
 // 		url += 'no=' + mNo.val();
 		url += 'no=' + mNo;
+		url += '&rnum=' + rnum;
 		url += '&keyword=' + keywordObj.val();
 		url += '&searchOption=' + searchOptionObj.val();
+		url += '&categoryCode=' + hiddenNoticeCategoryObj.val();
 		
 		location.href = url;
 
 		
 	}
 	
+// 	window.onload = function() {
+		
+// 		var noticeCategoryObj = document.getElementById('noticeCategory').value;
+		
+// 		if(noticeCategoryObj == -1){
+// 			$('#allNotice').parent().addClass('active');
+// 		} else if(noticeCategoryObj == 0){
+// 			$('#noticeNotice').parent().addClass('active');
+// 		} else if(noticeCategoryObj == 1){
+// 			$('#closedNotice').parent().addClass('active');
+// 		} else if(noticeCategoryObj == 2){
+// 			$('#eventNotice').parent().addClass('active');
+// 		}
+		
+// 	}
+	
+	$(function(){
+		
+		clearFilterFnc();
+		var hiddenNoticeCategoryObj = $('#hiddenNoticeCategory').val();
+		if(hiddenNoticeCategoryObj == -1){
+			$('#allNotice').parent().addClass('active');
+		} else if(hiddenNoticeCategoryObj == 0){
+			$('#noticeNotice').parent().addClass('active');
+		} else if(hiddenNoticeCategoryObj == 1){
+			$('#closedNotice').parent().addClass('active');
+		} else if(hiddenNoticeCategoryObj == 2){
+			$('#eventNotice').parent().addClass('active');
+		}
+	});
+	
+	function clearFilterFnc(){
+		$('#allNotice').parent().removeClass("active");
+		$('#noticeNotice').parent().removeClass("active");
+		$('#closedNotice').parent().removeClass("active");
+		$('#eventNotice').parent().removeClass("active");
+	}
+	
 	function pageMoveCategoryAllFnc(){
+		
 		$('#hiddenNoticeCategory').val(-1);
 		$('#pagingForm').submit();
 	}
 	
 	function pageMoveCategoryNoticeFnc(){
 		$('#hiddenNoticeCategory').val(0);
-		$('#pagingForm').submit();
+		$('#pagingForm').submit();	
 	}
 	
 	function pageMoveCategoryClosedFnc(){
@@ -82,6 +124,7 @@
 	function pageMoveCategoryEventFnc(){
 		$('#hiddenNoticeCategory').val(2);
 		$('#pagingForm').submit();
+		$('#eventNotice').parent().addClass('active');
 	}
 	
 </script>
@@ -151,16 +194,16 @@
 				<div class='listSettings'>
 					<ul class='settings fs0'>
 						<li class='active'>
-							<a href="#none" onclick="pageMoveCategoryAllFnc();" class='text'>전체보기</a>
+							<a href="#none" id="allNotice" onclick="pageMoveCategoryAllFnc();" class='text'>전체보기</a>
 						</li>
 						<li>
-							<a href="#none" onclick="pageMoveCategoryNoticeFnc();" class='text'>공지</a>
+							<a href="#none" id="noticeNotice" onclick="pageMoveCategoryNoticeFnc();" class='text'>공지</a>
 						</li>
 						<li>
-							<a href="#none" onclick="pageMoveCategoryClosedFnc();" class='text'>휴관</a>
+							<a href="#none" id="closedNotice" onclick="pageMoveCategoryClosedFnc();" class='text'>휴관</a>
 						</li>
 						<li>
-							<a href="#none" onclick="pageMoveCategoryEventFnc();" class='text'>행사</a>
+							<a href="#none" id="eventNotcie" onclick="pageMoveCategoryEventFnc();" class='text'>행사</a>
 						</li>
 						
 					</ul>
@@ -252,7 +295,7 @@
 									
 									<td style="text-align: center;">
 									
-										 <a href="#" class="ellipsis" onclick="listOnePageFnc(${noticeDto.no})">
+										 <a href="#" class="ellipsis" onclick="listOnePageFnc(${noticeDto.no}, ${noticeDto.rnum})">
 												${noticeDto.title}
 										 </a>	
 										

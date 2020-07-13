@@ -41,6 +41,7 @@
 			javaType="java.util.Date"/>
 		<result column="MODIFIEDDATE" property="modifiedDate"
 			javaType="java.util.Date"/>
+		<result column="RNUM" property="rnum"/>
 	</resultMap>
 	
 	<resultMap type="com.lightbrary.notice.model.NoticeCategoryDto" 
@@ -65,12 +66,13 @@
 		<result column="SCHEDULE_FLAG"	property="scheduleFlag"	/>
 		<result column="PREVNUM"	property="prevNum"	/>
 		<result column="NEXTNUM"	property="nextNum"	/>
-	
+		<result column="RNUM" property="rnum"/>
+		
 	</resultMap>
 	
 
 	<select id="mainNotice" resultMap="noticeCategoryResultMap">
-		SELECT N.RNUM, N.NO, N.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
+		SELECT N.RNUM RNUM, N.NO, N.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
 			N.SCHEDULE_FLAG , N.CREATED_DATE, N.CODE
    		FROM (
       			SELECT ROWNUM RNUM, M.NO, M.NAME , M.TITLE , M.START_DATE, M.END_DATE, 
@@ -84,14 +86,14 @@
 			        ORDER BY NO DESC
            		) M
         ) N
-        WHERE N.RNUM &lt;= 5
+        WHERE RNUM &lt;= 5
 	</select>
 	
 	
 	<select id="selectMainNotice" parameterType="map"
 		resultMap="noticeCategoryResultMap">
 
-	SELECT N.RNUM, N.NO, N.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
+	SELECT N.RNUM RNUM, N.NO, N.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
 	N.SCHEDULE_FLAG , N.CREATED_DATE, N.CODE
    		FROM (
       			SELECT ROWNUM RNUM, M.NO, M.NAME , M.TITLE , M.START_DATE, M.END_DATE, 
@@ -108,9 +110,55 @@
 			        ORDER BY NO DESC
            		) M
         ) N
-        WHERE N.RNUM BETWEEN #{start} AND #{end}  
+        WHERE RNUM BETWEEN #{start} AND #{end}  
 	
 	</select>
+	
+	<select id="previousWriteNotice" resultMap="noticeCategoryResultMap"
+		parameterType="map">
+		SELECT N.RNUM RNUM, N.NO, N.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
+		N.SCHEDULE_FLAG , N.CREATED_DATE, N.CODE
+   		FROM (
+      			SELECT ROWNUM RNUM, M.NO, M.NAME , M.TITLE , M.START_DATE, M.END_DATE, 
+                    M.SCHEDULE_FLAG , M.CREATED_DATE, M.CODE
+       			FROM(
+	           		SELECT N.NO, NC.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
+                    NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE 
+                    FROM NOTICE N
+                    JOIN NOTICE_CATEGORY NC
+                    ON N.CATEGORY_CODE = NC.CODE
+            		
+            		<include refid="search"></include>
+            		
+			        ORDER BY NO DESC
+           		) M
+        ) N
+        WHERE RNUM = ${rnum} - 1
+	</select>
+	
+	<select id="nextWriteNotice" resultMap="noticeCategoryResultMap"
+		parameterType="map">
+		SELECT N.RNUM RNUM, N.NO, N.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
+		N.SCHEDULE_FLAG , N.CREATED_DATE, N.CODE
+   		FROM (
+      			SELECT ROWNUM RNUM, M.NO, M.NAME , M.TITLE , M.START_DATE, M.END_DATE, 
+                    M.SCHEDULE_FLAG , M.CREATED_DATE, M.CODE
+       			FROM(
+	           		SELECT N.NO, NC.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
+                    NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE 
+                    FROM NOTICE N
+                    JOIN NOTICE_CATEGORY NC
+                    ON N.CATEGORY_CODE = NC.CODE
+            		
+            		<include refid="search"></include>
+            		
+			        ORDER BY NO DESC
+           		) M
+        ) N
+        WHERE RNUM = ${rnum} + 1
+	</select>
+	
+	
 	
 	<select id="selectNotice" parameterType="map"
 		resultMap="noticeCategoryResultMap">

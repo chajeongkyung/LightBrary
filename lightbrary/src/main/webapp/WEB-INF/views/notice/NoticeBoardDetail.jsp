@@ -55,7 +55,7 @@ $("#nxtDoc").on("click",function(){
 		var noObj = $('#no');
 		var keywordObj = $('#keyword');
 		var searchOptionObj = $('#searchOption');
-		
+		var categoryCodeObj = $('#categoryCode');
 	
 		var url = '';
 		
@@ -63,65 +63,52 @@ $("#nxtDoc").on("click",function(){
 		url += 'no=' + noObj.val();
 		url += '&keyword=' + keywordObj.val();
 		url += '&searchOption=' + searchOptionObj.val();
-		
+		url += '&categoryCode=' + categoryCodeObj.val();
 		location.href = url;
 	}
 
 
-	function nextPageFnc(obj, event){
+	function nextPageFnc(){
 		
-		var noticeNoObj = '';
+		var noObj = $('#no');
+		var rnumObj = $('#rnum');
+		var categoryCodeObj = $('#categoryCode');
 		var keywordObj = $('#keyword');
 		var searchOptionObj = $('#searchOption');
 		
-		
-		noticeNoObj = $('#no').val();
-		
 		var url = '';
 		
-		if (noticeNoObj < $('#totalNo').val()) {
-			url += './detailList.do?';
-			url += 'no=' + (parseInt(noticeNoObj) + 1);
-			url += '&keyword=' + keywordObj.val();
-			url += '&searchOption=' + searchOptionObj.val();
-				
-			location.href = url;
-			return false;
-			
-		}else{
-			return true;			
+		url += './nextPage.do?';
+		url += 'no=' + noObj.val();
+		url += '&rnum=' + rnumObj.val();
+		url += '&keyword=' + keywordObj.val();
+		url += '&searchOption=' + searchOptionObj.val();
+		url += '&categoryCode=' + categoryCodeObj.val();
+		
+		location.href = url;
+		
 		}
 		
-
-	}	
-	
 	function previousPageFnc() {
 		
-		var noticeNoObj = '';
+		
+		var noObj = $('#no');
+		var rnumObj = $('#rnum');
+		var categoryCodeObj = $('#categoryCode');
 		var keywordObj = $('#keyword');
 		var searchOptionObj = $('#searchOption');
 		
-		noticeNoObj = $('#no').val();
-		
 		var url = '';
 		
-		if(noticeNoObj > 1){
+		url += './previousPage.do?';
+		url += 'no=' + noObj.val();
+		url += '&rnum=' + rnumObj.val();
+		url += '&keyword=' + keywordObj.val();
+		url += '&searchOption=' + searchOptionObj.val();
+		url += '&categoryCode=' + categoryCodeObj.val();
+		location.href = url;
 			
-			url += './detailList.do?';
-			url += 'no=' + (parseInt(noticeNoObj) - 1);
-			url += '&keyword=' + keywordObj.val();
-			url += '&searchOption=' + searchOptionObj.val();
-			
-			location.href = url;
-	
-			return false;
-		}else{
-			return true;
 		}
-		
-		
-	}
-	
 
 </script>
 
@@ -236,8 +223,12 @@ $("#nxtDoc").on("click",function(){
 					</table>
 					<div id='viewPaging' class='overH'>
 					
-						<a id="preDoc" href="#none" class='viewPrevBtn fLeft' onclick="previousPageFnc()" >이전 게시글</a>
-						<a id="nxtDoc" href="#none" class='viewNextBtn fRight' onclick="nextPageFnc()">다음 게시글</a>
+						<c:if test="${rnum != 1}">
+							<a id="preDoc" href="#none" class='viewPrevBtn fLeft' onclick="previousPageFnc()" >이전 게시글</a>
+						</c:if>
+						<c:if test="${rnum != maxRnum}">
+							<a id="nxtDoc" href="#none" class='viewNextBtn fRight' onclick="nextPageFnc()">다음 게시글</a>
+						</c:if>
 						
 <!-- 						<a id="preDoc" href="#none" class='viewPrevBtn fLeft'>이전 게시글</a> -->
 <!-- 						<a id="nxtDoc" href="#none" class='viewNextBtn fRight'>다음 게시글</a> -->
@@ -254,8 +245,10 @@ $("#nxtDoc").on("click",function(){
 						<input type="hidden" class='searchInput fLeft' id="keyword"
 							name="keyword" value="${keyword}">
 						<input type="hidden" id='totalNo' name='totalNo' value="${totalNo}">
-					
-					<a href="#" class='btn grey' onclick="pageMoveListFnc()">목록</a>
+						<input type="hidden" id='categoryCode' name='categoryCode' value="${categoryCode}">
+						<input type="hidden" id='rnum' name='rnum' value="${rnum}">
+						
+					<a href="#none" class='btn grey' onclick="pageMoveListFnc()">목록</a>
 					<c:if test="${member.gradeCode eq 0}">
 						<a href="./update.do?no=${noticeDto.no}" class='btn green'>수정</a>
 					</c:if>

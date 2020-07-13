@@ -86,10 +86,10 @@ public class NoticeController {
 		
 		int totalCount = noticeService.selectTotalCountNotice(searchOption, keyword, categoryCode);
 		
-//		if(no != 0) {
-//			curPage 
-//				= noticeService.selectCurPageNotice(searchOption, keyword, no, categoryCode);
-//		}
+		if(no != 0) {
+			curPage 
+				= noticeService.selectCurPageNotice(searchOption, keyword, no, categoryCode);
+		}
 		
 		HashMap<String, Object> searchMap 
 		= new HashMap<String, Object>();
@@ -102,7 +102,7 @@ public class NoticeController {
 		int start = pagingInfo .getPageBegin();
 		int end = pagingInfo .getPageEnd();
 		
-		List<NoticeCategoryDto> noticeList = noticeService.selectMainNotice(searchOption, keyword, start, end, categoryCode);
+		List<NoticeDto> noticeList = noticeService.selectMainNotice(searchOption, keyword, start, end, categoryCode);
 		
 		model.addAttribute("noticeList", noticeList);
 		model.addAttribute("pagingInfo", pagingInfo);
@@ -219,7 +219,8 @@ public class NoticeController {
 	}
 							 
 	@RequestMapping(value = "/notice/detailList.do", method = RequestMethod.GET)
-	public String NoticeBoardDetail(String keyword, String searchOption, Locale locale, Model model, int no) {
+	public String NoticeBoardDetail(String keyword, String searchOption, Locale locale, Model model, int no
+			, int categoryCode, int rnum) {
 		
 		System.out.println(keyword);
 		System.out.println(searchOption);
@@ -230,11 +231,8 @@ public class NoticeController {
 				
 		String formattedDate = format1.format(time);
 		
-//		int totalCount = noticeService.selectTotalCountNotice(searchOption, keyword);
-		
-		int totalNo = noticeService.selectTotalNo(no);
-		
 		NoticeCategoryDto noticeDto = noticeService.selectOneNotice(no);
+		int totalCount = noticeService.selectTotalCountNotice(searchOption, keyword, categoryCode);
 		
 		model.addAttribute("noticeDto", noticeDto);
 		
@@ -242,8 +240,10 @@ public class NoticeController {
 		
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("searchOption", searchOption);
-		model.addAttribute("totalNo", totalNo);
-//		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("categoryCode", categoryCode);
+		model.addAttribute("rnum", rnum);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("maxRnum", totalCount);
 		
 		return "/notice/NoticeBoardDetail";
 		
@@ -299,15 +299,40 @@ public class NoticeController {
 //	}
 	
 	
-	@RequestMapping(value = "/notice/nextBorad.do", method = RequestMethod.GET)
-	public String NoticeNextBoard(int no, Model model, NoticeCategoryDto noticeDto ) {
+	@RequestMapping(value = "/notice/nextPage.do", method = {RequestMethod.GET, RequestMethod.POST})
+	public String NoticeNextBoard(Model model, String searchOption,
+			String keyword, int categoryCode, int rnum) {
+		
 		log.info("call memberUpdate! {}");
 		
-		noticeDto = noticeService.selectOneNotice(no);
+		NoticeCategoryDto noticeDto = noticeService.nextWriteNotice(searchOption, keyword, categoryCode, rnum);
+		int maxRnum = noticeService.selectTotalCountNotice(searchOption, keyword, categoryCode);
 		
 		model.addAttribute("noticeDto", noticeDto);
+		model.addAttribute("searchOption", searchOption);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("categoryCode", categoryCode);
+		model.addAttribute("rnum", noticeDto.getRnum());
+		model.addAttribute("maxRnum", maxRnum);
+		return "/notice/NoticeBoardDetail";
+	}
+	
+	@RequestMapping(value = "/notice/previousPage.do", method = {RequestMethod.GET, RequestMethod.POST})
+	public String NoticeNextBoarda(Model model, String searchOption,
+			String keyword, int categoryCode, int rnum) {
 		
-		return "/notice/NoticeUpdateForm";
+		log.info("call memberUpdate! {}");
+		
+		NoticeCategoryDto noticeDto = noticeService.previousWriteNotice(searchOption, keyword, categoryCode, rnum);
+		int maxRnum = noticeService.selectTotalCountNotice(searchOption, keyword, categoryCode);
+		
+		model.addAttribute("noticeDto", noticeDto);
+		model.addAttribute("searchOption", searchOption);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("categoryCode", categoryCode);
+		model.addAttribute("rnum", noticeDto.getRnum());
+		model.addAttribute("maxRnum", maxRnum);
+		return "/notice/NoticeBoardDetail";
 	}
 	
 		

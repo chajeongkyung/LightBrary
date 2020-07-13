@@ -10,10 +10,17 @@ import com.lightbrary.notice.model.NoticeDto;
 
 public interface NoticeService {
 
-	public List<NoticeCategoryDto> selectMainNotice(String searchOption, 
+	public List<NoticeDto> selectMainNotice(String searchOption, 
 			String keyword, int start, int end, int categoryCode);
 
 	public List<NoticeDto> mainNotice();
+
+	public NoticeCategoryDto nextWriteNotice(String searchOption, 
+			String keyword, int categoryCode, int rnum);
+	
+	public NoticeCategoryDto previousWriteNotice(String searchOption, 
+			String keyword, int categoryCode, int rnum);
+
 	
 	public List<NoticeCategoryDto> selectAllNotice();
 	
@@ -40,9 +47,5 @@ public interface NoticeService {
 			, String keyword, int no, int categoryCode);
 	
 	public NoticeCategoryDto selectNextNotice(int no);
-	
-	public int selectTotalNo(int no);
-	
-	
 	
 }

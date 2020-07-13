@@ -12,6 +12,7 @@ public class NoticeDto {
 	private Date endDate;
 	private Date createdDate;
 	private Date modifiedDate;
+	private int rnum;
 	
 	public NoticeDto() {
 		super();
@@ -24,10 +25,11 @@ public class NoticeDto {
 		endDate = new Date();       
 		createdDate = new Date();   
 		modifiedDate = new Date();  
+		rnum = 0;
 	}
 
 	public NoticeDto(int no, int memberNo, String categoryCode, String title, String content, Date startDate,
-			Date endDate, Date createdDate, Date modifiedDate) {
+			Date endDate, Date createdDate, Date modifiedDate, int rnum) {
 		super();
 		this.no = no;
 		this.memberNo = memberNo;
@@ -38,6 +40,7 @@ public class NoticeDto {
 		this.endDate = endDate;
 		this.createdDate = createdDate;
 		this.modifiedDate = modifiedDate;
+		this.rnum = rnum;
 	}
 
 	public int getNo() {
@@ -112,15 +115,20 @@ public class NoticeDto {
 		this.modifiedDate = modifiedDate;
 	}
 
-	@Override
-	public String toString() {
-		return "NoticeDto [no=" + no + ", memberNo=" + memberNo 
-				+ ", categoryCode=" + categoryCode + ", title=" + title
-				+ ", content=" + content + ", startDate=" + startDate 
-				+ ", endDate=" + endDate + ", createdDate="
-				+ createdDate + ", modifiedDate=" + modifiedDate + "]";
+	public int getRnum() {
+		return rnum;
 	}
 
+	public void setRnum(int rnum) {
+		this.rnum = rnum;
+	}
+
+	@Override
+	public String toString() {
+		return "NoticeDto [no=" + no + ", memberNo=" + memberNo + ", categoryCode=" + categoryCode + ", title=" + title
+				+ ", content=" + content + ", startDate=" + startDate + ", endDate=" + endDate + ", createdDate="
+				+ createdDate + ", modifiedDate=" + modifiedDate + ", rnum=" + rnum + "]";
+	}
 	
 	
 }

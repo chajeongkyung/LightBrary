@@ -21,7 +21,7 @@ public class NoticeDaoImpl implements NoticeDao{
 	String namespace = "com.lightbrary.notice.";
 
 	@Override
-	public List<NoticeCategoryDto> selectMainNotice(String searchOption, 
+	public List<NoticeDto> selectMainNotice(String searchOption, 
 			String keyword, int start, int end, int categoryCode) {
 		// TODO Auto-generated method stub
 		
@@ -32,7 +32,7 @@ public class NoticeDaoImpl implements NoticeDao{
 		map.put("end", end);
 		map.put("categoryCode", categoryCode);
 		
-		List<NoticeCategoryDto> noticeList = 
+		List<NoticeDto> noticeList = 
 				sqlSession.selectList(namespace + "selectMainNotice", map);
 		System.out.println("확인2");
 		
@@ -142,15 +142,36 @@ public class NoticeDaoImpl implements NoticeDao{
 	}
 
 	@Override
-	public int selectTotalNo(int no) {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne(namespace + "selectTotalNo", no);
-	}
-
-	@Override
 	public List<NoticeDto> mainNotice() {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList(namespace + "mainNotice");
+	}
+
+	@Override
+	public NoticeCategoryDto nextWriteNotice(String searchOption, 
+			String keyword, int categoryCode, int rnum) {
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("searchOption", searchOption);
+		map.put("keyword", keyword);
+		map.put("categoryCode", categoryCode);
+		map.put("rnum", rnum);
+		
+		return sqlSession.selectOne(namespace + "nextWriteNotice", map);
+	}
+
+	@Override
+	public NoticeCategoryDto previousWriteNotice(String searchOption, String keyword,
+				int categoryCode, int rnum) {
+		// TODO Auto-generated method stub
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("searchOption", searchOption);
+		map.put("keyword", keyword);
+		map.put("categoryCode", categoryCode);
+		map.put("rnum", rnum);
+		
+		return sqlSession.selectOne(namespace + "previousWriteNotice", map);
 	}
 
 	
