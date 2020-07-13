@@ -69,8 +69,7 @@
 	</resultMap>
 	
 
-	<select id="mainNotice" parameterType="map" 
-		resultMap="noticeCategoryResultMap">
+	<select id="mainNotice" resultMap="noticeCategoryResultMap">
 		SELECT N.RNUM, N.NO, N.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
 			N.SCHEDULE_FLAG , N.CREATED_DATE, N.CODE
    		FROM (

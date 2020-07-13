@@ -13,7 +13,7 @@ public interface NoticeService {
 	public List<NoticeCategoryDto> selectMainNotice(String searchOption, 
 			String keyword, int start, int end, int categoryCode);
 	
-	public List<NoticeCategoryDto> mainNotice(NoticeCategoryDto noticeCategoryDto);
+	public List<NoticeDto> mainNotice();
 	
 	public List<NoticeCategoryDto> selectAllNotice();
 	

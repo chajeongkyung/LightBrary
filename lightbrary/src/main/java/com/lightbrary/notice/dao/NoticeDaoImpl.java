@@ -148,9 +148,9 @@ public class NoticeDaoImpl implements NoticeDao{
 	}
 
 	@Override
-	public List<NoticeCategoryDto> mainNotice(NoticeCategoryDto noticeCategoryDto) {
+	public List<NoticeDto> mainNotice() {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList(namespace + "mainNotice", noticeCategoryDto);
+		return sqlSession.selectList(namespace + "mainNotice");
 	}
 
 	

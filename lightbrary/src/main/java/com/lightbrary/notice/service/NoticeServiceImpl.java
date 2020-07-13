@@ -135,9 +135,9 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public List<NoticeCategoryDto> mainNotice(NoticeCategoryDto noticeCategoryDto) {
+	public List<NoticeDto> mainNotice() {
 		// TODO Auto-generated method stub
-		return noticeDao.mainNotice(noticeCategoryDto);
+		return noticeDao.mainNotice();
 	}
 
 	

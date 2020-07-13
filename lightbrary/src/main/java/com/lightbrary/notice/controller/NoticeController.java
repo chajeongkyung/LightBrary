@@ -86,10 +86,10 @@ public class NoticeController {
 		
 		int totalCount = noticeService.selectTotalCountNotice(searchOption, keyword, categoryCode);
 		
-		if(no != 0) {
-			curPage 
-				= noticeService.selectCurPageNotice(searchOption, keyword, no, categoryCode);
-		}
+//		if(no != 0) {
+//			curPage 
+//				= noticeService.selectCurPageNotice(searchOption, keyword, no, categoryCode);
+//		}
 		
 		HashMap<String, Object> searchMap 
 		= new HashMap<String, Object>();
