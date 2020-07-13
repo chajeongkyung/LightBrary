@@ -98,5 +98,11 @@ public class MemberServiceImpl implements MemberService{
 		return memberDao.findMemberNo(email);
 	}
 
+	@Override
+	public int checkPhone(String phone) {
+		// TODO Auto-generated method stub
+		return memberDao.checkPhone(phone);
+	}
+
 	
 }

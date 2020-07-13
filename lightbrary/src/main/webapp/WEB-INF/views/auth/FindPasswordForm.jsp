@@ -26,7 +26,7 @@
 					<form action='./sendEmail.do' id="findPasswordForm" method='post' class='infoForm'>
 						<div class='infoInputWrap'>
 							<input type="text" class='infoInput infoName' id="email" name="email" placeholder="이메일">
-								<p style="margin-bottom: 10px;" id="alertNoAccountMsg"></p>
+								<p style="margin: 10px 0 10px 0;" id="alertNoAccountMsg"></p>
 								<div class="text" style="margin-top: 10px; line-height: 120%;">	
 									고객님께서 회원가입 시 입력한 이메일 주소로 비밀번호를 보내드립니다.
 								</div>
@@ -60,8 +60,7 @@ var emailObj = $('#email').val();
 			
 			if (data == 0) {
 					$('#alertNoAccountMsg').html("가입되지 않은 이메일입니다. 다시 확인해 주세요.");
-					$("#alertNoAccountMsg").css("color", "red");
-					$("#alertNoAccountMsg").attr('class', 'text');
+					$("#alertNoAccountMsg").attr('class', 'textRed');
 					
 				} else if (data == 1){
 					$('#alertNoAccountMsg').html("");

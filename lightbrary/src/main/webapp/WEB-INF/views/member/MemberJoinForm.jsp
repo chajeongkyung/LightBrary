@@ -41,9 +41,9 @@
 							<p id="alertPhoneErrorMsg" class="textRed alertMsgBox"></p>
 							<input type="text" style="margin-top: 20px;" class='infoInput infoEmail' id="email" name="email" placeholder="이메일">
 							<p id="alertEmailErrorMsg" class="textRed alertMsgBox"></p>
-							<input type="password" style="margin-top: 20px;" class='infoInput infoPassword' id="password" name="password" placeholder="비밀번호">
+							<input type="text" style="margin-top: 20px;" class='infoInput infoPassword' id="password" name="password" placeholder="비밀번호">
 							<p id="alertPasswordErrorMsg" class="textRed alertMsgBox"></p>
-							<input type="password" style="margin-top: 20px;" class='infoInput infoPassword' id="checkPassword" name="checkPassword" placeholder="비밀번호 재확인">
+							<input type="text" style="margin-top: 20px;" class='infoInput infoPassword' id="checkPassword" name="checkPassword" placeholder="비밀번호 재확인">
 							<p id="alertcheckPasswordErrorMsg" class="textRed alertMsgBox"></p>
 							<input type="text" style="margin-top: 20px;" class='infoInput infoLocation' id="address" name="address" placeholder="주소">
 							<p id="alertAddressErrorMsg" class="textRed alertMsgBox"></p>
@@ -74,17 +74,39 @@ $("#name").blur(function() {
 	}
 });
 
+
 $("#phone").blur(function() {
+	
 	var phoneObj = $('#phone').val();
 	
-	 if(isNull(phoneObj)) {
-		 $('#alertPhoneErrorMsg').html("연락처를 입력해 주세요.");
-	}else if (!isValidPhone(phoneObj)) {
-		 $('#alertPhoneErrorMsg').html("숫자만 입력해 주세요.");
-	}else {
-		 $('#alertPhoneErrorMsg').html("");	
-	}
-});
+	$.ajax({
+		url : "./checkPhone.do",
+		type : "POST",
+		data : "phone=" + phoneObj,
+		success : function(data) {
+			console.log("1 = 중복o / 0 = 중복x : "+ data);							
+			
+			if (data == 1) {
+					$('#alertPhoneErrorMsg').css('color', '#EC8686');	
+					$('#alertPhoneErrorMsg').html("사용중인 핸드폰번호입니다.");
+				} else if (data == 0){
+
+					if(isNull(phoneObj)){
+						$('#alertPhoneErrorMsg').css('color', '#EC8686');	
+						$('#alertPhoneErrorMsg').html('연락처를 입력해 주세요.');
+					} else if (!isValidPhone(phoneObj)){
+						$('#alertPhoneErrorMsg').css('color', '#EC8686');	
+						$('#alertPhoneErrorMsg').html('숫자만 입력해 주세요.');
+					} else{
+						$('#alertPhoneErrorMsg').css('color', 'blue');						
+						$('#alertPhoneErrorMsg').html('');
+					}	
+				}
+			}, error : function() {
+					console.log("실패");
+			}
+		});
+	});
 
 $("#email").blur(function() {
 	
@@ -123,10 +145,11 @@ $("#email").blur(function() {
 $("#password").blur(function() {
 	var passwordObj = $('#password').val();
 	
+	alert(passwordObj);
 	 if(isNull(passwordObj)) {
 		 $('#alertPasswordErrorMsg').html("비밀번호를 입력해 주세요.");
 	}else if (!isValidPassword(passwordObj)) {
-		 $('#alertPasswordErrorMsg').html("8~16자 영문 대 소문자,숫자,특수문자를 사용하세요.");
+		 $('#alertPasswordErrorMsg').html("8~16자 영문,숫자,특수문자를 사용하세요.");
 	}else {
 		 $('#alertPasswordErrorMsg').html("");	
 	}
