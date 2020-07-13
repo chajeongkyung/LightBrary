@@ -13,8 +13,9 @@ public interface NoticeDao {
 	public List<NoticeCategoryDto> selectMainNotice(String searchOption, 
 			String keyword, int start, int end, int categoryCode);
 	
+
 	public List<NoticeDto> mainNotice();
-	
+
 	public List<NoticeCategoryDto> selectAllNotice();
 	
 	public List<NoticeCategoryDto> selectNotice();
