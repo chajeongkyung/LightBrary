@@ -24,17 +24,23 @@
 			<div id='container'>
 				<h2 id='pageTitle'>비밀번호 찾기</h2>
 					<form action='./sendEmail.do' id="findPasswordForm" method='post' class='infoForm'>
+						
+						<!-- 입력폼 start -->
 						<div class='infoInputWrap'>
 							<input type="text" class='infoInput infoName' id="email" name="email" placeholder="이메일">
 								<p style="margin: 10px 0 10px 0;" id="alertNoAccountMsg"></p>
 								<div class="text" style="margin-top: 10px; line-height: 120%;">	
-									고객님께서 회원가입 시 입력한 이메일 주소로 비밀번호를 보내드립니다.
+									고객님께서 회원가입 시 입력한 이메일 주소로 초기화된 비밀번호를 보내드립니다.
 								</div>
 						</div>
+						<!-- //입력폼 end -->
+						
+						<!-- 상세페이지 버튼 start -->
 						<div class='btnWrap tCenter' style="margin-top: 30px;">
 							<input type="button" onclick="checkAccountFnc();" class='btn green' value="전송">
 							<a href="./login.do" class="subBtn text bold">로그인으로 돌아가기</a>
 						</div>
+						<!-- //상세페이지 버튼 end -->
 					</form>
 			</div>
 		<!-- //컨테이너 end -->
