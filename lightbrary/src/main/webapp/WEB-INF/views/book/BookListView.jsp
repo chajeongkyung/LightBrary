@@ -239,7 +239,7 @@
 							</div>
 						</div>
 						<!-- //분류 셀렉트 박스 end -->
-						<input type="hidden" id="searchStatus" name="searchStatus" value="-1">
+						<input type="hidden" id="searchStatus" name="searchStatus" value="${bookListParamDto.searchStatus}">
 					</fieldset>
 					<div class='btnWrap searchBtnWrap fs0 tCenter'>
 						<input type="button" onclick="bookListParamDtoSubmit();" class='btn green' value="검색">
