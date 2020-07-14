@@ -586,7 +586,7 @@ public class RentController {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
 		
-			messageHelper.setFrom("관리자"); // 보내는사람 생략하거나 하면 정상작동을 안함
+			messageHelper.setFrom("Lightbrary"); // 보내는사람 생략하거나 하면 정상작동을 안함
 			messageHelper.setTo(userEmail); // 받는사람 이메일
 			messageHelper.setSubject("Lightbrary 반납 안내"); // 메일제목은 생략이 가능하다
 			messageHelper.setText(memberName + "님 안녕하십니까, \nLightbrary에서 대출하신 도서 '" + bookName + "'의 반납 예정일은  '" + expireDate + "' 입니다."); // 메일 내용
