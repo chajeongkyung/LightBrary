@@ -378,9 +378,11 @@
 					</c:if>
 				</ul>
 				
-				<jsp:include page="/WEB-INF/views/common/paging.jsp">
-					<jsp:param value="${pagingInfo}" name="pagingMap"/>
-				</jsp:include>
+				<c:if test="${not empty bookDtoList}">
+					<jsp:include page="/WEB-INF/views/common/paging.jsp">
+						<jsp:param value="${pagingInfo}" name="pagingMap"/>
+					</jsp:include>
+				</c:if>
 				
 				<form name="bookListParamDto" action="./list.do" id='pagingForm' method="post">
 					<input type="hidden" id='curPage' name='curPage' 
