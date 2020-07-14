@@ -21,7 +21,6 @@ public interface NoticeService {
 	public NoticeCategoryDto previousWriteNotice(String searchOption, 
 			String keyword, int categoryCode, int rnum);
 
-	
 	public List<NoticeCategoryDto> selectAllNotice();
 	
 	public List<NoticeCategoryDto> selectNotice();

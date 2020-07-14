@@ -25,6 +25,8 @@ import com.lightbrary.notice.model.NoticeCategoryDto;
 import com.lightbrary.notice.model.NoticeDto;
 import com.lightbrary.notice.service.NoticeService;
 import com.lightbrary.util.Paging;
+import com.lightbrary.util.interceptor.Auth;
+import com.lightbrary.util.interceptor.Auth.Role;
 
 @Controller
 public class NoticeController {
@@ -44,7 +46,7 @@ public class NoticeController {
 		return noticeService.mkJson().toJSONString();
 	}
 	
-	
+	@Auth(role = Role.ADMIN)
 	@RequestMapping(value="/notice/deleteBatch.do", method = RequestMethod.POST, 
 			produces="text/plain;charset=UTF-8")
 	@ResponseBody
@@ -55,15 +57,8 @@ public class NoticeController {
 			noticeService.deleteNotice(no);
 		}
 	}
-	
-	@RequestMapping(value = "/NoticeBoard.do", method = RequestMethod.GET)
-	public String common() {
-		log.info("기본 템플릿");
-		
-		System.out.println("공지컨트롤러");
-		return "notice/NoticeBoard";
-	}
 
+	@Auth(role = Role.USER)
 	@RequestMapping(value = "/notice/list.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String NoticeBoardList(@RequestParam(defaultValue = "1") 
 			int curPage
@@ -74,7 +69,7 @@ public class NoticeController {
 			, Model model) { 
 		System.out.println("---------------------------------");
 		System.out.println("---------------------------------");
-		System.out.println(categoryCode);
+		System.out.println("코드" +categoryCode);
 		System.out.println("---------------------------------");
 		System.out.println("---------------------------------");
 		
@@ -99,8 +94,8 @@ public class NoticeController {
 		
 		Paging pagingInfo = new Paging(totalCount, curPage);
 		
-		int start = pagingInfo .getPageBegin();
-		int end = pagingInfo .getPageEnd();
+		int start = pagingInfo.getPageBegin();
+		int end = pagingInfo.getPageEnd();
 		
 		List<NoticeDto> noticeList = noticeService.selectMainNotice(searchOption, keyword, start, end, categoryCode);
 		
@@ -114,6 +109,7 @@ public class NoticeController {
 		return "notice/NoticeBoardMain";
 	}
 	
+	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/notice/add.do", method = RequestMethod.GET)
 	public String NoticeAdd() {
 		
@@ -122,6 +118,7 @@ public class NoticeController {
 		return "notice/NoticeForm";
 	}
 	
+	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/notice/addCtr.do"
 			, method = RequestMethod.POST)
 		public String NoticeAdd2(NoticeDto noticeDto) {
@@ -152,64 +149,66 @@ public class NoticeController {
 //	}
 	
 	//공지만 조회
-	@RequestMapping(value = "/notice/noticeList.do", method = RequestMethod.GET)
-	public String NoticeBoardNotice(Model model) {
-		
-		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
-				
-		Date time = new Date();
-				
-		String formattedDate = format.format(time);
-		
-		List<NoticeCategoryDto> noticeList = noticeService.selectNotice();
-		
-		model.addAttribute("serverTime", formattedDate);
-		model.addAttribute("noticeList", noticeList);
-		
-		System.out.println("확인1");
-		
-		return "notice/NoticeBoardMain";
-	}
+//	@Auth(role = Role.USER)
+//	@RequestMapping(value = "/notice/noticeList.do", method = RequestMethod.GET)
+//	public String NoticeBoardNotice(Model model) {
+//		
+//		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
+//				
+//		Date time = new Date();
+//				
+//		String formattedDate = format.format(time);
+//		
+//		List<NoticeCategoryDto> noticeList = noticeService.selectNotice();
+//		
+//		model.addAttribute("serverTime", formattedDate);
+//		model.addAttribute("noticeList", noticeList);
+//		
+//		System.out.println("확인1");
+//		
+//		return "notice/NoticeBoardMain";
+//	}
+//	
+//	//휴관만 조회
+//	@RequestMapping(value = "/notice/closedList.do", method = RequestMethod.GET)
+//	public String NoticeBoardClosed(Model model) {
+//		
+//		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
+//				
+//		Date time = new Date();
+//				
+//		String formattedDate = format.format(time);
+//		
+//		List<NoticeCategoryDto> noticeList = noticeService.selectClosedNotice();
+//		
+//		model.addAttribute("serverTime", formattedDate);
+//		model.addAttribute("noticeList", noticeList);
+//		
+//		System.out.println("확인1");
+//		
+//		return "notice/NoticeBoardMain";
+//	}
+//	
+//	@RequestMapping(value = "/notice/eventList.do", method = RequestMethod.GET)
+//	public String NoticeBoardEvent(Model model) {
+//		
+//		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
+//				
+//		Date time = new Date();
+//				
+//		String formattedDate = format.format(time);
+//		
+//		List<NoticeCategoryDto> noticeList = noticeService.selectEventNotice();
+//		
+//		model.addAttribute("serverTime", formattedDate);
+//		model.addAttribute("noticeList", noticeList);
+//		
+//		System.out.println("확인1");
+//		
+//		return "notice/NoticeBoardMain";
+//	}
 	
-	//휴관만 조회
-	@RequestMapping(value = "/notice/closedList.do", method = RequestMethod.GET)
-	public String NoticeBoardClosed(Model model) {
-		
-		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
-				
-		Date time = new Date();
-				
-		String formattedDate = format.format(time);
-		
-		List<NoticeCategoryDto> noticeList = noticeService.selectClosedNotice();
-		
-		model.addAttribute("serverTime", formattedDate);
-		model.addAttribute("noticeList", noticeList);
-		
-		System.out.println("확인1");
-		
-		return "notice/NoticeBoardMain";
-	}
-	
-	@RequestMapping(value = "/notice/eventList.do", method = RequestMethod.GET)
-	public String NoticeBoardEvent(Model model) {
-		
-		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
-				
-		Date time = new Date();
-				
-		String formattedDate = format.format(time);
-		
-		List<NoticeCategoryDto> noticeList = noticeService.selectEventNotice();
-		
-		model.addAttribute("serverTime", formattedDate);
-		model.addAttribute("noticeList", noticeList);
-		
-		System.out.println("확인1");
-		
-		return "notice/NoticeBoardMain";
-	}
-	
+	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/notice/deleteCtr.do", method = RequestMethod.GET)
 	public String NoticeBoardDelete(int no) {
 		
@@ -217,7 +216,8 @@ public class NoticeController {
 		
 		return "redirect:/notice/list.do";
 	}
-							 
+	
+	@Auth(role = Role.USER)
 	@RequestMapping(value = "/notice/detailList.do", method = RequestMethod.GET)
 	public String NoticeBoardDetail(String keyword, String searchOption, Locale locale, Model model, int no
 			, int categoryCode, int rnum) {
@@ -263,7 +263,7 @@ public class NoticeController {
 		
 	}
 	
-	
+	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/notice/update.do", method = RequestMethod.GET)
 	public String NoticeUpdate(int no, Model model, NoticeCategoryDto noticeDto ) {
 		log.info("call memberUpdate! {}");
@@ -275,7 +275,7 @@ public class NoticeController {
 		return "/notice/NoticeUpdateForm";
 	}
 	
-	
+	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/notice/updateCtr.do", method = RequestMethod.POST)
 	public String NoticeUpdateOne(Model model, NoticeCategoryDto noticeDto ) {
 		log.info("call noticeUpdate! {}");
@@ -298,7 +298,7 @@ public class NoticeController {
 //		
 //	}
 	
-	
+	@Auth(role = Role.USER)
 	@RequestMapping(value = "/notice/nextPage.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String NoticeNextBoard(Model model, String searchOption,
 			String keyword, int categoryCode, int rnum) {
@@ -317,6 +317,7 @@ public class NoticeController {
 		return "/notice/NoticeBoardDetail";
 	}
 	
+	@Auth(role = Role.USER)
 	@RequestMapping(value = "/notice/previousPage.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String NoticeNextBoarda(Model model, String searchOption,
 			String keyword, int categoryCode, int rnum) {

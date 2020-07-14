@@ -14,8 +14,11 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/sub.css">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" /> 
+ 
 
-<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-3.5.1.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
+<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
 
 <script type="text/javascript">
@@ -29,20 +32,49 @@
 			noArr[i] = noObjArr[i].value;
 		}
 		
-		var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
-		$.ajax({
-			type: "POST",
-			url: baseUrl + '/notice/deleteBatch.do',
-			data: "noArr=" + noArr,
-			success:function(){
-				alert('삭제되었습니다');
-				$('#pagingForm').submit();
-			},
-			error: function(){
-				alert('오류');
-			}
-		});
+		var result = confirm("게시글을 삭제 하시겠습니까?");
+		
+		if (result) {
+			var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
+			$.ajax({
+				type: "POST",
+				url: baseUrl + '/notice/deleteBatch.do',
+				data: "noArr=" + noArr,
+				success:function(){
+					alert('삭제되었습니다');
+					$('#pagingForm').submit();
+				},
+				error: function(){
+					alert('오류');
+				}
+			});
+		}else if (result == false){
+			alert("취소되었습니다.");
+		}
+		
 	}
+	
+	function seachFnc() {
+		
+		var keywordObj = $('#keyword');
+		var searchOptionObj = $('#searchOption');
+		var hiddenNoticeCategoryObj = $('#hiddenNoticeCategory');
+		var curPageObj = $('#curPage');
+		
+		var url = '';
+		
+		url += './list.do?';
+		url += 'curPage=' + curPageObj.val();
+		url += '&keyword=' + keywordObj.val();
+		url += '&searchOption=' + searchOptionObj.val();
+		url += '&categoryCode=' + hiddenNoticeCategoryObj.val();
+		
+		location.href = url;
+		
+// 		?curPage=&keyword=&searchOption=all&categoryCode=2
+// 		$('#selectSearch').submit();
+	}
+	
 	
 	function listOnePageFnc(mNo, rnum){
 		
@@ -92,9 +124,9 @@
 		} else if(hiddenNoticeCategoryObj == 0){
 			$('#noticeNotice').parent().addClass('active');
 		} else if(hiddenNoticeCategoryObj == 1){
-			$('#closedNotice').parent().addClass('active');
-		} else if(hiddenNoticeCategoryObj == 2){
 			$('#eventNotice').parent().addClass('active');
+		} else if(hiddenNoticeCategoryObj == 2){
+			$('#closedNotice').parent().addClass('active');
 		}
 	});
 	
@@ -105,8 +137,7 @@
 		$('#eventNotice').parent().removeClass("active");
 	}
 	
-	function pageMoveCategoryAllFnc(){
-		
+	function pageMoveCategoryAllFnc(){	
 		$('#hiddenNoticeCategory').val(-1);
 		$('#pagingForm').submit();
 	}
@@ -117,15 +148,15 @@
 	}
 	
 	function pageMoveCategoryClosedFnc(){
-		$('#hiddenNoticeCategory').val(1);
+		$('#hiddenNoticeCategory').val(2);
 		$('#pagingForm').submit();
 	}
 	
 	function pageMoveCategoryEventFnc(){
-		$('#hiddenNoticeCategory').val(2);
+		$('#hiddenNoticeCategory').val(1);
 		$('#pagingForm').submit();
-		$('#eventNotice').parent().addClass('active');
 	}
+	
 	
 </script>
 
@@ -149,7 +180,8 @@
 			<h2 id='pageTitle'>공지게시판</h2>
 			
 			<div class='searchForm type2'>
-				<form action="./list.do" method="post" id='selectSearch' style="margin-top: 65px;">
+				<form action="./list.do" method="post" id='selectSearch' name='selectSearch' 
+					onsubmit='return false' style="margin-top: 65px;">
 					<fieldset class="overH" style="height: 50px;">
 						<select class='searchSelect fLeft text' id="searchOption"
 							name="searchOption">
@@ -181,9 +213,10 @@
 						<input type="text" class='searchInput fLeft' id="keyword"
 							name="keyword" value="${searchMap.keyword}" placeholder="제목  or 내용 검색">
 						<div class='btnWrap fs0 tCenter fRight'>
-							<input type="submit" class='btn green' value="검색">
+							<input type="button" class='btn green' value="검색" onclick="seachFnc();">
 						</div>
 					</fieldset>
+					
 				</form>
 			</div>
 			
@@ -203,7 +236,7 @@
 							<a href="#none" id="closedNotice" onclick="pageMoveCategoryClosedFnc();" class='text'>휴관</a>
 						</li>
 						<li>
-							<a href="#none" id="eventNotcie" onclick="pageMoveCategoryEventFnc();" class='text'>행사</a>
+							<a href="#none" id="eventNotice" onclick="pageMoveCategoryEventFnc();" class='text'>행사</a>
 						</li>
 						
 					</ul>
@@ -281,13 +314,13 @@
 										
 										<c:if test="${noticeDto.code == 1}" >
 											<span class='bold textGreen'>
-												<c:out value="휴관"></c:out>
+												<c:out value="행사"></c:out>
 											</span>
 										</c:if>
 										
 										<c:if test="${noticeDto.code == 2}" >
 											<span class='bold textRed'>
-												<c:out value="행사"></c:out>
+												<c:out value="휴관"></c:out>
 											</span>
 										</c:if>
 										
@@ -394,10 +427,10 @@
 		
 		<form action="./list.do" id='pagingForm' method="get">
 			<input type="hidden" id='curPage' name='curPage' 
-				value="${pagingMap.noticePaging.curPage}">
-			<input type="hidden" class='searchInput fLeft' id="keyword"
+				value="${pagingInfo.curPage}">
+			<input type="hidden" class='searchInput fLeft' id="pageKeyword"
 				name="keyword" value="${searchMap.keyword}">
-			<input type="hidden" class='searchInput fLeft' id="searchOption"
+			<input type="hidden" class='searchInput fLeft' id="pageSearchOption"
 				name="searchOption" value="${searchMap.searchOption}">
 			<input type="hidden" id="hiddenNoticeCategory" name="categoryCode" value="${searchMap.categoryCode}">
 		</form>
