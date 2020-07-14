@@ -233,11 +233,11 @@
 							<ul class='overH' style="position: absolute; right: 24px; bottom: 30px;">
 								<li class="fLeft text bold" style="margin-right: 24px;">
 									상태 : 
-									<c:if test="${rentDto.bookStatus eq '대출'}">
-										<span class="textGreen">${rentDto.bookStatus}</span>
+									<c:if test="${rentDto.rentStatus eq '대출'}">
+										<span class="textGreen">${rentDto.rentStatus}</span>
 									</c:if>
-									<c:if test="${rentDto.bookStatus eq '연체'}">
-										<span class="textRed">${rentDto.bookStatus}</span>
+									<c:if test="${rentDto.rentStatus eq '연체'}">
+										<span class="textRed">${rentDto.rentStatus}</span>
 									</c:if>
 								</li>
 								<li class="fLeft text" style="margin-right: 24px;">

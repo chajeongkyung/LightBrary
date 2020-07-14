@@ -1,0 +1,45 @@
+@charset "UTF-8";
+
+#mainPageTitle {
+	padding: 265px 0 45px;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+	letter-spacing: -0.08em;
+	color: #464646;
+}
+
+#adminLinks {
+	margin-bottom: 76px;
+	text-align: center;
+}
+
+#adminLinks li {
+	margin: 0px 5px;
+}
+
+#adminLinks a{
+	display: block;
+	width: 101px;
+	height: 101px;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	font-size: 0;
+}
+
+#adminLinks li:first-child {
+	background-image: url('../img/main/admin_main_ico1.jpg');
+}
+
+#adminLinks li:nth-child(2) {
+	background-image: url('../img/main/admin_main_ico2.jpg');
+}
+
+#adminLinks li:nth-child(3) {
+	background-image: url('../img/main/admin_main_ico3.jpg');
+}
+
+#adminLinks li:nth-child(4) {
+	background-image: url('../img/main/admin_main_ico4.jpg');
+}

@@ -294,4 +294,12 @@ public class RentServiceImpl implements RentService{
 		// TODO Auto-generated method stub
 		return rentDao.updateOverdueSend(no);
 	}
+	
+	
+	
+	@Override
+	public List<RentDto> selectRentList(String searchOption, String keyword, int start, int end, String status) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

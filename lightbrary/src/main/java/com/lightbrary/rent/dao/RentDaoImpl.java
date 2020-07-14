@@ -395,4 +395,21 @@ public class RentDaoImpl implements RentDao{
 		return sqlSession.update(namespace + "updateOverdueSend", no);
 	}
 	
+	
+	
+	@Override
+	public List<RentDto> selectRentList(String searchOption, String keyword, int start, int end, String status) {
+		// TODO Auto-generated method stub
+		Map<String, Object> map = new HashMap<>();
+		map.put("searchOption", searchOption);
+		map.put("keyword", keyword);
+		map.put("start", start);
+		map.put("end", end);
+		map.put("status", status);
+		
+		List<RentDto> rentList = sqlSession.selectList(namespace + "selectRentList", map);
+		
+		return rentList;
+	}
+	
 }

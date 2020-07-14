@@ -109,4 +109,8 @@ public interface RentService {
 	
 	public int updateOverdueSend(int no); //연체 이메일 상태 변경
 	
+	
+	
+	public List<RentDto> selectRentList(String searchOption, String keyword, int start, int end, String status);
+	
 }

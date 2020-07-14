@@ -198,8 +198,9 @@
 							<!-- //동그란 체크박스 end -->
 							<span class='num'>${rentDto.rnum}</span>
 							<a href="#none" onclick="listOnePageFnc(this);" class="fLeft">
+								<c:url var="imgUrl" value='/img/${bookDto.imageName}'/>
 								<span class='bookImage bgCover' 
-									style="background-image: url('<%=request.getContextPath()%>/resources/img/book-img1-limgaejang.jpg');">
+									style="background-image: url('${imgUrl}');">
 								</span>
 							</a>
 							<input type="hidden" name="no" class='no' value="${rentDto.no}">

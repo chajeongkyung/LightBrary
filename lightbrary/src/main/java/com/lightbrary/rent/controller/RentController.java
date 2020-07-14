@@ -289,7 +289,6 @@ public class RentController {
 			e.printStackTrace();
 		}
 		
-		model.addAttribute("no", no);
 		model.addAttribute("myNo", myNo);
 		model.addAttribute("searchOption", searchOption);
 		model.addAttribute("keyword", keyword);
@@ -346,7 +345,6 @@ public class RentController {
 
 		log.info("예약현황목록 :: 현재페이지 = " + curPage + " : searchOption = " + searchOption + " : keyword = " + keyword);
 
-		System.out.println();
 		
 		// 전체 예약 도서 갯수
 		int totalCount = rentService.totalCountReserve(searchOption, keyword);
@@ -364,6 +362,11 @@ public class RentController {
 		int end = pagingInfo.getPageEnd();
 
 		List<RentDto> reserveList = rentService.selectReserve(searchOption, keyword, start, end);
+		
+		for (RentDto rentDto : reserveList) {
+			calcStatus(rentDto);
+			System.out.println("pickupDate==========" + rentDto.getPickUpDate());
+		}
 
 		// 검색
 		HashMap<String, Object> searchMap = new HashMap<String, Object>();
@@ -493,6 +496,10 @@ public class RentController {
 		int end = pagingInfo.getPageEnd();
 		
 		List<RentDto> rentList = rentService.selectRent(searchOption, keyword, start, end, status);
+		
+		for (RentDto rentDto : rentList) {
+			calcStatus(rentDto);
+		}
 		
 		// 검색
 		HashMap<String, Object> searchMap = new HashMap<String, Object>();
@@ -637,6 +644,19 @@ public class RentController {
 		int end = pagingInfo.getPageEnd();
 
 		List<RentDto> overdueList = rentService.selectOverdue(searchOption, keyword, start, end);
+		
+		for (int i = 0; i < overdueList.size(); i++) {
+			RentDto rentDto = overdueList.get(i);
+			calcStatus(rentDto);
+			System.out.println(">>>>>>>>>>>>>>getRentDate" + rentDto.getRentDate());
+			System.out.println(">>>>>>>>>>>>>>getExpireDate" + rentDto.getExpireDate());
+			System.out.println(">>>>>>>>>>>>>>getReturnDate" + rentDto.getReturnDate());
+			System.out.println("getRentStatus===============" + rentDto.getRentStatus());
+			
+//			if(rentDto.getRentStatus() != "연체") {
+//				overdueList.remove(i--);
+//			}
+		}
 
 		// 검색
 		HashMap<String, Object> searchMap = new HashMap<String, Object>();
@@ -750,33 +770,27 @@ public class RentController {
 	}
 	
 	public void calcStatus(RentDto rentDto) {
-		Date pickupDate = rentDto.getPickUpDate();
+		Date pickupDate = rentDto.getReserveDate();
 		Date rentDate = rentDto.getRentDate();
 		Date expireDate = rentDto.getExpireDate();
 		Date returnDate = rentDto.getReturnDate();
 
 		Calendar today = Calendar.getInstance();
+		Calendar pickUpCal = Calendar.getInstance();
+		Calendar expireCal = Calendar.getInstance();
+		
 		today.setTime(new Date());
 		today.set(Calendar.HOUR_OF_DAY, 0);
 		today.set(Calendar.MINUTE, 0);
 		today.set(Calendar.SECOND, 0);
 		today.set(Calendar.MILLISECOND, 0);
 		
-		Calendar pickUpCal = Calendar.getInstance();
-		pickUpCal.setTime(pickupDate);
-		pickUpCal.set(Calendar.HOUR_OF_DAY, 0);
-		pickUpCal.set(Calendar.MINUTE, 0);
-		pickUpCal.set(Calendar.SECOND, 0);
-		pickUpCal.set(Calendar.MILLISECOND, 0);
-		
-		Calendar expireCal = Calendar.getInstance();
-		expireCal.setTime(expireDate);
-		expireCal.set(Calendar.HOUR_OF_DAY, 0);
-		expireCal.set(Calendar.MINUTE, 0);
-		expireCal.set(Calendar.SECOND, 0);
-		expireCal.set(Calendar.MILLISECOND, 0);
-		
 		if(rentDate == null) {
+			pickUpCal.setTime(pickupDate);
+			pickUpCal.set(Calendar.HOUR_OF_DAY, 0);
+			pickUpCal.set(Calendar.MINUTE, 0);
+			pickUpCal.set(Calendar.SECOND, 0);
+			pickUpCal.set(Calendar.MILLISECOND, 0);
 			if(today.after(pickUpCal)) {
 				rentDto.setRentStatus("예약취소");
 			} else {
@@ -784,13 +798,18 @@ public class RentController {
 			}
 		} else {
 			if(returnDate == null) {
+				expireCal.setTime(expireDate);
+				expireCal.set(Calendar.HOUR_OF_DAY, 0);
+				expireCal.set(Calendar.MINUTE, 0);
+				expireCal.set(Calendar.SECOND, 0);
+				expireCal.set(Calendar.MILLISECOND, 0);
 				if(today.after(expireCal)) {
 					rentDto.setRentStatus("연체");
 				} else {
-					rentDto.setRentStatus("대출중");
+					rentDto.setRentStatus("대출");
 				}
 			} else {
-				rentDto.setRentStatus("반납완료");
+				rentDto.setRentStatus("보관");
 			}
 		}
 	}

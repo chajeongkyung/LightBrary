@@ -319,7 +319,7 @@
 							<!--  -->
 							<c:forEach var="rentDto" items="${rentList}">
 								<c:choose>
-									<c:when test="${rentDto.bookStatus eq '보관'}">
+									<c:when test="${rentDto.rentStatus eq '보관'}">
 										<tr class='returned'>
 									</c:when>
 									<c:otherwise>
@@ -331,7 +331,7 @@
 										<!-- 기본 체크박스 start -->
 										<div class='checkbox type2 fLeft'>
 											<c:choose>
-												<c:when test="${rentDto.bookStatus eq '보관'}">
+												<c:when test="${rentDto.rentStatus eq '보관'}">
 													<input type="checkbox" id='chk${rentDto.no}' disabled="disabled">
 													<label for="chk${rentDto.no}" style="cursor: default;"></label>
 												</c:when>
@@ -362,7 +362,7 @@
 										<span class='ellipsis'>
 											<c:if test="${rentDto.returnSendFlag eq 'N'}">
 												<c:choose>
-													<c:when test="${rentDto.bookStatus eq '대출'}">
+													<c:when test="${rentDto.rentStatus eq '대출'}">
 														<a href="#none" onclick="sendEmailFnc(this);">
 															<input type="hidden" class='no' value="${rentDto.no}">
 															<input type="hidden" class='userEmail' value="${rentDto.email}">
@@ -382,10 +382,10 @@
 										</span>
 									</td>
 									<td>
-										<input type="hidden" value="${rentDto.bookStatus}" class='bookStatus'>
+										<input type="hidden" value="${rentDto.rentStatus}" class='bookStatus'>
 										<c:choose>
-											<c:when test="${rentDto.bookStatus eq '대출'}">
-												<span class='textGreen'>${rentDto.bookStatus}</span>
+											<c:when test="${rentDto.rentStatus eq '대출'}">
+												<span class='textGreen'>${rentDto.rentStatus}</span>
 											</c:when>
 											<c:otherwise>
 											 	<span>반납완료</span>

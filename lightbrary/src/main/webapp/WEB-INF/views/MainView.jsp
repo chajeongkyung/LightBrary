@@ -11,21 +11,11 @@
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/sub.css">
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/main.css">
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
-<style type="text/css">
 
-#mainPageTitle {
-	padding: 265px 0 45px;
-	font-size: 20px;
-	font-weight: bold;
-	text-align: center;
-	letter-spacing: -0.08em;
-}
-
-</style>
 </head>
 
 <body>
@@ -38,19 +28,19 @@
 			<div id='mainPageTitle'>${member.name} 님, 환영합니다 !</div>
 
 			<c:if test="${member.gradeCode eq 0}">
-				<div class="bold textDark" style="font-size: 20px;">관리자메뉴</div>
-				<ul>
+<!-- 				<div class="bold textDark" style="font-size: 20px;">관리자메뉴</div> -->
+				<ul id='adminLinks' class='fs0'>
 					<li>
 						<a href="/lightbrary/auth/list.do">회원관리</a>
 					</li>
 					<li>
-						<a href="#">대출현황</a>
+						<a href="/lightbrary/rent/list.do">대출현황</a>
 					</li>
 					<li>
-						<a href="#">도서관리</a>
+						<a href="/lightbrary/book/list.do">도서관리</a>
 					</li>
 					<li>
-						<a href="#">연체도서</a>
+						<a href="/lightbrary/rent/overdue/list.do">연체도서</a>
 					</li>
 				</ul>
 			</c:if>
@@ -76,10 +66,12 @@
 				</div>
 			</c:if>
 			
-			<div class="bold textDark" style="font-size: 20px;">공지게시판</div>
-			
-			<!--더보기버튼 -->
-			<a class="bold textDark" href="./notice/list.do">+</a>
+			<div class='overH' style="margin-bottom: 15px;">
+				<div class="bold textDark fLeft" style="font-size: 20px; color: #464646;">공지게시판</div>
+				
+				<!--더보기버튼 -->
+				<a class="bold textDark fRight" href="./notice/list.do" style="font-size: 24px; color: #707070;">+</a>
+			</div>
 			
 			<div id='tableWrap'>
 				<table id='table'>
@@ -124,7 +116,7 @@
 									
 								</td>
 								
-								<td style="text-align: center;">
+								<td>
 										
 									 <a href="#" class="ellipsis" onclick="listOnePageFnc(${noticeDto.no})">
 											${noticeDto.title}

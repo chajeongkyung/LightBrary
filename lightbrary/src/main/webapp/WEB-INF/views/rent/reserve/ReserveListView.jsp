@@ -265,16 +265,12 @@
 										</span>
 									</td>
 									<td>
-										<c:choose>
-											<c:when test="${rentDto.bookStatus eq '예약'}">
-												<span class='textGreen'>${rentDto.bookStatus}</span>
-											</c:when>
-											<c:otherwise>
-											 	<span>예약 취소</span>
-											</c:otherwise>
-										</c:choose>
+										<span class='textGreen'>${rentDto.rentStatus}</span>
+<%-- 										<c:if test=""> --%>
+<%-- 											${rentDto.bookStatus} --%>
+<%-- 										</c:if> --%>
 									</td>
-									<td>
+									<td style="text-align: center;">
 										<span>
 											<fmt:formatDate value="${rentDto.pickUpDate}" pattern="yyyy/MM/dd "/>
 										</span>

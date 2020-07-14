@@ -100,7 +100,7 @@
 							</tr>
 							<tr>
 								<th class='text bold textDark inputTh'>저자</th>
-								<td class='text textGrey'>${bookDto.writer }</td>
+								<td class='text textGrey'>${bookDto.writer}</td>
 							</tr>
 							<tr>
 								<th class='text bold textDark inputTh'>출판사</th>
