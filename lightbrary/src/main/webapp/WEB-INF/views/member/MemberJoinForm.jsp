@@ -44,16 +44,16 @@
 							<p id="alertPhoneErrorMsg" class="textRed alertMsgBox"></p>
 							<input type="text" style="margin-top: 20px;" class='infoInput infoEmail' id="email" name="email" placeholder="이메일">
 							<p id="alertEmailErrorMsg" class="textRed alertMsgBox"></p>
-							<input type="text" style="margin-top: 20px;" class='infoInput infoPassword' id="password" name="password" placeholder="비밀번호">
+							<input type="password" style="margin-top: 20px;" class='infoInput infoPassword' id="password" name="password" placeholder="비밀번호">
 							<p id="alertPasswordErrorMsg" class="textRed alertMsgBox"></p>
-							<input type="text" style="margin-top: 20px;" class='infoInput infoPassword' id="checkPassword" name="checkPassword" placeholder="비밀번호 재확인">
+							<input type="password" style="margin-top: 20px;" class='infoInput infoPassword' id="checkPassword" name="checkPassword" placeholder="비밀번호 재확인">
 							<p id="alertcheckPasswordErrorMsg" class="textRed alertMsgBox"></p>
 							<input type="text" style="margin-top: 20px;" class='infoInput infoLocation' id="address" name="address" placeholder="주소">
 							<p id="alertAddressErrorMsg" class="textRed alertMsgBox"></p>
 						</div>
 						<!-- //입력폼 end -->
 						
-						<!-- //상세페이지 버튼 start -->
+						<!-- 상세페이지 버튼 start -->
 						<div class='btnWrap tCenter' style="margin-top: 30px;">
 							<input type="submit" class='btn green' value="가입하기">
 							<a href="../login.do" class="subBtn text bold">로그인페이지</a>
