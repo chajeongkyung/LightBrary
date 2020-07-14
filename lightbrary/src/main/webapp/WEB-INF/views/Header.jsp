@@ -91,11 +91,6 @@
 			<a href="#none"></a>
 		</h1>
 		<ul id='headerOptions' class='fs0'>
-			<li id='hBasket'>
-				<a href="#">
-					<img alt="바구니" src="<%=request.getContextPath()%>/resources/img/icon-cart.png">
-				</a>
-			</li>
 			<li>
 				<a href="#" id='myPageClick' class='hOptionsText'>
 					<span>${member.name}</span> 님

@@ -20,8 +20,8 @@ public class RentServiceImpl implements RentService{
 			LoggerFactory.getLogger(RentServiceImpl.class);
 	
 	
-	/** 사용자 대출 예약
-	 *
+	/**
+	 * 사용자 예약
 	 */
 	@Override
 	public void insertReserve(int memberNo, int bookNo) {
@@ -35,8 +35,8 @@ public class RentServiceImpl implements RentService{
 	}
 	
 	
-	/** 사용자 나의 예약
-	 *
+	/**
+	 * 사용자 나의 예약
 	 */
 	@Override
 	public List<RentDto> selectMyReserve(String searchOption, String keyword, int start, int end, int myNo) {
@@ -68,8 +68,8 @@ public class RentServiceImpl implements RentService{
 		return rentDao.selectOneMyReserve(no);
 	}
 	
-	/** 사용자 예약 취소
-	 *
+	/**
+	 * 사용자 예약 취소
 	 */
 	@Override
 	public int updateOneStatusToKeep(int bookNo) {
@@ -83,8 +83,8 @@ public class RentServiceImpl implements RentService{
 	}
 	
 	
-	/** 사용자 나의 대출
-	 *
+	/**
+	 * 사용자 나의 대출
 	 */
 	@Override
 	public List<RentDto> selectMyRent(String searchOption, String keyword, int start, int end, int myNo) {
@@ -124,11 +124,9 @@ public class RentServiceImpl implements RentService{
 	}
 	
 	
-	/*******************
-			예약
-	*******************/
-	
-	// 예약 목록 출력
+	/**
+	 * 관리자 예약 관리
+	 */
 	@Override
 	public List<RentDto> selectReserve(String searchOption, String keyword, int start, int end) {
 		// TODO Auto-generated method stub
@@ -172,14 +170,17 @@ public class RentServiceImpl implements RentService{
 		return rentDao.updateOneStatusToRent(rentDto);
 	}
 	
-	// 대출 날짜 오늘 날짜로 변경
+	
+	/**
+	 * 대출 처리
+	 */
 	@Override
 	public int updateOneRentDate(RentDto rentDto) {
 		// TODO Auto-generated method stub
 		return rentDao.updateOneRentDate(rentDto);
 	}
 	
-	// 반납일 수정
+	// 반납일 조정
 	@Override
 	public int updateOneExpireDate(RentDto rentDto) {
 		// TODO Auto-generated method stub
@@ -187,11 +188,10 @@ public class RentServiceImpl implements RentService{
 	}
 
 	
-	/*******************
-			대출
-	*******************/
 	
-	// 대출 목록 출력
+	/**
+	 * 관리자 대출 관리
+	 */
 	@Override
 	public List<RentDto> selectRent(String searchOption, String keyword, int start, int end, String status) {
 		// TODO Auto-generated method stub
@@ -242,11 +242,10 @@ public class RentServiceImpl implements RentService{
 		return rentDao.updateSend(no);
 	}
 	
-	/*******************
-			연체
-	*******************/
 	
-	// 연체 목록 출력
+	/**
+	 * 관리자 연체 관리
+	 */
 	@Override
 	public List<RentDto> selectOverdue(String searchOption, String keyword, int start, int end) {
 		// TODO Auto-generated method stub

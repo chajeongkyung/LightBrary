@@ -28,6 +28,8 @@
 		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(3)').addClass('active');
 	});
 	
+	
+	
 	// 상세페이지로 이동
 	function listOnePageFnc(clickObj){	
 		var reserveNoObj = '';
@@ -48,6 +50,7 @@
 		return false;
 	}
 	
+	// 픽업일 지난 도서 예약 취소
 	function cancelStatusFnc() {
 		if(confirm('픽업일이 지난 도서들의 예약을 취소하시겠습니까?')){
 			alert('예약 취소가 성공적으로 처리되었습니다.');
@@ -55,6 +58,35 @@
 			return;
 		} else{
 			return false;
+		}
+	}
+	
+	// 다중 반납처리
+	function rentBatchFnc() {
+		
+		var noObjArr = checkedObjArr();
+		var noArr = new Array();
+		
+		for (var i = 0; i < noObjArr.length; i++) {
+			noArr[i] = noObjArr[i].value;
+		}
+		
+		if(noObjArr.length > 0){
+			var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
+			$.ajax({
+				type: "POST",
+				url: baseUrl + '/rent/reserve/rentBatch.do',
+				data: "noArr=" + noArr,
+				success:function(){
+					alert('선택 도서의 대출 처리가 성공적으로 이루어졌습니다.\n대출 도서는 대출 현황에서 확인해주세요.');
+					$('#pagingForm').submit();
+				},
+				error: function(){
+					alert('오류');
+				}
+			});
+		} else{
+			alert('선택된 도서가 없습니다.');
 		}
 	}
 </script>
@@ -148,7 +180,7 @@
 				<div class='listSettings overH'>
 					<ul class='settings fLeft fs0'>
 						<li>
-							<a href="#none" class='text'>선택 대출 중으로 상태 변경</a>
+							<a href="#none" class='text' onclick="rentBatchFnc();">선택 대출 중으로 상태 변경</a>
 						</li>
 					</ul>
 					<ul class='settings fRight fs0'>
@@ -208,8 +240,8 @@
 										<input type="hidden" value='${rentDto.no}' class='noObj'>
 										<!-- 기본 체크박스 start -->
 										<div class='checkbox type2 fLeft'>
-											<input type="checkbox" id='check${rentDto.no}'>
-											<label for="check${rentDto.no}"></label>
+											<input type="checkbox" id='chk${rentDto.no}' value="${rentDto.no}">
+											<label for="chk${rentDto.no}"></label>
 										</div>
 										<!-- //기본 체크박스 end -->
 									</td>

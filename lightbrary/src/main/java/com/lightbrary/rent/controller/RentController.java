@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +20,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lightbrary.book.model.BookListParamDto;
+import com.lightbrary.member.model.MemberDto;
 import com.lightbrary.rent.model.RentDto;
 import com.lightbrary.rent.service.RentService;
 import com.lightbrary.util.Paging;
@@ -40,18 +43,37 @@ public class RentController {
 	
 	/** 사용자 대출 예약 - 목록
 	 * @param memberNo
-	 * @param bookNo
+	 * @param no
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = "/book/reserve.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String insertReserve(int memberNo, int bookNo, Model model) {
-		log.info("도서 예약 :: 회원번호 = " + memberNo + " : 도서번호 = " + bookNo);
+	public String insertReserve(BookListParamDto bookListParamDto, HttpSession session, int no, Model model) {
 	
-		rentService.insertReserve(memberNo, bookNo);
-		rentService.updateOneStatusToReserve(bookNo);
+		int memberNo = ((MemberDto) session.getAttribute("member")).getNo();
+		log.info("도서 예약 :: 회원번호 = " + memberNo + " : 도서번호 = " + no);
+		
+		rentService.insertReserve(memberNo, no);
+		rentService.updateOneStatusToReserve(no);
+		
+		model.addAttribute("bookListParamDto", bookListParamDto);
 	
-		return "redirect:/book/list.do";
+		return "forward:/book/list.do";
+	}
+	
+	//다중 예약 처리
+	@RequestMapping(value="/book/reserveBatch.do", method = RequestMethod.POST, 
+			produces="text/plain;charset=UTF-8")
+	@ResponseBody
+	public void reserveBatch(int[] noArr, HttpSession session) {
+		log.info("도서 목록 :: 다중 예약처리");
+		
+		int memberNo = ((MemberDto) session.getAttribute("member")).getNo();
+
+		for (int no : noArr) {
+			rentService.insertReserve(memberNo, no);
+			rentService.updateOneStatusToReserve(no);
+		}
 	}
 	
 	/** 사용자 대출 예약 - 상세
@@ -60,16 +82,19 @@ public class RentController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/book/detail/reserve.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String insertReserveFromDetail(int memberNo, int bookNo, Model model) {
-		log.info("도서 예약 :: 회원번호 = " + memberNo + " : 도서번호 = " + bookNo);
-	
-		rentService.insertReserve(memberNo, bookNo);
-		rentService.updateOneStatusToReserve(bookNo);
+	@RequestMapping(value = "/book/detailReserve.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String insertReserveFromDetail(BookListParamDto bookListParamDto, HttpSession session, int no, Model model) {
 		
-		model.addAttribute("no", bookNo);
+		int memberNo = ((MemberDto) session.getAttribute("member")).getNo();
+		log.info("도서 예약 :: 회원번호 = " + memberNo + " : 도서번호 = " + no);
 	
-		return "redirect:/book/detail.do";
+		rentService.insertReserve(memberNo, no);
+		rentService.updateOneStatusToReserve(no);
+		
+		model.addAttribute("no", no);
+		model.addAttribute("bookListParamDto", bookListParamDto);
+	
+		return "forward:/book/detail.do";
 	}
 	
 	/** 사용자 나의 예약
@@ -127,6 +152,24 @@ public class RentController {
 		return "rent/reserve/member/MyReserveListView";
 	}
 	
+	//다중 예약 취소 처리
+	@RequestMapping(value="/rent/reserve/member/cancelBatch.do", method = RequestMethod.POST, 
+			produces="text/plain;charset=UTF-8")
+	@ResponseBody
+	public void cancelBatch(int[] noArr) {
+		log.info("예약 현황 목록 :: 다중 예약 취소 처리");
+		
+		for (int i = 0; i < noArr.length; i++) {
+			System.out.println("===========NO=============" + noArr[i]);
+		}
+
+		for (int no : noArr) {
+			RentDto rentDto = rentService.selectOneReserve(no);
+			rentService.updateOneStatusToKeep(rentDto.getBookNo());
+			rentService.deleteOneFromRent(no);
+		}
+	}
+	
 	// 나의 예약 상세
 	@RequestMapping(value = "/rent/reserve/member/detail.do", method = RequestMethod.GET)
 	public String myReserveView(int no, String searchOption, String keyword, Model model) {
@@ -139,15 +182,15 @@ public class RentController {
 		model.addAttribute("keyword", keyword);
 
 		return "rent/reserve/member/MyReserveDetailView";
-	}	
+	}
 	
-	/** 사용자 대출 예약 취소
+	/** 사용자 예약 취소
 	 * @param rentDto
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = "/rent/reserve/member/statusUpdateCtr.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String reserveCancelUpdateCtr(int no, int myNo, int bookNo, Model model) {
+	public String reserveCancelUpdateCtr(int no, int myNo, int bookNo, String searchOption, String keyword, Model model) {
 		log.info("예약 취소 :: RENT 번호 = " + no + " : 회원번호 = " + myNo + " : 책 번호 = " + bookNo);
 
 		try {
@@ -159,6 +202,8 @@ public class RentController {
 		}
 
 		model.addAttribute("myNo", myNo);
+		model.addAttribute("searchOption", searchOption);
+		model.addAttribute("keyword", keyword);
 		
 		return "redirect:/rent/reserve/member/list.do";
 	}
@@ -180,7 +225,7 @@ public class RentController {
 		log.info("나의대출현황목록 :: 현재페이지 = " + curPage + " : searchOption = " + searchOption + " : keyword = " + keyword
 				+ " : 회원 번호 = " + myNo);
 		
-		// 전체 예약 도서 갯수
+		// 나의 대출 도서 갯수
 		int totalCount = rentService.totalCountMyRent(searchOption, keyword, myNo);
 		
 		if (no != 0) {
@@ -234,8 +279,8 @@ public class RentController {
 	
 	// 목록에서 반납일 연장
 	@RequestMapping(value = "/rent/member/statusUpdateCtr.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String returnDateUpdateCtr(int no, int myNo, Model model) {
-		log.info("반납일 연장된 도서 번호 ===================== " + no);
+	public String returnDateUpdateCtr(int no, int myNo, String searchOption, String keyword, Model model) {
+		log.info("목록 :: 반납일 연장된 도서 번호 ===================== " + no);
 
 		try {
 			rentService.extendReturnDate(no);
@@ -244,14 +289,29 @@ public class RentController {
 			e.printStackTrace();
 		}
 		
+		model.addAttribute("no", no);
 		model.addAttribute("myNo", myNo);
+		model.addAttribute("searchOption", searchOption);
+		model.addAttribute("keyword", keyword);
 
 		return "redirect:/rent/member/list.do";
 	}
 	
+	//다중 반납일 연창 처리
+	@RequestMapping(value="/rent/member/extendRentBatch.do", method = RequestMethod.POST, 
+			produces="text/plain;charset=UTF-8")
+	@ResponseBody
+	public void extendRentBatch(int[] noArr) {
+		log.info("나의 대출 목록 :: 다중 반납 연장 처리");
+
+		for (int no : noArr) {
+			rentService.extendReturnDate(no);
+		}
+	}
+	
 	// 상세에서 반납일 연장
-	@RequestMapping(value = "/rent/member/detail/statusUpdateCtr.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String returnDateUpdateFromDetailCtr(int no, int myNo, Model model) {
+	@RequestMapping(value = "/rent/member/detailStatusUpdateCtr.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String returnDateUpdateFromDetailCtr(int no, int myNo, String searchOption, String keyword, Model model) {
 		log.info("상세 :: 반납일 연장된 도서 번호 ===================== " + no);
 
 		try {
@@ -263,6 +323,8 @@ public class RentController {
 		
 		model.addAttribute("no", no);
 		model.addAttribute("myNo", myNo);
+		model.addAttribute("searchOption", searchOption);
+		model.addAttribute("keyword", keyword);
 
 		return "redirect:/rent/member/detail.do";
 	}
@@ -331,23 +393,42 @@ public class RentController {
 
 		Calendar cal = Calendar.getInstance();
 		Date today = new Date();
-		today.setTime(0);
 		cal.setTime(today);
-		cal.add(Calendar.DATE, -5);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
 
 		Calendar cal2 = Calendar.getInstance();
 		for (RentDto rentDto : reserveList) {
-			Date reserveDate = rentDto.getReserveDate();
-			reserveDate.setTime(0);
-			cal2.setTime(reserveDate);
+			Date pickupDate = rentDto.getPickUpDate();
+			cal2.setTime(pickupDate);
+			cal2.set(Calendar.HOUR_OF_DAY, 0);
+			cal2.set(Calendar.MINUTE, 0);
+			cal2.set(Calendar.SECOND, 0);
+			cal2.set(Calendar.MILLISECOND, 0);
 			if (cal.after(cal2)) {
-				rentService.updateOneStatusToRent(rentDto);
+				rentService.updateOneStatusToKeep(rentDto);
+				rentService.deleteOneFromRent(rentDto.getNo());
 			}
 		}
-		
-		log.info("==========됐나===========");
 
 		return "redirect:/rent/reserve/list.do";
+	}
+	
+	// 예약 목록 다중 대출 처리
+	@RequestMapping(value="/rent/reserve/rentBatch.do", method = RequestMethod.POST, 
+			produces="text/plain;charset=UTF-8")
+	@ResponseBody
+	public void rentBatch(int[] noArr) {
+		log.info("관리자 예약 목록 :: 다중 반납 대출 처리");
+
+		for (int no : noArr) {
+			RentDto rentDto = rentService.selectOneReserve(no);
+			rentService.updateOneStatusToRent(rentDto);
+			rentService.updateOneRentDate(rentDto);
+			rentService.updateOneExpireDate(rentDto);
+		}
 	}
 
 	// 예약 상세
@@ -364,7 +445,7 @@ public class RentController {
 		return "rent/reserve/ReserveDetailView";
 	}
 
-	// 예약 상태 변경
+	// 반납처리 - 상세
 	@RequestMapping(value = "/rent/reserve/statusUpdateCtr.do", method = RequestMethod.POST)
 	public String reserveStatusUpdateCtr(RentDto rentDto, Model model) {
 		log.info("대출 중으로 변경된 도서 번호 = ", rentDto.getBookNo());
@@ -435,6 +516,18 @@ public class RentController {
 		
 		return "rent/RentListView";
 	}
+	
+	//다중 반납 처리
+	@RequestMapping(value="/rent/returnBatch.do", method = RequestMethod.POST, 
+			produces="text/plain;charset=UTF-8")
+	@ResponseBody
+	public void returnBatch(int[] noArr) {
+		log.info("대출 현황 목록 :: 다중 반납처리");
+
+		for (int no : noArr) {
+			rentService.updateOneStatusToKeep(no);
+		}
+	}
 		
 	// 대출 상세
 	@RequestMapping(value = "/rent/detail.do", method = RequestMethod.GET)
@@ -455,7 +548,7 @@ public class RentController {
 		return "rent/RentDetailView";
 	}
 	
-	// 대출 보관으로 상태 변경
+	// 대출 반납처리
 	@RequestMapping(value = "/rent/statusUpdateCtr.do", method = RequestMethod.POST)
 		public String rentStatusUpdateCtr(RentDto rentDto, Model model) {
 		log.info("보관 중으로 변경된 도서 번호 : {}", rentDto.getBookNo());
@@ -493,7 +586,7 @@ public class RentController {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
 		
-			messageHelper.setFrom("관리자"); // 보내는사람 생략하거나 하면 정상작동을 안함
+			messageHelper.setFrom("Lightbrary"); // 보내는사람 생략하거나 하면 정상작동을 안함
 			messageHelper.setTo(userEmail); // 받는사람 이메일
 			messageHelper.setSubject("Lightbrary 반납 안내"); // 메일제목은 생략이 가능하다
 			messageHelper.setText(memberName + "님 안녕하십니까, \nLightbrary에서 대출하신 도서 '" + bookName + "'의 반납 예정일은  '" + expireDate + "' 입니다."); // 메일 내용
@@ -508,11 +601,15 @@ public class RentController {
 		return "redirect:/rent/list.do";
 	}
 
-	/*******************
-	 		연체
-	 *******************/
-
-	// 연체 목록
+	
+	/** 관리자 연체 관리
+	 * @param curPage
+	 * @param no
+	 * @param searchOption
+	 * @param keyword
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/rent/overdue/list.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String overdueList(@RequestParam(defaultValue = "1") int curPage, @RequestParam(defaultValue = "0") int no,
 			@RequestParam(defaultValue = "all") String searchOption, @RequestParam(defaultValue = "") String keyword,
@@ -571,15 +668,20 @@ public class RentController {
 
 		Calendar cal = Calendar.getInstance();
 		Date today = new Date();
-		today.setTime(0);
 		cal.setTime(today);
-		cal.add(Calendar.DATE, -1);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
 
 		Calendar cal2 = Calendar.getInstance();
 		for (RentDto rentDto : overdueList) {
 			Date expireDate = rentDto.getExpireDate();
-			expireDate.setTime(0);
 			cal2.setTime(expireDate);
+			cal2.set(Calendar.HOUR_OF_DAY, 0);
+			cal2.set(Calendar.MINUTE, 0);
+			cal2.set(Calendar.SECOND, 0);
+			cal2.set(Calendar.MILLISECOND, 0);
 			if (cal.after(cal2)) {
 				rentService.updateOneStatusToOverdue(rentDto);
 			}
@@ -602,7 +704,7 @@ public class RentController {
 		return "rent/overdue/OverdueDetailView";
 	}
 
-	// 연체 보관중으로 상태 변경
+	// 연체 반납처리
 	@RequestMapping(value = "/rent/overdue/statusUpdateCtr.do", method = RequestMethod.POST)
 	public String overdueStatusUpdateCtr(RentDto rentDto, Model model) {
 		log.info("대출 중으로 변경된 도서 번호 : {}", rentDto.getBookNo());
@@ -645,5 +747,51 @@ public class RentController {
 		rentService.updateOverdueSend(no);
 
 		return "redirect:/rent/overdue/list.do";
+	}
+	
+	public void calcStatus(RentDto rentDto) {
+		Date pickupDate = rentDto.getPickUpDate();
+		Date rentDate = rentDto.getRentDate();
+		Date expireDate = rentDto.getExpireDate();
+		Date returnDate = rentDto.getReturnDate();
+
+		Calendar today = Calendar.getInstance();
+		today.setTime(new Date());
+		today.set(Calendar.HOUR_OF_DAY, 0);
+		today.set(Calendar.MINUTE, 0);
+		today.set(Calendar.SECOND, 0);
+		today.set(Calendar.MILLISECOND, 0);
+		
+		Calendar pickUpCal = Calendar.getInstance();
+		pickUpCal.setTime(pickupDate);
+		pickUpCal.set(Calendar.HOUR_OF_DAY, 0);
+		pickUpCal.set(Calendar.MINUTE, 0);
+		pickUpCal.set(Calendar.SECOND, 0);
+		pickUpCal.set(Calendar.MILLISECOND, 0);
+		
+		Calendar expireCal = Calendar.getInstance();
+		expireCal.setTime(expireDate);
+		expireCal.set(Calendar.HOUR_OF_DAY, 0);
+		expireCal.set(Calendar.MINUTE, 0);
+		expireCal.set(Calendar.SECOND, 0);
+		expireCal.set(Calendar.MILLISECOND, 0);
+		
+		if(rentDate == null) {
+			if(today.after(pickUpCal)) {
+				rentDto.setRentStatus("예약취소");
+			} else {
+				rentDto.setRentStatus("예약");
+			}
+		} else {
+			if(returnDate == null) {
+				if(today.after(expireCal)) {
+					rentDto.setRentStatus("연체");
+				} else {
+					rentDto.setRentStatus("대출중");
+				}
+			} else {
+				rentDto.setRentStatus("반납완료");
+			}
+		}
 	}
 }

@@ -14,21 +14,21 @@ public class ExceptionController {
    
    @RequestMapping(value="/error/400.do", method=RequestMethod.GET)
    public String error400Exeption() {
-      log.info("*****Welcome Login!*****");
+      log.info("* * * * * 400 ERROR !!! * * * * *");
       
       return "common/failPage";
    }
 
    @RequestMapping(value="/error/404.do", method=RequestMethod.GET)
    public String error404Exeption() {
-	   log.info("*****Welcome Login!*****");
+	   log.info("* * * * * 404 ERROR !!! * * * * *");
 	   
 	   return "common/failPage";
    }
    
    @RequestMapping(value="/error/500.do", method=RequestMethod.GET)
    public String error500Exeption() {
-      log.info("*****Welcome Login!*****");
+	   log.info("* * * * * 500 ERROR !!! * * * * *");
       
       return "common/failPage";
    }

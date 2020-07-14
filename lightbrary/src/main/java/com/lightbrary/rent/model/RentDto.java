@@ -11,6 +11,7 @@ public class RentDto {
 	private Date expireDate;
 	private Date returnDate;
 	private int overdueDays;
+	private int expireDays;
 	private Date pickUpDate;
 	private String returnSendFlag;
 	private String overdueSendFlag;
@@ -28,18 +29,14 @@ public class RentDto {
 	private String address;
 	
 	private String bookStatus;
+	private String rentStatus;
 	
 	private int rnum;
-	
-	public RentDto() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
 	public RentDto(int no, int memberNo, int bookNo, Date reserveDate, Date rentDate, Date expireDate, Date returnDate,
-			int overdueDays, Date pickUpDate, String returnSendFlag, String overdueSendFlag, String delFlag,
-			String bookCategoryCode, String bookName, String writer, String publish, Date publishDate, String mname,
-			String email, String phone, String address, String bookStatus, int rnum) {
+			int overdueDays, int expireDays, Date pickUpDate, String returnSendFlag, String overdueSendFlag,
+			String delFlag, String bookCategoryCode, String bookName, String writer, String publish, Date publishDate,
+			String mname, String email, String phone, String address, String bookStatus, String rentStatus, int rnum) {
 		super();
 		this.no = no;
 		this.memberNo = memberNo;
@@ -49,6 +46,7 @@ public class RentDto {
 		this.expireDate = expireDate;
 		this.returnDate = returnDate;
 		this.overdueDays = overdueDays;
+		this.expireDays = expireDays;
 		this.pickUpDate = pickUpDate;
 		this.returnSendFlag = returnSendFlag;
 		this.overdueSendFlag = overdueSendFlag;
@@ -63,7 +61,13 @@ public class RentDto {
 		this.phone = phone;
 		this.address = address;
 		this.bookStatus = bookStatus;
+		this.rentStatus = rentStatus;
 		this.rnum = rnum;
+	}
+
+	public RentDto() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	public int getNo() {
@@ -128,6 +132,14 @@ public class RentDto {
 
 	public void setOverdueDays(int overdueDays) {
 		this.overdueDays = overdueDays;
+	}
+
+	public int getExpireDays() {
+		return expireDays;
+	}
+
+	public void setExpireDays(int expireDays) {
+		this.expireDays = expireDays;
 	}
 
 	public Date getPickUpDate() {
@@ -242,6 +254,14 @@ public class RentDto {
 		this.bookStatus = bookStatus;
 	}
 
+	public String getRentStatus() {
+		return rentStatus;
+	}
+
+	public void setRentStatus(String rentStatus) {
+		this.rentStatus = rentStatus;
+	}
+
 	public int getRnum() {
 		return rnum;
 	}
@@ -254,12 +274,12 @@ public class RentDto {
 	public String toString() {
 		return "RentDto [no=" + no + ", memberNo=" + memberNo + ", bookNo=" + bookNo + ", reserveDate=" + reserveDate
 				+ ", rentDate=" + rentDate + ", expireDate=" + expireDate + ", returnDate=" + returnDate
-				+ ", overdueDays=" + overdueDays + ", pickUpDate=" + pickUpDate + ", returnSendFlag=" + returnSendFlag
-				+ ", overdueSendFlag=" + overdueSendFlag + ", delFlag=" + delFlag + ", bookCategoryCode="
-				+ bookCategoryCode + ", bookName=" + bookName + ", writer=" + writer + ", publish=" + publish
-				+ ", publishDate=" + publishDate + ", mname=" + mname + ", email=" + email + ", phone=" + phone
-				+ ", address=" + address + ", bookStatus=" + bookStatus + ", rnum=" + rnum + "]";
+				+ ", overdueDays=" + overdueDays + ", expireDays=" + expireDays + ", pickUpDate=" + pickUpDate
+				+ ", returnSendFlag=" + returnSendFlag + ", overdueSendFlag=" + overdueSendFlag + ", delFlag=" + delFlag
+				+ ", bookCategoryCode=" + bookCategoryCode + ", bookName=" + bookName + ", writer=" + writer
+				+ ", publish=" + publish + ", publishDate=" + publishDate + ", mname=" + mname + ", email=" + email
+				+ ", phone=" + phone + ", address=" + address + ", bookStatus=" + bookStatus + ", rentStatus="
+				+ rentStatus + ", rnum=" + rnum + "]";
 	}
-	
 	
 }

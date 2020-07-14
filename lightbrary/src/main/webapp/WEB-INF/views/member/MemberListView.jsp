@@ -44,10 +44,7 @@
 		var noObjArr = checkedObjArr();
 		var noArr = new Array();
 		
-		alert(noObjArr.length);
-		
 		for (var i = 0; i < noObjArr.length; i++) {
-			alert(noObjArr[i].value);
 			noArr[i] = noObjArr[i].value;
 		}
 		
@@ -81,6 +78,10 @@
 		$('#pagingForm').submit();
 	}
 	
+	function clearDateFnc(obj){
+		obj.previousElementSibling.value = "";
+	}
+	
 	function memberListParamDtoSubmit(){
 		if(isValidDateRange($('#joinDateStart').val(), $('#joinDateEnd').val())){
 			$('#memberListParamDto').submit();
@@ -111,7 +112,7 @@
 	                        <input type="text" id="name" name="name" class='searchInput' value='${memberListParamDto.name}'>
 	                     </div>
 	                  </div>
-	                  <!-- //기본 인풋 end -->
+	                  <!-- 기본 인풋 end -->
 	                  <!-- 기본 인풋 start -->
 	                  <div class='searchInputWrap fs0'>
 	                     <span class='label text bold'>이메일</span>
@@ -119,21 +120,28 @@
 	                        <input type="text" id="email" name="email" class='searchInput' value='${memberListParamDto.email}'>
 	                     </div>
 	                  </div>
-	                  <!-- //기본 인풋 end -->      
+	                  <!-- 기본 인풋 end -->      
 	                  <!-- 기간 범위 인풋 (달력) start -->
 	                  <div class='searchInputWrap fs0'>
 	                     <span class='label text bold'>가입일</span>
 	                     <div class='searchInputBox overH'>
-	                        <input type="text" id="joinDateStart" name="joinDateStart"
-	                        	class='searchInput searchDate fLeft datePicker' readonly="readonly"
-	                        		value='${memberListParamDto.joinDateStart}'>
+	                     	<div class='dateInputBox fLeft'>
+		                        <input type="text" id="joinDateStart" name="joinDateStart"
+		                        	class='searchInput searchDate fLeft datePicker' readonly="readonly"
+		                        		value='${memberListParamDto.joinDateStart}'>
+		                        <button type="button" class='clear' onclick='clearDateFnc(this);'></button>
+							</div>	
 	                        <span class='range fLeft text bold'>~</span>
-	                        <input type="text" id="joinDateEnd" name="joinDateEnd"
-	                        	class='searchInput searchDate fRight datePicker' readonly="readonly"
-	                        		value='${memberListParamDto.joinDateEnd}'>
+	                        
+	                        <div class='dateInputBox fRight'>								
+		                        <input type="text" id="joinDateEnd" name="joinDateEnd"
+		                        	class='searchInput searchDate fRight datePicker' readonly="readonly"
+		                        		value='${memberListParamDto.joinDateEnd}'>
+		                        <button type="button" class='clear' onclick='clearDateFnc(this);'></button>
+	                    	</div>
 	                     </div>
 	                  </div>
-	                  <!-- //기간 범위 인풋 (달력) end -->
+	                  <!-- 기간 범위 인풋 (달력) end -->
 	               </fieldset>
 	               <div class='btnWrap searchBtnWrap fs0 tCenter'>
 	                  <input type="button" onclick="memberListParamDtoSubmit();" class='btn green' value="검색">
@@ -227,6 +235,7 @@
 					</div>
 				</div>
 				<!-- //테이블 목록 end -->
+				
 				<div class='listSettings overH'>
 					<ul class='settings fLeft fs0'>
 						<li>
@@ -235,12 +244,15 @@
 					</ul>
 				</div>
 				
+				<!-- 검색결과 없을 시 페이징 안보이기 start -->
 				<c:if test="${!empty memberDtoList}">
 					<jsp:include page="/WEB-INF/views/common/paging.jsp">
 						<jsp:param value="${pagingInfo}" name="pagingMap"/>
 					</jsp:include>
 				</c:if>
+				<!-- //검색결과 없을 시 페이징 안보이기 end -->
 				
+				<!-- 검색조건 컨트롤러에 전송 start -->
 				<form id='pagingForm' name='memberListParamDto' method="post" action="./list.do">
 					<input type="hidden" id="no" name="no" value="${memberListParamDto.no}">
 					<input type="hidden" name="name" value="${memberListParamDto.name}">
@@ -250,6 +262,7 @@
 					<input type="hidden" name="joinDateEnd" value="${memberListParamDto.joinDateEnd}">
 					<input type="hidden" id='curPage' name='curPage' value="${memberListParamDto.curPage}">
 				</form>
+				<!-- //검색조건 컨트롤러에 전송 end -->
 			</div>
     	    <!-- //컨테이너 end -->
 		<jsp:include page="/WEB-INF/views/Tail.jsp" />

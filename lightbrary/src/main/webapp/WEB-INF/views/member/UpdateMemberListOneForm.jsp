@@ -47,7 +47,7 @@
 							</tbody>
 						</table>
 					</div>
-					<!--  -->
+
 					<div class='detailTable'>
 						<p class='text bold textDark'>개인정보</p>
 						<table>
