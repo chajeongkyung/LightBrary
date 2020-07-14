@@ -6,7 +6,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>내 정보</title>
+<title>Lightbrary : 내 정보</title>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
@@ -42,7 +42,7 @@
 						</tbody>
 					</table>
 				</div>
-				<!--  -->
+				<!-- 수정 가능한 상세페이지 start-->
 				<div class='detailTable'>
 					<p class='text bold textDark'>개인정보</p>
 					<table>

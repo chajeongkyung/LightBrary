@@ -57,7 +57,7 @@
 						</tbody>
 					</table>
 				</div>
-				<!--  -->
+				
 				<div class='detailTable'>
 					<p class='text bold textDark'>개인정보</p>
 					<table>
@@ -91,25 +91,24 @@
 				<!-- 상세페이지 버튼 start -->
 				<div class='btnWrap viewBtns fs0 tCenter'>
 				
-				<a href="#none" onclick="moveListFnc()" class='btn grey'>목록</a>
-				
-				<form id="memberListParamDto" name="memberListParamDto" action="./update.do" method="post">
-					<input type="submit" class='btn green' value="수정">
+					<a href="#none" onclick="moveListFnc()" class='btn grey'>목록</a>
 					
-					<input type="hidden" id="no" name="no" value="${memberListParamDto.no}">
-					<input type="hidden" name="name" value="${memberListParamDto.name}">
-					<input type="hidden" name="email" value="${memberListParamDto.email}">
-					<input type="hidden" name="phone" value="${memberListParamDto.phone}">
-					<input type="hidden" name="address" value="${memberListParamDto.address}">
-					<input type="hidden" name="createdDate" value="${memberListParamDto.createdDate}">
-					<input type="hidden" name="curPage" value="${memberListParamDto.curPage}">
-				</form>	
+					<form id="memberListParamDto" name="memberListParamDto" action="./update.do" method="post">
+						<input type="submit" class='btn green' value="수정">
+						
+						<input type="hidden" id="no" name="no" value="${memberListParamDto.no}">
+						<input type="hidden" name="name" value="${memberListParamDto.name}">
+						<input type="hidden" name="email" value="${memberListParamDto.email}">
+						<input type="hidden" name="phone" value="${memberListParamDto.phone}">
+						<input type="hidden" name="address" value="${memberListParamDto.address}">
+						<input type="hidden" name="createdDate" value="${memberListParamDto.createdDate}">
+						<input type="hidden" name="curPage" value="${memberListParamDto.curPage}">
+					</form>	
 					
 				</div>
 				<!-- //상세페이지 버튼 end -->
 			</div>
 			<!-- //상세페이지 end -->
-			
 		</div>
 		<!-- //컨테이너 end -->
 		

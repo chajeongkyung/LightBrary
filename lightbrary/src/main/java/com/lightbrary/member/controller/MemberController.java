@@ -22,6 +22,8 @@ import com.lightbrary.member.model.MemberListParamDto;
 import com.lightbrary.member.service.MemberService;
 import com.lightbrary.util.CommonUtils;
 import com.lightbrary.util.Paging;
+import com.lightbrary.util.interceptor.Auth;
+import com.lightbrary.util.interceptor.Auth.Role;
 
 /**
  * @author 차정경
@@ -48,39 +50,42 @@ public class MemberController {
 	@RequestMapping(value = "/member/addCtr.do", method = RequestMethod.POST)
 	public String memberAdd(MemberDto memberDto) {
 		
-		log.info("회원가입 컨트롤러입니다", memberDto);
+		log.info("회원가입 컨트롤러", memberDto);
 		
 		memberService.insertOneMember(memberDto);
 		
 		return "redirect:/login.do";
 	}
 	
-	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
-	public String login() {
+	@RequestMapping(value = "/login.do", method =  {RequestMethod.POST, RequestMethod.GET})
+	public String login(String email, Model model) {
 		
 		log.info("로그인 폼으로");
+		
+		model.addAttribute("findEmail", email);
 		
 		return "auth/LoginForm";
 	}
 	
-	@RequestMapping(value = "/loginCtr.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/loginCtr.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String loginCtr(String email, String password,
 			HttpSession session) {
 		
-		log.info("로그인!");
+		log.info("성공적으로 로그인되었습니다");
 		
 		MemberDto memberDto = memberService.memberExist(email, password);		
 		
 		session.setAttribute("member", memberDto);
 
-		return "redirect:/member/detail.do";
+		return "redirect:/main.do";
 		
 	}
 	
 	// 로그아웃
+	@Auth(role=Role.USER)
 	@RequestMapping(value = "/logout.do", method = RequestMethod.GET)
 	public String logout(HttpSession session) {
-		log.info("로그아웃~");
+		log.info("로그아웃되었습니다");
 
 		session.invalidate();
 		
@@ -88,13 +93,14 @@ public class MemberController {
 	}
 	
 	//회원 목록
+	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/auth/list.do"
 			, method = {RequestMethod.GET, RequestMethod.POST})
 	public String rentList(@RequestParam(defaultValue = "1") int curPage
 			, MemberListParamDto memberListParamDto
 			, Model model) {
 		
-		log.info("------MemberList------");
+		log.info("----------회원목록-----------");
 		log.info("curPage: " + curPage);
 		log.info("" + memberListParamDto);
 		log.info("---------------------------");
@@ -112,14 +118,16 @@ public class MemberController {
 		model.addAttribute("memberListParamDto", memberListParamDto);
 		model.addAttribute("pagingInfo", pagingInfo);
 		
-		return "auth/MemberListView";
+		return "member/MemberListView";
 	}
 	
+	//회원상세
+	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/auth/detail.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String memberListOneView(int no, MemberListParamDto memberListParamDto
 			, Model model) {
 		
-		log.info("------Called MemberDetail------");
+		log.info("-----------회원상세------------");
 		log.info("no: " + no);
 		log.info(memberListParamDto.toString());
 		log.info("-----------------------------");
@@ -129,13 +137,15 @@ public class MemberController {
 		model.addAttribute("memberDto", memberDto);
 		model.addAttribute("memberListParamDto", memberListParamDto);
 		
-		return "auth/MemberListOneView";
+		return "member/MemberListOneView";
 	}
 	
+	//회원정보수정
+	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/auth/update.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String updateMemberListOne(int no, MemberListParamDto memberListParamDto, Model model) {
 
-		log.info("------Called MemberUpdate------");
+		log.info("----------회원정보수정----------");
 		log.info("no: " + no);
 		log.info(memberListParamDto.toString());
 		log.info("-----------------------------");
@@ -145,9 +155,11 @@ public class MemberController {
 		model.addAttribute("memberDto", memberDto);
 		model.addAttribute("memberListParamDto", memberListParamDto);
 		
-		return "auth/UpdateMemberListOneForm";
+		return "member/UpdateMemberListOneForm";
 	}
-		
+	
+	//내정보상세
+	@Auth(role=Role.USER)
 	@RequestMapping(value = "/member/detail.do", method = RequestMethod.GET)
 	public String memberDetailView() {
 		
@@ -156,14 +168,16 @@ public class MemberController {
 		return "member/MemberDetailView";
 	}
 	
+	@Auth(role=Role.USER)
 	@RequestMapping(value = "/member/checkPassword.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String checkPasswordForm() {
 		
-		log.info("정보 수정 전 비밀번호 확인 폼");
+		log.info("정보 수정 전 비밀번호 확인 폼으로");
 		
 		return "member/CheckPasswordForm";
 	}
 
+	@Auth(role=Role.USER)
 	@RequestMapping(value = "/member/update.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String updateMemberDetail() {
 		
@@ -172,7 +186,7 @@ public class MemberController {
 		return "member/UpdateMemberDetailForm";
 	}
 	
-	
+	@Auth(role=Role.USER)
 	@RequestMapping(value = "/member/updateCtr.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String updateMemberDetailCtr(HttpSession session, MemberDto memberDto) {
 		
@@ -210,31 +224,11 @@ public class MemberController {
 		return "redirect:./detail.do";
 	}
 	
-	@RequestMapping(value = "/auth/deletePasswordCtr.do", method = RequestMethod.GET)
-	public String deleteMemberPassword(int no, HttpSession session) {
-		
-		log.info("비밀번호 초기화 컨트롤러");
-		
-		memberService.deleteOneMember(no);
-		
-		String url = "";
-		
-		MemberDto sessionMemberDto 
-			= (MemberDto)session.getAttribute("member");
-		
-		if (sessionMemberDto.getGradeCode() == 0) {
-			url = "redirect:/auth/list.do";
-		} else {
-			url = "redirect:/login.do";
-		}
-		
-		return url;
-	}
-	
+	@Auth(role=Role.USER)
 	@RequestMapping(value = "/member/deleteCtr.do", method = RequestMethod.GET)
 	public String deleteMember(int no, HttpSession session) {
 		
-		log.info("회원탈퇴");
+		log.info("탈퇴되었습니다");
 		
 		memberService.deleteOneMember(no);
 		
@@ -246,7 +240,7 @@ public class MemberController {
 		if (sessionMemberDto.getGradeCode() == 0) {
 			url = "redirect:/auth/list.do";
 		} else {
-			url = "redirect:/login.do";
+			url = "redirect:/logout.do";
 		}
 		
 		return url;
@@ -270,6 +264,7 @@ public class MemberController {
 		return memberService.checkPhone(phone);
 	}
 
+	//로그인할때 디비에 아이디와 비번확인
 	@ResponseBody
 	@RequestMapping(value = "/member/checkAccount.do", method = RequestMethod.POST)
 	public MemberDto checkAccount(@RequestParam("email") String email
@@ -301,14 +296,7 @@ public class MemberController {
 		return memberDto;
 	}
 	
-	@RequestMapping(value = "/findPassword.do", method = RequestMethod.GET)
-	public String findPassword() {
-		
-		log.info("비밀번호 찾기 폼으로");
-		
-		return "auth/FindPasswordForm";
-	}
-	
+	@Auth(role=Role.ADMIN)
 	@RequestMapping(value="/auth/deleteBatch.do", method = RequestMethod.POST, 
 			produces="text/plain;charset=UTF-8")
 	@ResponseBody
@@ -321,23 +309,27 @@ public class MemberController {
 		}
 	}
 	
+	@RequestMapping(value = "/findPassword.do", method = RequestMethod.GET)
+	public String findPassword() {
+		
+		log.info("비밀번호 찾기 폼으로");
+		
+		return "auth/FindPasswordForm";
+	}
+	
 	@Autowired
     private JavaMailSender mailSender;
 	
+	@Auth(role=Role.USER)
 	@RequestMapping("/sendEmail.do")
     public String sendEmail(@RequestParam("email") String email, HttpSession session)
     		throws Exception {
         
       log.info("이메일전송 해보자");
-      log.info("{}",session);
-      log.info("{}",session);
-      log.info("{}",session);
-      log.info("{}",session);
-      log.info("{}",session);
-      log.info("{}",session);
-      log.info("{}",session);
       
       String password = CommonUtils.getRandomPassword();
+      System.out.println("초기화된 비밀번호:" + password);
+      
       memberService.resetPassword(email, password);
     
       try {
@@ -353,24 +345,21 @@ public class MemberController {
           messageHelper.setText("회원님의 비밀번호는 " + password + "입니다.");
           
           mailSender.send(message);
-          
-          
         
       } catch (Exception e) {
          // TODO: handle exception
-         System.out.println("------------이멜전송에러-------------");
+         System.out.println(e);
       }
       
       MemberDto sessionMemberDto 
 		= (MemberDto)session.getAttribute("member");
       
       if (sessionMemberDto == null) {
-		
-		return "redirect:/login.do";
+    	  return "redirect:/login.do";
       } else {
-		int no = memberService.findMemberNo(email);
-		
-		return "redirect:/auth/update.do?no="+no;	
+    	  int no = memberService.findMemberNo(email);
+    	  
+    	  return "redirect:/auth/update.do?no="+no;	
 		}
 
     }

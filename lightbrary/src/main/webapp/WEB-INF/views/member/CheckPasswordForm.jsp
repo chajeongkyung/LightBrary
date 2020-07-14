@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>내 정보</title>
+<title>Lightbrary : 내 정보</title>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
@@ -25,18 +25,26 @@
 				<h2 id='pageTitle'>내 정보</h2>
 					<form action='./update.do' onsubmit="return checkPasswordFnc();"  
 						id="findPasswordForm" method="post" class='infoForm'>
+						
+						<!-- 입력폼 start -->
 						<div class='infoInputWrap'>
 							<input type="password" class='infoInput infoPassword' 
 								id="inputPassword" name="inputPassword" placeholder="비밀번호">
+								
 								<p style="margin: 10px 0px 10px 0px;" id="alertNoPasswordMsg"></p>
+								
 								<div class="text" style="margin-top: 10px;">	
 									본인 확인을 위해서 비밀번호를 입력해 주세요.
 								</div>
 						</div>
+						<!-- //입력폼 end -->
+						
+						<!-- 상세페이지 버튼 start -->
 						<div class='btnWrap tCenter' style="margin-top: 30px;">
 							<input type="submit" class='btn green' value="확인">
 							<a href="./detail.do" class="subBtn text bold">뒤로</a>
 						</div>
+						<!-- //상세페이지 버튼 end -->
 					</form>
 			</div>
 		<!-- //컨테이너 end -->
