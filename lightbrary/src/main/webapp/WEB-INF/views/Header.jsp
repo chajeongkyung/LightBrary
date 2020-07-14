@@ -7,7 +7,7 @@
 <header>
 	<div id='headerTop'>
 		<h1 id='logo'>
-			<a href="#none"></a>
+			<a href="/lightbrary/login.do"></a>
 		</h1>
 	</div>
 </header>
@@ -25,7 +25,7 @@
 	</div>
 	<div id='headerTop'>
 		<h1 id='logo'>
-			<a href="#none"></a>
+			<a href="/lightbrary/main.do"></a>
 		</h1>
 		<ul id='headerOptions' class='fs0'>
 			<li>
@@ -88,7 +88,7 @@
 	</div>
 	<div id='headerTop'>
 		<h1 id='logo'>
-			<a href="#none"></a>
+			<a href="/lightbrary/main.do"></a>
 		</h1>
 		<ul id='headerOptions' class='fs0'>
 			<li>

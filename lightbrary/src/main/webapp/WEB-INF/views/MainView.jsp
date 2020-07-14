@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+ <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
@@ -7,7 +7,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>기본 페이지 레이아웃</title>
+<title>Lightbrary</title>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
@@ -15,7 +15,17 @@
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
+<style type="text/css">
 
+#mainPageTitle {
+	padding: 265px 0 45px;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+	letter-spacing: -0.08em;
+}
+
+</style>
 </head>
 
 <body>
@@ -25,10 +35,10 @@
 	
 		<!-- 컨테이너 start -->
 		<div id='container'>
-			<h2 id='pageTitle'>${member.name} 님, 환영합니다 !</h2>
+			<div id='mainPageTitle'>${member.name} 님, 환영합니다 !</div>
 
 			<c:if test="${member.gradeCode eq 0}">
-				<h3 style="font-size: 30px;">관리자메뉴</h3>
+				<div class="bold textDark" style="font-size: 20px;">관리자메뉴</div>
 				<ul>
 					<li>
 						<a href="/lightbrary/auth/list.do">회원관리</a>
@@ -46,13 +56,17 @@
 			</c:if>
 			
 			<c:if test="${member.gradeCode eq 1}">
-				<h3 style="font-size: 30px;">인기도서  ${bookDtoList}</h3>
+				<div class="bold textDark" style="font-size: 20px;">인기도서  ${bookDtoList}</div>
 				<div>
-				${bookDtoList}
 					<c:forEach var="bookDto" items="${bookDtoList}">
 						<ul>
 							<li>
-								<div>사진 ${bookDto.imageNo}</div>
+								<div>
+								<a href="#none"class="fLeft">
+									<c:url var="imgUrl" value='/img/${bookDto.imageName}'/>
+									<span class='bookImage bgCover' style="background-image: url('${imgUrl}');"></span>
+								</a>
+								사진 ${bookDto.imageNo}</div>
 								<div>도서명 ${bookDto.name}</div>
 								<div>작가 ${bookDto.writer}</div>
 							</li>
@@ -62,10 +76,10 @@
 				</div>
 			</c:if>
 			
-			<h3 style="font-size: 30px;">공지게시판</h3>
+			<div class="bold textDark" style="font-size: 20px;">공지게시판</div>
 			
 			<!--더보기버튼 -->
-			<a href="./notice/list.do">+</a>
+			<a class="bold textDark" href="./notice/list.do">+</a>
 			
 			<div id='tableWrap'>
 				<table id='table'>
