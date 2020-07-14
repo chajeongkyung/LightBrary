@@ -1,0 +1,10 @@
+@C:\LIT\LightBrary\lightbrary\src\main\webapp\WEB-INF\sql\1.INIT_TABLE.sql
+@C:\LIT\LightBrary\lightbrary\src\main\webapp\WEB-INF\sql\2.INIT_BOOK_CATEGORY.sql
+@C:\LIT\LightBrary\lightbrary\src\main\webapp\WEB-INF\sql\3.INIT_BOOK_IMAGE.sql
+@C:\LIT\LightBrary\lightbrary\src\main\webapp\WEB-INF\sql\4.INIT_BOOK_STATUS.sql
+@C:\LIT\LightBrary\lightbrary\src\main\webapp\WEB-INF\sql\5.INIT_MEMBER_GRADE.sql
+@C:\LIT\LightBrary\lightbrary\src\main\webapp\WEB-INF\sql\6.INIT_NOTICE_CATEGORY.sql
+@C:\LIT\LightBrary\lightbrary\src\main\webapp\WEB-INF\sql\7.INIT_MEMBER.sql
+@C:\LIT\LightBrary\lightbrary\src\main\webapp\WEB-INF\sql\8.INIT_BOOK.sql
+@C:\LIT\LightBrary\lightbrary\src\main\webapp\WEB-INF\sql\9.INIT_NOTICE.sql
+@C:\LIT\LightBrary\lightbrary\src\main\webapp\WEB-INF\sql\10.INIT_RENT.sql

@@ -748,4 +748,50 @@ public class RentController {
 
 		return "redirect:/rent/overdue/list.do";
 	}
+	
+	public void calcStatus(RentDto rentDto) {
+		Date pickupDate = rentDto.getPickUpDate();
+		Date rentDate = rentDto.getRentDate();
+		Date expireDate = rentDto.getExpireDate();
+		Date returnDate = rentDto.getReturnDate();
+
+		Calendar today = Calendar.getInstance();
+		today.setTime(new Date());
+		today.set(Calendar.HOUR_OF_DAY, 0);
+		today.set(Calendar.MINUTE, 0);
+		today.set(Calendar.SECOND, 0);
+		today.set(Calendar.MILLISECOND, 0);
+		
+		Calendar pickUpCal = Calendar.getInstance();
+		pickUpCal.setTime(pickupDate);
+		pickUpCal.set(Calendar.HOUR_OF_DAY, 0);
+		pickUpCal.set(Calendar.MINUTE, 0);
+		pickUpCal.set(Calendar.SECOND, 0);
+		pickUpCal.set(Calendar.MILLISECOND, 0);
+		
+		Calendar expireCal = Calendar.getInstance();
+		expireCal.setTime(expireDate);
+		expireCal.set(Calendar.HOUR_OF_DAY, 0);
+		expireCal.set(Calendar.MINUTE, 0);
+		expireCal.set(Calendar.SECOND, 0);
+		expireCal.set(Calendar.MILLISECOND, 0);
+		
+		if(rentDate == null) {
+			if(today.after(pickUpCal)) {
+				rentDto.setRentStatus("예약취소");
+			} else {
+				rentDto.setRentStatus("예약");
+			}
+		} else {
+			if(returnDate == null) {
+				if(today.after(expireCal)) {
+					rentDto.setRentStatus("연체");
+				} else {
+					rentDto.setRentStatus("대출중");
+				}
+			} else {
+				rentDto.setRentStatus("반납완료");
+			}
+		}
+	}
 }
