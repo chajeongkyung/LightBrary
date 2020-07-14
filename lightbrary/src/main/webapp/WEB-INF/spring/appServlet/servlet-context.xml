@@ -52,8 +52,7 @@ class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 			<bean class="com.lightbrary.util.interceptor.IntercepterController"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
-	
-	<tx:annotation-driven transaction-manager="transactionManager"/>
+
 
 </beans>
 
