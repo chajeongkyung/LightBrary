@@ -19,10 +19,8 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		// depth1 네비
-		$('#depth1Ul > li:nth-child(2)').addClass('active');
-		// depth2 네비
-		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(3)').addClass('active');
+		// 마이페이지 메뉴 활성화
+		$('#myPageDrop ul > li:nth-child(3)').addClass('active');
 		
 		//분류 문자
 		bookCategorySelect();

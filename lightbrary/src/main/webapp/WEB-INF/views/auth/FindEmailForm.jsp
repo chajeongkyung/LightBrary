@@ -24,20 +24,28 @@
 			<div id='container'>
 				<h2 id='pageTitle'>이메일 찾기</h2>
 					<form action='./findEmailCtr.do' id="findEmailCtrForm" method='post' class='infoForm'>
+						
+						<!-- 입력폼 start -->
 						<div class='infoInputWrap'>
 							<input type="text" class='infoInput infoName' id="userName" name="userName" placeholder="성함">
 							<input type="text" style="margin-top: 20px;" class='infoInput infoPhone'
 								 id="phone" name="phone" placeholder="연락처">
+								
 								<p style="margin-bottom: 10px;" id="alertNoAccountMsg"></p>
+								
 								<div class="text" style="margin-top: 10px; line-height: 120%;">	
 									고객님께서 회원가입 시 입력한 성함과 연락처를 입력해주시면, 이에 해당하는
 									이메일 주소를 찾아드립니다.
 								</div>
 						</div>
+						<!-- //입력폼 end -->
+						
+						<!-- 상세페이지 버튼 start -->
 						<div class='btnWrap tCenter' style="margin-top: 30px;">
 							<input type="button" onclick="checkAccountFnc();" class='btn green' value="입력">
 							<a href="./login.do" class="subBtn text bold">로그인으로 돌아가기</a>
 						</div>
+						<!-- //상세페이지 버튼 end -->
 					</form>
 			</div>
 		<!-- //컨테이너 end -->
@@ -72,6 +80,8 @@
  						console.log(data);
  						$('#alertNoAccountMsg').html("");
  						alert("회원님의 이메일 주소는 \"" + data.email + "\" 입니다.");
+ 						
+ 						location.href = '/lightbrary/login.do?email='+ data.email;
  					}
 				}, error : function() {
 						console.log("실패");

@@ -7,7 +7,7 @@
 <header>
 	<div id='headerTop'>
 		<h1 id='logo'>
-			<a href="#none"></a>
+			<a href="/lightbrary/login.do"></a>
 		</h1>
 	</div>
 </header>
@@ -25,7 +25,7 @@
 	</div>
 	<div id='headerTop'>
 		<h1 id='logo'>
-			<a href="#none"></a>
+			<a href="/lightbrary/main.do"></a>
 		</h1>
 		<ul id='headerOptions' class='fs0'>
 			<li>
@@ -88,14 +88,9 @@
 	</div>
 	<div id='headerTop'>
 		<h1 id='logo'>
-			<a href="#none"></a>
+			<a href="/lightbrary/main.do"></a>
 		</h1>
 		<ul id='headerOptions' class='fs0'>
-			<li id='hBasket'>
-				<a href="#">
-					<img alt="바구니" src="<%=request.getContextPath()%>/resources/img/icon-cart.png">
-				</a>
-			</li>
 			<li>
 				<a href="#" id='myPageClick' class='hOptionsText'>
 					<span>${member.name}</span> 님

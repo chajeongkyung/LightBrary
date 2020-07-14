@@ -22,11 +22,38 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-// 		// depth1 네비
-// 		$('#depth1Ul > li:nth-child(2)').addClass('active');
-// 		// depth2 네비
-// 		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(3)').addClass('active');
+		// 마이페이지 메뉴 활성화
+		$('#myPageDrop ul > li:nth-child(3)').addClass('active');
 	});
+	
+	//다중 처리
+	function cancelBatchFnc() {
+		var noObjArr = checkedObjArr();
+		var noArr = new Array();
+		
+		for (var i = 0; i < noObjArr.length; i++) {
+			noArr[i] = noObjArr[i].value;
+		}
+		
+		if(noObjArr.length > 0){
+			var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
+			$.ajax({
+				type: "POST",
+				url: baseUrl + '/rent/reserve/member/cancelBatch.do',
+				data: "noArr=" + noArr,
+				success:function(){
+					alert('선택 도서의 대출 예약이 취소되었습니다.');
+					$('#pagingForm').submit();
+				},
+				error: function(){
+					alert('오류');
+				}
+			});
+		} else{
+			alert('선택된 도서가 없습니다.');
+		}
+		
+	}
 	
 	// 상세페이지로 이동
 	function listOnePageFnc(clickObj){	
@@ -55,12 +82,16 @@
 		var noObj = $(clickObj).parent().find('.no');
 		var myNoObj = $('#myNo');
 		var bookNoObj = $(clickObj).parent().find('.bookNo');
+		var searchOptionObj = $('#searchOption');
+		var keywordObj = $('#keyword');
 		
 		var url = '';
 		url += './statusUpdateCtr.do?';
 		url += 'no=' + noObj.val();
 		url += '&myNo=' + myNoObj.val();
 		url += '&bookNo=' + bookNoObj.val();
+		url += '&searchOption=' + searchOptionObj.val();
+		url += '&keyword=' + keywordObj.val();
 		
 		if(confirm('선택 도서의 대출 예약을 취소하시겠습니까?')){
 			alert('도서의 대출 예약이 취소되었습니다.');
@@ -145,7 +176,7 @@
 					<!-- 동그란 체크박스 전체선택 end -->
 					<ul class='settings fRight fs0'>
 						<li>
-							<a href="#none" class='text'>선택 예약 취소</a>
+							<a href="#none" class='text' onclick="cancelBatchFnc();">선택 예약 취소</a>
 						</li>
 					</ul>
 				</div>
@@ -161,8 +192,8 @@
 						<li>
 							<!-- 동그란 체크박스 start -->
 							<div class='checkbox type1'>
-								<input type="checkbox" id='check${rentDto.no}'>
-								<label for="check${rentDto.no}"></label>
+								<input type="checkbox" id='chk${rentDto.no}' value="${rentDto.no}">
+								<label for="chk${rentDto.no}"></label>
 							</div>
 							<!-- //동그란 체크박스 end -->
 							<span class='num'>${rentDto.rnum}</span>

@@ -43,6 +43,7 @@
 		<result column="EXPIRE_DATE" property="expireDate" javaType="java.util.Date"/>
 		<result column="RETURN_DATE" property="returnDate" javaType="java.util.Date"/>
 		<result column="OVERDUE_DAYS" property="overdueDays"/>
+		<result column="EXPIRE_DAYS" property="expireDays"/>
 		<result column="PICKUP_DATE" property="pickUpDate" javaType="java.util.Date"/>
 		<result column="RETURN_SEND_FLAG" property="returnSendFlag"/>
 		<result column="OVERDUE_SEND_FLAG" property="overdueSendFlag"/>
@@ -240,7 +241,7 @@
 		    , RENT.NO AS NO, RENT.BOOK_NO AS BOOK_NO, RENT.NAME AS BOOK_NAME, RENT.WRITER AS WRITER, RENT.PUBLISH AS PUBLISH
 		    , RENT.MEMBER_NO AS MEMBER_NO, RENT.M_NAME AS M_NAME, RENT.EMAIL AS EMAIL, RENT.PHONE AS PHONE, RENT.ADDRESS AS ADDRESS
 		    , RENT.B_STATUS AS B_STATUS, RENT.RESERVE_DATE, RENT.RETURN_DATE AS RETURN_DATE, RENT.RENT_DATE AS RENT_DATE
-		    , RENT.EXPIRE_DATE AS EXPIRE_DATE
+		    , RENT.EXPIRE_DATE AS EXPIRE_DATE, TRUNC(RENT.EXPIRE_DATE - RENT.RENT_DATE) AS EXPIRE_DAYS
 		    FROM (
 		        SELECT RENT_ROW.NO AS NO, RENT_ROW.BOOK_NO AS BOOK_NO, RENT_ROW.NAME AS NAME, RENT_ROW.WRITER AS WRITER, RENT_ROW.PUBLISH AS PUBLISH
 		        , RENT_ROW.MEMBER_NO AS MEMBER_NO, RENT_ROW.M_NAME AS M_NAME, RENT_ROW.EMAIL AS EMAIL, RENT_ROW.PHONE AS PHONE, RENT_ROW.ADDRESS AS ADDRESS
@@ -257,6 +258,7 @@
 		            JOIN BOOK B
 		            ON R.BOOK_NO = B.NO
 		            WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='대출')
+		            OR B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='연체')
 		            AND M.NO = #{myNo}
 		         ) RENT_ROW
 		         <choose>
@@ -304,6 +306,7 @@
 		        JOIN BOOK B
 		        ON R.BOOK_NO = B.NO
 		        WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='대출')
+		        OR B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='연체')
 		        AND M.NO = #{myNo}
 		     ) RENT_ROW
 		     <include refid="search"></include>
@@ -337,6 +340,7 @@
 		                JOIN BOOK B
 		                ON R.BOOK_NO = B.NO
 		                WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='대출')
+		                OR B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='연체')
 		                AND M.NO = #{myNo}
 		             ) RENT_ROW
 		             <include refid="search"></include>
@@ -356,14 +360,13 @@
 		, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH, B.PUBLISH_DATE AS PUBLISH_DATE
 		, M.NO AS MEMEBER_NO, M.NAME AS M_NAME, M.EMAIL AS EMAIL, M.PHONE AS PHONE, M.ADDRESS AS ADDRESS
 		, (SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS
-		, R.RESERVE_DATE, R.RENT_DATE, R.RETURN_DATE, R.EXPIRE_DATE
+		, R.RESERVE_DATE, R.RENT_DATE, R.RETURN_DATE, R.EXPIRE_DATE, TRUNC(R.EXPIRE_DATE - R.RENT_DATE) AS EXPIRE_DAYS
 		FROM RENT R
 		JOIN MEMBER M
 		ON R.MEMBER_NO = M.NO
 		JOIN BOOK B
 		ON R.BOOK_NO = B.NO
-		WHERE B.STATUS_CODE = (SELECT CODE FROM BOOK_STATUS WHERE NAME='대출')
-		AND R.NO = #{no}
+		WHERE R.NO = #{no}
 	</select>
 	
 	<!-- 반납일 연장 -->
@@ -476,8 +479,9 @@
 	
 	<!-- 예약 전체 조회 (검색어/상태 없이) start -->
 	<select id="selectReservebyStatus" parameterType="String" resultMap="rentResultMap">
-		SELECT R.NO AS NO, R.BOOK_NO AS BOOK_NO, B.NAME AS NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH,
-	        (SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS, R.RESERVE_DATE, R.RETURN_DATE
+		SELECT R.NO AS NO, R.BOOK_NO AS BOOK_NO, B.NAME AS NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH
+	    , (SELECT NAME FROM BOOK_STATUS BS WHERE B.STATUS_CODE = BS.CODE) AS B_STATUS, R.RESERVE_DATE, R.RETURN_DATE
+	    , (R.RESERVE_DATE + 5) AS PICKUP_DATE
 		FROM RENT R
 		JOIN BOOK B
 		ON R.BOOK_NO = B.NO
@@ -529,9 +533,9 @@
 	<!-- //반납일 수정 end -->
 	
 	
-	<!--****************
-			대출
-	 **************** -->
+	<!--
+	관리자 대출 관리
+	-->
 	
 	<!-- 대출 목록 -->
 	<select id="selectRent" parameterType="map"
@@ -576,9 +580,9 @@
 		                </if>
 		             ) RENT_ROW
 		             <include refid="search"></include>
-		             ORDER BY RENT_ROW.EXPIRE_DATE ASC
+		             ORDER BY RENT_ROW.EXPIRE_DATE DESC
 		        ) RENT_ALL
-		        ORDER BY RENT_ALL.B_STATUS ASC, RENT_ALL.EXPIRE_DATE ASC
+		        ORDER BY RENT_ALL.B_STATUS ASC, RENT_ALL.EXPIRE_DATE DESC
 		    ) RENT
 		)
 		WHERE RNUM BETWEEN #{start} AND #{end}
@@ -669,9 +673,9 @@
 			                </if>
 			             ) RENT_ROW
 			             <include refid="search"></include>
-			             ORDER BY RENT_ROW.EXPIRE_DATE ASC
+			             ORDER BY RENT_ROW.EXPIRE_DATE DESC
 			        ) RENT_ALL
-			        ORDER BY RENT_ALL.B_STATUS ASC, RENT_ALL.EXPIRE_DATE ASC
+			        ORDER BY RENT_ALL.B_STATUS ASC, RENT_ALL.EXPIRE_DATE DESC
 			    ) RENT
 			)
 		)

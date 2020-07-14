@@ -197,10 +197,6 @@ header {
 	margin-right: 25px;
 }
 
-#headerOptions #hBasket {
-	margin-right: 8px;
-}
-
 #headerOptions li:last-child {
 	margin-right: 0px;
 }
@@ -271,7 +267,7 @@ header {
 	color: #a8a8a8;
 }
 
-#myPageDrop a:hover span {
+#myPageDrop li.active span, #myPageDrop a:hover span {
 	font-weight: bold;
 }
 

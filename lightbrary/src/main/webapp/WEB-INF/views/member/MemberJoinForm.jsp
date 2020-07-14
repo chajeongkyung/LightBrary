@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>회원가입</title>
+<title>Lightbrary : 회원가입</title>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
@@ -33,7 +33,10 @@
 			<div id='container'>
 				<h2 id='pageTitle'>회원가입</h2>
 					<form action='./addCtr.do' onsubmit="return checkValidationFnc();" method='post' class='infoForm'>
+						
 						<p id="alertNecessaryMsg" class="textRed alertMsgBox"></p>
+					
+						<!-- 입력폼 start -->
 						<div class='infoInputWrap'>
 							<input type="text" class='infoInput infoName' id="name" name="name" placeholder="성함">
 							<p id="alertNameErrorMsg" class="textRed alertMsgBox"></p>
@@ -41,17 +44,21 @@
 							<p id="alertPhoneErrorMsg" class="textRed alertMsgBox"></p>
 							<input type="text" style="margin-top: 20px;" class='infoInput infoEmail' id="email" name="email" placeholder="이메일">
 							<p id="alertEmailErrorMsg" class="textRed alertMsgBox"></p>
-							<input type="text" style="margin-top: 20px;" class='infoInput infoPassword' id="password" name="password" placeholder="비밀번호">
+							<input type="password" style="margin-top: 20px;" class='infoInput infoPassword' id="password" name="password" placeholder="비밀번호">
 							<p id="alertPasswordErrorMsg" class="textRed alertMsgBox"></p>
-							<input type="text" style="margin-top: 20px;" class='infoInput infoPassword' id="checkPassword" name="checkPassword" placeholder="비밀번호 재확인">
+							<input type="password" style="margin-top: 20px;" class='infoInput infoPassword' id="checkPassword" name="checkPassword" placeholder="비밀번호 재확인">
 							<p id="alertcheckPasswordErrorMsg" class="textRed alertMsgBox"></p>
 							<input type="text" style="margin-top: 20px;" class='infoInput infoLocation' id="address" name="address" placeholder="주소">
 							<p id="alertAddressErrorMsg" class="textRed alertMsgBox"></p>
 						</div>
+						<!-- //입력폼 end -->
+						
+						<!-- 상세페이지 버튼 start -->
 						<div class='btnWrap tCenter' style="margin-top: 30px;">
 							<input type="submit" class='btn green' value="가입하기">
 							<a href="../login.do" class="subBtn text bold">로그인페이지</a>
 						</div>
+						<!-- //상세페이지 버튼 end -->
 					</form>
 			</div>
 		<!-- //컨테이너 end -->
@@ -84,7 +91,7 @@ $("#phone").blur(function() {
 		type : "POST",
 		data : "phone=" + phoneObj,
 		success : function(data) {
-			console.log("1 = 중복o / 0 = 중복x : "+ data);							
+			console.log("1 = 핸드폰 번호 중복 / 0 = 핸드폰 번호 중복x : " + data);							
 			
 			if (data == 1) {
 					$('#alertPhoneErrorMsg').css('color', '#EC8686');	
@@ -106,7 +113,7 @@ $("#phone").blur(function() {
 					console.log("실패");
 			}
 		});
-	});
+});
 
 $("#email").blur(function() {
 	
@@ -140,12 +147,11 @@ $("#email").blur(function() {
 					console.log("실패");
 			}
 		});
-	});
+});
 	
 $("#password").blur(function() {
 	var passwordObj = $('#password').val();
 	
-	alert(passwordObj);
 	 if(isNull(passwordObj)) {
 		 $('#alertPasswordErrorMsg').html("비밀번호를 입력해 주세요.");
 	}else if (!isValidPassword(passwordObj)) {

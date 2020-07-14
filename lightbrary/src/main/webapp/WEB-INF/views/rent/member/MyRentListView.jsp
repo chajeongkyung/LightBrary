@@ -22,10 +22,8 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-// 		// depth1 네비
-// 		$('#depth1Ul > li:nth-child(2)').addClass('active');
-// 		// depth2 네비
-// 		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(3)').addClass('active');
+		// 마이페이지 메뉴 활성화
+		$('#myPageDrop ul > li:nth-child(2)').addClass('active');
 	});
 	
 	// 상세페이지로 이동
@@ -50,15 +48,47 @@
 		return false;
 	}
 	
+	//다중 반납일 연장
+	function extendRentBatchFnc() {
+		var noObjArr = checkedObjArr();
+		var noArr = new Array();
+		
+		for (var i = 0; i < noObjArr.length; i++) {
+			noArr[i] = noObjArr[i].value;
+		}
+		if(noObjArr.length > 0){
+			var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
+			$.ajax({
+				type: "POST",
+				url: baseUrl + '/rent/member/extendRentBatch.do',
+				data: "noArr=" + noArr,
+				success:function(){
+					alert('도서의 반납일이 3일 연장되었습니다.\n반납일 연장은 총 한번만 허용됨을 알려드립니다.');
+					$('#pagingForm').submit();
+				},
+				error: function(){
+					alert('오류');
+				}
+			});
+		} else{
+			alert('선택된 도서가 없습니다.');
+		}
+		
+	}
+	
 	//반납일 연장
 	function extendRentFnc(clickObj) {
 		var noObj = $(clickObj).parent().find('.no');
 		var myNoObj = $('#myNo');
+		var searchOptionObj = $('#searchOption');
+		var keywordObj = $('#keyword');
 		
 		var url = '';
 		url += './statusUpdateCtr.do?';
 		url += 'no=' + noObj.val();
 		url += '&myNo=' + myNoObj.val();
+		url += '&searchOption=' + searchOptionObj.val();
+		url += '&keyword=' + keywordObj.val();
 		
 		if(confirm('선택 도서의 반납일을 3일 연장하시겠습니까?')){
 			alert('도서의 반납일이 3일 연장되었습니다.\n반납일 연장은 총 한번만 허용됨을 알려드립니다.');
@@ -143,9 +173,10 @@
 						</label>
 					</div>
 					<!-- 동그란 체크박스 전체선택 end -->
+					
 					<ul class='settings fRight fs0'>
 						<li>
-							<a href="#none" class='text'>선택 예약 취소</a>
+							<a href="#none" class='text' onclick="extendRentBatchFnc();">선택 대출 연장하기</a>
 						</li>
 					</ul>
 				</div>
@@ -161,8 +192,16 @@
 						<li style="position: relative;">
 							<!-- 동그란 체크박스 start -->
 							<div class='checkbox type1'>
-								<input type="checkbox" id='check${rentDto.no}'>
-								<label for="check${rentDto.no}"></label>
+								<c:choose>
+									<c:when test="${rentDto.expireDays le 7}">
+										<input type="checkbox" id='chk${rentDto.no}' value="${rentDto.no}">
+										<label for="chk${rentDto.no}"></label>
+									</c:when>
+									<c:otherwise>
+										<input type="checkbox" id='chk${rentDto.no}' value="${rentDto.no}" disabled="disabled">
+										<label for="chk${rentDto.no}" style="opacity: 0.3; cursor: default;"></label>
+									</c:otherwise>
+								</c:choose>
 							</div>
 							<!-- //동그란 체크박스 end -->
 							<span class='num'>${rentDto.rnum}</span>
@@ -180,19 +219,26 @@
 									<fmt:formatDate value="${rentDto.publishDate}" pattern="yyyy/MM/dd "/>
 								</p>
 							</div>
-							<div class='listOptions fRight'>
-								<ul class='listOptionsUl fs0'>
-									<li>
-										<input type="hidden" name="no" class='no' value="${rentDto.no}">
-										<input type="hidden" name="bookNo" class='bookNo' value="${rentDto.bookNo}">
-										<a href="#none" class="text bold" onclick="extendRentFnc(this);">대출 연장하기</a> 
-									</li>
-								</ul>
-							</div>
+							<c:if test="${rentDto.expireDays le 7}">
+								<div class='listOptions fRight'>
+									<ul class='listOptionsUl fs0'>
+										<li>
+											<input type="hidden" name="no" class='no' value="${rentDto.no}">
+											<input type="hidden" name="bookNo" class='bookNo' value="${rentDto.bookNo}">
+											<a href="#none" class="text bold" onclick="extendRentFnc(this);">대출 연장하기</a>
+										</li>
+									</ul>
+								</div>
+							</c:if>
 							<ul class='overH' style="position: absolute; right: 24px; bottom: 30px;">
 								<li class="fLeft text bold" style="margin-right: 24px;">
 									상태 : 
-									<span class="textGreen">${rentDto.bookStatus}</span>
+									<c:if test="${rentDto.bookStatus eq '대출'}">
+										<span class="textGreen">${rentDto.bookStatus}</span>
+									</c:if>
+									<c:if test="${rentDto.bookStatus eq '연체'}">
+										<span class="textRed">${rentDto.bookStatus}</span>
+									</c:if>
 								</li>
 								<li class="fLeft text" style="margin-right: 24px;">
 									<span class='bold'>대출 일 :</span>
