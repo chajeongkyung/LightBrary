@@ -19,37 +19,6 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
 
 <script type="text/javascript">
-//이전글 
-
-$("#preDoc").on("click",function(){
-	_this.preNextDoc('pre');
-}); 
-	
-//다음글 
-$("#nxtDoc").on("click",function(){ 
-	_this.preNextDoc('next');
-}); 
-
-// preNextDoc : function(flag){
-// 	var _this = this; 
-// 	var params = {
-// 			docnum : _this.docnum,
-// 			brdCode : _this.brdCode,
-// 			brdType : _this.brdType,
-// 			flag : flag, //pre,nxt
-// 			viewFlag : _this.viewFlag
-			
-// 	} $.ajax({ 
-// 	ype:"POST",
-// 	url: ePortalConfig.boardContext+"/preNextDoc",
-// 	dataType: "json",
-// 	data : params, cache : false,
-// 	success : function(res){ 
-// 		//이하 생략
-// 	}
-	
-// 	}
-// }
 
 	function pageMoveListFnc(){
 		var noObj = $('#no');
@@ -66,7 +35,6 @@ $("#nxtDoc").on("click",function(){
 		url += '&categoryCode=' + categoryCodeObj.val();
 		location.href = url;
 	}
-
 
 	function nextPageFnc(){
 		
@@ -87,10 +55,9 @@ $("#nxtDoc").on("click",function(){
 		
 		location.href = url;
 		
-		}
+	}
 		
 	function previousPageFnc() {
-		
 		
 		var noObj = $('#no');
 		var rnumObj = $('#rnum');
@@ -108,10 +75,9 @@ $("#nxtDoc").on("click",function(){
 		url += '&categoryCode=' + categoryCodeObj.val();
 		location.href = url;
 			
-		}
+	}
 
 </script>
-
 
 </head>
 
@@ -125,7 +91,6 @@ $("#nxtDoc").on("click",function(){
 			
 			<!-- 상세페이지 start -->
 
-			
 			<div id='detailWrap'>
 				<!--  -->
 				<div class='detailTable'>
@@ -142,14 +107,13 @@ $("#nxtDoc").on("click",function(){
 								</c:otherwise> 
 						</c:choose>
 					</p>
-					
-			
-					
+				
 					<table>
 						<colgroup>
 							<col width="214px">
 							<col width="786px">
 						</colgroup>
+						
 						<tbody>
 							<tr>
 								<th class='text bold textDark'>번호</th>
@@ -198,8 +162,6 @@ $("#nxtDoc").on("click",function(){
 									<fmt:formatDate value="${noticeDto.endDate}" var = "endDate"
 											pattern="yyyy/MM/dd"/> 	
 											
-									
-								
 									<c:if test="${serverTime.substring(0,10) > endDate.substring(0,10) }">
 										<c:out value="진행 완료"></c:out>
 									</c:if>
@@ -216,11 +178,11 @@ $("#nxtDoc").on("click",function(){
 											<c:out value="진행 중"></c:out>
 										</span>
 									</c:if>
-									
 								</td>
 							</tr>
 						</tbody>
 					</table>
+					
 					<div id='viewPaging' class='overH'>
 					
 						<c:if test="${rnum != 1}">
@@ -229,9 +191,6 @@ $("#nxtDoc").on("click",function(){
 						<c:if test="${rnum != maxRnum}">
 							<a id="nxtDoc" href="#none" class='viewNextBtn fRight' onclick="nextPageFnc()">다음 게시글</a>
 						</c:if>
-						
-<!-- 						<a id="preDoc" href="#none" class='viewPrevBtn fLeft'>이전 게시글</a> -->
-<!-- 						<a id="nxtDoc" href="#none" class='viewNextBtn fRight'>다음 게시글</a> -->
 						
 					</div>
 				</div>
@@ -260,7 +219,6 @@ $("#nxtDoc").on("click",function(){
 		</div>
 		<!-- //컨테이너 end -->
 		
-	
 		<jsp:include page="/WEB-INF/views/Tail.jsp" />
 	</div>
 

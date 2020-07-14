@@ -38,44 +38,6 @@ public class NoticeDaoImpl implements NoticeDao{
 		
 		return noticeList;
 		
-
-		
-	}
-
-	@Override
-	public List<NoticeCategoryDto> selectAllNotice() {
-		// TODO Auto-generated method stub
-		List<NoticeCategoryDto> noticeList = 
-				sqlSession.selectList(namespace + "selectAllNotice");
-		System.out.println("확인2");
-		return noticeList;
-	}
-
-	@Override
-	public List<NoticeCategoryDto> selectNotice() {
-		// TODO Auto-generated method stub
-		List<NoticeCategoryDto> noticeList = 
-				sqlSession.selectList(namespace + "selectNotice");
-		System.out.println("확인2");
-		return noticeList;
-	}
-
-	@Override
-	public List<NoticeCategoryDto> selectClosedNotice() {
-		// TODO Auto-generated method stub
-		List<NoticeCategoryDto> noticeList = 
-				sqlSession.selectList(namespace + "selectClosedNotice");
-		System.out.println("확인2");
-		return noticeList;
-	}
-
-	@Override
-	public List<NoticeCategoryDto> selectEventNotice() {
-		// TODO Auto-generated method stub
-		List<NoticeCategoryDto> noticeList = 
-				sqlSession.selectList(namespace + "selectEventNotice");
-		System.out.println("확인2");
-		return noticeList;
 	}
 
 	@Override
@@ -133,12 +95,6 @@ public class NoticeDaoImpl implements NoticeDao{
 			
 		return sqlSession.selectOne(namespace 
 				+ "selectCurPageNotice", paramMap);
-	}
-
-	@Override
-	public NoticeCategoryDto selectNextNotice(int no) {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne(namespace + "selectNextNotice", no);
 	}
 
 	@Override

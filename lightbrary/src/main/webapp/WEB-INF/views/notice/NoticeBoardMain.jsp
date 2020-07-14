@@ -71,8 +71,6 @@
 		
 		location.href = url;
 		
-// 		?curPage=&keyword=&searchOption=all&categoryCode=2
-// 		$('#selectSearch').submit();
 	}
 	
 	
@@ -82,12 +80,9 @@
 		var searchOptionObj = $('#searchOption');
 		var hiddenNoticeCategoryObj = $('#hiddenNoticeCategory');
 		
-// 		var mNo = $('#no');
-		
 		var url = '';
 		
 		url += './detailList.do?';
-// 		url += 'no=' + mNo.val();
 		url += 'no=' + mNo;
 		url += '&rnum=' + rnum;
 		url += '&keyword=' + keywordObj.val();
@@ -96,25 +91,8 @@
 		
 		location.href = url;
 
-		
 	}
-	
-// 	window.onload = function() {
 		
-// 		var noticeCategoryObj = document.getElementById('noticeCategory').value;
-		
-// 		if(noticeCategoryObj == -1){
-// 			$('#allNotice').parent().addClass('active');
-// 		} else if(noticeCategoryObj == 0){
-// 			$('#noticeNotice').parent().addClass('active');
-// 		} else if(noticeCategoryObj == 1){
-// 			$('#closedNotice').parent().addClass('active');
-// 		} else if(noticeCategoryObj == 2){
-// 			$('#eventNotice').parent().addClass('active');
-// 		}
-		
-// 	}
-	
 	$(function(){
 		
 		clearFilterFnc();
@@ -157,7 +135,6 @@
 		$('#pagingForm').submit();
 	}
 	
-	
 </script>
 
 </head>
@@ -169,14 +146,8 @@
 	<div id='wrap'>
 		<jsp:include page="/WEB-INF/views/Header.jsp" />
 		
-		
-		
-		
 		<!-- 컨테이너 start -->
 		<div id='container'>
-		
-			
-		
 			<h2 id='pageTitle'>공지게시판</h2>
 			
 			<div class='searchForm type2'>
@@ -215,12 +186,9 @@
 						<div class='btnWrap fs0 tCenter fRight'>
 							<input type="button" class='btn green' value="검색" onclick="seachFnc();">
 						</div>
-					</fieldset>
-					
+					</fieldset>	
 				</form>
 			</div>
-			
-
 			
 			<!-- 테이블 목록 start -->
 			<div id='tableListWrap'>
@@ -256,8 +224,8 @@
 							<col width="82px">
 							<col width="175px">
 						</colgroup>
+						
 						<thead>
-							
 							<tr>
 								<c:if test="${member.gradeCode eq 0}">
 									<th class='checkboxTd' style="padding-left: 0px;">
@@ -295,16 +263,19 @@
 									<c:if test="${member.gradeCode eq 0}">
 										<td style="padding-left: 0px;">
 											<div class=' checkbox type2' style="text-align: center;">
-												<input type="checkbox" name="box" id='chk${noticeDto.no}' value='${noticeDto.no}'>
+												<input type="checkbox" name="box" id='chk${noticeDto.no}' 
+													value='${noticeDto.no}'>
 												<label for="chk${noticeDto.no}"></label>
 											</div>
 										</td>
 									</c:if>
+									
 									<td style="text-align: center;">
 										<input type="hidden" id="no" name="no" value="${noticeDto.no}"
 											>	
 										${noticeDto.no}
 									</td>
+									
 									<td style="text-align: center;">
 										<c:if test="${noticeDto.code == 0}">
 											<span class= 'bold textDark'>
@@ -323,15 +294,13 @@
 												<c:out value="휴관"></c:out>
 											</span>
 										</c:if>
-										
 									</td>
 									
 									<td style="text-align: center;">
-									
-										 <a href="#" class="ellipsis" onclick="listOnePageFnc(${noticeDto.no}, ${noticeDto.rnum})">
+										 <a href="#" class="ellipsis" onclick="listOnePageFnc(${noticeDto.no},
+										 	 ${noticeDto.rnum})">
 												${noticeDto.title}
-										 </a>	
-										
+										 </a>						
 									</td>
 									
 									<td style="text-align: center;">
@@ -347,7 +316,7 @@
 									</td>
 									
 									<td style="text-align: center;">
-										
+														
 										<fmt:formatDate value="${noticeDto.startDate}" var = "startDate"
 											pattern="yyyy/MM/dd"/> 
 										<fmt:formatDate value="${noticeDto.endDate}" var = "endDate"
@@ -373,13 +342,10 @@
 									</td>
 									
 									<td style="text-align: center;">
-									
 										관리자 
-	
 									</td>
 									
 									<td style="text-align: center;">
-							
 										<c:choose>
 											<c:when test="${fn:substring(noticeDto.createdDate, 11, 13) >= 12}">
 												<fmt:formatDate value="${noticeDto.createdDate }"
@@ -391,15 +357,11 @@
  													pattern="yyyy/MM/dd 오전 HH:mm"/> 
  											</c:otherwise> 
  										</c:choose> 
-									
 									</td>
 								</tr>
-								
-							</c:forEach>
+								</c:forEach>
 								</c:otherwise>
-							</c:choose>
-							
-							
+							</c:choose>	
 						</tbody>
 					</table>
 				</div>
@@ -437,10 +399,6 @@
 			
 		</div>
 		<!-- //컨테이너 end -->
-		
-		
-		
-		
 		
 		<jsp:include page="/WEB-INF/views/Tail.jsp" />
 	</div>
