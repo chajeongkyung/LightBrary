@@ -618,7 +618,7 @@ public class RentController {
 	@Autowired
 	private JavaMailSender mailSender;
 	
-	// 대출 안내 이메일 전송
+	// 대출 안내 이메일 전송 - 목록
 	@RequestMapping(value = "/rent/sendEmail.do")
 		public String returnMailSending(int no, String userEmail, String memberName, String bookName, String expireDate
 			, HttpServletRequest request) {
@@ -642,6 +642,34 @@ public class RentController {
 		rentService.updateSend(no);
 		
 		return "redirect:/rent/list.do";
+	}
+	
+	// 대출 안내 이메일 전송 - 목록
+	@RequestMapping(value = "/rent/detailSendEmail.do")
+		public String returnDetailMailSending(int no, String userEmail, String memberName, String bookName, String expireDate
+			, HttpServletRequest request, Model model) {
+		log.info("이메일 전송 :: 번호 = " + no + " : 회원 이메일  = " + userEmail + " : 반납예정일 = " + expireDate + " : 회원 명 = " 
+			+ memberName + " : 도서 제목 = " + bookName);
+		
+		try {
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+		
+			messageHelper.setFrom("Lightbrary"); // 보내는사람 생략하거나 하면 정상작동을 안함
+			messageHelper.setTo(userEmail); // 받는사람 이메일
+			messageHelper.setSubject("Lightbrary 반납 안내"); // 메일제목은 생략이 가능하다
+			messageHelper.setText(memberName + "님 안녕하십니까, \nLightbrary에서 대출하신 도서 '" + bookName + "'의 반납 예정일은  '" + expireDate + "' 입니다."); // 메일 내용
+		
+			mailSender.send(message);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		rentService.updateSend(no);
+		
+		model.addAttribute("no", no);
+		
+		return "redirect:/rent/detail.do";
 	}
 
 	
@@ -777,7 +805,7 @@ public class RentController {
 		return "redirect:/rent/overdue/list.do";
 	}
 	
-	// 연체 안내 이메일 전송
+	// 연체 안내 이메일 전송 - 목록
 	@RequestMapping(value = "/rent/overdue/sendEmail.do")
 	public String overdueMailSending(int no, String userEmail, String memberName, String bookName
 			, String expireDate, int overdueDays, HttpServletRequest request) {
@@ -802,6 +830,35 @@ public class RentController {
 		rentService.updateOverdueSend(no);
 
 		return "redirect:/rent/overdue/list.do";
+	}
+	
+	// 연체 안내 이메일 전송 - 상세
+	@RequestMapping(value = "/rent/overdue/detailSendEmail.do")
+	public String overdueDetailMailSending(int no, String userEmail, String memberName, String bookName
+			, String expireDate, int overdueDays, HttpServletRequest request, Model model) {
+		log.info("이메일 전송 :: 번호 = " + no + " : 회원 이메일  = " + userEmail + " : 반납예정일 = " + expireDate + " : 연체 일 = " 
+			+ overdueDays + " : 회원 명 = " + memberName + " : 도서 제목 = " + bookName);
+
+		try {
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+
+			messageHelper.setFrom("관리자"); // 보내는사람 생략하거나 하면 정상작동을 안함
+			messageHelper.setTo(userEmail); // 받는사람 이메일
+			messageHelper.setSubject("Lightbrary 연체 안내"); // 메일제목은 생략이 가능하다
+			messageHelper.setText(memberName + "님 안녕하십니까, \nLightbrary에서 대출하신 도서 '" + bookName + "'의 반납 예정일은  '" 
+			+ expireDate + "'이였으나 반납이 확인 되지 않았습니다.\n총 연체일은 '" + overdueDays + "일'입니다.\n최대한 빠른 반납 부탁드리겠습니다."); // 메일 내용
+
+			mailSender.send(message);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		rentService.updateOverdueSend(no);
+		
+		model.addAttribute("no", no);
+
+		return "redirect:/rent/overdue/detail.do";
 	}
 	
 	public void calcStatus(RentDto rentDto) {

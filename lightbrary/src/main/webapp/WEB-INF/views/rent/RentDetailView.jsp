@@ -82,7 +82,7 @@
 		var bookName = $(clickObj).parent().find('.bookName').val();
 		var expireDate = $('#expireDateObj').html();
 		
-		url = "./sendEmail.do?";
+		url = "./detailSendEmail.do?";
 		url += "no=" + no;
 		url += "&userEmail=" + userEmail;
 		url += "&memberName=" + memberName;
@@ -219,14 +219,7 @@
 						<input type="hidden" value="${rentDto.memberNo}" name="memberNo">
 						<input type="hidden" value="${rentDto.bookNo}" name="bookNo">
 						
-						<c:choose>
-							<c:when test="${rentDto.rentStatus eq '보관'}">
-								<button type="submit" id='changeStatus' class='btn grey disabled' disabled="disabled">반납 처리</button>
-							</c:when>
-							<c:otherwise>
-								<button type="submit" id='changeStatus' class='btn grey'>반납 처리</button>
-							</c:otherwise>
-						</c:choose>
+						<a href="#none" class='btn grey' onclick='pageMoveListFnc();'>목록</a>
 						
 						<input type="hidden" class='userEmail' value="${rentDto.email}">
 						<input type="hidden" class='memberName' value="${rentDto.mname}">
@@ -245,7 +238,14 @@
 						<input type="hidden" id='keyword' name="keyword" value="${keyword}">
 						<input type="hidden" id='status' name="status" value="${status}">
 						
-						<a href="#none" class='btn green' onclick='pageMoveListFnc();'>뒤로</a>
+						<c:choose>
+							<c:when test="${rentDto.rentStatus eq '보관'}">
+								<button type="submit" id='changeStatus' class='btn green disabled' disabled="disabled">반납 처리</button>
+							</c:when>
+							<c:otherwise>
+								<button type="submit" id='changeStatus' class='btn green'>반납 처리</button>
+							</c:otherwise>
+						</c:choose>
 					</div>
 					<!-- //상세페이지 버튼 end -->
 				</div>

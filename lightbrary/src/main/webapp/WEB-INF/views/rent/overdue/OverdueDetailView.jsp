@@ -81,7 +81,7 @@
 		var overdueDays = $(clickObj).parent().find('.overdueDays').val();
 		var expireDate = $('#expireDateObj').html();
 		
-		url = "./sendEmail.do?";
+		url = "./detailSendEmail.do?";
 		url += "no=" + no;
 		url += "&userEmail=" + userEmail;
 		url += "&memberName=" + memberName;
@@ -113,7 +113,8 @@
 			<!-- 상세페이지 start -->
 			<form action="./statusUpdateCtr.do" method="post">
 				<div id='detailWrap'>
-					<div id='bookImage' class='bgCover' style="background-image: url('<%=request.getContextPath()%>/resources/img/book-img1-limgaejang.jpg')"></div>
+					<c:url var="imgUrl" value='/img/${rentDto.imageName}'/>
+					<div id='bookImage' class='bgCover' style="background-image: url('${imgUrl}')"></div>
 					<!--  -->
 					<div class='detailTable'>
 						<p class='text bold textDark'>도서정보</p>
@@ -210,14 +211,11 @@
 						<input type="hidden" id='no' value="${rentDto.no}" name="no">
 						<input type="hidden" value="${rentDto.bookNo}" name="bookNo">
 						<input type="hidden" value="${rentDto.rentStatus}" name="bookStatus">
-						<c:choose>
-							<c:when test="${rentDto.bookStatus eq '보관'}">
-								<button type="submit" id='changeStatus' class='btn grey disabled' disabled="disabled">반납 처리</button>
-							</c:when>
-							<c:otherwise>
-								<button type="submit" id='changeStatus' class='btn grey'>반납 처리</button>
-							</c:otherwise>
-						</c:choose>
+						
+						<input type="hidden" id='searchOption' name="searchOption" value="${searchOption}">
+						<input type="hidden" id='keyword' name="keyword" value="${keyword}">
+						
+						<a href="#none" class='btn grey' onclick='pageMoveListFnc();'>목록</a>
 						
 						<input type="hidden" class='userEmail' value="${rentDto.email}">
 						<input type="hidden" class='memberName' value="${rentDto.mname}">
@@ -232,10 +230,15 @@
 							</c:otherwise>
 						</c:choose>
 						
-						<input type="hidden" id='searchOption' name="searchOption" value="${searchOption}">
-						<input type="hidden" id='keyword' name="keyword" value="${keyword}">
+						<c:choose>
+							<c:when test="${rentDto.bookStatus eq '보관'}">
+								<button type="submit" id='changeStatus' class='btn grey disabled' disabled="disabled">반납 처리</button>
+							</c:when>
+							<c:otherwise>
+								<button type="submit" id='changeStatus' class='btn green'>반납 처리</button>
+							</c:otherwise>
+						</c:choose>
 						
-						<a href="#none" class='btn green' onclick='pageMoveListFnc();'>뒤로</a>
 					</div>
 					<!-- //상세페이지 버튼 end -->
 				</div>

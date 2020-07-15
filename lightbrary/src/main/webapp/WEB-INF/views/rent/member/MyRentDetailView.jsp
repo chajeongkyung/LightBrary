@@ -7,7 +7,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Lightbrary : 예약 도서 상세</title>
+<title>Lightbrary : 나의 대출 상세</title>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
@@ -78,12 +78,13 @@
 		
 		<!-- 컨테이너 start -->
 		<div id='container'>
-			<h2 id='pageTitle'>나의 예약 도서 상세</h2>
+			<h2 id='pageTitle'>나의 대출 상세</h2>
 			
 			<!-- 상세페이지 start -->
 			<form action="./detailStatusUpdateCtr.do" method="post">
 				<div id='detailWrap'>
-					<div id='bookImage' class='bgCover' style="background-image: url('<%=request.getContextPath()%>/resources/img/book-img1-limgaejang.jpg')"></div>
+					<c:url var="imgUrl" value='/img/${rentDto.imageName}'/>
+					<div id='bookImage' class='bgCover' style="background-image: url('${imgUrl}')"></div>
 					<!--  -->
 					<div class='detailTable'>
 						<p class='text bold textDark'>도서정보</p>
@@ -158,22 +159,21 @@
 					<!-- 상세페이지 버튼 start -->
 					<div class='btnWrap viewBtns fs0 tCenter'>
 						<input type="hidden" id='bookNo' name="bookNo" value="${rentDto.bookNo}">
-
-						<c:choose>
-							<c:when test="${rentDto.expireDays le 7}">
-								<button type="submit" class='btn grey' onclick="extendRentFnc();">대출 연장 하기</button>
-							</c:when>
-							<c:otherwise>
-								<button type="submit" class='btn grey disabled' disabled="disabled">대출 연장 하기</button>
-							</c:otherwise>
-						</c:choose>	
-						
 						<input type="hidden" id='no' name="no" value="${rentDto.no}">
 						<input type="hidden" id='myNo' name="myNo" value="${member.no}">
 						<input type="hidden" id='searchOption' name="searchOption" value="${searchOption}">
 						<input type="hidden" id='keyword' name="keyword" value="${keyword}">
 						
-						<a href="#none" class='btn green' onclick='pageMoveListFnc();'>목록</a>
+						<a href="#none" class='btn grey' onclick='pageMoveListFnc();'>목록</a>
+
+						<c:choose>
+							<c:when test="${rentDto.expireDays le 7}">
+								<button type="submit" class='btn green' onclick="extendRentFnc();">대출 연장 하기</button>
+							</c:when>
+							<c:otherwise>
+								<button type="submit" class='btn green disabled' disabled="disabled">대출 연장 하기</button>
+							</c:otherwise>
+						</c:choose>
 					</div>
 					<!-- //상세페이지 버튼 end -->
 				</div>

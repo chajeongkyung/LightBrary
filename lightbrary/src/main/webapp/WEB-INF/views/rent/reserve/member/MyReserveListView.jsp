@@ -198,7 +198,7 @@
 							<!-- //동그란 체크박스 end -->
 							<span class='num'>${rentDto.rnum}</span>
 							<a href="#none" onclick="listOnePageFnc(this);" class="fLeft">
-								<c:url var="imgUrl" value='/img/${bookDto.imageName}'/>
+								<c:url var="imgUrl" value='/img/${rentDto.imageName}'/>
 								<span class='bookImage bgCover' 
 									style="background-image: url('${imgUrl}');">
 								</span>

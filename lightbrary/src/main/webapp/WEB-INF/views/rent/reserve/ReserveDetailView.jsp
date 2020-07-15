@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
@@ -85,8 +86,9 @@
 			<!-- 상세페이지 start -->
 			<form action="./statusUpdateCtr.do" method="post">
 				<div id='detailWrap'>
+					<c:url var="imgUrl" value='/img/${rentDto.imageName}'/>
 					<div id='bookImage' class='bgCover' 
-						style="background-image: url('<%=request.getContextPath()%>/resources/img/book-img1-limgaejang.jpg')">
+						style="background-image: url('${imgUrl}')">
 					</div>
 					<!--  -->
 					<div class='detailTable'>
@@ -181,14 +183,13 @@
 					<!-- 상세페이지 버튼 start -->
 					<div class='btnWrap viewBtns fs0 tCenter'>
 						<input type="hidden" id='bookNo' name="bookNo" value="${rentDto.bookNo}">
-						
-						<button type="submit" id='changeStatus' class='btn grey'>대출 중으로 변경</button>
-						
 						<input type="hidden" id='no' name="no" value="${rentDto.no}">
 						<input type="hidden" id='searchOption' name="searchOption" value="${searchOption}">
 						<input type="hidden" id='keyword' name="keyword" value="${keyword}">
 						
-						<a href="#none" class='btn green' onclick='pageMoveListFnc();'>뒤로</a>
+						<a href="#none" class='btn grey' onclick='pageMoveListFnc();'>목록</a>
+						
+						<button type="submit" id='changeStatus' class='btn green'>대출 중으로 변경</button>
 					</div>
 					<!-- //상세페이지 버튼 end -->
 				</div>
