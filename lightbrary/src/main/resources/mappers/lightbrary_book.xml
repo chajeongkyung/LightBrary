@@ -57,23 +57,30 @@
 	</resultMap>
 	
 	<select id="selectRankTenBook" resultMap="BookResultMap">
-		SELECT B3.*, BI.STORED_FILE_NAME IMAGE_NAME
-		FROM
-		(
-			SELECT B2.NO NO, BCOUNT.CNT CNT, B2.IMAGE_NO IMAGE_NO
-			FROM BOOK B2
-			JOIN (
-			    SELECT COUNT(B.NAME) CNT, B.NAME NAME
-			    FROM RENT R
-			    JOIN BOOK B
-			    ON R.BOOK_NO = B.NO
-			    GROUP BY B.NAME
-			    ORDER BY CNT DESC) BCOUNT
-			ON BCOUNT.NAME = B2.NAME
-			WHERE ROWNUM &lt;= 10) B3
-		JOIN BOOK_IMAGE BI
-		ON B3.IMAGE_NO = BI.NO
-		ORDER BY CNT
+		SELECT B2.*, B2.STORED_FILE_NAME IMAGE_NAME 
+		FROM(SELECT B.NO, B.NAME, B.WRITER, B.PUBLISH, B.PUBLISH_DATE, BI.STORED_FILE_NAME
+			FROM BOOK B
+			JOIN BOOK_IMAGE BI 
+			ON B.IMAGE_NO = BI.NO 
+			WHERE BI.NO BETWEEN 1 AND 5) B2
+		ORDER BY B2.NO ASC
+<!-- 		SELECT B3.*, BI.STORED_FILE_NAME IMAGE_NAME -->
+<!-- 		FROM -->
+<!-- 		( -->
+<!-- 			SELECT B2.NO NO, BCOUNT.CNT CNT, B2.IMAGE_NO IMAGE_NO -->
+<!-- 			FROM BOOK B2 -->
+<!-- 			JOIN ( -->
+<!-- 			    SELECT COUNT(B.NAME) CNT, B.NAME NAME -->
+<!-- 			    FROM RENT R -->
+<!-- 			    JOIN BOOK B -->
+<!-- 			    ON R.BOOK_NO = B.NO -->
+<!-- 			    GROUP BY B.NAME -->
+<!-- 			    ORDER BY CNT DESC) BCOUNT -->
+<!-- 			ON BCOUNT.NAME = B2.NAME -->
+<!-- 			WHERE ROWNUM &lt;= 10) B3 -->
+<!-- 		JOIN BOOK_IMAGE BI -->
+<!-- 		ON B3.IMAGE_NO = BI.NO -->
+<!-- 		ORDER BY CNT -->
 	</select>
 	
 	<select id="selectOneBook" parameterType="int" resultMap="BookResultMap">
