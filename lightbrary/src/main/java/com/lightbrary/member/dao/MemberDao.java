@@ -14,6 +14,7 @@ public interface MemberDao {
 
 	//일단 모두 조회
 	public List<MemberDto> selectMember(MemberListParamDto memberListParamDto);
+	public List<MemberDto> selectOverdueMember(MemberListParamDto memberListParamDto);
 	public int totalCountMember(MemberListParamDto memberListParamDto);
 	
 	public MemberDto memberExist(String email, String password);
