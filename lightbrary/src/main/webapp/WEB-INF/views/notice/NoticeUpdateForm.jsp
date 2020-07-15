@@ -59,10 +59,11 @@
 		
 		if (noticeCategoryObj == 0){
 			$('input[id^=noticeDate]').attr('disabled', 'disabled');
+			$('input[id^=noticeDate]').removeClass('searchDate');
+			$('input[id^=noticeDate]').css('background', '#BDBDBD');
+			$('button').removeClass('clear');
 		}
 	}
-	
-	
 	
 	function onchangeFnc() {
 		
