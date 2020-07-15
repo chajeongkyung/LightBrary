@@ -14,6 +14,8 @@ import com.lightbrary.book.service.BookService;
 import com.lightbrary.notice.model.NoticeCategoryDto;
 import com.lightbrary.notice.model.NoticeDto;
 import com.lightbrary.notice.service.NoticeService;
+import com.lightbrary.util.interceptor.Auth;
+import com.lightbrary.util.interceptor.Auth.Role;
 
 @Controller
 public class MainController {
@@ -26,6 +28,7 @@ public class MainController {
 	@Autowired
 	private NoticeService noticeService;
 	
+	@Auth(role=Role.USER)
 	@RequestMapping(value="/main.do")
 	public String Main(Model model) {
 		

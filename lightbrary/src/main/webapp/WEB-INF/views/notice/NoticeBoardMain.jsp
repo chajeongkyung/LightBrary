@@ -23,7 +23,10 @@
 
 <script type="text/javascript">
 	
-
+	
+	var value =	$('#hiddenNoticeCategory').val();
+	
+	
 	function deleteBatchFnc() {
 		var noObjArr = checkedObjArr();
 		var noArr = new Array();
@@ -218,8 +221,10 @@
 							<col width="55px">
 							<col width="52px">
 							<col width="312px">
+							<c:if test="${searchMap.categoryCode != 0}">
 							<col width="192px">
 							<col width="80px">
+							</c:if>
 							<col width="82px">
 							<col width="175px">
 						</colgroup>
@@ -240,8 +245,10 @@
 								<th>번호</th>
 								<th>종류</th>
 								<th>제목</th>
+								<c:if test="${searchMap.categoryCode != 0}">
 								<th>기간</th>
 								<th>진행상황</th>
+								</c:if>
 								<th>작성자</th>
 								<th>작성일</th>
 							</tr>
@@ -303,7 +310,7 @@
 										</c:if>
 									</td>
 									
-									<td style="text-align: center;">
+									<td style="text-align: left;">
 	
 										 <a href="#" class="ellipsis" onclick="listOnePageFnc(${noticeDto.no},
 										 	 ${noticeDto.rnum})">
@@ -311,6 +318,10 @@
 										 </a>
 																
 									</td>
+									
+<%-- 									<c:if test="${value != 0}"> --%>
+<%-- 									<c:if test="$('#hiddenNoticeCategory').val() != 0"> --%>
+									<c:if test="${searchMap.categoryCode != 0}">
 									
 									<td style="text-align: center;">
 										<div style="text-align: center;">
@@ -349,8 +360,8 @@
 												<c:out value="진행 중"></c:out>
 											</span>
 										</c:if>
-								
 									</td>
+									</c:if>
 									
 									<td style="text-align: center;">
 										관리자
@@ -369,6 +380,7 @@
  											</c:otherwise> 
  										</c:choose> 
 									</td>
+								
 								</tr>
 								</c:forEach>
 								</c:otherwise>

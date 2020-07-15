@@ -59,10 +59,11 @@
 		
 		if (noticeCategoryObj == 0){
 			$('input[id^=noticeDate]').attr('disabled', 'disabled');
+			$('input[id^=noticeDate]').removeClass('searchDate');
+			$('input[id^=noticeDate]').css('background', '#BDBDBD');
+			$('button').removeClass('clear');
 		}
 	}
-	
-	
 	
 	function onchangeFnc() {
 		
@@ -107,6 +108,7 @@
 				&& noticeCategoryObj != 0)) {
 			$('#noticeDateCheck').html("날짜를 선택해주세요");
 			$('#noticeDateCheck').css('color', 'red');
+			$('#noticeDateCheck').css('margin-top', '5px');
 			return false;
 		}else if(noticeCategoryObj != ""){
 			$('#noticeDateCheck').html("");
@@ -153,6 +155,7 @@
 		}else if(!noticeDateValid && noticeCategoryObj != 0){
 			$('#noticeDateCheck').html("시작일이 종료일보다 클 수 없습니다.");
 			$('#noticeDateCheck').css('color', 'red');
+			$('#noticeDateCheck').css('margin-top', '5px');
 			return false;
 		}		
 	}
@@ -164,6 +167,7 @@
 		 if(noticeCategoryObj == "") {
 			 $('#typeCheck').html("종류를 선택해주세요.");
 			 $('#typeCheck').css('color', 'red');
+			 $('#typeCheck').css('margin-top', '5px');
 			 return false;
 		 }else if (noticeCategoryObj != "") {
 			 $('#typeCheck').html("");
@@ -175,11 +179,12 @@
 		
 		var titleObj = $('#title').val();
 		
-		 if(titleObj == "") {
+		 if(titleObj.trim() == "") {
 			 $('#titleCheck').html("제목을 입력해 주세요.");
 			 $('#titleCheck').css('color', 'red');
+			 $('#titleCheck').css('margin-top', '5px');
 			 return false;
-		 }else if (titleObj != "") {
+		 }else{
 			 $('#titleCheck').html("");
 			 return true;
 		 }
@@ -189,11 +194,12 @@
 		
 		var contentObj = $('#content').val();
 		
-		 if(contentObj == "") {
+		 if(contentObj.trim() == "") {
 			 $('#contentCheck').html("내용을 입력해주세요.");
 			 $('#contentCheck').css('color', 'red');
+			 $('#contentCheck').css('margin-top', '5px');
 			 return false;
-		 }else if (contentObj != "") {
+		 }else{
 			 $('#contentCheck').html("");
 			 return true;
 		 }
@@ -208,6 +214,7 @@
 		if(noticeDateStartObj == "") {
 			 $('#noticeDateCheck').html("시작일을 선택해주세요.");
 			 $('#noticeDateCheck').css('color', 'red');
+			 $('#noticeDateCheck').css('margin-top', '5px');
 			 return false;
 		 }else if (noticeDateStartObj != "" || noticeCategoryObj == 0) {
 			 $('#noticeDateCheck').html("");
@@ -223,6 +230,7 @@
 		if(noticeDateEndObj == "") {
 			$('#noticeDateCheck').html("종료일을 선택해주세요.");
 			$('#noticeDateCheck').css('color', 'red');
+			$('#noticeDateCheck').css('margin-top', '5px');
 			return false;
 		}else if (noticeDateEndObj != "" || noticeCategoryObj == 0) {
 			$('#noticeDateCheck').html("");	
@@ -234,7 +242,7 @@
 		
 		$("#noticeCategory").on("change", noticeCategoryValidFnc);
 	
-		$("#title").on("blur", titleValidFnc);
+		$("#title").on("change", titleValidFnc);
 		
 		$("#content").on("change", contentValidFnc);
 		

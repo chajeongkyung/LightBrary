@@ -95,6 +95,8 @@ public class NoticeController {
 		model.addAttribute("searchMap", searchMap);
 		
 		return "notice/NoticeBoardMain";
+		
+		
 	}
 	
 	@Auth(role = Role.ADMIN)
@@ -129,7 +131,7 @@ public class NoticeController {
 	@Auth(role = Role.USER)
 	@RequestMapping(value = "/notice/detailList.do", method = RequestMethod.GET)
 	public String NoticeBoardDetail(String keyword, String searchOption, Locale locale, Model model, int no
-			, int categoryCode, int rnum) {
+			, @RequestParam(defaultValue = "-1") int categoryCode, int rnum) {
 		
 		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
 		
@@ -137,18 +139,18 @@ public class NoticeController {
 				
 		String formattedDate = format.format(time);
 		
+		
 		NoticeCategoryDto noticeDto = noticeService.selectOneNotice(no);
 		int totalCount = noticeService.selectTotalCountNotice(searchOption, keyword, categoryCode);
-		
+			
 		model.addAttribute("noticeDto", noticeDto);
-		
-		model.addAttribute("serverTime", formattedDate);
-		
+		model.addAttribute("serverTime", formattedDate);	
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("searchOption", searchOption);
 		model.addAttribute("categoryCode", categoryCode);
 		model.addAttribute("rnum", rnum);		
 		model.addAttribute("maxRnum", totalCount);
+		
 		
 		return "/notice/NoticeBoardDetail";
 
@@ -185,6 +187,12 @@ public class NoticeController {
 		
 		log.info("call nextPage! {}");
 		
+		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
+		
+		Date time = new Date();
+				
+		String formattedDate = format.format(time);
+		
 		NoticeCategoryDto noticeDto = noticeService.nextWriteNotice(searchOption, keyword, categoryCode, rnum);
 		int maxRnum = noticeService.selectTotalCountNotice(searchOption, keyword, categoryCode);
 		
@@ -194,6 +202,8 @@ public class NoticeController {
 		model.addAttribute("categoryCode", categoryCode);
 		model.addAttribute("rnum", noticeDto.getRnum());
 		model.addAttribute("maxRnum", maxRnum);
+		model.addAttribute("serverTime", formattedDate);
+		
 		return "/notice/NoticeBoardDetail";
 	}
 	
@@ -204,6 +214,12 @@ public class NoticeController {
 		
 		log.info("call previousPage! {}");
 		
+		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
+		
+		Date time = new Date();
+				
+		String formattedDate = format.format(time);
+		
 		NoticeCategoryDto noticeDto = noticeService.previousWriteNotice(searchOption, keyword, categoryCode, rnum);
 		int maxRnum = noticeService.selectTotalCountNotice(searchOption, keyword, categoryCode);
 		
@@ -213,6 +229,8 @@ public class NoticeController {
 		model.addAttribute("categoryCode", categoryCode);
 		model.addAttribute("rnum", noticeDto.getRnum());
 		model.addAttribute("maxRnum", maxRnum);
+		model.addAttribute("serverTime", formattedDate);
+		
 		return "/notice/NoticeBoardDetail";
 	}
 	

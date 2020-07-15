@@ -9,7 +9,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>LightBrary : 게시판상세</title>
+<title>LightBrary : 공지글상세</title>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/reset.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/style.css">
@@ -87,7 +87,7 @@
 		<jsp:include page="/WEB-INF/views/Header.jsp" />
 		<!-- 컨테이너 start -->
 		<div id='container'>
-			<h2 id='pageTitle'>게시글상세</h2>
+			<h2 id='pageTitle'>공지글상세</h2>
 			
 			<!-- 상세페이지 start -->
 
@@ -97,14 +97,14 @@
 					<p class='text textGrey' style="text-align: right;">
 						<c:choose>
 							<c:when test="${fn:substring(noticeDto.createdDate, 11, 13) >= 12}">
-								<fmt:formatDate value="${noticeDto.createdDate }"
+								작성일 : <fmt:formatDate value="${noticeDto.createdDate }"
 									pattern="yyyy/MM/dd 오후 HH:mm"/>
-								</c:when> 
+							</c:when> 
 						
 							<c:otherwise> 
-									<fmt:formatDate value="${noticeDto.createdDate }" 
+								작성일 : 	<fmt:formatDate value="${noticeDto.createdDate }" 
 										pattern="yyyy/MM/dd 오전 HH:mm"/> 
-								</c:otherwise> 
+							</c:otherwise> 
 						</c:choose>
 					</p>
 				
@@ -130,8 +130,7 @@
 							</tr>
 							<tr>
 								<th class='text bold textDark'>내용</th>
-								<td class='text textGrey'>
-									${noticeDto.content}
+								<td class='text textGrey' style="white-space:pre;">${noticeDto.content}
 								</td>
 							</tr>
 							<tr>
