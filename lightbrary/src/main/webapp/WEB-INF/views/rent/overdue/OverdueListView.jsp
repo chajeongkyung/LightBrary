@@ -297,10 +297,10 @@
 											${rentDto.email}
 										</span>
 									</td>
-									<td>
+									<td style="text-align: center;">
 										<span>${rentDto.overdueDays}일</span>
 									</td>
-									<td class='expireDate'>
+									<td class='expireDate' style="text-align: center;">
 										<span><fmt:formatDate value="${rentDto.expireDate}" pattern="yyyy/MM/dd"/></span>
 									</td>
 								</tr>
