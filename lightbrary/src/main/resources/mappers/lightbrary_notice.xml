@@ -64,8 +64,6 @@
 		<result column="CODE"             	property="code"	/>
 		<result column="NAME"       	property="name"	/>
 		<result column="SCHEDULE_FLAG"	property="scheduleFlag"	/>
-		<result column="PREVNUM"	property="prevNum"	/>
-		<result column="NEXTNUM"	property="nextNum"	/>
 		<result column="RNUM" property="rnum"/>
 		
 	</resultMap>
@@ -88,7 +86,6 @@
         ) N
         WHERE RNUM &lt;= 5
 	</select>
-	
 	
 	<select id="selectMainNotice" parameterType="map"
 		resultMap="noticeCategoryResultMap">
@@ -156,44 +153,6 @@
            		) M
         ) N
         WHERE RNUM = ${rnum} + 1
-	</select>
-	
-	
-	
-	<select id="selectNotice" parameterType="map"
-		resultMap="noticeCategoryResultMap">
-		
-		SELECT N.NO , NC.NAME , N.TITLE , N.START_DATE, N.END_DATE, 
-		NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE
-		FROM NOTICE N
-		JOIN NOTICE_CATEGORY NC
-		ON N.CATEGORY_CODE = NC.CODE
-		WHERE NC.CODE = 0
-		
-	</select>
-	
-	<select id="selectClosedNotice" parameterType="map"
-		resultMap="noticeCategoryResultMap">
-		
-		SELECT N.NO , NC.NAME , N.TITLE , N.START_DATE, N.END_DATE, 
-		NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE
-		FROM NOTICE N
-		JOIN NOTICE_CATEGORY NC
-		ON N.CATEGORY_CODE = NC.CODE
-		WHERE NC.CODE = 2
-		
-	</select>
-	
-	<select id="selectEventNotice" parameterType="map"
-		resultMap="noticeCategoryResultMap">
-		
-		SELECT N.NO , NC.NAME , N.TITLE , N.START_DATE, N.END_DATE, 
-		NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE
-		FROM NOTICE N
-		JOIN NOTICE_CATEGORY NC
-		ON N.CATEGORY_CODE = NC.CODE
-		WHERE NC.CODE = 1
-		
 	</select>
 	
 	<delete id="deleteNotice" parameterType="int">

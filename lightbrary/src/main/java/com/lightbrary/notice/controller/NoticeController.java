@@ -5,10 +5,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.lightbrary.notice.model.NoticeCategoryDto;
 import com.lightbrary.notice.model.NoticeDto;
@@ -67,16 +62,11 @@ public class NoticeController {
 			, @RequestParam(defaultValue = "") String keyword
 			, @RequestParam(defaultValue = "-1") int categoryCode 
 			, Model model) { 
-		System.out.println("---------------------------------");
-		System.out.println("---------------------------------");
-		System.out.println("코드" +categoryCode);
-		System.out.println("---------------------------------");
-		System.out.println("---------------------------------");
 		
 		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
 				
 		Date time = new Date();
-				
+		
 		String formattedDate = format.format(time);
 		
 		int totalCount = noticeService.selectTotalCountNotice(searchOption, keyword, categoryCode);
@@ -104,8 +94,6 @@ public class NoticeController {
 		model.addAttribute("serverTime", formattedDate);
 		model.addAttribute("searchMap", searchMap);
 		
-		System.out.println(pagingInfo);
-		
 		return "notice/NoticeBoardMain";
 	}
 	
@@ -122,7 +110,7 @@ public class NoticeController {
 	@RequestMapping(value = "/notice/addCtr.do"
 			, method = RequestMethod.POST)
 		public String NoticeAdd2(NoticeDto noticeDto) {
-			log.info("call memberAdd_ctr! {}", noticeDto);
+			log.info("call noticeAddCtr! {}", noticeDto);
 			System.out.println("add");
 			noticeService.insertOneNotice(noticeDto);
 			
@@ -143,14 +131,11 @@ public class NoticeController {
 	public String NoticeBoardDetail(String keyword, String searchOption, Locale locale, Model model, int no
 			, int categoryCode, int rnum) {
 		
-		System.out.println(keyword);
-		System.out.println(searchOption);
-		
-		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
+		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
 		
 		Date time = new Date();
 				
-		String formattedDate = format1.format(time);
+		String formattedDate = format.format(time);
 		
 		NoticeCategoryDto noticeDto = noticeService.selectOneNotice(no);
 		int totalCount = noticeService.selectTotalCountNotice(searchOption, keyword, categoryCode);
@@ -162,32 +147,17 @@ public class NoticeController {
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("searchOption", searchOption);
 		model.addAttribute("categoryCode", categoryCode);
-		model.addAttribute("rnum", rnum);
-//		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("rnum", rnum);		
 		model.addAttribute("maxRnum", totalCount);
 		
 		return "/notice/NoticeBoardDetail";
-		
-//		MemberDto memberDto = memberService.memberSelectOne(no);
-//		
-//		model.addAttribute("memberDto", memberDto);
-//		
-//		return "member/MemberUpdateForm";
-		
-		//글 자세히 보기 요청 처리
-//		@RequestMapping("/cafe/detail")
-//		public String detail(HttpServletRequest request){
-//			service.getDetail(request);
-//			//view page 로 forward 이동해서 글 자세히 보기 
-//			return "cafe/detail";
-//		}
-		
+
 	}
 	
 	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/notice/update.do", method = RequestMethod.GET)
 	public String NoticeUpdate(int no, Model model, NoticeCategoryDto noticeDto ) {
-		log.info("call memberUpdate! {}");
+		log.info("call noticeUpdate! {}");
 		
 		noticeDto = noticeService.selectOneNotice(no);
 		
@@ -199,7 +169,7 @@ public class NoticeController {
 	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/notice/updateCtr.do", method = RequestMethod.POST)
 	public String NoticeUpdateOne(Model model, NoticeCategoryDto noticeDto ) {
-		log.info("call noticeUpdate! {}");
+		log.info("call noticeUpdateCtr! {}");
 		System.out.println("컨트롤러");
 		System.out.println(noticeDto);
 		
@@ -213,7 +183,7 @@ public class NoticeController {
 	public String NoticeNextBoard(Model model, String searchOption,
 			String keyword, int categoryCode, int rnum) {
 		
-		log.info("call memberUpdate! {}");
+		log.info("call nextPage! {}");
 		
 		NoticeCategoryDto noticeDto = noticeService.nextWriteNotice(searchOption, keyword, categoryCode, rnum);
 		int maxRnum = noticeService.selectTotalCountNotice(searchOption, keyword, categoryCode);
@@ -232,7 +202,7 @@ public class NoticeController {
 	public String NoticePreviousBoard(Model model, String searchOption,
 			String keyword, int categoryCode, int rnum) {
 		
-		log.info("call memberUpdate! {}");
+		log.info("call previousPage! {}");
 		
 		NoticeCategoryDto noticeDto = noticeService.previousWriteNotice(searchOption, keyword, categoryCode, rnum);
 		int maxRnum = noticeService.selectTotalCountNotice(searchOption, keyword, categoryCode);

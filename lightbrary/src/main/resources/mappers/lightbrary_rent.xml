@@ -281,19 +281,22 @@
 		    FROM (
 		        SELECT RENT_ROW.*
 		        FROM (
-		            SELECT R.NO AS NO, R.BOOK_NO AS BOOK_NO, B.NAME AS BOOK_NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH
-		            , M.NO AS MEMBER_NO, M.NAME AS M_NAME, M.EMAIL AS EMAIL, M.PHONE AS PHONE, M.ADDRESS AS ADDRESS
-		            , R.RENT_STATUS AS RENT_STATUS, R.RESERVE_DATE AS RESERVE_DATE
-		            , R.RETURN_DATE AS RETURN_DATE, R.RENT_DATE AS RENT_DATE, R.EXPIRE_DATE AS EXPIRE_DATE
-		            , (R.EXPIRE_DATE - R.RENT_DATE) AS EXPIRE_DAYS
-		            FROM RENT R
-		            JOIN MEMBER M
-		            ON R.MEMBER_NO = M.NO
-		            JOIN BOOK B
-		            ON R.BOOK_NO = B.NO
-		            WHERE RENT_STATUS = '대출'
-	                OR RENT_STATUS = '연체'
-		            AND M.NO = #{myNo}
+		        	SELECT RENT_MY.*
+		        	FROM (
+			            SELECT R.NO AS NO, R.BOOK_NO AS BOOK_NO, B.NAME AS BOOK_NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH
+			            , M.NO AS MEMBER_NO, M.NAME AS M_NAME, M.EMAIL AS EMAIL, M.PHONE AS PHONE, M.ADDRESS AS ADDRESS
+			            , R.RENT_STATUS AS RENT_STATUS, R.RESERVE_DATE AS RESERVE_DATE
+			            , R.RETURN_DATE AS RETURN_DATE, R.RENT_DATE AS RENT_DATE, R.EXPIRE_DATE AS EXPIRE_DATE
+			            , (R.EXPIRE_DATE - R.RENT_DATE) AS EXPIRE_DAYS
+			            FROM RENT R
+			            JOIN MEMBER M
+			            ON R.MEMBER_NO = M.NO
+			            JOIN BOOK B
+			            ON R.BOOK_NO = B.NO
+			            WHERE RENT_STATUS = '대출'
+		                OR RENT_STATUS = '연체'
+		            ) RENT_MY
+		            WHERE RENT_MY.MEMBER_NO = #{myNo}
 		        ) RENT_ROW
 		        <choose>
 		        	<when test="searchOption == 'all'">
@@ -329,17 +332,20 @@
 		FROM (
 		    SELECT RENT_ROW.*
 		    FROM (
-		        SELECT R.NO AS NO, R.BOOK_NO AS BOOK_NO, B.NAME AS BOOK_NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH
-		        , M.NAME AS M_NAME, M.EMAIL AS EMAIL, M.PHONE AS PHONE, M.ADDRESS AS ADDRESS
-		        ,R.RENT_STATUS AS RENT_STATUS, R.RESERVE_DATE, R.RETURN_DATE
-		        FROM RENT R
-		        JOIN MEMBER M
-		        ON R.MEMBER_NO = M.NO
-		        JOIN BOOK B
-		        ON R.BOOK_NO = B.NO
-		        WHERE RENT_STATUS = '대출'
-                OR RENT_STATUS = '연체'
-		        AND M.NO = #{myNo}
+		    	SELECT RENT_MY.*
+		    	FROM (
+			        SELECT R.NO AS NO, R.BOOK_NO AS BOOK_NO, B.NAME AS BOOK_NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH
+			        ,M.NO AS MEMBER_NO, M.NAME AS M_NAME, M.EMAIL AS EMAIL, M.PHONE AS PHONE, M.ADDRESS AS ADDRESS
+			        ,R.RENT_STATUS AS RENT_STATUS, R.RESERVE_DATE, R.RETURN_DATE
+			        FROM RENT R
+			        JOIN MEMBER M
+			        ON R.MEMBER_NO = M.NO
+			        JOIN BOOK B
+			        ON R.BOOK_NO = B.NO
+			        WHERE RENT_STATUS = '대출'
+	                OR RENT_STATUS = '연체'
+	            ) RENT_MY
+		        WHERE RENT_MY.MEMBER_NO = #{myNo}
 		     ) RENT_ROW
 		     <include refid="search"></include>
 		)
@@ -358,18 +364,21 @@
 		            , RENT_ROW.ADDRESS AS ADDRESS, RENT_ROW.RESERVE_DATE AS RESERVE_DATE
 		            , RENT_ROW.RETURN_DATE AS RETURN_DATE, RENT_ROW.RENT_DATE AS RENT_DATE
 		            FROM (
-		                SELECT R.NO AS NO, R.BOOK_NO AS BOOK_NO, B.NAME AS BOOK_NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH
-		                , M.NAME AS M_NAME, M.EMAIL AS EMAIL, M.PHONE AS PHONE, M.ADDRESS AS ADDRESS
-		                , R.RENT_STATUS AS RENT_STATUS
-		                , R.RESERVE_DATE AS RESERVE_DATE, R.RETURN_DATE AS RETURN_DATE, R.RENT_DATE AS RENT_DATE
-		                FROM RENT R
-		                JOIN MEMBER M
-		                ON R.MEMBER_NO = M.NO
-		                JOIN BOOK B
-		                ON R.BOOK_NO = B.NO
-		                WHERE RENT_STATUS = '대출'
-		                OR RENT_STATUS = '연체'
-		                AND M.NO = #{myNo}
+		            	SELECT RENT_MY.*
+		            	FROM (
+			                SELECT R.NO AS NO, R.BOOK_NO AS BOOK_NO, B.NAME AS BOOK_NAME, B.WRITER AS WRITER, B.PUBLISH AS PUBLISH
+			                , M.NO AS MEMBER_NO, M.NAME AS M_NAME, M.EMAIL AS EMAIL, M.PHONE AS PHONE, M.ADDRESS AS ADDRESS
+			                , R.RENT_STATUS AS RENT_STATUS
+			                , R.RESERVE_DATE AS RESERVE_DATE, R.RETURN_DATE AS RETURN_DATE, R.RENT_DATE AS RENT_DATE
+			                FROM RENT R
+			                JOIN MEMBER M
+			                ON R.MEMBER_NO = M.NO
+			                JOIN BOOK B
+			                ON R.BOOK_NO = B.NO
+			                WHERE RENT_STATUS = '대출'
+			                OR RENT_STATUS = '연체'
+			            ) RENT_MY
+		                WHERE RENT_MY.MEMBER_NO = #{myNo}
 		             ) RENT_ROW
 		             <include refid="search"></include>
 		             ORDER BY RENT_ROW.RESERVE_DATE DESC

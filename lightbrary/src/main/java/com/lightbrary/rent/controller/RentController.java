@@ -27,6 +27,8 @@ import com.lightbrary.member.model.MemberDto;
 import com.lightbrary.rent.model.RentDto;
 import com.lightbrary.rent.service.RentService;
 import com.lightbrary.util.Paging;
+import com.lightbrary.util.interceptor.Auth;
+import com.lightbrary.util.interceptor.Auth.Role;
 
 /**
  * @author TJ
@@ -47,6 +49,7 @@ public class RentController {
 	 * @param model
 	 * @return
 	 */
+	@Auth(role=Role.USER)
 	@RequestMapping(value = "/book/reserve.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String insertReserve(BookListParamDto bookListParamDto, HttpSession session, int no, Model model) {
 	
@@ -82,6 +85,7 @@ public class RentController {
 	 * @param model
 	 * @return
 	 */
+	@Auth(role=Role.USER)
 	@RequestMapping(value = "/book/detailReserve.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String insertReserveFromDetail(BookListParamDto bookListParamDto, HttpSession session, int no, Model model) {
 		
@@ -106,6 +110,7 @@ public class RentController {
 	 * @param model
 	 * @return
 	 */
+	@Auth(role=Role.USER)
 	@RequestMapping(value = "/rent/reserve/member/list.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String myReserveList(@RequestParam(defaultValue = "1") int curPage, @RequestParam(defaultValue = "0") int no,
 		@RequestParam(defaultValue = "all") String searchOption, @RequestParam(defaultValue = "") String keyword,
@@ -176,6 +181,7 @@ public class RentController {
 	}
 	
 	// 나의 예약 상세
+	@Auth(role=Role.USER)
 	@RequestMapping(value = "/rent/reserve/member/detail.do", method = RequestMethod.GET)
 	public String myReserveView(int no, String searchOption, String keyword, Model model) {
 		log.info("예약 도서 상세 - " + no + "\n" + "검색옵션 : " + searchOption + "\n" + "검색문장" + keyword);
@@ -222,6 +228,7 @@ public class RentController {
 	 * @param model
 	 * @return
 	 */
+	@Auth(role=Role.USER)
 	@RequestMapping(value = "/rent/member/list.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String myRentList(@RequestParam(defaultValue = "1") int curPage, @RequestParam(defaultValue = "0") int no,
 		@RequestParam(defaultValue = "all") String searchOption, @RequestParam(defaultValue = "") String keyword,
@@ -273,6 +280,7 @@ public class RentController {
 	}
 	
 	// 나의 대출 상세
+	@Auth(role=Role.USER)
 	@RequestMapping(value = "/rent/member/detail.do", method = RequestMethod.GET)
 	public String myRentView(int no, String searchOption, String keyword, Model model) {
 		log.info("대출 도서 상세 - " + no + "\n" + "검색옵션 : " + searchOption + "\n" + "검색문장" + keyword);
@@ -347,6 +355,7 @@ public class RentController {
 	 * @param model
 	 * @return
 	 */
+	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/rent/reserve/list.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String reserveList(@RequestParam(defaultValue = "1") int curPage, @RequestParam(defaultValue = "0") int no,
 			@RequestParam(defaultValue = "all") String searchOption, @RequestParam(defaultValue = "") String keyword,
@@ -445,7 +454,8 @@ public class RentController {
 		}
 	}
 
-	// 예약 상세
+	// 관리자 예약 상세
+	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/rent/reserve/detail.do", method = RequestMethod.GET)
 	public String reserveView(int no, String searchOption, String keyword, Model model) {
 		log.info("예약 도서 상세 - " + no + "\n" + "검색옵션 : " + searchOption + "\n" + "검색문장" + keyword);
@@ -493,6 +503,7 @@ public class RentController {
 	 * @param model
 	 * @return
 	 */
+	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/rent/list.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String rentList(@RequestParam(defaultValue = "1") int curPage, @RequestParam(defaultValue = "0") int no,
 		@RequestParam(defaultValue = "all") String searchOption, @RequestParam(defaultValue = "") String keyword,
@@ -557,6 +568,7 @@ public class RentController {
 	}
 		
 	// 대출 상세
+	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/rent/detail.do", method = RequestMethod.GET)
 	public String rentDetail(int no, String searchOption, String keyword, String status, Model model) {
 		log.info("대출 도서 상세 - " + no + "\n검색옵션 : " + searchOption + "\n검색문장 : " + keyword + "\n분류 : " + status);
@@ -641,6 +653,7 @@ public class RentController {
 	 * @param model
 	 * @return
 	 */
+	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/rent/overdue/list.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String overdueList(@RequestParam(defaultValue = "1") int curPage, @RequestParam(defaultValue = "0") int no,
 			@RequestParam(defaultValue = "all") String searchOption, @RequestParam(defaultValue = "") String keyword,
@@ -728,6 +741,7 @@ public class RentController {
 	}
 
 	// 연체 상세
+	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/rent/overdue/detail.do", method = RequestMethod.GET)
 	public String overdueView(int no, String searchOption, String keyword, Model model) {
 		log.info("연체 도서 상세 - " + no + "\n" + "검색옵션 : " + searchOption + "\n" + "검색문장" + keyword);

@@ -73,7 +73,6 @@
 		
 	}
 	
-	
 	function listOnePageFnc(mNo, rnum){
 		
 		var keywordObj = $('#keyword');
@@ -258,8 +257,16 @@
 								</c:when>
 								
 								<c:otherwise>
+								
 									<c:forEach var="noticeDto" items="${noticeList }">
+											<fmt:formatDate value="${noticeDto.startDate}" var = "startDate"
+											pattern="yyyy/MM/dd"/> 
+											<fmt:formatDate value="${noticeDto.endDate}" var = "endDate"
+													pattern="yyyy/MM/dd"/> 	
+											<fmt:formatDate value="${noticeDto.createdDate}" var = "createdDate"
+													pattern="yyyy/MM/dd"/>
 								<tr>
+								
 									<c:if test="${member.gradeCode eq 0}">
 										<td style="padding-left: 0px;">
 											<div class=' checkbox type2' style="text-align: center;">
@@ -297,10 +304,12 @@
 									</td>
 									
 									<td style="text-align: center;">
+	
 										 <a href="#" class="ellipsis" onclick="listOnePageFnc(${noticeDto.no},
 										 	 ${noticeDto.rnum})">
 												${noticeDto.title}
-										 </a>						
+										 </a>
+																
 									</td>
 									
 									<td style="text-align: center;">
@@ -316,12 +325,14 @@
 									</td>
 									
 									<td style="text-align: center;">
-														
+										
 										<fmt:formatDate value="${noticeDto.startDate}" var = "startDate"
 											pattern="yyyy/MM/dd"/> 
 										<fmt:formatDate value="${noticeDto.endDate}" var = "endDate"
 											pattern="yyyy/MM/dd"/> 	
-								
+										<fmt:formatDate value="${noticeDto.createdDate}" var = "createdDate"
+											pattern="yyyy/MM/dd"/>
+										
 										<c:if test="${serverTime.substring(0,10) > endDate.substring(0,10) }">
 											<c:out value="진행 완료"></c:out>
 										</c:if>
@@ -342,7 +353,7 @@
 									</td>
 									
 									<td style="text-align: center;">
-										관리자 
+										관리자
 									</td>
 									
 									<td style="text-align: center;">
