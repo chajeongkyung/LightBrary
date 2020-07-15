@@ -24,9 +24,10 @@
 <script type="text/javascript">
 	
 	function clearDateFnc(obj){
+		
 		obj.previousElementSibling.value = "";
+		
 	}
-	
 	
 	function deleteFnc() {
 		
@@ -39,25 +40,19 @@
 			alert("취소되었습니다.");
 		}
 		
-		
 	}
 	
-	
 	$(function(){
-		
-		$(".datePicker").datepicker({
-			dateFormat: "yy/mm/dd",
-			changeYear: true,
-			showButtonPanel: true
-		});
 		
 		$("#noticeDateStart").datepicker("setDate", $("#hiddenNoticeDateStart").val());
 		$("#noticeDateEnd").datepicker("setDate", $("#hiddenNoticeDateEnd").val());
 	
 		noticeCategorySelect();
+		
 	});
 	
 	function noticeCategoryOnload(){
+		
 		initNoticeCategory();
 		var noticeCategoryObj = $('#hiddenNoticeCategory').val();
 		$('#noticeCategory').val(noticeCategoryObj);
@@ -85,27 +80,17 @@
 			$('#noticeDateCheck').html('');
 			$('button').removeClass('clear');
 			
-// 			$('#noticeDateStart').attr('value','');
-// 			$('#noticeDateEnd').attr('value','');
-// 			$('#noticeDateStart').removeClass('searchDate');
-// 			$('#noticeDateEnd').removeClass('searchDate');
-// 			$('#noticeDateStart').css('background', '#BDBDBD');
-// 			$('#noticeDateEnd').css('background', '#BDBDBD');
-			
 		}else {
 			$('input[id^=noticeDate]').removeAttr('disabled');
 			$('input[id^=noticeDate]').addClass('searchDate');
 			$('input[id^=noticeDate]').css('background', '');
 			$('button').addClass('clear');
-// 			$('#noticeDateStart').addClass('searchDate');
-// 			$('#noticeDateEnd').addClass('searchDate');
-// 			$('#noticeDateStart').css('background', '');
 		}
 		
 	}
 	
 	
-function registrationFnc() {
+	function registrationFnc() {
 		
 		var categoryValid = noticeCategoryValidFnc();
 		var titleValid = titleValidFnc();
@@ -116,7 +101,6 @@ function registrationFnc() {
 		
 		var noticeCategoryObj = $('#noticeCategory').val();
 		var noticeDateStartObj = $('#noticeDateStart').val();
-		
 		var noticeDateEndObj = $('#noticeDateEnd').val();
 		
 		if (noticeCategoryObj == "" || (noticeDateStartObj == "" && noticeDateEndObj == "" 
@@ -138,7 +122,6 @@ function registrationFnc() {
 			}
 		}
 		
-
 		if(categoryValid && titleValid && contentValid && noticeDateStartValid 
 					&& noticeDateEndValid && noticeDateValid){
 			
@@ -171,19 +154,11 @@ function registrationFnc() {
 			$('#noticeDateCheck').html("시작일이 종료일보다 클 수 없습니다.");
 			$('#noticeDateCheck').css('color', 'red');
 			return false;
-		}
-		
-// 		if ((noticeDateStartObj == "" && noticeDateEndObj == "") && noticeCategoryObj != 0) {
-// 			$('#noticeDateCheck').html("날짜를 선택해주세요");
-// 			$('#noticeDateCheck').css('color', 'red');
-// 			return false;
-// 		}else{
-// 			return true;
-// 		}
-		
+		}		
 	}
 
 	function noticeCategoryValidFnc() {
+		
 		var noticeCategoryObj = $('#noticeCategory').val();
 		
 		 if(noticeCategoryObj == "") {
@@ -194,11 +169,9 @@ function registrationFnc() {
 			 $('#typeCheck').html("");
 			 return true;
 		 }
-		
 	}
 	
 	function titleValidFnc() {
-		
 		
 		var titleObj = $('#title').val();
 		
@@ -213,6 +186,7 @@ function registrationFnc() {
 	}
 	
 	function contentValidFnc() {
+		
 		var contentObj = $('#content').val();
 		
 		 if(contentObj == "") {
@@ -239,15 +213,6 @@ function registrationFnc() {
 			 $('#noticeDateCheck').html("");
 			 return true;
 		}
-		 
-// 		 if (noticeDateStartObj > noticeDateEndObj && noticeDateEndObj != '') {
-// 			 $('#noticeDateCheck').html("시작일이 종료일보다 클 수 없습니다.");
-// 			 $('#noticeDateCheck').css('color', 'red');
-// 			 return false;
-// 		}else if(noticeDateStartObj <= noticeDateEndObj){
-// 			$('#noticeDateCheck').html("");
-// 			return true;
-// 		}
 	}
 	
 	function noticeDateEndValidFnc() {
@@ -263,35 +228,21 @@ function registrationFnc() {
 			$('#noticeDateCheck').html("");	
 			return true;
 		}
-		
-// 		if (noticeDateStartObj > noticeDateEndObj && noticeDateEndObj != '') {
-// 			$('#noticeDateCheck').html("시작일이 종료일보다 클 수 없습니다.");
-// 			$('#noticeDateCheck').css('color', 'red');
-// 			return false;
-// 		}else if(noticeDateStartObj <= noticeDateEndObj){
-// 			$('#noticeDateCheck').html("");
-// 			return true;
-// 		}
 	}
 	
+	$(document).ready(function() {
+		
+		$("#noticeCategory").on("change", noticeCategoryValidFnc);
 	
-	
-	
-$(document).ready(function() {
-	
-	$("#noticeCategory").on("change", noticeCategoryValidFnc);
-
-	$("#title").on("blur", titleValidFnc);
-	
-	$("#content").on("change", contentValidFnc);
-	
-	$("#noticeDateStart").on("change", noticeDateStartValidFnc);
-	
-	$("#noticeDateEnd").on("change", noticeDateEndValidFnc);
-	
-	
-});
-	
+		$("#title").on("blur", titleValidFnc);
+		
+		$("#content").on("change", contentValidFnc);
+		
+		$("#noticeDateStart").on("change", noticeDateStartValidFnc);
+		
+		$("#noticeDateEnd").on("change", noticeDateEndValidFnc);
+		
+	});
 	
 	
 	function updateFnc() {
@@ -301,15 +252,7 @@ $(document).ready(function() {
 		if(registrationFnc()){
 			updateCtrDtoObj.submit();
 		}
-		
-		
 	}
-		
-	
-	
-	
-	
-	
 	
 </script>
 
@@ -436,7 +379,6 @@ $(document).ready(function() {
 		
 		<jsp:include page="/WEB-INF/views/Tail.jsp" />
 	
-
 </body>
 
 </html>

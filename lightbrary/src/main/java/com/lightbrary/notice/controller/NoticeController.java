@@ -129,85 +129,6 @@ public class NoticeController {
 			return "redirect:/notice/list.do";
 		}
 	
-//	@RequestMapping(value = "/notice/MainList.do", method = RequestMethod.GET)
-//	public String NoticeBoardAll(Locale locale, Model model) {
-//		
-//		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy.MM.dd HH:mm");
-//				
-//		Date time = new Date();
-//				
-//		String formattedDate = format1.format(time);
-//		
-//		List<NoticeCategoryDto> noticeList = noticeService.selectMainNotice();
-//		
-//		model.addAttribute("serverTime", formattedDate);
-//		model.addAttribute("noticeList", noticeList);
-//		
-//		System.out.println("확인1");
-//		
-//		return "notice/NoticeBoardTest";
-//	}
-	
-	//공지만 조회
-//	@Auth(role = Role.USER)
-//	@RequestMapping(value = "/notice/noticeList.do", method = RequestMethod.GET)
-//	public String NoticeBoardNotice(Model model) {
-//		
-//		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
-//				
-//		Date time = new Date();
-//				
-//		String formattedDate = format.format(time);
-//		
-//		List<NoticeCategoryDto> noticeList = noticeService.selectNotice();
-//		
-//		model.addAttribute("serverTime", formattedDate);
-//		model.addAttribute("noticeList", noticeList);
-//		
-//		System.out.println("확인1");
-//		
-//		return "notice/NoticeBoardMain";
-//	}
-//	
-//	//휴관만 조회
-//	@RequestMapping(value = "/notice/closedList.do", method = RequestMethod.GET)
-//	public String NoticeBoardClosed(Model model) {
-//		
-//		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
-//				
-//		Date time = new Date();
-//				
-//		String formattedDate = format.format(time);
-//		
-//		List<NoticeCategoryDto> noticeList = noticeService.selectClosedNotice();
-//		
-//		model.addAttribute("serverTime", formattedDate);
-//		model.addAttribute("noticeList", noticeList);
-//		
-//		System.out.println("확인1");
-//		
-//		return "notice/NoticeBoardMain";
-//	}
-//	
-//	@RequestMapping(value = "/notice/eventList.do", method = RequestMethod.GET)
-//	public String NoticeBoardEvent(Model model) {
-//		
-//		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
-//				
-//		Date time = new Date();
-//				
-//		String formattedDate = format.format(time);
-//		
-//		List<NoticeCategoryDto> noticeList = noticeService.selectEventNotice();
-//		
-//		model.addAttribute("serverTime", formattedDate);
-//		model.addAttribute("noticeList", noticeList);
-//		
-//		System.out.println("확인1");
-//		
-//		return "notice/NoticeBoardMain";
-//	}
-	
 	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/notice/deleteCtr.do", method = RequestMethod.GET)
 	public String NoticeBoardDelete(int no) {
@@ -242,7 +163,7 @@ public class NoticeController {
 		model.addAttribute("searchOption", searchOption);
 		model.addAttribute("categoryCode", categoryCode);
 		model.addAttribute("rnum", rnum);
-		model.addAttribute("totalCount", totalCount);
+//		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("maxRnum", totalCount);
 		
 		return "/notice/NoticeBoardDetail";
@@ -287,17 +208,6 @@ public class NoticeController {
 		return "redirect:/notice/list.do";
 	}
 	
-
-//	@RequestMapping(value = "/preNextDoc")
-//	public @ResponseBody Map preNextDoc(HttpServletRequest req, DataEntity param) { 
-//		// TODO //파라미터 체크 생략
-//		Map result = new HashMap(); 
-//		//권한처리 생략 
-//		result = noticeService.preNextDoc(param);
-//		return result; 
-//		
-//	}
-	
 	@Auth(role = Role.USER)
 	@RequestMapping(value = "/notice/nextPage.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String NoticeNextBoard(Model model, String searchOption,
@@ -319,7 +229,7 @@ public class NoticeController {
 	
 	@Auth(role = Role.USER)
 	@RequestMapping(value = "/notice/previousPage.do", method = {RequestMethod.GET, RequestMethod.POST})
-	public String NoticeNextBoarda(Model model, String searchOption,
+	public String NoticePreviousBoard(Model model, String searchOption,
 			String keyword, int categoryCode, int rnum) {
 		
 		log.info("call memberUpdate! {}");
@@ -337,5 +247,4 @@ public class NoticeController {
 	}
 	
 		
-	
 }

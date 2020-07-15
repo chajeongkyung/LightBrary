@@ -25,13 +25,7 @@
 		obj.previousElementSibling.value = "";
 	}
 
-
 	$(function(){
-		$(".datePicker").datepicker({
-			dateFormat: "yy/mm/dd",
-			changeYear: true,
-			showButtonPanel: true
-		});
 		
 		noticeCategorySelect();
 	});
@@ -40,7 +34,6 @@
 		initNoticeCategory();
 	}
 	
-	
 	window.onload = function() {
 		if (noticeCategoryObj == ""){
 			$('input[id^=noticeDate]').attr('disabled', 'disabled');
@@ -48,7 +41,6 @@
 		
 	}
 	
-
 	function onchangeFnc() {
 		
 		var noticeCategoryObj = document.getElementById('noticeCategory').value;
@@ -65,23 +57,12 @@
 			$('#noticeDateCheck').html('');
 			$('button').removeClass('clear');
 			
-// 			$('#noticeDateStart').attr('value','');
-// 			$('#noticeDateEnd').attr('value','');
-// 			$('#noticeDateStart').removeClass('searchDate');
-// 			$('#noticeDateEnd').removeClass('searchDate');
-// 			$('#noticeDateStart').css('background', '#BDBDBD');
-// 			$('#noticeDateEnd').css('background', '#BDBDBD');
-			
 		}else {
 			$('input[id^=noticeDate]').removeAttr('disabled');
 			$('input[id^=noticeDate]').addClass('searchDate');
 			$('input[id^=noticeDate]').css('background', '');
 			$('button').addClass('clear');
-// 			$('#noticeDateStart').addClass('searchDate');
-// 			$('#noticeDateEnd').addClass('searchDate');
-// 			$('#noticeDateStart').css('background', '');
 		}
-		
 	}
 	
 	function noticeFormSubmitFnc() {
@@ -90,12 +71,7 @@
 			$('#noticeForm').submit();
 		}
 		
-// 		var noticeFormObj = document.getElementById('noticeForm');
-// 		if(registrationFnc()){
-// 			noticeFormObj.submit();
-// 		}
 	}
-	
 	
 	function registrationFnc() {
 		
@@ -130,7 +106,6 @@
 			}
 		}
 		
-
 		if(categoryValid && titleValid && contentValid && noticeDateStartValid 
 					&& noticeDateEndValid && noticeDateValid){
 			
@@ -164,18 +139,11 @@
 			$('#noticeDateCheck').css('color', 'red');
 			return false;
 		}
-		
-// 		if ((noticeDateStartObj == "" && noticeDateEndObj == "") && noticeCategoryObj != 0) {
-// 			$('#noticeDateCheck').html("날짜를 선택해주세요");
-// 			$('#noticeDateCheck').css('color', 'red');
-// 			return false;
-// 		}else{
-// 			return true;
-// 		}
-		
+				
 	}
 
 	function noticeCategoryValidFnc() {
+		
 		var noticeCategoryObj = $('#noticeCategory').val();
 		
 		 if(noticeCategoryObj == "") {
@@ -191,7 +159,6 @@
 	
 	function titleValidFnc() {
 		
-		
 		var titleObj = $('#title').val();
 		
 		 if(titleObj == "") {
@@ -205,6 +172,7 @@
 	}
 	
 	function contentValidFnc() {
+		
 		var contentObj = $('#content').val();
 		
 		 if(contentObj == "") {
@@ -230,16 +198,7 @@
 		 }else if (noticeDateStartObj != "" || noticeCategoryObj == 0) {
 			 $('#noticeDateCheck').html("");
 			 return true;
-		}
-		 
-// 		 if (noticeDateStartObj > noticeDateEndObj && noticeDateEndObj != '') {
-// 			 $('#noticeDateCheck').html("시작일이 종료일보다 클 수 없습니다.");
-// 			 $('#noticeDateCheck').css('color', 'red');
-// 			 return false;
-// 		}else if(noticeDateStartObj <= noticeDateEndObj){
-// 			$('#noticeDateCheck').html("");
-// 			return true;
-// 		}
+		}		 
 	}
 	
 	function noticeDateEndValidFnc() {
@@ -255,38 +214,21 @@
 			$('#noticeDateCheck').html("");	
 			return true;
 		}
-		
-// 		if (noticeDateStartObj > noticeDateEndObj && noticeDateEndObj != '') {
-// 			$('#noticeDateCheck').html("시작일이 종료일보다 클 수 없습니다.");
-// 			$('#noticeDateCheck').css('color', 'red');
-// 			return false;
-// 		}else if(noticeDateStartObj <= noticeDateEndObj){
-// 			$('#noticeDateCheck').html("");
-// 			return true;
-// 		}
 	}
 	
-$(document).ready(function() {
-	
-	$("#noticeCategory").on("change", noticeCategoryValidFnc);
-
-	$("#title").on("blur", titleValidFnc);
-	
-	$("#content").on("change", contentValidFnc);
-	
-	$("#noticeDateStart").on("change", noticeDateStartValidFnc);
-	
-	$("#noticeDateEnd").on("change", noticeDateEndValidFnc);
-	
-	
-	
-	
-	
-});
-	
-	
-	
+	$(document).ready(function() {
 		
+		$("#noticeCategory").on("change", noticeCategoryValidFnc);
+	
+		$("#title").on("blur", titleValidFnc);
+		
+		$("#content").on("change", contentValidFnc);
+		
+		$("#noticeDateStart").on("change", noticeDateStartValidFnc);
+		
+		$("#noticeDateEnd").on("change", noticeDateEndValidFnc);
+		
+	});
 	
 </script>
 
@@ -367,7 +309,6 @@ $(document).ready(function() {
 										</div>
 										
 									<p id="noticeDateCheck"></p>
-										
 									
 									</td>
 								</tr>
@@ -393,20 +334,6 @@ $(document).ready(function() {
 		
 		<jsp:include page="/WEB-INF/views/Tail.jsp" />
 	
-
 </body>
-
-<script type="text/javascript">
-
-
-
-
-
-
-
-
-
-
-</script>
 
 </html>

@@ -19,16 +19,13 @@ public class NoticeCategoryDto {
 	private String scheduleFlag;
 	
 	private int rnum;
-	private int prevNum; //이전글의 글번호를 담을 필드
-	private int nextNum; //다음글의 글번호를 담을 필드
 	
 	public NoticeCategoryDto() {
 		super();
 	}
 
 	public NoticeCategoryDto(int no, int memberNo, String categoryCode, String title, String content, Date startDate,
-			Date endDate, Date createdDate, Date modifiedDate, int code, String name, String scheduleFlag, int rnum,
-			int prevNum, int nextNum) {
+			Date endDate, Date createdDate, Date modifiedDate, int code, String name, String scheduleFlag, int rnum) {
 		super();
 		this.no = no;
 		this.memberNo = memberNo;
@@ -43,8 +40,6 @@ public class NoticeCategoryDto {
 		this.name = name;
 		this.scheduleFlag = scheduleFlag;
 		this.rnum = rnum;
-		this.prevNum = prevNum;
-		this.nextNum = nextNum;
 	}
 
 	public int getNo() {
@@ -151,29 +146,12 @@ public class NoticeCategoryDto {
 		this.rnum = rnum;
 	}
 
-	public int getPrevNum() {
-		return prevNum;
-	}
-
-	public void setPrevNum(int prevNum) {
-		this.prevNum = prevNum;
-	}
-
-	public int getNextNum() {
-		return nextNum;
-	}
-
-	public void setNextNum(int nextNum) {
-		this.nextNum = nextNum;
-	}
-
 	@Override
 	public String toString() {
 		return "NoticeCategoryDto [no=" + no + ", memberNo=" + memberNo + ", categoryCode=" + categoryCode + ", title="
 				+ title + ", content=" + content + ", startDate=" + startDate + ", endDate=" + endDate
 				+ ", createdDate=" + createdDate + ", modifiedDate=" + modifiedDate + ", code=" + code + ", name="
-				+ name + ", scheduleFlag=" + scheduleFlag + ", rnum=" + rnum + ", prevNum=" + prevNum + ", nextNum="
-				+ nextNum + "]";
+				+ name + ", scheduleFlag=" + scheduleFlag + ", rnum=" + rnum + "]";
 	}
-	
+
 }

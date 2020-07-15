@@ -279,9 +279,9 @@
 				</form>
 				<!-- 상세페이지 버튼 start -->
 				<div class='btnWrap viewBtns fs0 tCenter'>
-					<a href="#none" onclick="updateBookFnc();" class='btn grey'>적용</a>
+					<a href="#none" onclick="moveListFnc();" class='btn grey'>목록</a>
 					<a href="#none" onclick="deleteBookFnc();" class='btn grey'>삭제</a>
-					<a href="#none" onclick="moveListFnc();" class='btn green'>목록</a>
+					<a href="#none" onclick="updateBookFnc();" class='btn green'>적용</a>
 				</div>
 				
 				<form name="bookListParamDto" action="./list.do" id='bookListParamDto' method="post">

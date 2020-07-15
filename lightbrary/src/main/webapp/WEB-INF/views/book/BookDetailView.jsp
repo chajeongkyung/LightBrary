@@ -133,22 +133,22 @@
 				
 				<!-- 상세페이지 버튼 start -->
 				<div class='btnWrap viewBtns fs0 tCenter'>
+					<a href="#none" id='listBtn' onclick='moveListFnc()' class='btn grey'>목록</a>
 					<c:if test="${member.gradeCode eq 0}">
-						<a href="#none" id='updateBtn' onclick='moveUpdateFnc()' class='btn grey'>수정</a>
+						<a href="#none" id='updateBtn' onclick='moveUpdateFnc()' class='btn green'>수정</a>
 					</c:if>
 					<c:if test="${member.gradeCode eq 1}">
 						<c:choose>
 							<c:when test="${bookDto.statusCode eq 0}">
 								<input type="hidden" id="memberNo" name="memberNo" value="${member.no}">
 								<input type="hidden" id="rentNo" name="rentNo" value="${rentDto.no}">
-								<a href="#none" id='reserveBtn' onclick='moveReserveFnc()' class='btn grey'>도서 대출 예약</a>
+								<a href="#none" id='reserveBtn' onclick='moveReserveFnc()' class='btn green'>도서 대출 예약</a>
 							</c:when>
 							<c:otherwise>
-								<a href="#none" class='btn grey disabled'>도서 대출 예약</a>
+								<a href="#none" class='btn green disabled'>도서 대출 예약</a>
 							</c:otherwise>
 						</c:choose>
 					</c:if>
-					<a href="#none" id='listBtn' onclick='moveListFnc()' class='btn green'>목록</a>
 				</div>
 				
 				<form name="bookListParamDto" action="./list.do" id='bookListParamDto' method="post">
