@@ -96,7 +96,7 @@ public class MemberController {
 	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/auth/list.do"
 			, method = {RequestMethod.GET, RequestMethod.POST})
-	public String rentList(@RequestParam(defaultValue = "1") int curPage
+	public String MemberList(@RequestParam(defaultValue = "1") int curPage
 			, MemberListParamDto memberListParamDto
 			, Model model) {
 		
@@ -113,6 +113,35 @@ public class MemberController {
 		memberListParamDto.setEndPage(pagingInfo.getPageEnd());
 
 		List<MemberDto> memberDtoList = memberService.selectMember(memberListParamDto);
+		
+		model.addAttribute("memberDtoList", memberDtoList);
+		model.addAttribute("memberListParamDto", memberListParamDto);
+		model.addAttribute("pagingInfo", pagingInfo);
+		
+		return "member/MemberListView";
+	}
+	
+	//연체회원 목록
+	@Auth(role=Role.ADMIN)
+	@RequestMapping(value = "/auth/overdueMemberList.do"
+	, method = {RequestMethod.GET, RequestMethod.POST})
+	public String overdueMemberList(@RequestParam(defaultValue = "1") int curPage
+			, MemberListParamDto memberListParamDto
+			, Model model) {
+		
+		log.info("----------연체회원목록-----------");
+		log.info("curPage: " + curPage);
+		log.info("" + memberListParamDto);
+		log.info("---------------------------");
+		
+		int totalCount = memberService.totalCountMember(memberListParamDto);
+		Paging pagingInfo = new Paging(totalCount, curPage);
+		
+		memberListParamDto.setCurPage(curPage);
+		memberListParamDto.setStartPage(pagingInfo.getPageBegin());
+		memberListParamDto.setEndPage(pagingInfo.getPageEnd());
+		
+		List<MemberDto> memberDtoList = memberService.selectOverdueMember(memberListParamDto);
 		
 		model.addAttribute("memberDtoList", memberDtoList);
 		model.addAttribute("memberListParamDto", memberListParamDto);
@@ -296,7 +325,6 @@ public class MemberController {
 		return memberDto;
 	}
 	
-	@Auth(role=Role.ADMIN)
 	@RequestMapping(value="/auth/deleteBatch.do", method = RequestMethod.POST, 
 			produces="text/plain;charset=UTF-8")
 	@ResponseBody
@@ -320,7 +348,6 @@ public class MemberController {
 	@Autowired
     private JavaMailSender mailSender;
 	
-	@Auth(role=Role.USER)
 	@RequestMapping("/sendEmail.do")
     public String sendEmail(@RequestParam("email") String email, HttpSession session)
     		throws Exception {

@@ -98,6 +98,13 @@ public class MemberDaoImpl implements MemberDao{
 		
 		return sqlSession.selectList(namespace + "selectMember", memberListParamDto);
 	}
+	
+	@Override
+	public List<MemberDto> selectOverdueMember(MemberListParamDto memberListParamDto) {
+		// TODO Auto-generated method stub
+		
+		return sqlSession.selectList(namespace + "selectOverdueMember", memberListParamDto);
+	}
 
 	@Override
 	public int totalCountMember(MemberListParamDto memberListParamDto) {
