@@ -240,8 +240,8 @@
 				</form>
 				<!-- 상세페이지 버튼 start -->
 				<div class='btnWrap viewBtns fs0 tCenter'>
-					<a href="#none" onclick="bookInsertFormSubmit();" class='btn grey'>등록</a>
-					<a href="./list.do" class='btn green'>목록</a>
+					<a href="./list.do" class='btn grey'>목록</a>
+					<a href="#none" onclick="bookInsertFormSubmit();" class='btn green'>등록</a>
 				</div>
 				<!-- //상세페이지 버튼 end -->
 			</div>

@@ -1,9 +1,6 @@
 package com.lightbrary.notice.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -32,34 +29,6 @@ public class NoticeServiceImpl implements NoticeService{
 		List<NoticeDto> noticeList = noticeDao.selectMainNotice(searchOption,
 				keyword, start, end, categoryCode);
 		
-		return noticeList;
-	}
-
-	@Override
-	public List<NoticeCategoryDto> selectAllNotice() {
-		// TODO Auto-generated method stub
-		List<NoticeCategoryDto> noticeList = noticeDao.selectAllNotice();
-		return noticeList;
-	}
-
-	@Override
-	public List<NoticeCategoryDto> selectNotice() {
-		// TODO Auto-generated method stub
-		List<NoticeCategoryDto> noticeList = noticeDao.selectNotice();
-		return noticeList;
-	}
-
-	@Override
-	public List<NoticeCategoryDto> selectClosedNotice() {
-		// TODO Auto-generated method stub
-		List<NoticeCategoryDto> noticeList = noticeDao.selectClosedNotice();
-		return noticeList;
-	}
-
-	@Override
-	public List<NoticeCategoryDto> selectEventNotice() {
-		// TODO Auto-generated method stub
-		List<NoticeCategoryDto> noticeList = noticeDao.selectEventNotice();
 		return noticeList;
 	}
 
@@ -120,12 +89,6 @@ public class NoticeServiceImpl implements NoticeService{
 	public int selectCurPageNotice(String searchOption, String keyword, int no, int categoryCode) {
 		// TODO Auto-generated method stub
 		return noticeDao.selectCurPageNotice(searchOption, keyword, no, categoryCode);
-	}
-
-	@Override
-	public NoticeCategoryDto selectNextNotice(int no) {
-		// TODO Auto-generated method stub
-		return noticeDao.selectNextNotice(no);
 	}
 
 	@Override

@@ -20,14 +20,6 @@ public interface NoticeService {
 	
 	public NoticeCategoryDto previousWriteNotice(String searchOption, 
 			String keyword, int categoryCode, int rnum);
-
-	public List<NoticeCategoryDto> selectAllNotice();
-	
-	public List<NoticeCategoryDto> selectNotice();
-	
-	public List<NoticeCategoryDto> selectClosedNotice();
-	
-	public List<NoticeCategoryDto> selectEventNotice();
 	
 	public int deleteNotice(int no);
 	
@@ -44,7 +36,5 @@ public interface NoticeService {
 	
 	public int selectCurPageNotice(String searchOption
 			, String keyword, int no, int categoryCode);
-	
-	public NoticeCategoryDto selectNextNotice(int no);
 	
 }
