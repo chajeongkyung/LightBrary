@@ -16,6 +16,13 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
 
+<script type="text/javascript">
+
+function bookDetailMove(obj){
+	location.href = '/lightbrary/book/detail.do?no='+obj;
+}
+</script>
+
 </head>
 
 <body>
@@ -28,7 +35,6 @@
 			<div id='mainPageTitle'>${member.name} 님, 환영합니다 !</div>
 
 			<c:if test="${member.gradeCode eq 0}">
-<!-- 				<div class="bold textDark" style="font-size: 20px;">관리자메뉴</div> -->
 				<ul id='adminLinks' class='fs0'>
 					<li>
 						<a href="/lightbrary/auth/list.do">회원관리</a>
@@ -46,28 +52,26 @@
 			</c:if>
 			
 			<c:if test="${member.gradeCode eq 1}">
-				<div class="bold textDark" style="font-size: 20px;">인기도서  ${bookDtoList}</div>
-				<div>
+				<div id="bestBook" class="bold mainPageSubTitle">인기도서</div>
 					<c:forEach var="bookDto" items="${bookDtoList}">
 						<ul>
 							<li>
-								<div>
-								<a href="#none"class="fLeft">
+								<div id="bestBookInfo">
 									<c:url var="imgUrl" value='/img/${bookDto.imageName}'/>
-									<span class='bookImage bgCover' style="background-image: url('${imgUrl}');"></span>
-								</a>
-								사진 ${bookDto.imageNo}</div>
-								<div>도서명 ${bookDto.name}</div>
-								<div>작가 ${bookDto.writer}</div>
+									<div class='img_box' onclick="bookDetailMove(${bookDto.no})"
+										style="background-image: url('${imgUrl}')"></div>
+									
+									<div id="bookName" onclick="bookDetailMove(${bookDto.no})" 
+										class="ellipsis bold text">${bookDto.name}</div>
+									<div id="bookWriter" class="ellipsis text">${bookDto.writer}</div>
+								</div>
 							</li>
-							
 						</ul>
 					</c:forEach>
-				</div>
 			</c:if>
 			
-			<div class='overH' style="margin-bottom: 15px;">
-				<div class="bold textDark fLeft" style="font-size: 20px; color: #464646;">공지게시판</div>
+			<div class='overH' style="clear:both;">
+				<div class="bold fLeft mainPageSubTitle">공지게시판</div>
 				
 				<!--더보기버튼 -->
 				<a class="bold textDark fRight" href="./notice/list.do" style="font-size: 24px; color: #707070;">+</a>

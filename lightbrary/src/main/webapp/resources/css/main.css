@@ -43,3 +43,35 @@
 #adminLinks li:nth-child(4) {
 	background-image: url('../img/main/admin_main_ico4.jpg');
 }
+.img_box {
+	width:175px;
+	height:246px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+}
+
+#bookName {
+	margin-top:15px;
+	width:180px;
+}
+
+#bookWriter {
+	margin-top:15px;
+	width:130px;
+}
+
+ul li #bestBookInfo {
+	list-style-type: none;
+	float: left;
+}
+
+#bestBookInfo {
+	margin: 0 20px 40px 0;
+}
+
+.mainPageSubTitle {
+	margin: 0 0 15px 15px;
+	font-size: 20px;
+	color: #464646;
+}
