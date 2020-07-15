@@ -57,6 +57,7 @@ public class BookServiceImpl implements BookService{
 	}
 
 	@Override
+	@Transactional(isolation=Isolation.DEFAULT)
 	public void insertOneBook(BookDto bookDto, MultipartHttpServletRequest request) {
 		// TODO Auto-generated method stub
 		
@@ -85,6 +86,8 @@ public class BookServiceImpl implements BookService{
 
 	}
 	
+	@Override
+	@Transactional(isolation=Isolation.DEFAULT)
 	public void insertBookBatch(BookDto bookDto, MultipartHttpServletRequest request
 			, int seriesStart, int seriesEnd) {
 		// TODO Auto-generated method stub
@@ -126,6 +129,7 @@ public class BookServiceImpl implements BookService{
 	}
 
 	@Override
+	@Transactional(isolation=Isolation.DEFAULT)
 	public int updateOneBook(BookDto bookDto, MultipartHttpServletRequest request, int imageStatus) {
 		// TODO Auto-generated method stub
 		
