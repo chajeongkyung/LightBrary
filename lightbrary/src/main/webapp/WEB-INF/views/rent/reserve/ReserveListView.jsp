@@ -25,7 +25,7 @@
 		// depth1 네비
 		$('#depth1Ul > li:nth-child(2)').addClass('active');
 		// depth2 네비
-		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(3)').addClass('active');
+		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(1)').addClass('active');
 	});
 	
 	
@@ -61,7 +61,7 @@
 		}
 	}
 	
-	// 다중 반납처리
+	// 다중 대출처리
 	function rentBatchFnc() {
 		
 		var noObjArr = checkedObjArr();
@@ -265,10 +265,14 @@
 										</span>
 									</td>
 									<td>
-										<span class='textGreen'>${rentDto.rentStatus}</span>
-<%-- 										<c:if test=""> --%>
-<%-- 											${rentDto.bookStatus} --%>
-<%-- 										</c:if> --%>
+										<c:choose>
+											<c:when test="${rentDto.rentStatus eq '예약'}">
+												<span class='textGreen'>${rentDto.rentStatus}</span>
+											</c:when>
+											<c:otherwise>
+												<span class='textRed'>${rentDto.rentStatus}</span>
+											</c:otherwise>
+										</c:choose>
 									</td>
 									<td style="text-align: center;">
 										<span>

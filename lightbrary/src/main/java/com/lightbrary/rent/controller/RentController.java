@@ -131,6 +131,10 @@ public class RentController {
 		
 		List<RentDto> myReserveList = rentService.selectMyReserve(searchOption, keyword, start, end, myNo);
 		
+		for (RentDto rentDto : myReserveList) {
+			calcStatus(rentDto);
+		}
+		
 		// 검색
 		HashMap<String, Object> searchMap = new HashMap<String, Object>();
 		searchMap.put("searchOption", searchOption);
@@ -164,7 +168,8 @@ public class RentController {
 		}
 
 		for (int no : noArr) {
-			RentDto rentDto = rentService.selectOneReserve(no);
+			RentDto rentDto = rentService.selectOneMyReserve(no);
+			calcStatus(rentDto);
 			rentService.updateOneStatusToKeep(rentDto.getBookNo());
 			rentService.deleteOneFromRent(no);
 		}
@@ -241,6 +246,10 @@ public class RentController {
 		int end = pagingInfo.getPageEnd();
 		
 		List<RentDto> myRentList = rentService.selectMyRent(searchOption, keyword, start, end, myNo);
+		
+		for (RentDto rentDto : myRentList) {
+			calcStatus(rentDto);
+		}
 		
 		// 검색
 		HashMap<String, Object> searchMap = new HashMap<String, Object>();
@@ -424,11 +433,13 @@ public class RentController {
 			produces="text/plain;charset=UTF-8")
 	@ResponseBody
 	public void rentBatch(int[] noArr) {
-		log.info("관리자 예약 목록 :: 다중 반납 대출 처리");
+		log.info("관리자 예약 목록 :: 다중 대출 처리");
 
 		for (int no : noArr) {
 			RentDto rentDto = rentService.selectOneReserve(no);
+			calcStatus(rentDto);
 			rentService.updateOneStatusToRent(rentDto);
+			rentService.updateOneStatusToRentFromRent(rentDto);
 			rentService.updateOneRentDate(rentDto);
 			rentService.updateOneExpireDate(rentDto);
 		}
@@ -448,15 +459,20 @@ public class RentController {
 		return "rent/reserve/ReserveDetailView";
 	}
 
-	// 반납처리 - 상세
+	// 대출처리 - 상세
 	@RequestMapping(value = "/rent/reserve/statusUpdateCtr.do", method = RequestMethod.POST)
 	public String reserveStatusUpdateCtr(RentDto rentDto, Model model) {
-		log.info("대출 중으로 변경된 도서 번호 = ", rentDto.getBookNo());
+		
+		rentDto = rentService.selectOneReserve(rentDto.getNo());
+		
+		log.info("대출 중으로 변경된 도서 번호 = " + rentDto.getBookNo());
 
 		System.out.println(rentDto.toString());
 
 		try {
+			calcStatus(rentDto);
 			rentService.updateOneStatusToRent(rentDto);
+			rentService.updateOneStatusToRentFromRent(rentDto);
 			rentService.updateOneRentDate(rentDto);
 			rentService.updateOneExpireDate(rentDto);
 		} catch (Exception e) {
@@ -530,9 +546,13 @@ public class RentController {
 	@ResponseBody
 	public void returnBatch(int[] noArr) {
 		log.info("대출 현황 목록 :: 다중 반납처리");
-
+		
 		for (int no : noArr) {
-			rentService.updateOneStatusToKeep(no);
+			RentDto rentDto = rentService.selectOneRent(no);
+			calcStatus(rentDto);
+			rentService.updateOneStatusToKeep(rentDto.getBookNo());
+			rentService.updateOneStatusToKeepFromRent(rentDto);
+			rentService.updateOneReturnDate(rentDto);
 		}
 	}
 		
@@ -542,7 +562,6 @@ public class RentController {
 		log.info("대출 도서 상세 - " + no + "\n검색옵션 : " + searchOption + "\n검색문장 : " + keyword + "\n분류 : " + status);
 		
 		RentDto rentDto = rentService.selectOneRent(no);
-		
 		System.out.println("---------DETAIL----------");
 		System.out.println(rentDto.toString());
 		System.out.println("------------------------");
@@ -558,10 +577,17 @@ public class RentController {
 	// 대출 반납처리
 	@RequestMapping(value = "/rent/statusUpdateCtr.do", method = RequestMethod.POST)
 		public String rentStatusUpdateCtr(RentDto rentDto, Model model) {
-		log.info("보관 중으로 변경된 도서 번호 : {}", rentDto.getBookNo());
 		
+		rentDto = rentService.selectOneRent(rentDto.getNo());
+		
+		log.info("보관 중으로 변경된 도서 번호 = " + rentDto.getBookNo());
+
+		System.out.println(rentDto.toString());
+
 		try {
+			calcStatus(rentDto);
 			rentService.updateOneStatusToKeep(rentDto);
+			rentService.updateOneStatusToKeepFromRent(rentDto);
 			rentService.updateOneReturnDate(rentDto);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -571,8 +597,6 @@ public class RentController {
 		System.out.println("---------UPDATE----------");
 		System.out.println(rentDto.toString());
 		System.out.println("-------------------------");
-		
-		rentDto = rentService.selectOneRent(rentDto.getNo());
 		
 		model.addAttribute("no", rentDto.getNo());
 		
@@ -624,7 +648,6 @@ public class RentController {
 
 		log.info("연체목록 : 현재페이지 = " + curPage + " : searchOption = " + searchOption + " : keyword = " + keyword);
 
-		System.out.println();
 		// 전체 예약 도서 갯수
 		int totalCount = rentService.totalCountOverdue(searchOption, keyword);
 
@@ -632,8 +655,8 @@ public class RentController {
 			curPage = rentService.selectOverdueCurPage(searchOption, keyword, no);
 		}
 		
-		System.out.println(curPage);
-		System.out.println(totalCount);
+		System.out.println("curPage =" + curPage);
+		System.out.println("totalCount =" + totalCount);
 
 		Paging pagingInfo = new Paging(totalCount, curPage);
 
@@ -645,17 +668,8 @@ public class RentController {
 
 		List<RentDto> overdueList = rentService.selectOverdue(searchOption, keyword, start, end);
 		
-		for (int i = 0; i < overdueList.size(); i++) {
-			RentDto rentDto = overdueList.get(i);
+		for (RentDto rentDto : overdueList) {
 			calcStatus(rentDto);
-			System.out.println(">>>>>>>>>>>>>>getRentDate" + rentDto.getRentDate());
-			System.out.println(">>>>>>>>>>>>>>getExpireDate" + rentDto.getExpireDate());
-			System.out.println(">>>>>>>>>>>>>>getReturnDate" + rentDto.getReturnDate());
-			System.out.println("getRentStatus===============" + rentDto.getRentStatus());
-			
-//			if(rentDto.getRentStatus() != "연체") {
-//				overdueList.remove(i--);
-//			}
 		}
 
 		// 검색
@@ -682,6 +696,7 @@ public class RentController {
 	// 연체 불러오기
 	@RequestMapping(value = "/rent/overdue/refresh.do", method = RequestMethod.GET)
 	public String overdueRefresh(Model model) {
+		log.info("연체 목록 :: 연체 업데이트");
 
 		// 대출 중인 도서들만 불러와서 비교하기
 		List<RentDto> overdueList = rentService.selectRentAll();
@@ -704,7 +719,9 @@ public class RentController {
 			cal2.set(Calendar.MILLISECOND, 0);
 			if (cal.after(cal2)) {
 				rentService.updateOneStatusToOverdue(rentDto);
+				rentService.updateOneStatusToOverdueFromRent(rentDto);
 			}
+			
 		}
 
 		return "redirect:/rent/overdue/list.do";
@@ -724,15 +741,19 @@ public class RentController {
 		return "rent/overdue/OverdueDetailView";
 	}
 
-	// 연체 반납처리
+	// 연체 반납처리 - 상세
 	@RequestMapping(value = "/rent/overdue/statusUpdateCtr.do", method = RequestMethod.POST)
 	public String overdueStatusUpdateCtr(RentDto rentDto, Model model) {
-		log.info("대출 중으로 변경된 도서 번호 : {}", rentDto.getBookNo());
+		
+		rentDto = rentService.selectOneOverdue(rentDto.getNo());
+		
+		log.info("대출 중으로 변경된 도서 번호 = " + rentDto.getBookNo());
 
 		System.out.println(rentDto.toString());
 
 		try {
 			rentService.updateOneStatusToKeep(rentDto);
+			rentService.updateOneStatusToKeepFromRent(rentDto);
 			rentService.updateOneReturnDate(rentDto);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -770,7 +791,7 @@ public class RentController {
 	}
 	
 	public void calcStatus(RentDto rentDto) {
-		Date pickupDate = rentDto.getReserveDate();
+		Date pickupDate = rentDto.getPickUpDate();
 		Date rentDate = rentDto.getRentDate();
 		Date expireDate = rentDto.getExpireDate();
 		Date returnDate = rentDto.getReturnDate();
@@ -784,6 +805,12 @@ public class RentController {
 		today.set(Calendar.MINUTE, 0);
 		today.set(Calendar.SECOND, 0);
 		today.set(Calendar.MILLISECOND, 0);
+		
+		System.out.println("getPickUpDate==========" + rentDto.getPickUpDate());
+		System.out.println("getReserveDate==========" + rentDto.getReserveDate());
+		System.out.println("getRentDate==========" + rentDto.getRentDate());
+		System.out.println("getExpireDate==========" + rentDto.getExpireDate());
+		System.out.println("getReturnDate==========" + rentDto.getReturnDate());
 		
 		if(rentDate == null) {
 			pickUpCal.setTime(pickupDate);

@@ -41,16 +41,16 @@
 		<ul id='depth1Ul' class='fs0 tCenter'>
 			<li><a href="/lightbrary/auth/list.do">회원관리</a></li>
 			<li id='rentNav' class='depthNav'>
-				<a href="/lightbrary/rent/list.do">대출관리</a>
+				<a href="/lightbrary/rent/reserve/list.do">대출관리</a>
 				<ul id='rentDepth2' class="depth2Ul fs0">
+					<li>
+						<a href="/lightbrary/rent/reserve/list.do">예약현황</a>
+					</li>
 					<li>
 						<a href="/lightbrary/rent/list.do">대출현황</a>
 					</li>
 					<li>
 						<a href="/lightbrary/rent/overdue/list.do">연체현황</a>
-					</li>
-					<li>
-						<a href="/lightbrary/rent/reserve/list.do">예약현황</a>
 					</li>
 				</ul>
 			</li>
@@ -106,15 +106,15 @@
 							</a>
 						</li>
 						<li>
-							<a href="#none" class='fs0' onclick="moveToMyRentFnc();">
-								<img alt="내 정보" src="<%=request.getContextPath()%>/resources/img/icon-single-book.png">
-								<span>나의 대출 기록</span>
-							</a>
-						</li>
-						<li>
 							<a href="#none" class='fs0' onclick="moveToMyReserveFnc();">
 								<img alt="내 정보" src="<%=request.getContextPath()%>/resources/img/icon-clock.png">
 								<span>나의 예약 현황</span>
+							</a>
+						</li>
+						<li>
+							<a href="#none" class='fs0' onclick="moveToMyRentFnc();">
+								<img alt="내 정보" src="<%=request.getContextPath()%>/resources/img/icon-single-book.png">
+								<span>나의 대출 기록</span>
 							</a>
 						</li>
 					</ul>

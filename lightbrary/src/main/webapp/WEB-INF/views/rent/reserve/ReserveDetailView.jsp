@@ -21,7 +21,7 @@
 		// depth1 네비
 		$('#depth1Ul > li:nth-child(2)').addClass('active');
 		// depth2 네비
-		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(3)').addClass('active');
+		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(1)').addClass('active');
 		
 		//분류 문자
 		bookCategorySelect();
@@ -142,7 +142,7 @@
 								<tr>
 									<th class='text bold textDark'>예약상태</th>
 									<td class='text textGreen bold'>
-										${rentDto.bookStatus}
+										${rentDto.rentStatus}
 									</td>
 								</tr>
 							</tbody>

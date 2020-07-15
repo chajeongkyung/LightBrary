@@ -209,7 +209,7 @@
 					<div class='btnWrap viewBtns fs0 tCenter'>
 						<input type="hidden" id='no' value="${rentDto.no}" name="no">
 						<input type="hidden" value="${rentDto.bookNo}" name="bookNo">
-						<input type="hidden" value="${rentDto.bookStatus}" name="bookStatus">
+						<input type="hidden" value="${rentDto.rentStatus}" name="bookStatus">
 						<c:choose>
 							<c:when test="${rentDto.bookStatus eq '보관'}">
 								<button type="submit" id='changeStatus' class='btn grey disabled' disabled="disabled">반납 처리</button>

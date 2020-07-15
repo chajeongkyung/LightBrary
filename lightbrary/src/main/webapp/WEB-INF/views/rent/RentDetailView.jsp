@@ -22,7 +22,7 @@
 		// depth1 네비
 		$('#depth1Ul > li:nth-child(2)').addClass('active');
 		// depth2 네비
-		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(3)').addClass('active');
+		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(2)').addClass('active');
 		
 		//분류 문자
 		bookCategorySelect();
@@ -113,7 +113,8 @@
 			<!-- 상세페이지 start -->
 			<form action="./statusUpdateCtr.do" method="post">
 				<div id='detailWrap'>
-					<div id='bookImage' class='bgCover' style="background-image: url('<%=request.getContextPath()%>/resources/img/book-img1-limgaejang.jpg')"></div>
+					<c:url var="imgUrl" value='/img/${rentDto.imageName}'/>
+					<div id='bookImage' class='bgCover' style="background-image: url('${imgUrl}')"></div>
 					<!--  -->
 					<div class='detailTable'>
 						<p class='text bold textDark'>도서정보</p>
@@ -166,9 +167,9 @@
 								<tr>
 									<th class='text bold textDark'>반납여부</th>
 									<c:choose>
-										<c:when test="${rentDto.bookStatus eq '대출'}">
+										<c:when test="${rentDto.rentStatus eq '대출'}">
 											<td class='text textGreen bold'>
-												${rentDto.bookStatus} 중
+												${rentDto.rentStatus} 중
 											</td>
 										</c:when>
 										<c:otherwise>
@@ -219,7 +220,7 @@
 						<input type="hidden" value="${rentDto.bookNo}" name="bookNo">
 						
 						<c:choose>
-							<c:when test="${rentDto.bookStatus eq '보관'}">
+							<c:when test="${rentDto.rentStatus eq '보관'}">
 								<button type="submit" id='changeStatus' class='btn grey disabled' disabled="disabled">반납 처리</button>
 							</c:when>
 							<c:otherwise>
@@ -232,7 +233,7 @@
 						<input type="hidden" class='bookName' value="${rentDto.bookName}">
 						
 						<c:choose>
-							<c:when test="${rentDto.returnSendFlag eq 'Y' || rentDto.bookStatus eq '보관'}">
+							<c:when test="${rentDto.returnSendFlag eq 'Y' || rentDto.rentStatus eq '보관'}">
 								<button type="button" class='btn grey disabled'>반납 안내 이메일 발송</button>
 							</c:when>
 							<c:otherwise>

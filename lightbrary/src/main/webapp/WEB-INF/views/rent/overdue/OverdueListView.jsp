@@ -25,35 +25,35 @@
 		// depth1 네비
 		$('#depth1Ul > li:nth-child(2)').addClass('active');
 		// depth2 네비
-		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(2)').addClass('active');
+		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(3)').addClass('active');
 	});
 	
-	function rentCheckedObjArr(){
-		return $('input[id^=chk]:checked ~ input[type="hidden"]');
-	}
-	
-	//다중 처리
+	// 다중 처리
 	function returnBatchFnc() {
-		var noObjArr = rentCheckedObjArr();
+		var noObjArr = checkedObjArr();
 		var noArr = new Array();
 		
 		for (var i = 0; i < noObjArr.length; i++) {
 			noArr[i] = noObjArr[i].value;
 		}
 		
-		var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
-		$.ajax({
-			type: "POST",
-			url: baseUrl + '/rent/returnBatch.do',
-			data: "noArr=" + noArr,
-			success:function(){
-				alert('반납처리 되었습니다.');
-				$('#pagingForm').submit();
-			},
-			error: function(){
-				alert('오류');
-			}
-		});
+		if(noObjArr.length > 0){
+			var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
+			$.ajax({
+				type: "POST",
+				url: baseUrl + '/rent/returnBatch.do',
+				data: "noArr=" + noArr,
+				success:function(){
+					alert('반납처리 되었습니다.');
+					$('#pagingForm').submit();
+				},
+				error: function(){
+					alert('오류');
+				}
+			});
+		} else{
+			alert('선택된 도서가 없습니다.');
+		}
 	}
 	
 	// 상세페이지로 이동
@@ -205,9 +205,9 @@
 						<li>
 							<a href="#none" class='text' onclick="returnBatchFnc();">선택 반납처리</a>
 						</li>
-						<li>
-							<a href="#none" class='text'>선택 연체 안내 이메일 발송</a>
-						</li>
+<!-- 						<li> -->
+<!-- 							<a href="#none" class='text'>선택 연체 안내 이메일 발송</a> -->
+<!-- 						</li> -->
 					</ul>
 					<ul class='settings fRight fs0'>
 						<li>
@@ -260,11 +260,10 @@
 							<c:forEach var="rentDto" items="${overdueList}">
 								<tr>
 									<td class='checkboxTd'>
-										<input type="hidden" value='${rentDto.no}' class='noObj'>
+										<input type="hidden" name="no" value='${rentDto.no}' class='noObj'>
 										<!-- 기본 체크박스 start -->
 										<div class='checkbox type2 fLeft'>
-											<input type="checkbox" id='chk${rentDto.no}'>
-											<input type="hidden" id='check${rentDto.bookNo}'>
+											<input type="checkbox" id='chk${rentDto.no}' value="${rentDto.no}">
 											<label for="chk${rentDto.no}"></label>
 										</div>
 										<!-- //기본 체크박스 end -->

@@ -25,7 +25,7 @@
 		// depth1 네비
 		$('#depth1Ul > li:nth-child(2)').addClass('active');
 		// depth2 네비
-		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(1)').addClass('active');
+		$('#depth1Ul > li.active > .depth2Ul > li:nth-child(2)').addClass('active');
 		
 		// 상태 분류 탭
 		statusTab();
@@ -86,13 +86,9 @@
 		});
 	}
 	
-	function rentCheckedObjArr(){
-		return $('input[id^=chk]:checked ~ input[type="hidden"]');
-	}
-	
 	//다중 처리
 	function returnBatchFnc() {
-		var noObjArr = rentCheckedObjArr();
+		var noObjArr = checkedObjArr();
 		var noArr = new Array();
 		
 		for (var i = 0; i < noObjArr.length; i++) {
@@ -270,9 +266,9 @@
 						<li>
 							<a href="#none" onclick="returnBatchFnc();" class='text'>선택 반납처리</a>
 						</li>
-						<li>
-							<a href="#none" class='text'>선택 반납일 안내 이메일 발송</a>
-						</li>
+<!-- 						<li> -->
+<!-- 							<a href="#none" class='text'>선택 반납일 안내 이메일 발송</a> -->
+<!-- 						</li> -->
 					</ul>
 				</div>
 				<div id='tableWrap'>
@@ -382,17 +378,22 @@
 										</span>
 									</td>
 									<td>
-										<input type="hidden" value="${rentDto.rentStatus}" class='bookStatus'>
+										<input type="hidden" value="${rentDto.rentStatus}" name='rentStatus'>
 										<c:choose>
 											<c:when test="${rentDto.rentStatus eq '대출'}">
 												<span class='textGreen'>${rentDto.rentStatus}</span>
+											</c:when>
+											<c:when test="${rentDto.rentStatus eq '연체'}">
+												<span class='textGreen'>
+													대출<i class='textRed' style="font-size: 12px;">(${rentDto.rentStatus})</i>
+												</span>
 											</c:when>
 											<c:otherwise>
 											 	<span>반납완료</span>
 											</c:otherwise>
 										</c:choose>
 									</td>
-									<td class='expireDate'>
+									<td class='expireDate' style="text-align: center;">
 										<span><fmt:formatDate value="${rentDto.expireDate}" pattern="yyyy/MM/dd "/></span>
 									</td>
 								</tr>

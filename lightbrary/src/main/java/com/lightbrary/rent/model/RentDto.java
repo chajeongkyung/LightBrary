@@ -22,6 +22,7 @@ public class RentDto {
 	private String writer;
 	private String publish;
 	private Date publishDate;
+	private String imageName;
 	
 	private String mname;
 	private String email;
@@ -36,7 +37,8 @@ public class RentDto {
 	public RentDto(int no, int memberNo, int bookNo, Date reserveDate, Date rentDate, Date expireDate, Date returnDate,
 			int overdueDays, int expireDays, Date pickUpDate, String returnSendFlag, String overdueSendFlag,
 			String delFlag, String bookCategoryCode, String bookName, String writer, String publish, Date publishDate,
-			String mname, String email, String phone, String address, String bookStatus, String rentStatus, int rnum) {
+			String imageName, String mname, String email, String phone, String address, String bookStatus,
+			String rentStatus, int rnum) {
 		super();
 		this.no = no;
 		this.memberNo = memberNo;
@@ -56,6 +58,7 @@ public class RentDto {
 		this.writer = writer;
 		this.publish = publish;
 		this.publishDate = publishDate;
+		this.imageName = imageName;
 		this.mname = mname;
 		this.email = email;
 		this.phone = phone;
@@ -214,6 +217,14 @@ public class RentDto {
 		this.publishDate = publishDate;
 	}
 
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+
 	public String getMname() {
 		return mname;
 	}
@@ -277,9 +288,10 @@ public class RentDto {
 				+ ", overdueDays=" + overdueDays + ", expireDays=" + expireDays + ", pickUpDate=" + pickUpDate
 				+ ", returnSendFlag=" + returnSendFlag + ", overdueSendFlag=" + overdueSendFlag + ", delFlag=" + delFlag
 				+ ", bookCategoryCode=" + bookCategoryCode + ", bookName=" + bookName + ", writer=" + writer
-				+ ", publish=" + publish + ", publishDate=" + publishDate + ", mname=" + mname + ", email=" + email
-				+ ", phone=" + phone + ", address=" + address + ", bookStatus=" + bookStatus + ", rentStatus="
-				+ rentStatus + ", rnum=" + rnum + "]";
+				+ ", publish=" + publish + ", publishDate=" + publishDate + ", imageName=" + imageName + ", mname="
+				+ mname + ", email=" + email + ", phone=" + phone + ", address=" + address + ", bookStatus="
+				+ bookStatus + ", rentStatus=" + rentStatus + ", rnum=" + rnum + "]";
 	}
+
 	
 }
