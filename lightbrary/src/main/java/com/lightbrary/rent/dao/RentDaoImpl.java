@@ -221,20 +221,28 @@ public class RentDaoImpl implements RentDao{
 		return sqlSession.selectOne(namespace + "selectOneReserve", no);
 	}
 
-	// 예약 상세에서 상태 변경
+	
+	/**
+	 * 대출 처리
+	 */
+	// 도서 상태 대출 처리
 	@Override
 	public int updateOneStatusToRent(RentDto rentDto) {
 		// TODO Auto-generated method stub
 		return sqlSession.update(namespace + "updateOneStatusToRent", rentDto);
 	}
-	
+	// 도서 상태 대출 처리
+	@Override
+	public int updateOneStatusToRentFromRent(RentDto rentDto) {
+		// TODO Auto-generated method stub
+		return sqlSession.update(namespace + "updateOneStatusToRentFromRent", rentDto);
+	}
 	// 대출 날짜 오늘 날짜로 
 	@Override
 	public int updateOneRentDate(RentDto rentDto) {
 		// TODO Auto-generated method stub
 		return sqlSession.update(namespace + "updateOneRentDate", rentDto);
 	}
-	
 	// 반납일 수정
 	@Override
 	public int updateOneExpireDate(RentDto rentDto) {
@@ -397,19 +405,19 @@ public class RentDaoImpl implements RentDao{
 	
 	
 	
+	
+	//
 	@Override
-	public List<RentDto> selectRentList(String searchOption, String keyword, int start, int end, String status) {
+	public int updateOneStatusToKeepFromRent(RentDto rentDto) {
 		// TODO Auto-generated method stub
-		Map<String, Object> map = new HashMap<>();
-		map.put("searchOption", searchOption);
-		map.put("keyword", keyword);
-		map.put("start", start);
-		map.put("end", end);
-		map.put("status", status);
-		
-		List<RentDto> rentList = sqlSession.selectList(namespace + "selectRentList", map);
-		
-		return rentList;
+		return sqlSession.update(namespace + "updateOneStatusToKeepFromRent", rentDto);
 	}
+	
+	@Override
+	public int updateOneStatusToOverdueFromRent(RentDto rentDto) {
+		// TODO Auto-generated method stub
+		return sqlSession.update(namespace + "updateOneStatusToOverdueFromRent", rentDto);
+	}
+
 	
 }

@@ -97,7 +97,6 @@ public class BookController {
 	}
 	
 	@Auth(role=Role.ADMIN)
-	@Transactional(isolation=Isolation.DEFAULT)
 	@RequestMapping(value = "/book/insertCtr.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String BookInsertOne(BookDto bookDto, MultipartHttpServletRequest request
 			, String bookCategory1, String bookCategory2, String bookCategory3) {
@@ -127,7 +126,6 @@ public class BookController {
 	}
 	
 	@Auth(role=Role.ADMIN)
-	@Transactional(isolation=Isolation.DEFAULT)
 	@RequestMapping(value = "/book/insertBatchCtr.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String BookInsertBatch(BookDto bookDto, MultipartHttpServletRequest request
 			, String bookCategory1, String bookCategory2, String bookCategory3
@@ -175,7 +173,6 @@ public class BookController {
 	}
 	
 	@Auth(role=Role.ADMIN)
-	@Transactional(isolation=Isolation.DEFAULT)
 	@RequestMapping(value = "/book/updateCtr.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String BookUpdateCtr(BookUpdateParamDto bookUpdateParamDto, MultipartHttpServletRequest request
 			, String bookCategory1, String bookCategory2, String bookCategory3
@@ -216,7 +213,6 @@ public class BookController {
 	}
 	
 	@Auth(role=Role.ADMIN)
-	@Transactional(isolation=Isolation.DEFAULT)
 	@RequestMapping(value = "/book/delete.do", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public int BookDelete(int no) {

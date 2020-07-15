@@ -66,7 +66,8 @@ public interface RentService {
 	public int selectReserveCurPage(String searchOption, String keyword, int no);
 	// 예약 상세
 	public RentDto selectOneReserve(int no);
-	public int updateOneStatusToRent(RentDto rentDto); //대출 중으로 상태변경
+	public int updateOneStatusToRent(RentDto rentDto); //대출 중으로 도서 상태변경
+	public int updateOneStatusToRentFromRent(RentDto rentDto); //대출 중으로 대출 상태 변경
 	public int updateOneRentDate(RentDto rentDto); //대출 날짜 오늘 날짜로 변경
 	public int updateOneExpireDate(RentDto rentDto); //반납일 수정
 	
@@ -111,6 +112,8 @@ public interface RentService {
 	
 	
 	
-	public List<RentDto> selectRentList(String searchOption, String keyword, int start, int end, String status);
+	//
+	public int updateOneStatusToKeepFromRent(RentDto rentDto);
+	public int updateOneStatusToOverdueFromRent(RentDto rentDto);
 	
 }
