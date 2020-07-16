@@ -27,7 +27,12 @@
 						
 						<!-- 입력폼 start -->
 						<div class='infoInputWrap'>
-							<input type="text" class='infoInput infoName' id="email" name="email" placeholder="이메일">
+								<div class='inputBgBlock'>
+									<img alt="이메일 아이콘" src="<%=request.getContextPath()%>/resources/img/icon-email.png"
+										 class='inputIcon'>
+									<input type="text" class='infoInput infoEmail' id="email" name="email" placeholder="이메일">
+								</div>
+								
 								<p style="margin: 10px 0 10px 0;" id="alertNoAccountMsg"></p>
 								<div class="text" style="margin-top: 10px; line-height: 120%;">	
 									고객님께서 회원가입 시 입력한 이메일 주소로 초기화된 비밀번호를 보내드립니다.
@@ -65,7 +70,7 @@ var emailObj = $('#email').val();
 			console.log("1 = 이메일o / 0 = 이메일x : "+ data);							
 			
 			if (data == 0) {
-					$('#alertNoAccountMsg').html("가입되지 않은 이메일입니다. 다시 확인해 주세요.");
+					$('#alertNoAccountMsg').html("가입되지 않은 이메일입니다. <br>다시 확인해 주세요.");
 					$("#alertNoAccountMsg").attr('class', 'textRed');
 					
 				} else if (data == 1){

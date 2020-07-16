@@ -27,16 +27,24 @@
 						
 						<!-- 입력폼 start -->
 						<div class='infoInputWrap'>
-							<input type="text" class='infoInput infoName' id="userName" name="userName" placeholder="성함">
-							<input type="text" style="margin-top: 20px;" class='infoInput infoPhone'
-								 id="phone" name="phone" placeholder="연락처">
-								
-								<p style="margin-bottom: 10px;" id="alertNoAccountMsg"></p>
-								
-								<div class="text" style="margin-top: 10px; line-height: 120%;">	
-									고객님께서 회원가입 시 입력한 성함과 연락처를 입력해주시면, 이에 해당하는
-									이메일 주소를 찾아드립니다.
-								</div>
+							<div class='inputBgBlock'>
+								<img alt="유저 아이콘" src="<%=request.getContextPath()%>/resources/img/icon-name.png"
+									 class='inputIcon'>
+								<input type="text" class='infoInput infoName' id="userName" name="userName" placeholder="성함">
+							</div>
+							
+							<div class='inputBgBlock' style="margin-top: 20px;">
+								<img alt="핸드폰 아이콘" src="<%=request.getContextPath()%>/resources/img/icon-phone.png"
+									 class='inputIcon'>
+								<input type="text" class='infoInput infoPhone' id="phone" name="phone" placeholder="연락처 ex) 01012345678">
+							</div>
+							
+							<p id="alertNoAccountMsg"></p>
+							
+							<div class="text" style="margin-top: 10px; line-height: 120%;">	
+								고객님께서 회원가입 시 입력한 성함과 연락처를 입력해주시면, 이에 해당하는
+								이메일 주소를 찾아드립니다.
+							</div>
 						</div>
 						<!-- //입력폼 end -->
 						
@@ -75,7 +83,10 @@
 				
  				if (data == "") {
  						$('#alertNoAccountMsg').html("가입되지 않은 정보입니다. <br>다시 확인해 주세요.");
- 						$("#alertNoAccountMsg").attr('class', 'textRed');
+ 						$("#alertNoAccountMsg").attr('class', 'text textRed');
+ 						$("#alertNoAccountMsg").css('line-height', '140%');
+ 						$("#alertNoAccountMsg").css('font-size', '15px');
+ 						$("#alertNoAccountMsg").css('margin-top', '10px');
  					} else{
  						console.log(data);
  						$('#alertNoAccountMsg').html("");
