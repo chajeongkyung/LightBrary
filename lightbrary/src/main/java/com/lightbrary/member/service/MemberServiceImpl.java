@@ -110,5 +110,11 @@ public class MemberServiceImpl implements MemberService{
 		return memberDao.checkPhone(phone);
 	}
 
+	@Override
+	public int checkRent(int no) {
+		// TODO Auto-generated method stub
+		return memberDao.checkRent(no);
+	}
+
 	
 }

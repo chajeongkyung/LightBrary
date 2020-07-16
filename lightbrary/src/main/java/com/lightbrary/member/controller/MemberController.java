@@ -58,7 +58,7 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/login.do", method =  {RequestMethod.POST, RequestMethod.GET})
-	public String login(String email, Model model) {
+	public String login(String email, Model model, HttpSession session) {
 		
 		log.info("로그인 폼으로");
 		
@@ -189,7 +189,7 @@ public class MemberController {
 	
 	//내정보상세
 	@Auth(role=Role.USER)
-	@RequestMapping(value = "/member/detail.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/detail.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String memberDetailView() {
 		
 		log.info("내 정보 상세 페이지폼으로");
@@ -239,7 +239,8 @@ public class MemberController {
 				if(sessionMemberDto.getNo() == memberDto.getNo()) {
 
 					//String password = memberService.findPassword(memberDto.getEmail());
-					String password = memberDto.getPassword();
+					String password = sessionMemberDto.getPassword();
+				
 					MemberDto newMemberDto = memberService.memberExist(memberDto.getEmail(), password);
 					
 					session.removeAttribute("member");
@@ -273,6 +274,15 @@ public class MemberController {
 		}
 		
 		return url;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/member/checkRent.do", method = RequestMethod.GET)
+	public int checkRent(int no) {
+
+		log.info("----------책 대여, 연체 확인{}------------", no);
+		
+		return memberService.checkRent(no);
 	}
 	
 	@ResponseBody

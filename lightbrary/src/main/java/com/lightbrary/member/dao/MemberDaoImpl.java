@@ -130,5 +130,11 @@ public class MemberDaoImpl implements MemberDao{
 		return sqlSession.selectOne(namespace + "checkPhone", phone);
 	}
 
+	@Override
+	public int checkRent(int no) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + "checkRent", no);
+	}
+
 
 }

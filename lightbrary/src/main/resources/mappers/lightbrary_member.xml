@@ -141,6 +141,14 @@
 	    </where>
 	</select>
 	
+	<select id="checkRent" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM RENT
+		WHERE MEMBER_NO = #{no}
+		AND RENT_DATE IS NOT NULL
+		AND RETURN_DATE IS NULL
+	</select>
+
 	<select id="checkEmail" parameterType="String" resultType="int">
 		SELECT COUNT(*)
 		FROM MEMBER
