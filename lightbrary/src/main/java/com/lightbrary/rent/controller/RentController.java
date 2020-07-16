@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lightbrary.book.model.BookListParamDto;
+import com.lightbrary.book.service.BookService;
 import com.lightbrary.member.model.MemberDto;
 import com.lightbrary.rent.model.RentDto;
 import com.lightbrary.rent.service.RentService;
@@ -42,6 +43,8 @@ public class RentController {
 	@Autowired
 	private RentService rentService;
 	
+	@Autowired
+	private BookService bookService;
 	
 	/** 사용자 대출 예약 - 도서 목록
 	 * @param memberNo
@@ -56,13 +59,17 @@ public class RentController {
 		int memberNo = ((MemberDto) session.getAttribute("member")).getNo();
 		log.info("도서 예약 :: 회원번호 = " + memberNo + " : 도서번호 = " + no);
 		
-		rentService.insertReserve(memberNo, no);
-		rentService.updateOneStatusToReserve(no);
-		
-		model.addAttribute("bookListParamDto", bookListParamDto);
-		model.addAttribute("myNo", memberNo);
-	
-		return "redirect:/rent/reserve/member/list.do";
+		if (bookService.selectOneBook(no).getStatusCode() == 0) {
+			rentService.insertReserve(memberNo, no);
+			rentService.updateOneStatusToReserve(no);
+			
+			model.addAttribute("bookListParamDto", bookListParamDto);
+			model.addAttribute("myNo", memberNo);
+			
+			return "redirect:/rent/reserve/member/list.do";
+		} else {
+			return "이미 예약된 도서입니다.";
+		}
 	}
 	
 	//다중 예약 처리
@@ -245,8 +252,12 @@ public class RentController {
 		// 나의 대출 도서 갯수
 		int totalCount = rentService.totalCountMyRent(searchOption, keyword, myNo);
 		
-		if (no != 0) {
-			curPage = rentService.selectMyRentCurPage(searchOption, keyword, no, myNo);
+		try {
+			if (no != 0) {
+				curPage = rentService.selectMyRentCurPage(searchOption, keyword, no, myNo);
+			}
+		} catch (Exception e) {
+			curPage = 1;
 		}
 		
 		Paging pagingInfo = new Paging(totalCount, curPage);

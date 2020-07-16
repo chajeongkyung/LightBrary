@@ -19,8 +19,15 @@
 <script type="text/javascript">
 
 function bookDetailMove(obj){
-	location.href = '/lightbrary/book/detail.do?no='+obj;
+	location.href = '/lightbrary/book/detail.do?no=' + obj
+			+ '&curPage=1';
 }
+
+function noticeDetailMoveFnc(no, rnum){
+	location.href = '/lightbrary/notice/detailList.do?no=' + no
+			+ '&rnum=' + rnum;
+}
+
 </script>
 
 </head>
@@ -121,7 +128,7 @@ function bookDetailMove(obj){
 								
 								<td>
 										
-									 <a href="#" class="ellipsis" onclick="listOnePageFnc(${noticeDto.no})">
+									 <a href="#none" class="ellipsis" onclick="noticeDetailMoveFnc(${noticeDto.no}, ${noticeDto.rnum});">
 											${noticeDto.title}
 									 </a>	
 									
