@@ -81,8 +81,8 @@ public class BookDaoImpl implements BookDao{
 	}
 
 	@Override
-	public List<BookDto> selectRankTenBook() {
+	public List<BookDto> selectRankFiveBook() {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList(namespace + "selectRankTenBook");
+		return sqlSession.selectList(namespace + "selectRankFiveBook");
 	}
 }

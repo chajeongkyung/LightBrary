@@ -245,8 +245,12 @@ public class RentController {
 		// 나의 대출 도서 갯수
 		int totalCount = rentService.totalCountMyRent(searchOption, keyword, myNo);
 		
-		if (no != 0) {
-			curPage = rentService.selectMyRentCurPage(searchOption, keyword, no, myNo);
+		try {
+			if (no != 0) {
+				curPage = rentService.selectMyRentCurPage(searchOption, keyword, no, myNo);
+			}
+		} catch (Exception e) {
+			curPage = 1;
 		}
 		
 		Paging pagingInfo = new Paging(totalCount, curPage);
