@@ -28,14 +28,18 @@
 						
 						<!-- 입력폼 start -->
 						<div class='infoInputWrap'>
-							<input type="password" class='infoInput infoPassword' 
-								id="inputPassword" name="inputPassword" placeholder="비밀번호">
+							<div class='inputBgBlock' style="margin-top: 20px;">
+								<img alt="비밀번호 아이콘" src="<%=request.getContextPath()%>/resources/img/icon-padlock.png"
+									 class='inputIcon'>
+								<input type="password" class='infoInput infoPassword' 
+									id="inputPassword" name="inputPassword" placeholder="비밀번호">
+							</div>
 								
-								<p style="margin: 10px 0px 10px 0px;" id="alertNoPasswordMsg"></p>
-								
-								<div class="text" style="margin-top: 10px;">	
-									본인 확인을 위해서 비밀번호를 입력해 주세요.
-								</div>
+							<p style="margin: 5px 0px 10px 0px;" id="alertNoPasswordMsg"></p>
+							
+							<div class="text" style="margin-top: 10px;">	
+								본인 확인을 위해서 비밀번호를 입력해 주세요.
+							</div>
 						</div>
 						<!-- //입력폼 end -->
 						
@@ -63,7 +67,8 @@
 		
 		if (passwordObj != '${member.password}') {
 			$('#alertNoPasswordMsg').html("비밀번호가 틀립니다. 다시 확인해 주세요.");
-			$("#alertNoPasswordMsg").css("color", "#EC8686");
+			$("#alertNoPasswordMsg").css("color", "#E92222");
+			$("#alertNoPasswordMsg").css("font-size", "13px");
 			$("#alertNoPasswordMsg").attr('class', 'text');
 			return false;
 		}else {

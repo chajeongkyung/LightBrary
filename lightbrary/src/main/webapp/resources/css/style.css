@@ -39,7 +39,7 @@ select::-ms-expand {
 /*** 공통 ***/
 #container {
 	width: 1000px;
-	min-height: calc(100% - 240px);
+	min-height: calc(100% - 170px);
 	margin: 0 auto;
 }
 
@@ -79,7 +79,7 @@ select::-ms-expand {
 }
 
 .textRed {
-	color: #EC8686;
+	color: #E92222;
 }
 
 .textGreen {
@@ -147,7 +147,7 @@ header {
 	background: #dfdfdf;
 	padding: 0 70px 0 30px;
 	box-sizing: border-box;
-	color: #a8a8a8;
+	color: #636363;
 	transition: all .4s;
 }
 
@@ -208,7 +208,7 @@ header {
 .hOptionsText {
 	font-size: 14px;
 	font-weight: bold;
-	color: #a8a8a8;
+	color: #181818;
 }
 
 #myPageClick.active img {
@@ -216,7 +216,7 @@ header {
 }
 
 #headerOptions a#logout {
-	color: #bebebe;
+	color: #636363;
 }
 
 /* 마이페이지 드롭다운 메뉴 */
@@ -264,7 +264,7 @@ header {
 #myPageDrop span {
 	padding-left: 10px;
 	font-size: 15px;
-	color: #a8a8a8;
+	color: #636363;
 }
 
 #myPageDrop li.active span, #myPageDrop a:hover span {
@@ -326,6 +326,14 @@ header {
 	margin: 0px auto;
 }
 
+.infoInputWrap {
+	margin-top: 30px;
+}
+
+.inputBgBlock {
+	position: relative;
+}
+
 .infoInput {
 	width: 100%;
 	height: 60px;
@@ -333,33 +341,46 @@ header {
 	padding: 0 30px 0 62px;
 	box-sizing: border-box;
 	border-radius: 8px;
+	border: 1px solid transparent;
 	background-color: rgba(238, 238, 238, 0.6);
 	background-repeat: no-repeat;
 	background-position: 20px 50%;
 	font-size: 15px;
-	color: #a8a8a8;
+	color: #636363;
 }
 
-.infoInput.infoName {
-	background-image: url('../img/icon-name.png')
+.infoInput:focus {
+	border-color: #a8a8a8;
 }
 
-.infoInput.infoPhone {
-	background-image: url('../img/icon-phone.png')
+.inputBgBlock .inputIcon {
+	display:block;
+	position: absolute;
+	left: 20px;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
 }
 
-.infoInput.infoEmail {
-	background-image: url('../img/icon-email.png')
-}
+/* .infoInput.infoName { */
+/* 	background-image: url('../img/icon-name.png') */
+/* } */
 
-.infoInput.infoPassword {
-	background-image: url('../img/icon-padlock.png')
-}
+/* .infoInput.infoPhone { */
+/* 	background-image: url('../img/icon-phone.png') */
+/* } */
 
-.infoInput.infoLocation {
-	background-image: url('../img/icon-location.png')
-}
+/* .infoInput.infoEmail { */
+/* 	background-image: url('../img/icon-email.png') */
+/* } */
 
+/* .infoInput.infoPassword { */
+/* 	background-image: url('../img/icon-padlock.png') */
+/* } */
+
+/* .infoInput.infoLocation { */
+/* 	background-image: url('../img/icon-location.png') */
+/* } */
 
 .infoForm .btn {
 	width: 100%;
@@ -592,11 +613,10 @@ header {
 /*** 푸터 ***/
 footer {
 	height: 90px;
-	margin-top: 150px;
 	background: #eee;
 	padding: 36px 20px 0;
 	box-sizing: border-box;
-	margin-top: 150px;
+	margin-top: 80px;
 	background: #eee;
 	padding: 36px 20px 0;
 	box-sizing: border-box;

@@ -56,13 +56,12 @@ function bookDetailMove(obj){
 					<c:forEach var="bookDto" items="${bookDtoList}">
 						<ul>
 							<li>
-								<div id="bestBookInfo">
+								<div id="bestBookInfo" onclick="bookDetailMove(${bookDto.no})"
+									style="cursor: pointer;">
 									<c:url var="imgUrl" value='/img/${bookDto.imageName}'/>
-									<div class='img_box' onclick="bookDetailMove(${bookDto.no})"
-										style="background-image: url('${imgUrl}')"></div>
+									<div class='img_box' style="background-image: url('${imgUrl}')"></div>
 									
-									<div id="bookName" onclick="bookDetailMove(${bookDto.no})" 
-										class="ellipsis bold text">${bookDto.name}</div>
+									<div id="bookName" class="ellipsis bold text">${bookDto.name}</div>
 									<div id="bookWriter" class="ellipsis text">${bookDto.writer}</div>
 								</div>
 							</li>

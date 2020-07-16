@@ -69,7 +69,7 @@ public class RentController {
 	@RequestMapping(value="/book/reserveBatch.do", method = RequestMethod.POST, 
 			produces="text/plain;charset=UTF-8")
 	@ResponseBody
-	public void reserveBatch(int[] noArr, HttpSession session) {
+	public String reserveBatch(int[] noArr, HttpSession session) {
 		log.info("도서 목록 :: 다중 예약처리");
 		
 		int memberNo = ((MemberDto) session.getAttribute("member")).getNo();
@@ -78,6 +78,8 @@ public class RentController {
 			rentService.insertReserve(memberNo, no);
 			rentService.updateOneStatusToReserve(no);
 		}
+		
+		return "redirect:/rent/reserve/member/list.do";
 	}
 	
 	/** 사용자 대출 예약 - 상세
@@ -188,6 +190,8 @@ public class RentController {
 		log.info("예약 도서 상세 - " + no + "\n" + "검색옵션 : " + searchOption + "\n" + "검색문장" + keyword);
 
 		RentDto rentDto = rentService.selectOneMyReserve(no);
+		
+		calcStatus(rentDto);
 
 		model.addAttribute("rentDto", rentDto);
 		model.addAttribute("searchOption", searchOption);
@@ -288,6 +292,8 @@ public class RentController {
 
 		RentDto rentDto = rentService.selectOneMyRent(no);
 
+		calcStatus(rentDto);
+		
 		model.addAttribute("rentDto", rentDto);
 		model.addAttribute("searchOption", searchOption);
 		model.addAttribute("keyword", keyword);
@@ -462,6 +468,8 @@ public class RentController {
 		log.info("예약 도서 상세 - " + no + "\n" + "검색옵션 : " + searchOption + "\n" + "검색문장" + keyword);
 
 		RentDto rentDto = rentService.selectOneReserve(no);
+		
+		calcStatus(rentDto);
 
 		model.addAttribute("rentDto", rentDto);
 		model.addAttribute("searchOption", searchOption);
@@ -575,9 +583,8 @@ public class RentController {
 		log.info("대출 도서 상세 - " + no + "\n검색옵션 : " + searchOption + "\n검색문장 : " + keyword + "\n분류 : " + status);
 		
 		RentDto rentDto = rentService.selectOneRent(no);
-		System.out.println("---------DETAIL----------");
-		System.out.println(rentDto.toString());
-		System.out.println("------------------------");
+		
+		calcStatus(rentDto);
 		
 		model.addAttribute("rentDto", rentDto);
 		model.addAttribute("searchOption", searchOption);
@@ -777,6 +784,8 @@ public class RentController {
 
 		RentDto rentDto = rentService.selectOneOverdue(no);
 
+		calcStatus(rentDto);
+		
 		model.addAttribute("rentDto", rentDto);
 		model.addAttribute("searchOption", searchOption);
 		model.addAttribute("keyword", keyword);
