@@ -169,7 +169,7 @@
 								<tr>
 									<th class='text bold textDark'>반납여부</th>
 									<td class='text textRed bold'>
-										${rentDto.bookStatus} ${rentDto.overdueDays}일
+										${rentDto.rentStatus} ${rentDto.overdueDays}일
 									</td>
 									
 								</tr>
@@ -231,7 +231,7 @@
 						</c:choose>
 						
 						<c:choose>
-							<c:when test="${rentDto.bookStatus eq '보관'}">
+							<c:when test="${rentDto.rentStatus eq '보관'}">
 								<button type="submit" id='changeStatus' class='btn grey disabled' disabled="disabled">반납 처리</button>
 							</c:when>
 							<c:otherwise>

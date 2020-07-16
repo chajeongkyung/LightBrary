@@ -85,8 +85,8 @@
 			$appendStr = $('<form action="./updateCtr.do" id="bookUpdateForm" name="bookUpdateDto" method="post" enctype="multipart/form-data"></form>');
 			$('#container').append($appendStr);
 			
-			$.each($('#bookDtoForm select[id^=bookCategory]'), function(idx, item){
-				$appendStr = $('<input type="hidden" id="' + item.getAttribute("id")
+			$.each($('#bookDtoForm select'), function(idx, item){
+				$appendStr = $('<input type="hidden '
 						+'" name="' + item.getAttribute("name")
 						+'" value="' + item.value + '">');
 				$('#bookUpdateForm').append($appendStr);

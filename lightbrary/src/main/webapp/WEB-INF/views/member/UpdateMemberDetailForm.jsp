@@ -141,8 +141,25 @@
 		var answer = confirm('정말 탈퇴하시겠습니까?\n(연체 도서가 남아 있을 시 탈퇴가 불가합니다)');
 		
 		if (answer) {
-			alert('성공적으로 탈퇴 처리되었습니다');
-			location.href = './deleteCtr.do?no=${member.no}';	
+			
+			$.ajax({
+				url : "./checkRent.do",
+				type : "GET",
+				data : "no=" + '${member.no}',
+				success : function(data) {
+					console.log(data);							
+					
+					if (data == 0) {
+							alert('성공적으로 탈퇴 처리되었습니다');
+			 				location.href = './deleteCtr.do?no=${member.no}'
+						} else{
+							alert('연체 도서가 남아 있어 탈퇴가 불가합니다');
+						}
+					}, error : function() {
+							console.log("실패");
+					}
+				});
+
 		}
 	}
 	function updateMemberFnc() {

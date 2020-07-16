@@ -43,7 +43,7 @@ public class RentController {
 	private RentService rentService;
 	
 	
-	/** 사용자 대출 예약 - 목록
+	/** 사용자 대출 예약 - 도서 목록
 	 * @param memberNo
 	 * @param no
 	 * @param model
@@ -60,8 +60,9 @@ public class RentController {
 		rentService.updateOneStatusToReserve(no);
 		
 		model.addAttribute("bookListParamDto", bookListParamDto);
+		model.addAttribute("myNo", memberNo);
 	
-		return "forward:/book/list.do";
+		return "redirect:/rent/reserve/member/list.do";
 	}
 	
 	//다중 예약 처리
@@ -95,10 +96,10 @@ public class RentController {
 		rentService.insertReserve(memberNo, no);
 		rentService.updateOneStatusToReserve(no);
 		
-		model.addAttribute("no", no);
 		model.addAttribute("bookListParamDto", bookListParamDto);
+		model.addAttribute("myNo", memberNo);
 	
-		return "forward:/book/detail.do";
+		return "redirect:/rent/reserve/member/list.do";
 	}
 	
 	/** 사용자 나의 예약

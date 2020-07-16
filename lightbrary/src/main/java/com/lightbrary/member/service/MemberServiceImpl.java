@@ -79,6 +79,12 @@ public class MemberServiceImpl implements MemberService{
 		
 		return memberDao.selectMember(memberListParamDto);
 	}
+	@Override
+	public List<MemberDto> selectOverdueMember(MemberListParamDto memberListParamDto) {
+		// TODO Auto-generated method stub
+		
+		return memberDao.selectOverdueMember(memberListParamDto);
+	}
 
 	@Override
 	public int totalCountMember(MemberListParamDto memberListParamDto) {
@@ -102,6 +108,12 @@ public class MemberServiceImpl implements MemberService{
 	public int checkPhone(String phone) {
 		// TODO Auto-generated method stub
 		return memberDao.checkPhone(phone);
+	}
+
+	@Override
+	public int checkRent(int no) {
+		// TODO Auto-generated method stub
+		return memberDao.checkRent(no);
 	}
 
 	

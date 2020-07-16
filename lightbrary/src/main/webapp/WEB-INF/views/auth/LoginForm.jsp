@@ -35,11 +35,11 @@
 							
 							<!--기본로그인Form -->
 							<c:if test="${empty findEmail}">
-								<input type="text" class='infoInput infoEmail' id="email" name="email" placeholder="이메일" value="dd">
+								<input type="text" class='infoInput infoEmail' id="email" name="email" placeholder="이메일">
 							</c:if>
 	
 							<input type="password" style="margin-top: 20px;" class='infoInput infoPassword'
-								 id="password" name="password" placeholder="비밀번호" value="dd">
+								 id="password" name="password" placeholder="비밀번호">
 								
 								<p style="margin-top: 20px;" id="alertNoAccountMsg"></p>
 								

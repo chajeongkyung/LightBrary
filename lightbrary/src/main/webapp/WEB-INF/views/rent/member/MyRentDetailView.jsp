@@ -133,14 +133,14 @@
 								<tr>
 									<th class='text bold textDark'>상태</th>
 									<c:choose>
-										<c:when test="${rentDto.bookStatus eq '대출'}">
+										<c:when test="${rentDto.rentStatus eq '대출'}">
 											<td class='text textGreen bold'>
 												${rentDto.bookStatus}
 											</td>
 										</c:when>
 										<c:otherwise>
 											<td class='text textRed bold'>
-												${rentDto.bookStatus}
+												${rentDto.rentStatus}
 											</td>
 										</c:otherwise>
 									</c:choose>
