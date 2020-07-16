@@ -104,7 +104,7 @@
             		
             		<include refid="search"></include>
             		
-			        ORDER BY NO DESC
+			        ORDER BY CREATED_DATE DESC
            		) M
         ) N
         WHERE RNUM BETWEEN #{start} AND #{end}  
@@ -114,13 +114,13 @@
 	<select id="previousWriteNotice" resultMap="noticeCategoryResultMap"
 		parameterType="map">
 		SELECT N.RNUM RNUM, N.NO, N.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
-		N.SCHEDULE_FLAG , N.CREATED_DATE, N.CODE
+		N.SCHEDULE_FLAG , N.CREATED_DATE, N.CODE, N.CONTENT
    		FROM (
       			SELECT ROWNUM RNUM, M.NO, M.NAME , M.TITLE , M.START_DATE, M.END_DATE, 
-                    M.SCHEDULE_FLAG , M.CREATED_DATE, M.CODE
+                    M.SCHEDULE_FLAG , M.CREATED_DATE, M.CODE, M.CONTENT
        			FROM(
 	           		SELECT N.NO, NC.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
-                    NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE 
+                    NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE, N.CONTENT 
                     FROM NOTICE N
                     JOIN NOTICE_CATEGORY NC
                     ON N.CATEGORY_CODE = NC.CODE
@@ -136,13 +136,13 @@
 	<select id="nextWriteNotice" resultMap="noticeCategoryResultMap"
 		parameterType="map">
 		SELECT N.RNUM RNUM, N.NO, N.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
-		N.SCHEDULE_FLAG , N.CREATED_DATE, N.CODE
+		N.SCHEDULE_FLAG , N.CREATED_DATE, N.CODE, N.CONTENT
    		FROM (
       			SELECT ROWNUM RNUM, M.NO, M.NAME , M.TITLE , M.START_DATE, M.END_DATE, 
-                    M.SCHEDULE_FLAG , M.CREATED_DATE, M.CODE
+                    M.SCHEDULE_FLAG , M.CREATED_DATE, M.CODE, M.CONTENT
        			FROM(
 	           		SELECT N.NO, NC.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
-                    NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE 
+                    NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE, N.CONTENT 
                     FROM NOTICE N
                     JOIN NOTICE_CATEGORY NC
                     ON N.CATEGORY_CODE = NC.CODE
