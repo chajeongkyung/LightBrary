@@ -250,7 +250,7 @@
 												<input type="checkbox" name="box" id='chk${memberDto.no}' value='${memberDto.no}'>
 												<label for="chk${memberDto.no}"></label>
 											</div>
-											<!--기본 체크박스 end -->
+											<!--//기본 체크박스 end -->
 										</td>
 										<td style="text-align: center;">
 											<a href='#' onclick="listOnePageFnc(this, event);" class='ellipsis'>${memberDto.no}</a>
@@ -306,6 +306,7 @@
 						<input type="hidden" name="joinDateStart" value="${memberListParamDto.joinDateStart}">
 						<input type="hidden" name="joinDateEnd" value="${memberListParamDto.joinDateEnd}">
 						<input type="hidden" id='curPage' name='curPage' value="${memberListParamDto.curPage}">
+						<input type="hidden" id='listStatus' name='listStatus' value="${listStatus}">
 					</form>
 				</c:if>
 				
@@ -318,6 +319,8 @@
 						<input type="hidden" name="joinDateStart" value="${memberListParamDto.joinDateStart}">
 						<input type="hidden" name="joinDateEnd" value="${memberListParamDto.joinDateEnd}">
 						<input type="hidden" id='curPage' name='curPage' value="${memberListParamDto.curPage}">
+						<input type="hidden" id='curPage' name='curPage' value="${memberListParamDto.curPage}">
+						<input type="hidden" id='listStatus' name='listStatus' value="${listStatus}">
 					</form>
 				</c:if>
 				<!-- //검색조건 컨트롤러에 전송 end -->

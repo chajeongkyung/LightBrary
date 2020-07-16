@@ -159,6 +159,7 @@ public class MemberController {
 	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/auth/detail.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String memberListOneView(int no, MemberListParamDto memberListParamDto
+			, String listStatus
 			, Model model) {
 		
 		log.info("-----------회원상세------------");
@@ -170,6 +171,7 @@ public class MemberController {
 		
 		model.addAttribute("memberDto", memberDto);
 		model.addAttribute("memberListParamDto", memberListParamDto);
+		model.addAttribute("listStatus", listStatus);
 		
 		return "member/MemberListOneView";
 	}
@@ -177,7 +179,8 @@ public class MemberController {
 	//회원정보수정
 	@Auth(role=Role.ADMIN)
 	@RequestMapping(value = "/auth/update.do", method = {RequestMethod.POST, RequestMethod.GET})
-	public String updateMemberListOne(int no, MemberListParamDto memberListParamDto, Model model) {
+	public String updateMemberListOne(int no, MemberListParamDto memberListParamDto
+			, Model model, String listStatus) {
 
 		log.info("----------회원정보수정----------");
 		log.info("no: " + no);
@@ -188,6 +191,7 @@ public class MemberController {
 		
 		model.addAttribute("memberDto", memberDto);
 		model.addAttribute("memberListParamDto", memberListParamDto);
+		model.addAttribute("listStatus", listStatus);
 		
 		return "member/UpdateMemberListOneForm";
 	}

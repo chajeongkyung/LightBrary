@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
@@ -80,7 +81,14 @@
 					<div class='btnWrap viewBtns fs0 tCenter'>
 						<a href="#" onclick="resetMemberPasswordFnc();" class='btn grey'>비밀번호 초기화</a>
 						<a href="#" onclick="deleteMemberFnc();" class='btn grey'>강퇴</a>
-						<a href="<%=request.getContextPath()%>/auth/list.do" class='btn green'>목록</a>
+						
+						<c:if test="${listStatus == 'all'}">
+							<a href="<%=request.getContextPath()%>/auth/list.do" class='btn green'>목록</a>
+						</c:if>
+						
+						<c:if test="${listStatus == 'overdue'}">
+							<a href="<%=request.getContextPath()%>/auth/overdueMemberList.do" class='btn green'>목록</a>
+						</c:if>
 					</div>
 					<!-- //상세페이지 버튼 end -->
 				</form>

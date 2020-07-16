@@ -22,8 +22,14 @@
 	});
 
 	function moveListFnc(){
-		$('#memberListParamDto').attr('action', './list.do');
-		$('#memberListParamDto').submit();
+		
+		if ('${listStatus}' == 'all') {
+			$('#memberListParamDto').attr('action', './list.do');
+			$('#memberListParamDto').submit();
+		} else {
+			$('#memberListParamDto').attr('action', './overdueMemberList.do');
+			$('#memberListParamDto').submit();
+		}
 	}
 </script>
 </head>
@@ -103,6 +109,7 @@
 						<input type="hidden" name="address" value="${memberListParamDto.address}">
 						<input type="hidden" name="createdDate" value="${memberListParamDto.createdDate}">
 						<input type="hidden" name="curPage" value="${memberListParamDto.curPage}">
+						<input type="hidden" id='listStatus' name='listStatus' value="${listStatus}">
 					</form>	
 					
 				</div>
