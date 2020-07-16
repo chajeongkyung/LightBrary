@@ -49,6 +49,8 @@
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
+	border: 1px solid #a8a8a8;
+	box-sizing: border-box;
 }
 
 #bookName {

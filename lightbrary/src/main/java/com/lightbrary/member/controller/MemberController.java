@@ -59,7 +59,6 @@ public class MemberController {
 	
 	@RequestMapping(value = "/login.do", method =  {RequestMethod.POST, RequestMethod.GET})
 	public String login(String email, Model model, HttpSession session) {
-		
 		log.info("로그인 폼으로");
 		
 		model.addAttribute("findEmail", email);
@@ -118,6 +117,9 @@ public class MemberController {
 		model.addAttribute("memberListParamDto", memberListParamDto);
 		model.addAttribute("pagingInfo", pagingInfo);
 		
+		String listStatus = "all";
+		model.addAttribute("listStatus", listStatus);
+		
 		return "member/MemberListView";
 	}
 	
@@ -134,7 +136,7 @@ public class MemberController {
 		log.info("" + memberListParamDto);
 		log.info("---------------------------");
 		
-		int totalCount = memberService.totalCountMember(memberListParamDto);
+		int totalCount = memberService.totalCountOverdueMember(memberListParamDto);
 		Paging pagingInfo = new Paging(totalCount, curPage);
 		
 		memberListParamDto.setCurPage(curPage);
@@ -146,6 +148,9 @@ public class MemberController {
 		model.addAttribute("memberDtoList", memberDtoList);
 		model.addAttribute("memberListParamDto", memberListParamDto);
 		model.addAttribute("pagingInfo", pagingInfo);
+		
+		String listStatus = "overdue";
+		model.addAttribute("listStatus", listStatus);
 		
 		return "member/MemberListView";
 	}
@@ -254,7 +259,8 @@ public class MemberController {
 		return "redirect:./detail.do";
 	}
 	
-	@Auth(role=Role.USER)
+
+//	관리자 사용자 모두 사용
 	@RequestMapping(value = "/member/deleteCtr.do", method = RequestMethod.GET)
 	public String deleteMember(int no, HttpSession session) {
 		
@@ -276,6 +282,7 @@ public class MemberController {
 		return url;
 	}
 	
+//	관리자 사용자 모두 사용
 	@ResponseBody
 	@RequestMapping(value = "/member/checkRent.do", method = RequestMethod.GET)
 	public int checkRent(int no) {
@@ -283,6 +290,22 @@ public class MemberController {
 		log.info("----------책 대여, 연체 확인{}------------", no);
 		
 		return memberService.checkRent(no);
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/auth/checkRentBatch.do",  method = RequestMethod.POST)
+	public int checkRentBatch(int[] noArr) {
+		
+		log.info("----------여러명 책 대여, 연체 확인{}------------");
+		
+		int result = 0;
+		
+		for (int no : noArr) {
+			log.info("회원번호 {}", no);
+			result += memberService.checkRent(no);
+			log.info("연체있니{}", result);
+		}
+		return result;
 	}
 	
 	@ResponseBody

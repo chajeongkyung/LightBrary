@@ -114,7 +114,7 @@
 						<li>
 							<a href="#none" class='fs0' onclick="moveToMyRentFnc();">
 								<img alt="내 정보" src="<%=request.getContextPath()%>/resources/img/icon-single-book.png">
-								<span>나의 대출 기록</span>
+								<span>나의 대출 현황</span>
 							</a>
 						</li>
 					</ul>

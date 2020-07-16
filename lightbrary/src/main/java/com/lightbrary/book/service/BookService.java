@@ -20,5 +20,5 @@ public interface BookService {
 	public int deleteOneBook(int no);
 	public int updateOneBook(BookDto bookDto, MultipartHttpServletRequest request, int imageStatus);
 	public void insertBookBatch(BookDto bookDto, MultipartHttpServletRequest request, int seriesStart, int seriesEnd);
-	public List<BookDto> selectRankTenBook();
+	public List<BookDto> selectRankFiveBook();
 }
