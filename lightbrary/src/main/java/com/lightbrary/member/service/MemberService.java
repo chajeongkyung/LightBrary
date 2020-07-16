@@ -12,11 +12,12 @@ public interface MemberService {
 	public int updateOneMember(MemberDto memberDto);
 	public MemberDto selectOneMember(int no);
 	
-	//일단 모두 조회	
 	public List<MemberDto> selectMember(MemberListParamDto memberListParamDto);
+	public List<MemberDto> selectOverdueMember(MemberListParamDto memberListParamDto);
 	public int totalCountMember(MemberListParamDto memberListParamDto);
 	
 	public MemberDto memberExist(String email, String password);	
+	public int checkRent(int no);
 	public int checkEmail(String email);
 	public int checkPhone(String phone);
 	public MemberDto findEmail(String userName, String phone);

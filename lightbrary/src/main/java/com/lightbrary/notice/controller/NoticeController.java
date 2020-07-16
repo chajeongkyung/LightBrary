@@ -139,7 +139,6 @@ public class NoticeController {
 				
 		String formattedDate = format.format(time);
 		
-		
 		NoticeCategoryDto noticeDto = noticeService.selectOneNotice(no);
 		int totalCount = noticeService.selectTotalCountNotice(searchOption, keyword, categoryCode);
 			
@@ -150,7 +149,6 @@ public class NoticeController {
 		model.addAttribute("categoryCode", categoryCode);
 		model.addAttribute("rnum", rnum);		
 		model.addAttribute("maxRnum", totalCount);
-		
 		
 		return "/notice/NoticeBoardDetail";
 

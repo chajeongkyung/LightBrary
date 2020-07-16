@@ -81,7 +81,7 @@
                     FROM NOTICE N
                     JOIN NOTICE_CATEGORY NC
                     ON N.CATEGORY_CODE = NC.CODE
-			        ORDER BY NO DESC
+			        ORDER BY N.CATEGORY_CODE DESC
            		) M
         ) N
         WHERE RNUM &lt;= 5
@@ -127,7 +127,7 @@
             		
             		<include refid="search"></include>
             		
-			        ORDER BY NO DESC
+			        ORDER BY N.CATEGORY_CODE DESC
            		) M
         ) N
         WHERE RNUM = ${rnum} - 1
@@ -149,7 +149,7 @@
             		
             		<include refid="search"></include>
             		
-			        ORDER BY NO DESC
+			        ORDER BY N.CATEGORY_CODE DESC
            		) M
         ) N
         WHERE RNUM = ${rnum} + 1

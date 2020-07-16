@@ -158,7 +158,7 @@
 								<a href="./list.do" class='text'>전체 회원 보기</a>
 							</li>
 							<li>
-								<a href="#none" class='text'>연체 회원 보기</a>
+								<a href="./overdueMemberList.do" class='text'>연체 회원 보기</a>
 							</li>
 						</ul>
 					</div>
