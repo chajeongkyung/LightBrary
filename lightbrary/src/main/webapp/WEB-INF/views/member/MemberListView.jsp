@@ -48,20 +48,45 @@
 			noArr[i] = noObjArr[i].value;
 		}
 		
-		var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
-	
-		$.ajax({
-			type: "POST",
-			url: baseUrl + '/auth/deleteBatch.do',
-			data: "noArr=" + noArr,
-			success:function(){
-				alert('삭제되었습니다');
-				$('#pagingForm').submit();
-			},
-			error: function(){
-				alert('오류');
+		if (noArr.length > 0) {
+		
+			var answer = confirm('회원들을 강퇴 시키겠습니까? \n연체 도서가 있을 시 강퇴가 불가합니다.');
+			if (answer) {
+				
+				$.ajax({
+					url : "./checkRentBatch.do",
+					type : "POST",
+					data : "noArr=" + noArr,
+					success : function(data) {
+						console.log(data);							
+						
+						if (data == 0) {
+								var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
+							
+								$.ajax({
+									type: "POST",
+									url: baseUrl + '/auth/deleteBatch.do',
+									data: "noArr=" + noArr,
+									success:function(){
+										alert('삭제되었습니다');
+										$('#pagingForm').submit();
+									},
+									error: function(){
+										alert('오류');
+									}
+								});
+							} else{
+								alert('연체 도서가 남아 있습니다. \n연체현황을 확인해 주세요');
+							}
+						}, error : function() {
+								console.log("실패");
+						}
+					});
 			}
-		});
+		} else {
+			alert('선택된 회원들이 없습니다.');
+		}
+		
 	}
 	
 	// 상세페이지로 이동
@@ -89,6 +114,8 @@
 			alert('시작 날짜가 끝 날짜보다 클 수 없습니다.');
 		}
 	}
+	
+	
 </script>
 
 </head>
@@ -154,12 +181,27 @@
 				<div id='tableListWrap'>
 					<div class='listSettings overH'>
 						<ul class='settings fLeft fs0'>
-							<li class='active'>
-								<a href="./list.do" class='text'>전체 회원 보기</a>
-							</li>
-							<li>
-								<a href="./overdueMemberList.do" class='text'>연체 회원 보기</a>
-							</li>
+
+							<!-- 전체회원 보기일경우 -->
+							<c:if test="${listStatus == 'all'}">
+								<li class='active'>
+									<a href="./list.do" class='text'>전체 회원 보기</a>
+								</li>
+								<li>
+									<a href="./overdueMemberList.do" class='text'>연체 회원 보기</a>
+								</li>
+							</c:if>
+					
+							<!-- 연체회원 보기일경우 -->
+							<c:if test="${listStatus == 'overdue'}">
+								<li>
+									<a href="./list.do" class='text'>전체 회원 보기</a>
+								</li>
+								<li class='active'>
+									<a href="./overdueMemberList.do" class='text'>연체 회원 보기</a>
+								</li>
+							</c:if>
+						
 						</ul>
 					</div>
 					<div id='tableWrap'>
@@ -236,13 +278,15 @@
 				</div>
 				<!-- //테이블 목록 end -->
 				
-				<div class='listSettings overH'>
-					<ul class='settings fLeft fs0'>
-						<li>
-							<a href="#" onclick="deleteBatchFnc();" class='text'>선택 회원 강퇴</a>
-						</li>
-					</ul>
-				</div>
+				<c:if test="${listStatus == 'all'}">
+					<div class='listSettings overH' style="margin-top: 10px;">
+						<ul class='settings fLeft fs0'>
+							<li>
+								<a href="#" onclick="deleteBatchFnc();" class='text'>선택 회원 강퇴</a>
+							</li>
+						</ul>
+					</div>
+				</c:if>
 				
 				<!-- 검색결과 없을 시 페이징 안보이기 start -->
 				<c:if test="${!empty memberDtoList}">
@@ -253,15 +297,29 @@
 				<!-- //검색결과 없을 시 페이징 안보이기 end -->
 				
 				<!-- 검색조건 컨트롤러에 전송 start -->
-				<form id='pagingForm' name='memberListParamDto' method="post" action="./list.do">
-					<input type="hidden" id="no" name="no" value="${memberListParamDto.no}">
-					<input type="hidden" name="name" value="${memberListParamDto.name}">
-					<input type="hidden" name="email" value="${memberListParamDto.email}">
-					<input type="hidden" name="phone" value="${memberListParamDto.phone}">
-					<input type="hidden" name="joinDateStart" value="${memberListParamDto.joinDateStart}">
-					<input type="hidden" name="joinDateEnd" value="${memberListParamDto.joinDateEnd}">
-					<input type="hidden" id='curPage' name='curPage' value="${memberListParamDto.curPage}">
-				</form>
+				<c:if test="${listStatus == 'all'}">
+					<form id='pagingForm' name='memberListParamDto' method="post" action="./list.do">
+						<input type="hidden" id="no" name="no" value="${memberListParamDto.no}">
+						<input type="hidden" name="name" value="${memberListParamDto.name}">
+						<input type="hidden" name="email" value="${memberListParamDto.email}">
+						<input type="hidden" name="phone" value="${memberListParamDto.phone}">
+						<input type="hidden" name="joinDateStart" value="${memberListParamDto.joinDateStart}">
+						<input type="hidden" name="joinDateEnd" value="${memberListParamDto.joinDateEnd}">
+						<input type="hidden" id='curPage' name='curPage' value="${memberListParamDto.curPage}">
+					</form>
+				</c:if>
+				
+				<c:if test="${listStatus == 'overdue'}">
+					<form id='pagingForm' name='memberListParamDto' method="post" action="./overdueMemberList.do">
+						<input type="hidden" id="no" name="no" value="${memberListParamDto.no}">
+						<input type="hidden" name="name" value="${memberListParamDto.name}">
+						<input type="hidden" name="email" value="${memberListParamDto.email}">
+						<input type="hidden" name="phone" value="${memberListParamDto.phone}">
+						<input type="hidden" name="joinDateStart" value="${memberListParamDto.joinDateStart}">
+						<input type="hidden" name="joinDateEnd" value="${memberListParamDto.joinDateEnd}">
+						<input type="hidden" id='curPage' name='curPage' value="${memberListParamDto.curPage}">
+					</form>
+				</c:if>
 				<!-- //검색조건 컨트롤러에 전송 end -->
 			</div>
     	    <!-- //컨테이너 end -->
