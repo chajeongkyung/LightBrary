@@ -130,8 +130,11 @@ public class NoticeController {
 	
 	@Auth(role = Role.USER)
 	@RequestMapping(value = "/notice/detailList.do", method = RequestMethod.GET)
-	public String NoticeBoardDetail(String keyword, String searchOption, Locale locale, Model model, int no
-			, @RequestParam(defaultValue = "-1") int categoryCode, int rnum) {
+	public String NoticeBoardDetail(Locale locale, Model model
+			, @RequestParam(defaultValue = "all") String searchOption
+			, @RequestParam(defaultValue = "") String keyword 
+			, @RequestParam(defaultValue = "-1") int categoryCode
+			, int rnum, int no) {
 		
 		SimpleDateFormat format = new SimpleDateFormat ( "yyyy/MM/dd HH:mm");
 		

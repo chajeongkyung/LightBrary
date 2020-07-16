@@ -32,7 +32,7 @@ public class MainController {
 	@RequestMapping(value="/main.do")
 	public String Main(Model model) {
 		
-		List<BookDto> bookDtoList = bookService.selectRankTenBook();
+		List<BookDto> bookDtoList = bookService.selectRankFiveBook();
 		List<NoticeDto> noticeDtoList = noticeService.mainNotice();
 		
 		model.addAttribute("bookDtoList", bookDtoList);
