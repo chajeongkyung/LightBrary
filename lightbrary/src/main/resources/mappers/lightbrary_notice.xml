@@ -81,7 +81,7 @@
                     FROM NOTICE N
                     JOIN NOTICE_CATEGORY NC
                     ON N.CATEGORY_CODE = NC.CODE
-			        ORDER BY N.CATEGORY_CODE DESC
+			        ORDER BY CREATED_DATE DESC
            		) M
         ) N
         WHERE RNUM &lt;= 5

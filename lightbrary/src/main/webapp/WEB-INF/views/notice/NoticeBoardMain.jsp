@@ -162,7 +162,9 @@
 			
 			<div class='searchForm type2'>
 				<form action="./list.do" method="post" id='selectSearch' name='selectSearch' 
-					onsubmit='return false'>
+					onsubmit='return false' style="margin-top: 65px;"
+					onkeydown="if(event.keyCode == 13) seachFnc();">
+
 					<fieldset class="overH" style="height: 50px;">
 						<select class='searchSelect fLeft text' id="searchOption"
 							name="searchOption">
@@ -326,10 +328,8 @@
 										 </a>
 																
 									</td>
-									
-<%-- 									<c:if test="${value != 0}"> --%>
-<%-- 									<c:if test="$('#hiddenNoticeCategory').val() != 0"> --%>
-									<c:if test="${searchMap.categoryCode != 0}">
+					
+							<c:if test="${searchMap.categoryCode != 0}">
 									
 									<td style="text-align: center;">
 										<div style="text-align: center;">
