@@ -68,7 +68,9 @@ public class RentController {
 			
 			return "redirect:/rent/reserve/member/list.do";
 		} else {
-			return "이미 예약된 도서입니다.";
+			model.addAttribute("bookListParamDto", bookListParamDto);
+			
+			return "/common/reserveError";
 		}
 	}
 	
@@ -76,7 +78,7 @@ public class RentController {
 	@RequestMapping(value="/book/reserveBatch.do", method = RequestMethod.POST, 
 			produces="text/plain;charset=UTF-8")
 	@ResponseBody
-	public String reserveBatch(int[] noArr, HttpSession session) {
+	public void reserveBatch(int[] noArr, HttpSession session) {
 		log.info("도서 목록 :: 다중 예약처리");
 		
 		int memberNo = ((MemberDto) session.getAttribute("member")).getNo();
@@ -85,8 +87,6 @@ public class RentController {
 			rentService.insertReserve(memberNo, no);
 			rentService.updateOneStatusToReserve(no);
 		}
-		
-		return "redirect:/rent/reserve/member/list.do";
 	}
 	
 	/** 사용자 대출 예약 - 상세
@@ -102,13 +102,19 @@ public class RentController {
 		int memberNo = ((MemberDto) session.getAttribute("member")).getNo();
 		log.info("도서 예약 :: 회원번호 = " + memberNo + " : 도서번호 = " + no);
 	
-		rentService.insertReserve(memberNo, no);
-		rentService.updateOneStatusToReserve(no);
+		if (bookService.selectOneBook(no).getStatusCode() == 0) {
+			rentService.insertReserve(memberNo, no);
+			rentService.updateOneStatusToReserve(no);
+			
+			model.addAttribute("bookListParamDto", bookListParamDto);
+			model.addAttribute("myNo", memberNo);
 		
-		model.addAttribute("bookListParamDto", bookListParamDto);
-		model.addAttribute("myNo", memberNo);
-	
-		return "redirect:/rent/reserve/member/list.do";
+			return "redirect:/rent/reserve/member/list.do";
+		} else {
+			model.addAttribute("bookListParamDto", bookListParamDto);
+			
+			return "/common/reserveError";
+		}
 	}
 	
 	/** 사용자 나의 예약
@@ -132,8 +138,12 @@ public class RentController {
 		// 전체 예약 도서 갯수
 		int totalCount = rentService.totalCountMyReserve(searchOption, keyword, myNo);
 		
-		if (no != 0) {
-			curPage = rentService.selectMyReserveCurPage(searchOption, keyword, no, myNo);
+		try {
+			if (no != 0) {
+				curPage = rentService.selectMyReserveCurPage(searchOption, keyword, no, myNo);
+			}
+		} catch (Exception e) {
+			curPage = 1;
 		}
 		
 		Paging pagingInfo = new Paging(totalCount, curPage);
@@ -384,9 +394,13 @@ public class RentController {
 		
 		// 전체 예약 도서 갯수
 		int totalCount = rentService.totalCountReserve(searchOption, keyword);
-
-		if (no != 0) {
-			curPage = rentService.selectReserveCurPage(searchOption, keyword, no);
+		
+		try {
+			if (no != 0) {
+				curPage = rentService.selectReserveCurPage(searchOption, keyword, no);
+			}
+		} catch (Exception e) {
+			curPage = 1;
 		}
 
 		Paging pagingInfo = new Paging(totalCount, curPage);
@@ -534,8 +548,12 @@ public class RentController {
 		// 전체 예약 도서 갯수
 		int totalCount = rentService.totalCountRent(searchOption, keyword, status);
 		
-		if(no != 0) {
-			curPage = rentService.selectRentCurPage(searchOption, keyword, no, status);
+		try {
+			if (no != 0) {
+				curPage = rentService.selectRentCurPage(searchOption, keyword, no, status);
+			}
+		} catch (Exception e) {
+			curPage = 1;
 		}
 		
 		Paging pagingInfo = new Paging(totalCount, curPage);
@@ -710,9 +728,13 @@ public class RentController {
 
 		// 전체 예약 도서 갯수
 		int totalCount = rentService.totalCountOverdue(searchOption, keyword);
-
-		if (no != 0) {
-			curPage = rentService.selectOverdueCurPage(searchOption, keyword, no);
+		
+		try {
+			if (no != 0) {
+				curPage = rentService.selectOverdueCurPage(searchOption, keyword, no);
+			}
+		} catch (Exception e) {
+			curPage = 1;
 		}
 		
 		System.out.println("curPage =" + curPage);
