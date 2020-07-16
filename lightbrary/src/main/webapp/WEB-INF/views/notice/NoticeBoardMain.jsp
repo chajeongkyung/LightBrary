@@ -154,7 +154,7 @@
 			
 			<div class='searchForm type2'>
 				<form action="./list.do" method="post" id='selectSearch' name='selectSearch' 
-					onsubmit='return false' style="margin-top: 65px;">
+					onsubmit='return false'>
 					<fieldset class="overH" style="height: 50px;">
 						<select class='searchSelect fLeft text' id="searchOption"
 							name="searchOption">
