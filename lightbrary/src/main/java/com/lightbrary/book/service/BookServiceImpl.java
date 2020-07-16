@@ -168,9 +168,9 @@ public class BookServiceImpl implements BookService{
 	}
 
 	@Override
-	public List<BookDto> selectRankTenBook() {
+	public List<BookDto> selectRankFiveBook() {
 		// TODO Auto-generated method stub
-		return bookDao.selectRankTenBook();
+		return bookDao.selectRankFiveBook();
 	}
 
 }

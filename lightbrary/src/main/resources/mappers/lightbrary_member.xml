@@ -141,6 +141,36 @@
 	    </where>
 	</select>
 	
+	<select id="totalCountOverdueMember" resultType="int" 
+		parameterType="com.lightbrary.member.model.MemberListParamDto">
+		SELECT COUNT(*)
+		FROM MEMBER M JOIN RENT R
+		ON M.NO = R.MEMBER_NO
+	   <where>
+           M.DEL_FLAG = 'N'
+           AND R.RENT_STATUS='연체'
+           <if test="name != ''">AND M.NAME LIKE '%' || #{name} || '%'</if>
+           <if test="email != ''">AND M.EMAIL LIKE '%' || #{email} || '%'</if>
+           <choose>
+           	<when test="joinDateStart != ''">
+           		<choose>
+           			<when test="joinDateEnd != ''">
+           				AND M.CREATED_DATE BETWEEN #{joinDateStart} AND #{joinDateEnd}
+           			</when>
+           			<otherwise>
+           				AND M.CREATED_DATE &gt;= #{joinDateStart}
+           			</otherwise>
+           		</choose>
+			</when>
+			<otherwise>
+				<if test="joinDateEnd != ''">
+					AND M.CREATED_DATE &lt;= #{joinDateEnd}
+				</if>
+			</otherwise>
+           </choose>
+	    </where>
+	</select>
+	
 	<select id="checkRent" parameterType="int" resultType="int">
 		SELECT COUNT(*)
 		FROM RENT
@@ -153,12 +183,14 @@
 		SELECT COUNT(*)
 		FROM MEMBER
 		WHERE EMAIL = #{email}
+		AND DEL_FLAG = 'N'
 	</select>
 	
 	<select id="checkPhone" parameterType="String" resultType="int">
 		SELECT COUNT(*)
 		FROM MEMBER
 		WHERE PHONE = #{phone}
+		AND DEL_FLAG = 'N'
 	</select>
 	
 	<select id="memberExist" parameterType="map" 
@@ -167,6 +199,7 @@
 		FROM MEMBER
 		WHERE EMAIL = #{email}
 		AND PASSWORD = #{password}
+		AND DEL_FLAG = 'N'
 	</select>
 	
 	<select id="selectOneMember" parameterType="map" 
@@ -182,12 +215,13 @@
 		FROM MEMBER
 		WHERE NAME = #{userName}
 		AND PHONE = #{phone}
+		AND DEL_FLAG = 'N'
 	</select>
 	
 	<update id="deleteOneMember" parameterType="java.lang.Integer">
 		UPDATE MEMBER
 		<set>
-			 EMAIL=#{no}, PASSWORD=#{no}, NAME=#{no}, PHONE=#{no}, ADDRESS=#{no}, DEL_FLAG='Y'
+			 DEL_FLAG='Y'
 		</set>
 		WHERE NO = #{no}
 	</update>
@@ -208,6 +242,7 @@
 		SELECT NO
 		FROM MEMBER
 		WHERE EMAIL = #{email}
+		AND DEL_FLAG = 'N'
 	</select>
 	
 	<!--이메일로 확인하고 비밀번호를 랜덤으로 업뎃 -->
@@ -218,6 +253,7 @@
 			MODIFIED_DATE = SYSDATE
 		</set>
 		WHERE EMAIL = #{email}
+		AND DEL_FLAG = 'N'
 	</update>
 </mapper>
 

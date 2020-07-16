@@ -176,7 +176,8 @@
 			<h2 id='pageTitle'>도서 조회</h2>
 			<input type="hidden" id="gradeCode" value="${member.gradeCode}">
 			<div class='searchForm type1'>
-				<form id="bookListParamDto" name="bookListParamDto" action="./list.do" method="post">
+				<form id="bookListParamDto" name="bookListParamDto" action="./list.do" method="post"
+					onkeydown="if(event.keyCode == 13) bookListParamDtoSubmit();">
 					<fieldset>
 						<!-- 기본 인풋 start -->
 						<div class='searchInputWrap fs0'>
@@ -367,16 +368,18 @@
 					</c:forEach>
 				</ul>
 				
-				<ul class='settings fRight fs0'>
-					<c:if test="${member.gradeCode eq 0}">
-						<li>
-							<a href="./insert.do" class='text'>단편도서 등록</a>
-						</li>
-						<li>
-							<a href="./insertBatch.do" class='text'>시리즈 등록</a>
-						</li>
-					</c:if>
-				</ul>
+				<div class='overH'>
+					<ul class='settings fRight fs0'>
+						<c:if test="${member.gradeCode eq 0}">
+							<li>
+								<a href="./insert.do" class='text'>단편도서 등록</a>
+							</li>
+							<li>
+								<a href="./insertBatch.do" class='text'>시리즈 등록</a>
+							</li>
+						</c:if>
+					</ul>
+				</div>
 				
 				<c:if test="${not empty bookDtoList}">
 					<jsp:include page="/WEB-INF/views/common/paging.jsp">

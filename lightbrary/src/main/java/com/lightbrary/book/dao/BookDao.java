@@ -23,7 +23,7 @@ public interface BookDao {
 	public int totalCountBook(BookListParamDto bookListParamDto);
 	public BookImageDto selectOneImage(int no);
 	public int insertOneImage(BookImageDto bookImageDto);
-	public List<BookDto> selectRankTenBook();
+	public List<BookDto> selectRankFiveBook();
 	
 }
 

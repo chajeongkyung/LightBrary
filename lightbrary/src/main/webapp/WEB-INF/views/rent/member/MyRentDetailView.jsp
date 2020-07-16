@@ -147,6 +147,12 @@
 									
 								</tr>
 								<tr>
+									<th class='text bold textDark'>대출일</th>
+									<td class='text textGrey'>
+										<fmt:formatDate value="${rentDto.rentDate}" pattern="yyyy/MM/dd "/>
+									</td>
+								</tr>
+								<tr>
 									<th class='text bold textDark'>반납일</th>
 									<td class='text textGrey'>
 										<fmt:formatDate value="${rentDto.expireDate}" pattern="yyyy/MM/dd "/>

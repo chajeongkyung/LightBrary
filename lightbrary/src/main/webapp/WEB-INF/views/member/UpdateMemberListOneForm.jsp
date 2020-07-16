@@ -103,11 +103,28 @@
 	});
 	
 	function deleteMemberFnc() {
+		
 		var answer = confirm('해당 회원을 강퇴 시키겠습니까? \n해당 회원이 연체 도서가 있을 시 강퇴가 불가합니다.');
 		
 		if (answer) {
-			alert('회원이 삭제 되었습니다');
-			location.href = '<%=request.getContextPath()%>/member/deleteCtr.do?no=${memberDto.no}';	
+			
+			$.ajax({
+				url : "../member/checkRent.do",
+				type : "GET",
+				data : "no=" + '${memberDto.no}',
+				success : function(data) {
+					console.log(data);							
+					
+					if (data == 0) {
+							alert('성공적으로 탈퇴 처리되었습니다');
+			 				location.href = '../member/deleteCtr.do?no=${memberDto.no}'
+						} else{
+							alert('연체 도서가 남아 있어 탈퇴가 불가합니다');
+						}
+					}, error : function() {
+							console.log("실패");
+					}
+				});
 		}
 	}
 	

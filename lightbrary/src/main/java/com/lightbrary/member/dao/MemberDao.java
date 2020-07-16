@@ -15,6 +15,7 @@ public interface MemberDao {
 	public List<MemberDto> selectMember(MemberListParamDto memberListParamDto);
 	public List<MemberDto> selectOverdueMember(MemberListParamDto memberListParamDto);
 	public int totalCountMember(MemberListParamDto memberListParamDto);
+	public int totalCountOverdueMember(MemberListParamDto memberListParamDto);
 	
 	public MemberDto memberExist(String email, String password);
 	public int checkRent(int no);

@@ -456,7 +456,7 @@
 		             ) RENT_ROW
 		             <include refid="search"></include>
 		        ) RENT_ALL
-		        ORDER BY RENT_ALL.PICKUP_DATE DESC
+		        ORDER BY RENT_ALL.PICKUP_DATE ASC
 		    ) RENT
 		)
 		WHERE RNUM BETWEEN #{start} AND #{end}
@@ -514,7 +514,7 @@
 		             ) RENT_ROW
 		             <include refid="search"></include>
 		        ) RENT_ALL
-		        ORDER BY RENT_ALL.PICKUP_DATE
+		        ORDER BY RENT_ALL.PICKUP_DATE ASC
 		    ) RENT
 		)
 		WHERE NO = #{no}

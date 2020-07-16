@@ -112,6 +112,13 @@ public class MemberDaoImpl implements MemberDao{
 
 		return sqlSession.selectOne(namespace + "totalCountMember", memberListParamDto);
 	}
+	
+	@Override
+	public int totalCountOverdueMember(MemberListParamDto memberListParamDto) {
+		// TODO Auto-generated method stub
+		
+		return sqlSession.selectOne(namespace + "totalCountOverdueMember", memberListParamDto);
+	}
 
 	@Override
 	public int resetPassword(String email, String password) {

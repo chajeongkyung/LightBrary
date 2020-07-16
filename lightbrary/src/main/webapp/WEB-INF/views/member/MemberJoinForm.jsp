@@ -17,8 +17,9 @@
 
 <style type="text/css">
 	.alertMsgBox {
-		padding-top:10px; 
+		padding-top:5px; 
 		font-size:13px;
+		line-height: 130%;
 	}
 </style>
 
@@ -34,21 +35,50 @@
 				<h2 id='pageTitle'>회원가입</h2>
 					<form action='./addCtr.do' onsubmit="return checkValidationFnc();" method='post' class='infoForm'>
 						
-						<p id="alertNecessaryMsg" class="textRed alertMsgBox"></p>
+						<p id="alertNecessaryMsg" class="textRed bold alertMsgBox" style="margin-top: 10px;"></p>
 					
 						<!-- 입력폼 start -->
-						<div class='infoInputWrap'>
-							<input type="text" class='infoInput infoName' id="name" name="name" placeholder="성함">
+						<div class='infoInputWrap' style="margin-top: 10px;">
+							<div class='inputBgBlock'>
+								<img alt="유저 아이콘" src="<%=request.getContextPath()%>/resources/img/icon-name.png"
+									 class='inputIcon'>
+								<input type="text" class='infoInput infoName' id="name" name="name" placeholder="성함">
+							</div>
 							<p id="alertNameErrorMsg" class="textRed alertMsgBox"></p>
-							<input type="text" style="margin-top: 20px;" class='infoInput infoPhone' id="phone" name="phone" placeholder="연락처 ex) 01012345678">
+							
+							<div class='inputBgBlock' style="margin-top: 20px;">
+								<img alt="핸드폰 아이콘" src="<%=request.getContextPath()%>/resources/img/icon-phone.png"
+									 class='inputIcon'>
+								<input type="text" class='infoInput infoPhone' id="phone" name="phone" placeholder="연락처 ex) 01012345678">
+							</div>
 							<p id="alertPhoneErrorMsg" class="textRed alertMsgBox"></p>
-							<input type="text" style="margin-top: 20px;" class='infoInput infoEmail' id="email" name="email" placeholder="이메일">
+							
+							<div class='inputBgBlock' style="margin-top: 20px;">
+								<img alt="이메일 아이콘" src="<%=request.getContextPath()%>/resources/img/icon-email.png"
+									 class='inputIcon'>
+								<input type="text" class='infoInput infoEmail' id="email" name="email" placeholder="이메일">
+							</div>
 							<p id="alertEmailErrorMsg" class="textRed alertMsgBox"></p>
-							<input type="password" style="margin-top: 20px;" class='infoInput infoPassword' id="password" name="password" placeholder="비밀번호">
+							
+							<div class='inputBgBlock' style="margin-top: 20px;">
+								<img alt="비밀번호 아이콘" src="<%=request.getContextPath()%>/resources/img/icon-padlock.png"
+									 class='inputIcon'>
+								<input type="password" class='infoInput infoPassword' id="password" name="password" placeholder="비밀번호">
+							</div>
 							<p id="alertPasswordErrorMsg" class="textRed alertMsgBox"></p>
-							<input type="password" style="margin-top: 20px;" class='infoInput infoPassword' id="checkPassword" name="checkPassword" placeholder="비밀번호 재확인">
+							
+							<div class='inputBgBlock' style="margin-top: 20px;">
+								<img alt="비밀번호 아이콘" src="<%=request.getContextPath()%>/resources/img/icon-padlock.png"
+									 class='inputIcon'>
+								<input type="password" class='infoInput infoPassword' id="checkPassword" name="checkPassword" placeholder="비밀번호 재확인">
+							</div>
 							<p id="alertcheckPasswordErrorMsg" class="textRed alertMsgBox"></p>
-							<input type="text" style="margin-top: 20px;" class='infoInput infoLocation' id="address" name="address" placeholder="주소">
+							
+							<div class='inputBgBlock' style="margin-top: 20px;">
+								<img alt="위치 아이콘" src="<%=request.getContextPath()%>/resources/img/icon-location.png"
+									 class='inputIcon'>
+								<input type="text" class='infoInput infoLocation' id="address" name="address" placeholder="주소">
+							</div>
 							<p id="alertAddressErrorMsg" class="textRed alertMsgBox"></p>
 						</div>
 						<!-- //입력폼 end -->
@@ -94,15 +124,15 @@ $("#phone").blur(function() {
 			console.log("1 = 핸드폰 번호 중복 / 0 = 핸드폰 번호 중복x : " + data);							
 			
 			if (data == 1) {
-					$('#alertPhoneErrorMsg').css('color', '#EC8686');	
+					$('#alertPhoneErrorMsg').css('color', '#E92222');	
 					$('#alertPhoneErrorMsg').html("사용중인 핸드폰번호입니다.");
 				} else if (data == 0){
 
 					if(isNull(phoneObj)){
-						$('#alertPhoneErrorMsg').css('color', '#EC8686');	
+						$('#alertPhoneErrorMsg').css('color', '#E92222');	
 						$('#alertPhoneErrorMsg').html('연락처를 입력해 주세요.');
 					} else if (!isValidPhone(phoneObj)){
-						$('#alertPhoneErrorMsg').css('color', '#EC8686');	
+						$('#alertPhoneErrorMsg').css('color', '#E92222');	
 						$('#alertPhoneErrorMsg').html('숫자만 입력해 주세요.');
 					} else{
 						$('#alertPhoneErrorMsg').css('color', 'blue');						
@@ -127,19 +157,19 @@ $("#email").blur(function() {
 			console.log("1 = 중복o / 0 = 중복x : "+ data);							
 			
 			if (data == 1) {
-					$('#alertEmailErrorMsg').css('color', '#EC8686');	
+					$('#alertEmailErrorMsg').css('color', '#E92222');	
 					$('#alertEmailErrorMsg').html("사용중인 이메일입니다.");
 				} else if (data == 0){
 
 					if(isNull(emailObj)){
-						$('#alertEmailErrorMsg').css('color', '#EC8686');	
+						$('#alertEmailErrorMsg').css('color', '#E92222');	
 						$('#alertEmailErrorMsg').html('이메일을 입력해주세요.');
 						
 					} else if (!isValidEmail(emailObj)){
-						$('#alertEmailErrorMsg').css('color', '#EC8686');	
+						$('#alertEmailErrorMsg').css('color', '#E92222');	
 						$('#alertEmailErrorMsg').html('이메일 형식이 맞지 않습니다.');
 					} else{
-						$('#alertEmailErrorMsg').css('color', 'blue');						
+						$('#alertEmailErrorMsg').css('color', '#2B9447');						
 						$('#alertEmailErrorMsg').html('사용가능한 이메일입니다.');
 					}	
 				}

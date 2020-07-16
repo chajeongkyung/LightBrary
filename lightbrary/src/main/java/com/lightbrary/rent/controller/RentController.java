@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lightbrary.book.model.BookListParamDto;
+import com.lightbrary.book.service.BookService;
 import com.lightbrary.member.model.MemberDto;
 import com.lightbrary.rent.model.RentDto;
 import com.lightbrary.rent.service.RentService;
@@ -42,6 +43,8 @@ public class RentController {
 	@Autowired
 	private RentService rentService;
 	
+	@Autowired
+	private BookService bookService;
 	
 	/** 사용자 대출 예약 - 도서 목록
 	 * @param memberNo
@@ -56,20 +59,24 @@ public class RentController {
 		int memberNo = ((MemberDto) session.getAttribute("member")).getNo();
 		log.info("도서 예약 :: 회원번호 = " + memberNo + " : 도서번호 = " + no);
 		
-		rentService.insertReserve(memberNo, no);
-		rentService.updateOneStatusToReserve(no);
-		
-		model.addAttribute("bookListParamDto", bookListParamDto);
-		model.addAttribute("myNo", memberNo);
-	
-		return "redirect:/rent/reserve/member/list.do";
+		if (bookService.selectOneBook(no).getStatusCode() == 0) {
+			rentService.insertReserve(memberNo, no);
+			rentService.updateOneStatusToReserve(no);
+			
+			model.addAttribute("bookListParamDto", bookListParamDto);
+			model.addAttribute("myNo", memberNo);
+			
+			return "redirect:/rent/reserve/member/list.do";
+		} else {
+			return "이미 예약된 도서입니다.";
+		}
 	}
 	
 	//다중 예약 처리
 	@RequestMapping(value="/book/reserveBatch.do", method = RequestMethod.POST, 
 			produces="text/plain;charset=UTF-8")
 	@ResponseBody
-	public void reserveBatch(int[] noArr, HttpSession session) {
+	public String reserveBatch(int[] noArr, HttpSession session) {
 		log.info("도서 목록 :: 다중 예약처리");
 		
 		int memberNo = ((MemberDto) session.getAttribute("member")).getNo();
@@ -78,6 +85,8 @@ public class RentController {
 			rentService.insertReserve(memberNo, no);
 			rentService.updateOneStatusToReserve(no);
 		}
+		
+		return "redirect:/rent/reserve/member/list.do";
 	}
 	
 	/** 사용자 대출 예약 - 상세
@@ -188,6 +197,8 @@ public class RentController {
 		log.info("예약 도서 상세 - " + no + "\n" + "검색옵션 : " + searchOption + "\n" + "검색문장" + keyword);
 
 		RentDto rentDto = rentService.selectOneMyReserve(no);
+		
+		calcStatus(rentDto);
 
 		model.addAttribute("rentDto", rentDto);
 		model.addAttribute("searchOption", searchOption);
@@ -241,8 +252,12 @@ public class RentController {
 		// 나의 대출 도서 갯수
 		int totalCount = rentService.totalCountMyRent(searchOption, keyword, myNo);
 		
-		if (no != 0) {
-			curPage = rentService.selectMyRentCurPage(searchOption, keyword, no, myNo);
+		try {
+			if (no != 0) {
+				curPage = rentService.selectMyRentCurPage(searchOption, keyword, no, myNo);
+			}
+		} catch (Exception e) {
+			curPage = 1;
 		}
 		
 		Paging pagingInfo = new Paging(totalCount, curPage);
@@ -288,6 +303,8 @@ public class RentController {
 
 		RentDto rentDto = rentService.selectOneMyRent(no);
 
+		calcStatus(rentDto);
+		
 		model.addAttribute("rentDto", rentDto);
 		model.addAttribute("searchOption", searchOption);
 		model.addAttribute("keyword", keyword);
@@ -462,6 +479,8 @@ public class RentController {
 		log.info("예약 도서 상세 - " + no + "\n" + "검색옵션 : " + searchOption + "\n" + "검색문장" + keyword);
 
 		RentDto rentDto = rentService.selectOneReserve(no);
+		
+		calcStatus(rentDto);
 
 		model.addAttribute("rentDto", rentDto);
 		model.addAttribute("searchOption", searchOption);
@@ -575,9 +594,8 @@ public class RentController {
 		log.info("대출 도서 상세 - " + no + "\n검색옵션 : " + searchOption + "\n검색문장 : " + keyword + "\n분류 : " + status);
 		
 		RentDto rentDto = rentService.selectOneRent(no);
-		System.out.println("---------DETAIL----------");
-		System.out.println(rentDto.toString());
-		System.out.println("------------------------");
+		
+		calcStatus(rentDto);
 		
 		model.addAttribute("rentDto", rentDto);
 		model.addAttribute("searchOption", searchOption);
@@ -777,6 +795,8 @@ public class RentController {
 
 		RentDto rentDto = rentService.selectOneOverdue(no);
 
+		calcStatus(rentDto);
+		
 		model.addAttribute("rentDto", rentDto);
 		model.addAttribute("searchOption", searchOption);
 		model.addAttribute("keyword", keyword);

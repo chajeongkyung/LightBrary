@@ -185,7 +185,8 @@
 			<!-- 도서 수정 start -->
 			<div id='detailWrap'>
 				<!--  -->
-				<form id='bookDtoForm' name='bookDto' action='./updateCtr.do' method="post" enctype="multipart/form-data">
+				<form id='bookDtoForm' name='bookDto' action='./updateCtr.do' method="post" enctype="multipart/form-data"
+					onkeydown="if(event.keyCode == 13) updateBookFnc();">
 					<input type="hidden" name="no" value="${bookDto.no}">
 					<input type="hidden" name="imageNo" value="${bookDto.imageNo}">
 					<div class='detailTable'>

@@ -91,6 +91,12 @@ public class MemberServiceImpl implements MemberService{
 		// TODO Auto-generated method stub
 		return memberDao.totalCountMember(memberListParamDto);
 	}
+	
+	@Override
+	public int totalCountOverdueMember(MemberListParamDto memberListParamDto) {
+		// TODO Auto-generated method stub
+		return memberDao.totalCountOverdueMember(memberListParamDto);
+	}
 
 	@Override
 	public int resetPassword(String email, String password) {

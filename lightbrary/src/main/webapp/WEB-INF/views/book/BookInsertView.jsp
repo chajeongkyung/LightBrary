@@ -123,7 +123,8 @@
 			<!-- 도서 등록 start -->
 			<div id='detailWrap'>
 				<!--  -->
-				<form id='bookInsertForm' name='bookDto' action='./insertCtr.do' method="post" enctype="multipart/form-data">
+				<form id='bookInsertForm' name='bookDto' action='./insertCtr.do' method="post" enctype="multipart/form-data"
+					onkeydown="if(event.keyCode == 13) bookInsertFormSubmit();">
 					<div class='detailTable'>
 						<table>
 							<colgroup>

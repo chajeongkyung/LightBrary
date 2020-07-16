@@ -30,28 +30,41 @@
 						
 							<!--이메일 찾고난 뒤 -->
 							<c:if test="${!empty findEmail}">
-								<input type="text" class='infoInput infoEmail' id="email" name="email" placeholder="이메일" value="${findEmail}">
+								<div class='inputBgBlock'>
+									<img alt="이메일 아이콘" src="<%=request.getContextPath()%>/resources/img/icon-email.png"
+										 class='inputIcon'>
+									<input type="text" class='infoInput infoEmail' id="email" name="email" placeholder="이메일" value="${findEmail}">
+								</div>
 							</c:if>
 							
 							<!--기본로그인Form -->
 							<c:if test="${empty findEmail}">
-								<input type="text" class='infoInput infoEmail' id="email" name="email" placeholder="이메일">
-							</c:if>
-	
-							<input type="password" style="margin-top: 20px;" class='infoInput infoPassword'
-								 id="password" name="password" placeholder="비밀번호">
-								
-								<p style="margin-top: 20px;" id="alertNoAccountMsg"></p>
-								
-								<div style="margin-top: 20px;">	
-									<a href="./findEmail.do" class="text bold">이메일 찾기 | </a>
-									<a href="./findPassword.do" class="text bold">비밀번호 찾기</a>
+								<div class='inputBgBlock' style="margin-top: 20px;">
+									<img alt="이메일 아이콘" src="<%=request.getContextPath()%>/resources/img/icon-email.png"
+										 class='inputIcon'>
+									<input type="text" class='infoInput infoEmail' id="email" name="email" placeholder="이메일">
 								</div>
+							</c:if>
+							
+							<div class='inputBgBlock' style="margin-top: 20px;">
+								<img alt="비밀번호 아이콘" src="<%=request.getContextPath()%>/resources/img/icon-padlock.png"
+									 class='inputIcon'>
+								<input type="password" class='infoInput infoPassword'
+								 	id="password" name="password" placeholder="비밀번호">
+							</div>
+								
+							<p style="margin-top: 20px;" id="alertNoAccountMsg"></p>
+							
+							<div class="fs0" style="margin-top: 30px; text-align: center;">	
+								<a href="./findEmail.do" class="text bold">이메일 찾기</a>
+								<span class="text bold" style="margin: -2px 10px 0px;">|</span>
+								<a href="./findPassword.do" class="text bold">비밀번호 찾기</a>
+							</div>
 						</div>
 						<!-- //입력폼 end -->
 						
 						<!-- 상세페이지 버튼 start -->
-						<div class='btnWrap tCenter' style="margin-top: 30px;">
+						<div class='btnWrap tCenter' style="margin-top: 20px;">
 							<input type="button" onclick="checkAccountFnc();" class='btn green' value="로그인">
 							<a href="/lightbrary/member/add.do" class="subBtn text bold">회원가입</a>
 						</div>
@@ -84,8 +97,9 @@
 				
  				if (data == "") {
  						$('#alertNoAccountMsg').html("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다. 다시 확인해 주세요.");
- 						$("#alertNoAccountMsg").css("color", "red");
- 						$("#alertNoAccountMsg").attr('class', 'text bold');
+ 						$("#alertNoAccountMsg").attr('class', 'text textRed');
+ 						$("#alertNoAccountMsg").css('line-height', '140%');
+ 						$("#alertNoAccountMsg").css('font-size', '13px');
  					} else{
  						$('#alertNoAccountMsg').html("");
  						console.log(data);
