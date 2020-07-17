@@ -77,12 +77,43 @@
 	}
 	
 	function refreshFnc() {
-		if(confirm('연체 목록을 업데이트 시키겠습니까?')){
-			alert('연체 도서 목록을 업데이트합니다.');
-			return;
-		} else{
-			return false;
-		}
+		
+		var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
+		$.ajax({
+			type: "POST",
+			url: baseUrl + 'rent/overdue/refreshChk.do',
+			success:function(data){
+				console.log("data : " + data);
+				if(confirm('연체 목록을 업데이트 시키겠습니까?')){
+					if(data == "true"){
+						
+						$.ajax({
+							type: "POST",
+							url: baseUrl + 'rent/overdue/refresh.do',
+							success:function(){
+								alert('연체 도서 목록을 업데이트합니다.');
+								$('#pagingForm').submit();
+								
+								location.href = "./list.do";
+							},
+							error: function(){
+								alert('오류2');
+							}
+						});
+						
+					} else{
+						alert('업데이트 할 연체 도서가 없습니다.');
+						$('#pagingForm').submit();
+					}
+				} else{
+					return false;
+				}
+			},
+			error: function(){
+				alert('오류1');
+			}
+		});
+		
 	}
 	
 	// 이메일 전송
@@ -197,7 +228,6 @@
 				
 			</div>
 			<!-- //검색폼 버전2 end -->
-			
 			<!-- 테이블 목록 start -->
 			<div id='tableListWrap'>
 				<div class='listSettings overH'>
@@ -211,7 +241,7 @@
 					</ul>
 					<ul class='settings fRight fs0'>
 						<li>
-							<a href="./refresh.do" class='text' onclick="refreshFnc();">연체 목록 업데이트</a>
+							<a href="#none" class='text' onclick="refreshFnc();">연체 목록 업데이트</a>
 						</li>
 					</ul>
 				</div>
