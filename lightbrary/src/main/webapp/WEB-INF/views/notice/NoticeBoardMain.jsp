@@ -231,7 +231,7 @@
 							<col width="55px">
 							<col width="52px">
 							<col width="312px">
-							<c:if test="${searchMap.categoryCode != 0}">
+							<c:if test="${searchMap.categoryCode != 0 || empty noticeList }">
 							<col width="192px">
 							<col width="80px">
 							</c:if>
@@ -255,7 +255,7 @@
 								<th>번호</th>
 								<th>종류</th>
 								<th>제목</th>
-								<c:if test="${searchMap.categoryCode != 0}">
+								<c:if test="${searchMap.categoryCode != 0 || empty noticeList}">
 								<th>기간</th>
 								<th>진행상황</th>
 								</c:if>
@@ -329,7 +329,7 @@
 																
 									</td>
 					
-							<c:if test="${searchMap.categoryCode != 0}">
+							<c:if test="${searchMap.categoryCode != 0 || empty noticeList}">
 									
 									<td style="text-align: center;">
 										<div style="text-align: center;">
@@ -414,7 +414,7 @@
 			</div>
 			<!-- //테이블 목록 end -->
 		
-		<c:if test="${empty noticeList }">	
+		<c:if test="${not empty noticeList }">	
 			<jsp:include page="/WEB-INF/views/common/paging.jsp">
 				<jsp:param value="${pagingInfo}" name="pagingInfo"/>
 			</jsp:include>

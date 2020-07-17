@@ -127,7 +127,7 @@
 		if(categoryValid && titleValid && contentValid && noticeDateStartValid 
 					&& noticeDateEndValid && noticeDateValid){
 			
-			var registration = confirm("게시글을 수정 하시겠습니다?");
+			var registration = confirm("게시글을 수정 하시겠습니까?");
 		
 			if (registration == true) {
 				alert("게시글이 수정되었습니다.");
