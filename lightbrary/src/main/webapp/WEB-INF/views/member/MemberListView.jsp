@@ -109,7 +109,14 @@
 	
 	function memberListParamDtoSubmit(){
 		if(isValidDateRange($('#joinDateStart').val(), $('#joinDateEnd').val())){
-			$('#memberListParamDto').submit();
+			
+			if ('${listStatus}' == 'all') {
+				$('#memberListParamDto').submit();				
+			} else if ('${listStatus}' == 'overdue'){
+				$('#memberListParamDto').attr("action", "./overdueMemberList.do");
+				$('#memberListParamDto').submit();
+			}
+			
 		} else{
 			alert('시작 날짜가 끝 날짜보다 클 수 없습니다.');
 		}

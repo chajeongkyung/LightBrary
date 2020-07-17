@@ -74,17 +74,14 @@
 		parameterType="com.lightbrary.member.model.MemberListParamDto">
 		SELECT * FROM
 		    (
-		        SELECT ROWNUM RNUM, M_ORDER.*
-		        FROM
-		            (
-		            SELECT M.NO AS NO, M.GRADE_CODE AS GRADE_CODE, M.EMAIL AS EMAIL, M.PASSWORD AS PASSWORD
-		            	, M.NAME AS NAME, M.PHONE AS PHONE, M.ADDRESS AS ADDRESS
-		            	, M.CREATED_DATE AS CREATED_DATE, M.MODIFIED_DATE AS MODIFIED_DATE, M.DEL_FLAG AS DEL_FLAG
-		            	, R.RENT_STATUS AS RENT_STATUS
-		            FROM MEMBER M
-		            JOIN RENT R
-		            ON M.NO = R.MEMBER_NO
-		            <where>
+		        SELECT ROWNUM RNUM, MMM.*
+		        FROM (SELECT M1.*
+               		  FROM MEMBER M1 JOIN
+		            	(SELECT M.NO AS NO
+			            FROM MEMBER M
+			            JOIN RENT R
+			            ON M.NO = R.MEMBER_NO
+		         	   <where>
 			            RENT_STATUS = '연체'
 			            AND M.DEL_FLAG = 'N'
 			            <if test="name != ''">AND NAME LIKE '%' || #{name} || '%'</if>
@@ -107,9 +104,12 @@
 							</otherwise>
 			            </choose>
 		            </where>
+		            GROUP BY M.NO
 		            ORDER BY NO DESC
-		           ) M_ORDER
-		    )
+		           ) MM
+		           ON MM.NO = M1.NO
+		    )MMM
+		  )
 		WHERE RNUM BETWEEN #{startPage} AND #{endPage}
 	</select>
 	
