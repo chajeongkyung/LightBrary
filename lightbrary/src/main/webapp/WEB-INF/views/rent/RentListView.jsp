@@ -99,7 +99,7 @@
 			var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
 			$.ajax({
 				type: "POST",
-				url: baseUrl + '/rent/returnBatch.do',
+				url: baseUrl + 'rent/returnBatch.do',
 				data: "noArr=" + noArr,
 				success:function(){
 					alert('반납처리 되었습니다.');

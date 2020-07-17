@@ -75,7 +75,7 @@
 			var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
 			$.ajax({
 				type: "POST",
-				url: baseUrl + '/rent/reserve/rentBatch.do',
+				url: baseUrl + 'rent/reserve/rentBatch.do',
 				data: "noArr=" + noArr,
 				success:function(){
 					alert('선택 도서의 대출 처리가 성공적으로 이루어졌습니다.\n대출 도서는 대출 현황에서 확인해주세요.');
