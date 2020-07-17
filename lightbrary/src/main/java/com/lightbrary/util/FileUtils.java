@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 @Component("fileUtils")
 public class FileUtils {
 
-	private static final String FILE_PATH = "D:\\upload";	
+	private static final String FILE_PATH = "D:\\lightbrary\\upload";	
 	
 	public List<Map<String, Object>> parseInsertFileInfo(MultipartHttpServletRequest multipartHttpServletRequest) 
 				throws IllegalStateException, IOException{
