@@ -155,7 +155,7 @@
 					if(data == "true"){
 						$.ajax({
 							type: "POST",
-							url: baseUrl + '/book/reserveBatch.do',
+							url: baseUrl + 'book/reserveBatch.do',
 							data: "noArr=" + noArr,
 							success:function(){
 								alert('선택 도서의 대출 예약이 성공적으로 이루어졌습니다.\n예약하신 도서 목록은 "나의 예약 현황"에서 확인해주세요.');
@@ -166,10 +166,8 @@
 							}
 						});
 					} else{
-// 						console.log("에러 페이지");
 						$('#pagingForm').attr("action", "./reserveError.do");
 						$('#pagingForm').submit();
-// 						location.href = baseUrl + "/book/reserveError.do";
 					}
 				},
 				error: function(){

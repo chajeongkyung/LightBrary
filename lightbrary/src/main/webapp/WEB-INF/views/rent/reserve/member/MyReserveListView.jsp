@@ -39,7 +39,7 @@
 			var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
 			$.ajax({
 				type: "POST",
-				url: baseUrl + '/rent/reserve/member/cancelBatch.do',
+				url: baseUrl + 'rent/reserve/member/cancelBatch.do',
 				data: "noArr=" + noArr,
 				success:function(){
 					alert('선택 도서의 대출 예약이 취소되었습니다.');

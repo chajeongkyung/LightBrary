@@ -117,10 +117,10 @@ public class RentController {
 		}
 		
 		if(reserveCnt > 0) {
-			System.out.println("========================예약 도서가 있다");
+			log.info("예약 도서가 있다");
 			resultStr = "false";
 		} else {
-			System.out.println("========================예약 도서가 없으니 처리 하자");
+			log.info("예약 도서가 없으니 처리 한다");
 			resultStr = "true";
 		}
 		
@@ -957,12 +957,6 @@ public class RentController {
 		today.set(Calendar.MINUTE, 0);
 		today.set(Calendar.SECOND, 0);
 		today.set(Calendar.MILLISECOND, 0);
-		
-		System.out.println("getPickUpDate==========" + rentDto.getPickUpDate());
-		System.out.println("getReserveDate==========" + rentDto.getReserveDate());
-		System.out.println("getRentDate==========" + rentDto.getRentDate());
-		System.out.println("getExpireDate==========" + rentDto.getExpireDate());
-		System.out.println("getReturnDate==========" + rentDto.getReturnDate());
 		
 		if(rentDate == null) {
 			pickUpCal.setTime(pickupDate);
