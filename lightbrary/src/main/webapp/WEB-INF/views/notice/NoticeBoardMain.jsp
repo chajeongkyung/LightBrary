@@ -22,6 +22,14 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
 
 <script type="text/javascript">
+
+	$(document).ready(function() {
+		if($('#gradeCode').val() == 0){
+			$('#depth1Ul > li:nth-child(4)').addClass('active');
+		} else{
+			$('#depth1Ul > li:nth-child(2)').addClass('active');
+		}
+	});
 	
 	
 	var value =	$('#hiddenNoticeCategory').val();
@@ -420,6 +428,9 @@
 			<input type="hidden" id="hiddenNoticeCategory" name="categoryCode" value="${searchMap.categoryCode}">
 		</form>
 			
+		
+		<input type="hidden" name="gradeCode" id='gradeCode' value="${member.gradeCode}">
+		
 		</div>
 		<!-- //컨테이너 end -->
 		

@@ -20,6 +20,14 @@
 
 <script type="text/javascript">
 
+	$(document).ready(function() {
+		if($('#gradeCode').val() == 0){
+			$('#depth1Ul > li:nth-child(4)').addClass('active');
+		} else{
+			$('#depth1Ul > li:nth-child(2)').addClass('active');
+		}
+	});
+
 	function pageMoveListFnc(){
 		var noObj = $('#no');
 		var keywordObj = $('#keyword');
@@ -214,6 +222,8 @@
 				<!-- //상세페이지 버튼 end -->
 			</div>
 			<!-- //상세페이지 end -->
+			
+			<input type="hidden" name="gradeCode" id='gradeCode' value="${member.gradeCode}">
 			
 		</div>
 		<!-- //컨테이너 end -->
