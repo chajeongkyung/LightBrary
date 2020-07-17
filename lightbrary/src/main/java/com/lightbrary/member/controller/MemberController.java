@@ -80,6 +80,23 @@ public class MemberController {
 		
 	}
 	
+	@RequestMapping(value = "/passwordChk.do", method = {RequestMethod.POST, RequestMethod.GET})
+	@ResponseBody
+	public String passwordChk(String email, String password,
+			HttpSession session) {
+		
+		log.info("비밀번호 확인");
+		
+		MemberDto memberDto = memberService.memberExist(email, password);		
+		
+		if(memberDto == null) {
+			return "false";
+		} 
+		
+		return "true";
+		
+	}
+	
 	// 로그아웃
 	@Auth(role=Role.USER)
 	@RequestMapping(value = "/logout.do", method = RequestMethod.GET)
@@ -248,9 +265,9 @@ public class MemberController {
 				if(sessionMemberDto.getNo() == memberDto.getNo()) {
 
 					//String password = memberService.findPassword(memberDto.getEmail());
-					String password = sessionMemberDto.getPassword();
+//					String password = sessionMemberDto.getPassword();
 				
-					MemberDto newMemberDto = memberService.memberExist(memberDto.getEmail(), password);
+					MemberDto newMemberDto = memberService.selectOneMember(memberDto.getNo());
 					
 					session.removeAttribute("member");
 					

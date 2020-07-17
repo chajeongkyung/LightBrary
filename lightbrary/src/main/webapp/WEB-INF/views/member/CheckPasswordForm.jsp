@@ -23,8 +23,8 @@
 		<!-- 컨테이너 start -->
 			<div id='container'>
 				<h2 id='pageTitle'>내 정보</h2>
-					<form action='./update.do' onsubmit="return checkPasswordFnc();"  
-						id="findPasswordForm" method="post" class='infoForm'>
+					<form action='./update.do' id="findPasswordForm" method="post" class='infoForm'
+						onkeydown="if(event.keyCode == 13) checkPasswordFnc();">
 						
 						<!-- 입력폼 start -->
 						<div class='infoInputWrap'>
@@ -45,7 +45,8 @@
 						
 						<!-- 상세페이지 버튼 start -->
 						<div class='btnWrap tCenter' style="margin-top: 30px;">
-							<input type="submit" class='btn green' value="확인">
+							<input type="button" class='btn green' value="확인" onclick="checkPasswordFnc();">
+							<input hidden="hidden" class='btn green' value="submit방지">
 							<a href="./detail.do" class="subBtn text bold">뒤로</a>
 						</div>
 						<!-- //상세페이지 버튼 end -->
@@ -62,20 +63,32 @@
 	
 	
 	function checkPasswordFnc() {
-		
 		var passwordObj = $('#inputPassword').val();
-		
-		if (passwordObj != '${member.password}') {
-			$('#alertNoPasswordMsg').html("비밀번호가 틀립니다. 다시 확인해 주세요.");
-			$("#alertNoPasswordMsg").css("color", "#E92222");
-			$("#alertNoPasswordMsg").css("font-size", "13px");
-			$("#alertNoPasswordMsg").attr('class', 'text');
-			return false;
-		}else {
-			$('#alertNoPasswordMsg').html("");
-			return true;
-		}
-	
+		var emailObj = "${member.email}";
+		var loginData = { "email": emailObj, "password": passwordObj }
+		var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
+		$.ajax({
+			type: "POST",
+			url: baseUrl + 'passwordChk.do',
+			data: loginData, 
+			success: function(data){
+				if(data == "true"){
+					$('#alertNoPasswordMsg').html("");
+					$('#findPasswordForm').submit();
+// 					return true;
+				} else{
+					$('#alertNoPasswordMsg').html("비밀번호가 틀립니다. 다시 확인해 주세요.");
+					$("#alertNoPasswordMsg").css("color", "#E92222");
+					$("#alertNoPasswordMsg").css("font-size", "13px");
+					$("#alertNoPasswordMsg").attr('class', 'text');
+// 					return false;
+				}
+			},
+			error: function(e){
+				alert('오류');
+	// 			return false;
+			}
+		});
 	}
 
 </script>

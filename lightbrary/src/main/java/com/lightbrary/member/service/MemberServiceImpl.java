@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.lightbrary.member.dao.MemberDao;
 import com.lightbrary.member.model.MemberDto;
 import com.lightbrary.member.model.MemberListParamDto;
+import com.lightbrary.util.SecurityUtil;
 
 @Service
 public class MemberServiceImpl implements MemberService{
@@ -23,6 +24,7 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public void insertOneMember(MemberDto memberDto) {
 		// TODO Auto-generated method stub
+		memberDto.setPassword(SecurityUtil.encryptSHA256(memberDto.getPassword()));
 		memberDao.insertOneMember(memberDto);
 	
 	}
@@ -36,7 +38,8 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public int updateOneMember(MemberDto memberDto) {
 		// TODO Auto-generated method stub
-		
+		String password = memberDto.getPassword();
+		memberDto.setPassword(SecurityUtil.encryptSHA256(password));
 		return memberDao.updateOneMember(memberDto);
 	}
 
@@ -51,6 +54,7 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public MemberDto memberExist(String email, String password) {
 		// TODO Auto-generated method stub
+		password = SecurityUtil.encryptSHA256(password);
 		MemberDto memberDto = memberDao.memberExist(email, password);
 		
 		return memberDto;
@@ -101,6 +105,7 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public int resetPassword(String email, String password) {
 		// TODO Auto-generated method stub
+		password = SecurityUtil.encryptSHA256(password);
 		return memberDao.resetPassword(email, password);
 	}
 
