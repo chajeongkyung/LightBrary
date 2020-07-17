@@ -414,7 +414,7 @@
 			</div>
 			<!-- //테이블 목록 end -->
 		
-		<c:if test="${empty noticeList }">	
+		<c:if test="${not empty noticeList }">	
 			<jsp:include page="/WEB-INF/views/common/paging.jsp">
 				<jsp:param value="${pagingInfo}" name="pagingInfo"/>
 			</jsp:include>
