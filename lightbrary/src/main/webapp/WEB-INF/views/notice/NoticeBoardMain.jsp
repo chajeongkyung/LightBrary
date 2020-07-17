@@ -269,7 +269,7 @@
 							<c:choose>
 								<c:when test="${empty noticeList }">
 									<tr>
-										<td colspan="8" style="text-align: center;">검색하신 결과가 없습니다.</td>
+										<td colspan="8" style="text-align: center; height: 200px;">검색하신 결과가 없습니다.</td>
 									</tr>
 								</c:when>
 								
@@ -414,10 +414,11 @@
 			</div>
 			<!-- //테이블 목록 end -->
 		
-		<c:if test="${empty noticeList }">	
-		<jsp:include page="/WEB-INF/views/common/paging.jsp">
-			<jsp:param value="${pagingInfo}" name="pagingInfo"/>
-		</jsp:include>
+
+		<c:if test="${not empty noticeList }">	
+			<jsp:include page="/WEB-INF/views/common/paging.jsp">
+				<jsp:param value="${pagingInfo}" name="pagingInfo"/>
+			</jsp:include>
 		</c:if>
 		
 		<form action="./list.do" id='pagingForm' method="get">
