@@ -20,6 +20,13 @@
 
 <script type="text/javascript">
 	$(function(){
+		if($('#gradeCode').val() == 0){
+			$('#bookNav').addClass('active');
+			$('#bookDepth2 > li:nth-child(1)').addClass('active');
+		} else{
+			$('#depth1Ul > li:nth-child(1)').addClass('active');
+		}
+		
 		bookCategorySelect();
 		bookStatusSelect();
 	});
@@ -168,6 +175,7 @@
 			</div>
 			<!-- //도서등록 end -->
 			
+			<input type="hidden" name="gradeCode" id='gradeCode' value="${member.gradeCode}">
 		</div>
 		<!-- //컨테이너 end -->
 		

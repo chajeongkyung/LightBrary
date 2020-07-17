@@ -46,6 +46,7 @@ public class RentController {
 	@Autowired
 	private BookService bookService;
 	
+	
 	/** 사용자 대출 예약 - 도서 목록
 	 * @param memberNo
 	 * @param no
@@ -70,8 +71,18 @@ public class RentController {
 		} else {
 			model.addAttribute("bookListParamDto", bookListParamDto);
 			
-			return "/common/reserveError";
+			return "forward:/book/reserveError.do";
 		}
+	}
+	
+	//동시 예약 에러 페이지
+	@Auth(role=Role.USER)
+	@RequestMapping(value = "/book/reserveError.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String insertReserve(BookListParamDto bookListParamDto, HttpSession session, Model model) {
+		
+		model.addAttribute("bookListParamDto", bookListParamDto);
+			
+		return "/common/reserveError";
 	}
 	
 	//다중 예약 처리
@@ -87,6 +98,33 @@ public class RentController {
 			rentService.insertReserve(memberNo, no);
 			rentService.updateOneStatusToReserve(no);
 		}
+	}
+	
+	//다중 예약 처리시 동시 예약 방지
+	@RequestMapping(value="/book/reserveBatchChk.do", method = RequestMethod.POST, 
+			produces="text/plain;charset=UTF-8")
+	@ResponseBody
+	public String reserveBatchChk(int[] noArr, HttpSession session) {
+		log.info("도서 목록 :: 다중 동시 예약 처리 방지");
+		
+		int reserveCnt = 0;
+		String resultStr = "false";
+
+		for (int no : noArr) {
+			if (bookService.selectOneBook(no).getStatusCode() != 0) {
+				reserveCnt++;
+			}
+		}
+		
+		if(reserveCnt > 0) {
+			System.out.println("========================예약 도서가 있다");
+			resultStr = "false";
+		} else {
+			System.out.println("========================예약 도서가 없으니 처리 하자");
+			resultStr = "true";
+		}
+		
+		return resultStr;
 	}
 	
 	/** 사용자 대출 예약 - 상세
@@ -113,7 +151,7 @@ public class RentController {
 		} else {
 			model.addAttribute("bookListParamDto", bookListParamDto);
 			
-			return "/common/reserveError";
+			return "forward:/book/reserveError.do";
 		}
 	}
 	
