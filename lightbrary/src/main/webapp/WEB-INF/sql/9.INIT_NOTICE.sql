@@ -44,7 +44,7 @@ VALUES(68, '1', '0', '라이트브러리 운영시간 변경 안내', '11월 14�
 INSERT INTO NOTICE VALUE(NO, MEMBER_NO, CATEGORY_CODE, TITLE, CONTENT, START_DATE, END_DATE, CREATED_DATE, MODIFIED_DATE)
 VALUES(69, '1', '0', '책 소독기 설치 안내', '본관 2층 자료열람실에 건강한 독서 문화를 위하여
 책 소독기를 마련하였습니다.
-많은 이용 바랍니다.', NULL, NULL, to_date('2020/07/15 03:00','yyyy/mm/dd hh24:mi'), '2020-01-27');
+많은 이용 바랍니다.', NULL, NULL, to_date('2020/07/15 02:30','yyyy/mm/dd hh24:mi'), '2020-01-27');
 INSERT INTO NOTICE VALUE(NO, MEMBER_NO, CATEGORY_CODE, TITLE, CONTENT, START_DATE, END_DATE, CREATED_DATE, MODIFIED_DATE)
 VALUES(70, '1', '1', '[강좌]2019년 라이트브러리 시니어 디지털금융교육', '라이트브러리에서 시니어 디지털금융교육을 진행합니다.
 

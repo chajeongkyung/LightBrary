@@ -114,21 +114,24 @@
 	<select id="previousWriteNotice" resultMap="noticeCategoryResultMap"
 		parameterType="map">
 		SELECT N.RNUM RNUM, N.NO, N.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
-		N.SCHEDULE_FLAG , N.CREATED_DATE, N.CODE, N.CONTENT
+		N.SCHEDULE_FLAG, N.CREATED_DATE, N.CODE, N.CONTENT
    		FROM (
-      			SELECT ROWNUM RNUM, M.NO, M.NAME , M.TITLE , M.START_DATE, M.END_DATE, 
-                    M.SCHEDULE_FLAG , M.CREATED_DATE, M.CODE, M.CONTENT
-       			FROM(
-	           		SELECT N.NO, NC.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
-                    NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE, N.CONTENT 
-                    FROM NOTICE N
-                    JOIN NOTICE_CATEGORY NC
-                    ON N.CATEGORY_CODE = NC.CODE
-            		
-            		<include refid="search"></include>
-            		
-			        ORDER BY N.CATEGORY_CODE DESC
-           		) M
+   				SELECT ROWNUM RNUM, M.*
+   				FROM(
+	      			SELECT MORDER.NO, MORDER.NAME , MORDER.TITLE , MORDER.START_DATE, MORDER.END_DATE, 
+	      				MORDER.SCHEDULE_FLAG , MORDER.CREATED_DATE, MORDER.CODE, MORDER.CONTENT
+	       			FROM(
+		           		SELECT N.NO, NC.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
+	                    NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE, N.CONTENT 
+	                    FROM NOTICE N
+	                    JOIN NOTICE_CATEGORY NC
+	                    ON N.CATEGORY_CODE = NC.CODE
+	            		
+	            		<include refid="search"></include>
+	            		
+				        ORDER BY N.CREATED_DATE DESC
+	           		) MORDER
+	           	) M
         ) N
         WHERE RNUM = ${rnum} - 1
 	</select>
@@ -138,19 +141,22 @@
 		SELECT N.RNUM RNUM, N.NO, N.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
 		N.SCHEDULE_FLAG , N.CREATED_DATE, N.CODE, N.CONTENT
    		FROM (
-      			SELECT ROWNUM RNUM, M.NO, M.NAME , M.TITLE , M.START_DATE, M.END_DATE, 
-                    M.SCHEDULE_FLAG , M.CREATED_DATE, M.CODE, M.CONTENT
-       			FROM(
-	           		SELECT N.NO, NC.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
-                    NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE, N.CONTENT 
-                    FROM NOTICE N
-                    JOIN NOTICE_CATEGORY NC
-                    ON N.CATEGORY_CODE = NC.CODE
-            		
-            		<include refid="search"></include>
-            		
-			        ORDER BY N.CATEGORY_CODE DESC
-           		) M
+   				SELECT ROWNUM RNUM, M.*
+   				FROM(
+	      			SELECT MORDER.NO, MORDER.NAME , MORDER.TITLE , MORDER.START_DATE, MORDER.END_DATE, 
+	                    MORDER.SCHEDULE_FLAG , MORDER.CREATED_DATE, MORDER.CODE, MORDER.CONTENT
+	       			FROM(
+		           		SELECT N.NO, NC.NAME, N.TITLE, N.START_DATE, N.END_DATE, 
+	                    NC.SCHEDULE_FLAG , N.CREATED_DATE, NC.CODE, N.CONTENT 
+	                    FROM NOTICE N
+	                    JOIN NOTICE_CATEGORY NC
+	                    ON N.CATEGORY_CODE = NC.CODE
+	            		
+	            		<include refid="search"></include>
+	            		
+				        ORDER BY N.CREATED_DATE DESC
+	           		) MORDER
+	           	) M
         ) N
         WHERE RNUM = ${rnum} + 1
 	</select>
@@ -240,7 +246,7 @@
 			
 			<include refid="search"></include>
 			
-			ORDER BY NO DESC )
+			ORDER BY N.CREATED_DATE DESC )
 		M )
 		WHERE NO = #{no}  
 		
