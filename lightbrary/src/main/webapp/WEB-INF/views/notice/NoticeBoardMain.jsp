@@ -162,7 +162,7 @@
 			
 			<div class='searchForm type2'>
 				<form action="./list.do" method="post" id='selectSearch' name='selectSearch' 
-					onsubmit='return false' style="margin-top: 65px;"
+					onsubmit='return false'
 					onkeydown="if(event.keyCode == 13) seachFnc();">
 
 					<fieldset class="overH" style="height: 50px;">
@@ -322,7 +322,7 @@
 									
 									<td style="text-align: left;">
 	
-										 <a href="#" class="ellipsis" onclick="listOnePageFnc(${noticeDto.no},
+										 <a href="#none" class="ellipsis" onclick="listOnePageFnc(${noticeDto.no},
 										 	 ${noticeDto.rnum})">
 												${noticeDto.title}
 										 </a>
@@ -413,10 +413,12 @@
 				</c:if>
 			</div>
 			<!-- //테이블 목록 end -->
-			
+		
+		<c:if test="${empty noticeList }">	
 		<jsp:include page="/WEB-INF/views/common/paging.jsp">
 			<jsp:param value="${pagingInfo}" name="pagingInfo"/>
 		</jsp:include>
+		</c:if>
 		
 		<form action="./list.do" id='pagingForm' method="get">
 			<input type="hidden" id='curPage' name='curPage' 

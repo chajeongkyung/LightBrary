@@ -213,6 +213,7 @@
 					</div>
 					<div id='tableWrap'>
 						<table id='table'>
+						<c:if test="${listStatus == 'all'}">
 							<colgroup>
 								<col width="20px">
 								<col width="50px">
@@ -221,16 +222,28 @@
 								<col width="220px">
 								<col width="80px">
 							</colgroup>
+						</c:if>	
+						<c:if test="${listStatus == 'overdue'}">
+							<colgroup>
+								<col width="50px">
+								<col width="50px">
+								<col width="70px">
+								<col width="220px">
+								<col width="80px">
+							</colgroup>
+						</c:if>
 							<thead>
 								<tr>
-									<th class='checkboxTd'>
-										<!--기본 체크박스 전체선택 start -->
-										<div class='selectAll checkbox type2 fLeft'>
-											<input type="checkbox" id='all'>
-											<label for="all"></label>
-										</div>
-										<!--기본 체크박스 전체선택 end -->
-									</th>
+									<c:if test="${listStatus == 'all'}">
+										<th class='checkboxTd'>
+											<!--기본 체크박스 전체선택 start -->
+											<div class='selectAll checkbox type2 fLeft'>
+												<input type="checkbox" id='all'>
+												<label for="all"></label>
+											</div>
+											<!--기본 체크박스 전체선택 end -->
+										</th>
+									</c:if>
 									<th>회원번호</th>
 									<th>이름</th>
 									<th>연락처</th>
@@ -240,7 +253,6 @@
 							</thead>
 							<tbody>
 								<c:if test="${empty memberDtoList}">
-									
 									<tr>
 										<td colspan="6" style="text-align: center; padding: 56px 0px;">
 											<span style="font-size: 16px; color: #686868;">검색하신 내용에 대한 결과가 없습니다.</span>
@@ -250,15 +262,17 @@
 								
 								<c:forEach var="memberDto" items="${memberDtoList}">
 									<tr>
-										<td class='checkboxTd'>
-											<input type="hidden" value='${memberDto.no}' class='noObj'>
-											<!--기본 체크박스 start -->
-											<div class='checkbox type2 fLeft'>
-												<input type="checkbox" name="box" id='chk${memberDto.no}' value='${memberDto.no}'>
-												<label for="chk${memberDto.no}"></label>
-											</div>
-											<!--//기본 체크박스 end -->
-										</td>
+										<c:if test="${listStatus == 'all'}">
+											<td class='checkboxTd'>
+												<input type="hidden" value='${memberDto.no}' class='noObj'>
+												<!--기본 체크박스 start -->
+												<div class='checkbox type2 fLeft'>
+													<input type="checkbox" name="box" id='chk${memberDto.no}' value='${memberDto.no}'>
+													<label for="chk${memberDto.no}"></label>
+												</div>
+												<!--//기본 체크박스 end -->
+											</td>
+										</c:if>
 										<td style="text-align: center;">
 											<a href='#' onclick="listOnePageFnc(this, event);" class='ellipsis'>${memberDto.no}</a>
 										</td>
