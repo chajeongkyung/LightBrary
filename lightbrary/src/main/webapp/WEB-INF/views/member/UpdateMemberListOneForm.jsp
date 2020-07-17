@@ -15,94 +15,6 @@
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/script.js"></script>
-
-</head>
-
-<body>
-
-	<div id='wrap'>
-		<jsp:include page="/WEB-INF/views/Header.jsp" />
-		
-		<!-- 컨테이너 start -->
-		<div id='container'>
-			<h2 id='pageTitle'>회원관리</h2>
-			<!-- 상세페이지 start -->
-			<div id='detailWrap'>
-				<form action="./updateCtr.do" onsubmit="return updateMemberFnc();" method='post'>
-					<div class='detailTable'>
-						<p class='text bold textDark'>계정정보</p>
-						<table>
-							<colgroup>
-								<col width="214px">
-								<col width="786px">
-							</colgroup>
-							<tbody>
-								<tr>
-									<th class='text bold textDark inputTh'>회원번호</th>
-									<td class='text textGrey'>${memberDto.no}</td>
-								</tr>
-								<tr>
-									<th class='text bold textDark inputTh'>이메일</th>
-									<td class='text textGrey'>${memberDto.email}</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-
-					<div class='detailTable'>
-						<p class='text bold textDark'>개인정보</p>
-						<table>
-							<colgroup>
-								<col width="214px">
-								<col width="786px">
-							</colgroup>
-							<tbody>
-								<tr>
-									<th class='text bold textDark inputTh'>이름</th>
-									<td class='text textGrey'>${memberDto.name}</td>
-								</tr>
-								<tr>
-									<th class='text bold textDark inputTh'>연락처</th>
-									<td class='text textGrey'>${memberDto.phone}</td>
-								</tr>
-								<tr>
-									<th class='text bold textDark inputTh'>주소</th>
-									<td class='text textGrey'>${memberDto.address}</td>
-								</tr>
-								<tr>
-									<th class='text bold textDark inputTh'>가입일</th>
-									<td class='text textGrey'><fmt:formatDate value="${memberDto.createdDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					
-					<!-- 상세페이지 버튼 start -->
-					<div class='btnWrap viewBtns fs0 tCenter'>
-						<a href="#" onclick="resetMemberPasswordFnc();" class='btn grey'>비밀번호 초기화</a>
-						<a href="#" onclick="deleteMemberFnc();" class='btn grey'>강퇴</a>
-						
-						<c:if test="${listStatus == 'all'}">
-							<a href="<%=request.getContextPath()%>/auth/list.do" class='btn green'>목록</a>
-						</c:if>
-						
-						<c:if test="${listStatus == 'overdue'}">
-							<a href="<%=request.getContextPath()%>/auth/overdueMemberList.do" class='btn green'>목록</a>
-						</c:if>
-					</div>
-					<!-- //상세페이지 버튼 end -->
-				</form>
-			</div>
-			<!-- //상세페이지 end -->
-			
-		</div>
-		<!-- //컨테이너 end -->
-		
-		<jsp:include page="/WEB-INF/views/Tail.jsp" />
-	</div>
-
-</body>
-
 <script type="text/javascript">
 
 	$(document).ready(function() {
@@ -146,5 +58,113 @@
 	}
 
 </script>
+
+</head>
+
+<body>
+
+	<div id='wrap'>
+		<jsp:include page="/WEB-INF/views/Header.jsp" />
+		
+		<!-- 컨테이너 start -->
+		<div id='container'>
+			<h2 id='pageTitle'>회원관리</h2>
+			<!-- 상세페이지 start -->
+			<div id='detailWrap'>
+				<div class='detailTable'>
+					<p class='text bold textDark'>계정정보</p>
+					<table>
+						<colgroup>
+							<col width="214px">
+							<col width="786px">
+						</colgroup>
+						<tbody>
+							<tr>
+								<th class='text bold textDark inputTh'>회원번호</th>
+								<td class='text textGrey'>${memberDto.no}</td>
+							</tr>
+							<tr>
+								<th class='text bold textDark inputTh'>이메일</th>
+								<td class='text textGrey'>${memberDto.email}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div class='detailTable'>
+					<p class='text bold textDark'>개인정보</p>
+					<table>
+						<colgroup>
+							<col width="214px">
+							<col width="786px">
+						</colgroup>
+						<tbody>
+							<tr>
+								<th class='text bold textDark inputTh'>이름</th>
+								<td class='text textGrey'>${memberDto.name}</td>
+							</tr>
+							<tr>
+								<th class='text bold textDark inputTh'>연락처</th>
+								<td class='text textGrey'>${memberDto.phone}</td>
+							</tr>
+							<tr>
+								<th class='text bold textDark inputTh'>주소</th>
+								<td class='text textGrey'>${memberDto.address}</td>
+							</tr>
+							<tr>
+								<th class='text bold textDark inputTh'>가입일</th>
+								<td class='text textGrey'><fmt:formatDate value="${memberDto.createdDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+					
+				<!-- 상세페이지 버튼 start -->
+				<div class='btnWrap viewBtns fs0 tCenter'>
+					<a href="#" onclick="resetMemberPasswordFnc();" class='btn grey'>비밀번호 초기화</a>
+					<a href="#" onclick="deleteMemberFnc();" class='btn grey'>강퇴</a>
+					
+					<c:if test="${listStatus == 'all'}"> 
+						<form id='pagingForm' name='memberListParamDto' method="post" action="./list.do">
+							<input type="submit" class='btn green' value="목록">
+							<input type="hidden" id="no" name="no" value="${memberListParamDto.no}">
+							<input type="hidden" name="name" value="${memberListParamDto.name}">
+							<input type="hidden" name="email" value="${memberListParamDto.email}">
+							<input type="hidden" name="phone" value="${memberListParamDto.phone}">
+							<input type="hidden" name="joinDateStart" value="${memberListParamDto.joinDateStart}">
+							<input type="hidden" name="joinDateEnd" value="${memberListParamDto.joinDateEnd}">
+							<input type="hidden" id='curPage' name='curPage' value="${memberListParamDto.curPage}">
+							<input type="hidden" id='listStatus' name='listStatus' value="${listStatus}">
+						</form>
+					</c:if>
+					
+					<c:if test="${listStatus == 'overdue'}"> 
+						<form id='pagingForm' name='memberListParamDto' method="post" action="./overdueMemberList.do">
+							<input type="submit" class='btn green' value="목록">
+							<input type="hidden" id="no" name="no" value="${memberListParamDto.no}">
+							<input type="hidden" name="name" value="${memberListParamDto.name}">
+							<input type="hidden" name="email" value="${memberListParamDto.email}">
+							<input type="hidden" name="phone" value="${memberListParamDto.phone}">
+							<input type="hidden" name="joinDateStart" value="${memberListParamDto.joinDateStart}">
+							<input type="hidden" name="joinDateEnd" value="${memberListParamDto.joinDateEnd}">
+							<input type="hidden" id='curPage' name='curPage' value="${memberListParamDto.curPage}">
+							<input type="hidden" id='listStatus' name='listStatus' value="${listStatus}">
+						</form>
+					</c:if>  	
+					
+				</div>
+				<!-- //상세페이지 버튼 end -->
+			</div>
+			<!-- //상세페이지 end -->
+			
+		</div>
+		<!-- //컨테이너 end -->
+		
+		<jsp:include page="/WEB-INF/views/Tail.jsp" />
+	</div>
+
+</body>
+
+
 
 </html>

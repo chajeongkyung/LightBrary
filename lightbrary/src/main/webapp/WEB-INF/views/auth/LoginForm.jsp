@@ -23,7 +23,8 @@
 		<!-- 컨테이너 start -->
 			<div id='container'>
 				<h2 id='pageTitle'>로그인</h2>
-					<form action='./loginCtr.do' id="loginCtrForm" method='post' class='infoForm'>
+					<form action='./loginCtr.do' id="loginCtrForm" method='post' 
+						class='infoForm' onkeydown="if(event.keyCode == 13) checkAccountFnc();">
 						
 						<!-- 입력폼 start -->
 						<div class='infoInputWrap'>

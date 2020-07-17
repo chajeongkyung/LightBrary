@@ -32,7 +32,7 @@
 		// depth1 네비
 		$('#depth1Ul > li:nth-child(1)').addClass('active');
 		
-		 $("a").hover(function(){
+		 $("td a").hover(function(){
 			    $(this).css("font-weight", "bold");
 			    }, function(){
 			    $(this).css("font-weight", "normal");
