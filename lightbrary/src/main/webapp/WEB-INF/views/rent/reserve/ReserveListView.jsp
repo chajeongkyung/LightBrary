@@ -51,14 +51,54 @@
 	}
 	
 	// 픽업일 지난 도서 예약 취소
-	function cancelStatusFnc() {
-		if(confirm('픽업일이 지난 도서들의 예약을 취소하시겠습니까?')){
-			alert('예약 취소가 성공적으로 처리되었습니다.');
+// 	function cancelStatusFnc() {
+// 		if(confirm('픽업일이 지난 도서들의 예약을 취소하시겠습니까?')){
+// 			alert('예약 취소가 성공적으로 처리되었습니다.');
 			
-			return;
-		} else{
-			return false;
-		}
+// 			return;
+// 		} else{
+// 			return false;
+// 		}
+// 	}
+	
+	function cancelStatusFnc() {
+		
+		var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
+		$.ajax({
+			type: "POST",
+			url: baseUrl + 'rent/reserve/cancelChk.do',
+			success:function(data){
+				console.log("data : " + data);
+				if(confirm('픽업일이 지난 도서들의 예약을 취소하시겠습니까?')){
+					if(data == "true"){
+						
+						$.ajax({
+							type: "POST",
+							url: baseUrl + '/rent/reserve/cancel.do',
+							success:function(){
+								alert('예약 취소가 성공적으로 처리되었습니다.');
+								$('#pagingForm').submit();
+								
+								location.href = "./list.do";
+							},
+							error: function(){
+								alert('오류2');
+							}
+						});
+						
+					} else{
+						alert('예약 취소에 해당하는 도서가 없습니다.');
+						$('#pagingForm').submit();
+					}
+				} else{
+					return false;
+				}
+			},
+			error: function(){
+				alert('오류1');
+			}
+		});
+		
 	}
 	
 	// 다중 대출처리
@@ -185,7 +225,7 @@
 					</ul>
 					<ul class='settings fRight fs0'>
 						<li>
-							<a href="./cancel.do" class='text' onclick="cancelStatusFnc();">
+							<a href="#none" class='text' onclick="cancelStatusFnc();">
 								픽업일 지난 예약 취소
 							</a>
 						</li>
