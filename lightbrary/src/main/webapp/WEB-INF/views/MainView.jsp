@@ -113,13 +113,13 @@ function noticeDetailMoveFnc(no, rnum){
 									</c:if>
 									
 									<c:if test="${noticeDto.code == 2}" >
-										<span class='bold textGreen'>
+										<span class='bold textRed'>
 											<c:out value="휴관"></c:out>
 										</span>
 									</c:if>
 									
 									<c:if test="${noticeDto.code == 1}" >
-										<span class='bold textRed'>
+										<span class='bold textGreen'>
 											<c:out value="행사"></c:out>
 										</span>
 									</c:if>

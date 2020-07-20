@@ -285,7 +285,7 @@
 										<td>
 											<a href='#' onclick="listOnePageFnc(this, event);" class='ellipsis'>${memberDto.email}</a>
 										</td>
-										<td>
+										<td style="text-align: center;">
 											<span>
 												<fmt:formatDate value="${memberDto.createdDate}" pattern="yyyy/MM/dd HH:mm:ss"/>
 											</span>

@@ -476,9 +476,54 @@ public class RentController {
 
 		return "rent/reserve/ReserveListView";
 	}
+	
+	// 취소할 예약이 있는지 확인
+	@RequestMapping(value="/rent/reserve/cancelChk.do", method = { RequestMethod.GET, RequestMethod.POST }, 
+			produces="text/plain;charset=UTF-8")
+	@ResponseBody
+	public String cancelChk(Model model) {
+		log.info("연체 목록 :: 불러올 연체가 있는지 확인");
+		
+		int cancelCnt = 0;
+		String resultStr = "false";
+		
+		List<RentDto> reserveList = rentService.selectReservebyStatus("예약");
+
+		Calendar cal = Calendar.getInstance();
+		Date today = new Date();
+		cal.setTime(today);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+
+		Calendar cal2 = Calendar.getInstance();
+		for (RentDto rentDto : reserveList) {
+			Date pickupDate = rentDto.getPickUpDate();
+			cal2.setTime(pickupDate);
+			cal2.set(Calendar.HOUR_OF_DAY, 0);
+			cal2.set(Calendar.MINUTE, 0);
+			cal2.set(Calendar.SECOND, 0);
+			cal2.set(Calendar.MILLISECOND, 0);
+			if (cal.after(cal2)) {
+				cancelCnt++;
+			}
+		}
+		
+		if(cancelCnt > 0) {
+			log.info("픽업일 지난 도서가 있다.");
+			resultStr = "true";
+			model.addAttribute("data", resultStr);
+		} else {
+			log.info("취소할 예약 도서가 없다");
+			resultStr = "false";
+		}
+		
+		return resultStr;
+	}
 
 	// 예약 취소
-	@RequestMapping(value = "/rent/reserve/cancel.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/rent/reserve/cancel.do", method = RequestMethod.POST)
 	public String reserveCancel(Model model) {
 		List<RentDto> reserveList = rentService.selectReservebyStatus("예약");
 
@@ -812,9 +857,54 @@ public class RentController {
 
 		return "rent/overdue/OverdueListView";
 	}
+	
+	// 불러올 연체가 있는지 확인
+	@RequestMapping(value="/rent/overdue/refreshChk.do", method = { RequestMethod.GET, RequestMethod.POST }, 
+			produces="text/plain;charset=UTF-8")
+	@ResponseBody
+	public String refreshChk(Model model) {
+		log.info("연체 목록 :: 불러올 연체가 있는지 확인");
+		
+		int overdueCnt = 0;
+		String resultStr = "false";
+		
+		List<RentDto> overdueList = rentService.selectRentAll();
+
+		Calendar cal = Calendar.getInstance();
+		Date today = new Date();
+		cal.setTime(today);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+
+		Calendar cal2 = Calendar.getInstance();
+		for (RentDto rentDto : overdueList) {
+			Date expireDate = rentDto.getExpireDate();
+			cal2.setTime(expireDate);
+			cal2.set(Calendar.HOUR_OF_DAY, 0);
+			cal2.set(Calendar.MINUTE, 0);
+			cal2.set(Calendar.SECOND, 0);
+			cal2.set(Calendar.MILLISECOND, 0);
+			if (cal.after(cal2)) {
+				overdueCnt++;
+			}
+		}
+		
+		if(overdueCnt > 0) {
+			log.info("연체 도서가 있다");
+			resultStr = "true";
+			model.addAttribute("data", resultStr);
+		} else {
+			log.info("업데이트 할 연체 도서가 없다");
+			resultStr = "false";
+		}
+		
+		return resultStr;
+	}
 
 	// 연체 불러오기
-	@RequestMapping(value = "/rent/overdue/refresh.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/rent/overdue/refresh.do", method = RequestMethod.POST)
 	public String overdueRefresh(Model model) {
 		log.info("연체 목록 :: 연체 업데이트");
 
@@ -841,7 +931,6 @@ public class RentController {
 				rentService.updateOneStatusToOverdue(rentDto);
 				rentService.updateOneStatusToOverdueFromRent(rentDto);
 			}
-			
 		}
 
 		return "redirect:/rent/overdue/list.do";
