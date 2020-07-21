@@ -97,18 +97,22 @@
 		
 		if(noObjArr.length > 0){
 			var baseUrl = window.location.protocol + "//" + window.location.host + "/lightbrary/";
-			$.ajax({
-				type: "POST",
-				url: baseUrl + 'rent/returnBatch.do',
-				data: "noArr=" + noArr,
-				success:function(){
-					alert('반납처리 되었습니다.');
-					$('#pagingForm').submit();
-				},
-				error: function(){
-					alert('오류');
-				}
-			});
+			if(confirm("선택하신 도서의 반납처리를 진행하시겠습니까?")){
+				$.ajax({
+					type: "POST",
+					url: baseUrl + 'rent/returnBatch.do',
+					data: "noArr=" + noArr,
+					success:function(){
+						alert('반납처리 되었습니다.');
+						$('#pagingForm').submit();
+					},
+					error: function(){
+						alert('오류');
+					}
+				});
+			}else{
+				return false;
+			}
 		} else{
 			alert('선택된 도서가 없습니다.');
 		}

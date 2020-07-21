@@ -50,7 +50,7 @@
 			if(confirm("선택하신 도서의 반납처리를 진행하시겠습니까?")){
 				alert("선택하신 도서의 반납처리가 성공적으로 처리되었습니다.");
 				return;
-			}else{
+			} else{
 				return false;
 			}
 		});
