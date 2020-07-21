@@ -61,7 +61,7 @@
 		var bookNoObj = $('#no');
 		
 		if(confirm('도서의 대출 예약을 하시겠습니까?')){
-			alert('대출 가능한 날짜는 오늘로 부터 5일입니다.\n픽업일 내에 도서를 찾아가지 않을 시 예약은 취소됩니다.');
+			alert('대출 가능한 날짜는 오늘로 부터 5일입니다.\n픽업일 내에 도서를 찾아가지 않을 시 예약은 취소됩니다.\n"나의 예약 현황"으로 이동합니다.');
 			
 			$('#no').val(bookNoObj.val());
 			$('#bookListParamDto').attr("action", "./detailReserve.do");
