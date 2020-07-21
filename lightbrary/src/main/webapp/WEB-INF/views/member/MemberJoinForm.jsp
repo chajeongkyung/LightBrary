@@ -99,15 +99,20 @@
 
 <script type="text/javascript">	
 
+var checkValCnt = 0;
+
 $("#name").blur(function() {
 	var nameObj = $('#name').val();
 	
 	 if(isNull(nameObj)) {
 		 $('#alertNameErrorMsg').html("성함을 입력해 주세요.");
+		 checkValCnt++;
 	 }else if (!isValidName(nameObj)) {
 		 $('#alertNameErrorMsg').html("한글과 영문 대 소문자를 사용하세요.<br>(특수기호, 공백 사용 불가)");
+		 checkValCnt++;
 	 }else {
 		 $('#alertNameErrorMsg').html("");	
+		 checkValCnt = 0;
 	}
 });
 
@@ -126,17 +131,21 @@ $("#phone").blur(function() {
 			if (data == 1) {
 					$('#alertPhoneErrorMsg').css('color', '#E92222');	
 					$('#alertPhoneErrorMsg').html("사용중인 핸드폰번호입니다.");
+					checkValCnt++;
 				} else if (data == 0){
 
 					if(isNull(phoneObj)){
 						$('#alertPhoneErrorMsg').css('color', '#E92222');	
 						$('#alertPhoneErrorMsg').html('연락처를 입력해 주세요.');
+						checkValCnt++;
 					} else if (!isValidPhone(phoneObj)){
 						$('#alertPhoneErrorMsg').css('color', '#E92222');	
 						$('#alertPhoneErrorMsg').html('숫자만 입력해 주세요.');
+						checkValCnt++;
 					} else{
 						$('#alertPhoneErrorMsg').css('color', 'blue');						
 						$('#alertPhoneErrorMsg').html('');
+						checkValCnt = 0;
 					}	
 				}
 			}, error : function() {
@@ -159,18 +168,21 @@ $("#email").blur(function() {
 			if (data == 1) {
 					$('#alertEmailErrorMsg').css('color', '#E92222');	
 					$('#alertEmailErrorMsg').html("사용중인 이메일입니다.");
+					checkValCnt++;
 				} else if (data == 0){
 
 					if(isNull(emailObj)){
 						$('#alertEmailErrorMsg').css('color', '#E92222');	
 						$('#alertEmailErrorMsg').html('이메일을 입력해주세요.');
-						
+						checkValCnt++;
 					} else if (!isValidEmail(emailObj)){
 						$('#alertEmailErrorMsg').css('color', '#E92222');	
 						$('#alertEmailErrorMsg').html('이메일 형식이 맞지 않습니다.');
+						checkValCnt++;
 					} else{
 						$('#alertEmailErrorMsg').css('color', '#2B9447');						
 						$('#alertEmailErrorMsg').html('사용가능한 이메일입니다.');
+						checkValCnt = 0;
 					}	
 				}
 			}, error : function() {
@@ -184,10 +196,13 @@ $("#password").blur(function() {
 	
 	 if(isNull(passwordObj)) {
 		 $('#alertPasswordErrorMsg').html("비밀번호를 입력해 주세요.");
+		 checkValCnt++;
 	}else if (!isValidPassword(passwordObj)) {
 		 $('#alertPasswordErrorMsg').html("8~16자 영문,숫자,특수문자를 사용하세요.");
+		 checkValCnt++;
 	}else {
 		 $('#alertPasswordErrorMsg').html("");	
+		 checkValCnt = 0;
 	}
 });
 
@@ -198,10 +213,13 @@ $("#checkPassword").blur(function() {
 	
 	 if(isNull(checkPasswordObj)) {
 		 $('#alertcheckPasswordErrorMsg').html("비밀번호를 확인해 주세요.");
+		 checkValCnt++;
 	}else if (passwordObj != checkPasswordObj) {
 		 $('#alertcheckPasswordErrorMsg').html("비밀번호가 일치하지 않습니다.");
+		 checkValCnt++;
 	}else {
-		 $('#alertcheckPasswordErrorMsg').html("");	
+		 $('#alertcheckPasswordErrorMsg').html("");
+		 checkValCnt = 0;
 	}
 });
 
@@ -210,8 +228,10 @@ $("#address").blur(function() {
 	
 	 if(isNull(addressObj)) {
 		 $('#alertAddressErrorMsg').html("주소를 입력해 주세요.");
+		 checkValCnt++;
 	}else {
 		 $('#alertAddressErrorMsg').html("");	
+		 checkValCnt = 0;
 	}
 });
 
@@ -254,7 +274,11 @@ function checkValidationFnc() {
     	$('#alertNecessaryMsg').html("모든 항목은 필수입니다.");
         return false;
     }
-    
+    if(checkValCnt >= 0){
+        alert("다시 한번 확인해 주세요");
+    	return false; 
+        
+    }
     alert("회원가입이 완료되었습니다.");
    	return true;
 	
