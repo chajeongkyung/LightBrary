@@ -111,28 +111,9 @@ public class NoticeServiceImpl implements NoticeService{
 		return noticeDao.previousWriteNotice(searchOption, keyword, categoryCode, rnum);
 	}
 
-//	@Override
-//	public Map<String, Object> selectOneNotice(int no) {
-//		// TODO Auto-generated method stub
-//		
-//		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		
-//		NoticeDao noticeDto = (NoticeDao) noticeDao.selectOneNotice(no);
-//		
-//		resultMap.put("noticeDto", noticeDto);
-//		
-//		return resultMap;
-//	}
-		
 
 	
 
 }
 
 		
-		
-	
-	
-	
-	
-

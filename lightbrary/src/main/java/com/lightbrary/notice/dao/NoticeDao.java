@@ -15,7 +15,6 @@ public interface NoticeDao {
 
 	public List<NoticeDto> mainNotice();
 
-	
 	public NoticeCategoryDto nextWriteNotice(String searchOption, 
 			String keyword, int categoryCode, int rnum);
 	

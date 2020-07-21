@@ -34,7 +34,6 @@ public class NoticeDaoImpl implements NoticeDao{
 		
 		List<NoticeDto> noticeList = 
 				sqlSession.selectList(namespace + "selectMainNotice", map);
-		System.out.println("확인2");
 		
 		return noticeList;
 		
@@ -129,19 +128,5 @@ public class NoticeDaoImpl implements NoticeDao{
 		
 		return sqlSession.selectOne(namespace + "previousWriteNotice", map);
 	}
-
-	
-
-	
-	
-
-//	@Override
-//	public Map<String, Object> selectOneNotice(int no) {
-//		// TODO Auto-generated method stub
-//		return sqlSession.selectOne(namespace + "selectOneNotice");
-//	}
-	
-	
-	
 
 }
