@@ -274,7 +274,7 @@ function checkValidationFnc() {
     	$('#alertNecessaryMsg').html("모든 항목은 필수입니다.");
         return false;
     }
-    if(checkValCnt >= 0){
+    if(checkValCnt > 0){
         alert("다시 한번 확인해 주세요");
     	return false; 
         
