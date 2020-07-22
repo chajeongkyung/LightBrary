@@ -97,8 +97,13 @@
 		
 		var noObj = '';
 		
-		noObj = aTagObj.parent().parent().children('td').children().eq(2);
-		
+		if ('${listStatus}' == 'all') {
+			noObj = aTagObj.parent().parent().children('td').children().eq(2);			
+		}else if ('${listStatus}' == 'overdue') {
+			noObj = aTagObj.parent().parent().children('td').children().eq(0);
+			
+		}
+	
 		$('#pagingForm').attr("action", "<%=request.getContextPath()%>/auth/detail.do?no=" + noObj.html());
 		$('#pagingForm').submit();
 	}

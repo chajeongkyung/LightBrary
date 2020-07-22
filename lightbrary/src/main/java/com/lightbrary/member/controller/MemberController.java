@@ -265,7 +265,7 @@ public class MemberController {
 				if(sessionMemberDto.getNo() == memberDto.getNo()) {
 
 					//String password = memberService.findPassword(memberDto.getEmail());
-//					String password = sessionMemberDto.getPassword();
+					//String password = sessionMemberDto.getPassword();
 				
 					MemberDto newMemberDto = memberService.selectOneMember(memberDto.getNo());
 					
